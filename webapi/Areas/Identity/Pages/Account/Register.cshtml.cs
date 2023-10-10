@@ -126,11 +126,11 @@ namespace webapi.Areas.Identity.Pages.Account
                 {
                     if (Input.IsSelected)
                     {
-                        await _userManager.AddToRoleAsync(user, Roles.Employer.ToString());
+                        await _userManager.AddToRoleAsync(user, Role.Employer.ToString());
                     }
                     else
                     {
-                        await _userManager.AddToRoleAsync(user, Roles.Employee.ToString());
+                        await _userManager.AddToRoleAsync(user, Role.Employee.ToString());
                     }
 
 

@@ -1,6 +1,6 @@
 ﻿namespace webapi.Models
 {
-    public enum Roles
+    public enum Role
     {
         Employer,
         Employee
