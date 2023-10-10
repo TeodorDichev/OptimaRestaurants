@@ -1,5 +1,17 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using webapi.Data;
+using webapi.Models;
 
+var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection") ?? throw new InvalidOperationException("Connection string 'OptimaRestaurantContextConnection' not found.");
+
+builder.Services.AddDbContext<OptimaRestaurantContext>(options => options.UseSqlServer(connectionString));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<OptimaRestaurantContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -20,6 +32,16 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    await DbSeeder.SeedRolesAndAdminAsync(scope.ServiceProvider);
+}
+
 
 app.Run();
