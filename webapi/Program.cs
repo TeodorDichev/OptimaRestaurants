@@ -21,6 +21,7 @@ builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 
 //to be able to inject JWTServices class inside our controllers
 builder.Services.AddScoped<JWTService>();
+builder.Services.AddScoped<EmailService>();
 
 //Defining identity core services
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
