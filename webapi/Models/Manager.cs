@@ -2,7 +2,7 @@
 
 namespace webapi.Models
 {
-    public class Employer
+    public class Manager
     {
         [Key]
         public Guid Id { get; set; }

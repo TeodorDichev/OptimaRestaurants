@@ -22,7 +22,7 @@ namespace webapi.Models
         public decimal OverWorkingAmountPerHour { get; set; }
         public bool UsePercentageGrowth { get; set; }
 
-        public required virtual Employer Employer { get; set; }
+        public required virtual Manager Employer { get; set; }
         public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace webapi.Data
         {
             UserManager<ApplicationUser> userManager = service.GetService<UserManager<ApplicationUser>>();
             RoleManager<IdentityRole> roleManager = service.GetService<RoleManager<IdentityRole>>();
-            await roleManager.CreateAsync(new IdentityRole(Role.Employer.ToString()));
+            await roleManager.CreateAsync(new IdentityRole(Role.Manager.ToString()));
             await roleManager.CreateAsync(new IdentityRole(Role.Employee.ToString()));
         }
         public static async Task Seed(IServiceProvider service)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace webapi.Models
 {
@@ -6,7 +7,6 @@ namespace webapi.Models
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public required string PhoneNumber { get; set; }
-        public string? ProfileImageUrl { get; set; }
+        public DateTime DateCreated {  get; set; } = DateTime.UtcNow;
     }
 }
