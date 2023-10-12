@@ -7,8 +7,8 @@ namespace webapi.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public required virtual ApplicationUser User { get; set; }
-        public required string Address { get; set; }
+        public required virtual ApplicationUser Profile { get; set; }
+        public required string City { get; set; }
         public required DateTime BirthDate { get; set; }
         public decimal SpeedAverageRating { get; set; }
         public decimal AttitudeAverageRating { get; set; }

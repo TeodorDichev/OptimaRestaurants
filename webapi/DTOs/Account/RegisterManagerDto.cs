@@ -2,7 +2,7 @@
 
 namespace webapi.DTOs.Account
 {
-    public class RegisterDto
+    public class RegisterManagerDto
     {
         [StringLength(30, MinimumLength = 2, ErrorMessage = "First name must be at least {2}, and maximum {1} characters")]
         public required string FirstName { get; set; }
