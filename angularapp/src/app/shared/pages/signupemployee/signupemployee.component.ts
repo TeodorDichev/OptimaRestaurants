@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  selector: 'app-signupemployee',
+  templateUrl: './signupemployee.component.html',
+  styleUrls: ['./signupemployee.component.css']
 })
-export class SignupComponent {
+export class SignupEmployeeComponent {
   isText: boolean = false;
   type: string = "Password";
   eyeIcon: string = "fa-eye-slash";

@@ -2,19 +2,28 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
-import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { LoginComponent } from './shared/pages/login/login.component';
+import { SignupManagerComponent } from './shared/pages/signupmanager/signupmanager.component';
+import { IndexComponent } from './shared/pages/index/index.component';
+import { SignupEmployeeComponent } from './shared/pages/signupemployee/signupemployee.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    SignupComponent
+    SignupManagerComponent,
+    IndexComponent,
+    SignupEmployeeComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule, 
+    SharedModule,
     HttpClientModule, 
     AppRoutingModule
   ],

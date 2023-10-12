@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { IndexComponent } from './shared/pages/index/index.component';
+import { NotFoundComponent } from './shared/components/errors/not-found/not-found.component';
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent}
+  {path: '', component: IndexComponent},
+  {path: 'account', loadChildren:() => import('./shared/pages/account/account.module').then(module => module.AccountModule)},
+  {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
 
 @NgModule({
