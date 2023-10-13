@@ -1,3 +1,6 @@
 .navbar{
 background-color: cadetblue;
 }
+.btn-outline-dark{
+    border-color:  cadetblue !important;
+}

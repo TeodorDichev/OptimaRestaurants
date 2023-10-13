@@ -57,6 +57,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+
+
 builder.Services.AddCors();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -82,7 +84,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
+    opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
 });
 
 if (app.Environment.IsDevelopment())
@@ -91,8 +93,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

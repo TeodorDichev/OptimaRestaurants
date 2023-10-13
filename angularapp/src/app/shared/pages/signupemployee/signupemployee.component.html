@@ -7,21 +7,37 @@
                         <div class="h3 pt-3 font-weight-bold">Sign Up</div>
                     </div>
                     <div class="panel-body p-3">
-                        <form>
+                        <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
                                 <div class="form-group pt-3">
                                     <div class="input-field my-2">
                                         <span class="fa fa-user p-2 my2"></span>
-                                        <input type="text" placeholder="First Name">                                       
+                                        <input formControlName="firstName" type="text" placeholder="First Name">                                       
                                     </div>
                                     <div class="input-field my-2">
                                         <span class="fa fa-user p-2"></span>
-                                        <input type="text" placeholder="Last Name">                                       
-                                    </div>                                   
+                                        <input formControlName="lastName" type="text" placeholder="Last Name">                                       
+                                    </div>
+                                    <div class="input-field my-2">
+                                        <span class="fa fa-map-pin p-2"></span>
+                                        <input formControlName="city" type="text" placeholder="City">                                       
+                                    </div>
+                                    <div class="input-field my-2">
+                                        <span class="fa fa-calendar p-2"></span>
+                                        <input formControlName="birthdate" type="date" placeholder="Birthdate">                                  
+                                    </div>
+                                    <div class="input-field my-2">
+                                        <span class="fa fa-envelope p-2"></span>
+                                        <input formControlName="email" type="text" placeholder="Email">                                       
+                                    </div>
+                                                                       
                                     <div class="input-field my-2">
                                         <span class="fa fa-lock p-2"></span>
-                                        <input [type]="type" placeholder="Password">
+                                        <input formControlName="password" [type]="type" placeholder="Password">
                                         <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>                                           
                                     </div>
+                                </div>
+                                <div class="h6">
+                                    /to-do\ Add switcher for employee/manager
                                 </div>
                                 
                                 <button type="submit" class="btn btn-primary btn-block mt-4 w-100">Sign Up</button>
