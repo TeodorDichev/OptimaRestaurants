@@ -21,12 +21,12 @@ export class RegisterEmployeeComponent implements OnInit{
   }
   initializeForm() {
     this.registerForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
-      city: ['', [Validators.required]],
-      birthdate: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
+      firstName: ['', [Validators.minLength(2), Validators.maxLength(30)]],
+      lastName: ['', [Validators.minLength(2), Validators.maxLength(30)]],
+      city: ['', []],
+      birthDate: ['', []],
+      email: ['', [Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
+      password: ['', [Validators.minLength(6), Validators.maxLength(30)]]
   })}
   registerEmployee(){
     this.submitted = true;

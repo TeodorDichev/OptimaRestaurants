@@ -96,7 +96,7 @@ namespace webapi.Controllers
             return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, you can login" })); // change to login directly
         }
         [HttpPost("api/account/registerEmployee")]
-        public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee(RegisterEmployeeDto model)
+        public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
             {
