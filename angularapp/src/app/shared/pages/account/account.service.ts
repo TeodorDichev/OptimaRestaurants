@@ -11,6 +11,6 @@ export class AccountService {
   constructor(private http: HttpClient) 
   { }
   registerEmployee(model: RegisterEmployee){
-    return this.http.post(`${environment.appUrl}/api/account/signupemployee`, model);
+    return this.http.post(`${environment.appUrl}/api/account/registerEmployee`, model);
   }
 }

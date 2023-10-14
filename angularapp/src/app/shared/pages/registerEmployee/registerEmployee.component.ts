@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 
 @Component({
-  selector: 'app-signupemployee',
-  templateUrl: './signupemployee.component.html',
-  styleUrls: ['./signupemployee.component.css']
+  selector: 'app-registerEmployee',
+  templateUrl: './registerEmployee.component.html',
+  styleUrls: ['./registerEmployee.component.css']
 })
-export class SignupEmployeeComponent implements OnInit{
+export class RegisterEmployeeComponent implements OnInit{
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -40,7 +40,7 @@ export class SignupEmployeeComponent implements OnInit{
         console.log(error);
       }     
     })
-    //console.log(this.registerForm.value);
+    console.log(this.registerForm.value);
   }
   isText: boolean = false;
   type: string = "Password";

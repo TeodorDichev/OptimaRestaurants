@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './shared/pages/login/login.component';
 import { SignupManagerComponent } from './shared/pages/signupmanager/signupmanager.component';
 import { IndexComponent } from './shared/pages/index/index.component';
-import { SignupEmployeeComponent } from './shared/pages/signupemployee/signupemployee.component';
+import { RegisterEmployeeComponent } from './shared/pages/registerEmployee/registerEmployee.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { SharedModule } from './shared/shared.module';
@@ -17,7 +17,7 @@ import { SharedModule } from './shared/shared.module';
     LoginComponent,
     SignupManagerComponent,
     IndexComponent,
-    SignupEmployeeComponent,
+    RegisterEmployeeComponent,
     NavbarComponent,
     FooterComponent
   ],
