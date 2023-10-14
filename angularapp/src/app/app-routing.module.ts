@@ -5,7 +5,7 @@ import { NotFoundComponent } from './shared/components/errors/not-found/not-foun
 
 const routes: Routes = [
   {path: '', component: IndexComponent},
-  {path: 'account', loadChildren:() => import('./shared/pages/account/account.module').then(module => module.AccountModule)},
+  {path: 'account', loadChildren:() => import('./shared/pages/account-routing/account.module').then(module => module.AccountModule)},
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
 

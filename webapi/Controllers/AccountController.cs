@@ -58,8 +58,8 @@ namespace webapi.Controllers
             return CreateApplicationUserDto(user);
         }
 
-        [HttpPost("registerManager")]
-        public async Task<ActionResult<ApplicationUserDto>> RegisterManager(RegisterManagerDto model)
+        [HttpPost("api/account/registerManager")]
+        public async Task<ActionResult<ApplicationUserDto>> RegisterManager([FromBody] RegisterManagerDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
             {

@@ -1,6 +1,6 @@
 .outer{
     height: 100vh;
-    background: linear-gradient(to top,  rgb(2, 137, 248) 10%,white 90%) no-repeat;
+    background: linear-gradient(to top, white 10%, cadetblue 90%) no-repeat;
 }
 
 .custom-date-input{
@@ -12,11 +12,12 @@
     margin-bottom: 10px;
 }
 
-#forget {
+#forget{
     min-width: 100px;
     margin-left: auto;
     text-decoration: none;
     cursor: pointer;
+    color: cadetblue;
 }
 
 a:hover{
@@ -48,9 +49,13 @@ a:hover{
     align-items: center;
     cursor: pointer;
     border: 1px solid #ddd;
-    color: rgb(2, 137, 248);
+    color: cadetblue;
 }
-
+.custom-signup-button{
+    background-color: cadetblue;
+    color: white;
+    border: transparent;
+}
 .input-field.error{
     border: 1px solid red;
     color:crimson;

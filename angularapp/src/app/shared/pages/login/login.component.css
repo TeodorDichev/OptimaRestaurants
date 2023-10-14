@@ -48,7 +48,14 @@ a:hover{
     border: 1px solid #ddd;
     color: cadetblue;
 }
-
+.custom-login-button{
+    background-color: cadetblue;
+    color: white;
+    border: transparent;
+}
+.custom-login-button:hover{
+    background-color: rgb(85, 144, 146);
+}
 .input-field.error{
     border: 1px solid red;
     color:crimson;
