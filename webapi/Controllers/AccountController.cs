@@ -111,7 +111,7 @@ namespace webapi.Controllers
                 UserName = model.Email.ToLower(),
             };
 
-            var result = await _userManager.CreateAsync(userToAdd, model.Password);
+            var result = await _userManager.CreateAsync(userToAdd, model.Password); // Error
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             try

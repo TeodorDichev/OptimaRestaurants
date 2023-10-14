@@ -3,6 +3,10 @@
     background: linear-gradient(to top,  rgb(2, 137, 248) 10%,white 90%) no-repeat;
 }
 
+.custom-date-input{
+    border: transparent;
+}
+
 .panel-heading{
     text-align: center;
     margin-bottom: 10px;
