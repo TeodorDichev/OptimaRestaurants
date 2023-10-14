@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Register } from '../../models/register';
+import { RegisterEmployee } from '../../models/register.employee';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class AccountService {
 
   constructor(private http: HttpClient) 
   { }
-  register(model: Register){
-    return this.http.post(`${environment.appUrl}/api/account/register`, model);
+  registerEmployee(model: RegisterEmployee){
+    return this.http.post(`${environment.appUrl}/api/account/signupemployee`, model);
   }
 }

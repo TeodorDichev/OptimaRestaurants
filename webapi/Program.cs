@@ -84,8 +84,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseCors(opt =>
 {
-    opt.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
+    opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
+
+//app.UseCors(opt =>
+//{
+//    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
+//});
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -104,11 +110,11 @@ app.MapControllers();
 //    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    await DbSeeder.SeedRoles(scope.ServiceProvider);
-//    await DbSeeder.Seed(scope.ServiceProvider);
-//}
+using (var scope = app.Services.CreateScope())
+{
+    await DbSeeder.SeedRoles(scope.ServiceProvider);
+    await DbSeeder.Seed(scope.ServiceProvider);
+}
 
 
 app.Run();

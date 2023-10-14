@@ -59,7 +59,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("registerManager")]
-        public async Task<ActionResult<ApplicationUserDto>> Register(RegisterManagerDto model)
+        public async Task<ActionResult<ApplicationUserDto>> RegisterManager(RegisterManagerDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
             {
@@ -96,7 +96,7 @@ namespace webapi.Controllers
             return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, you can login" })); // change to login directly
         }
         [HttpPost("registerEmployee")]
-        public async Task<ActionResult<ApplicationUserDto>> Register(RegisterEmployeeDto model)
+        public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee(RegisterEmployeeDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
             {

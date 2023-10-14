@@ -28,11 +28,11 @@ export class SignupEmployeeComponent implements OnInit{
       email: ['', [Validators.required, Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
   })}
-  register(){
+  registerEmployee(){
     this.submitted = true;
     this.errorMessages = [];
 
-    this.accountService.register(this.registerForm.value).subscribe({
+    this.accountService.registerEmployee(this.registerForm.value).subscribe({
       next: (response) => {
         console.log(response);
       },
