@@ -12,6 +12,11 @@ using webapi.Services;
 
 namespace webapi.Controllers
 {
+    /// <summary>
+    /// Manages all tasks related to the accounts of a manager and an employee
+    /// Edit account: picture, name, email, password
+    /// </summary>
+    
     public class AccountController : Controller
     {
         private readonly JWTService _jwtService;
@@ -111,7 +116,7 @@ namespace webapi.Controllers
                 UserName = model.Email.ToLower(),
             };
 
-            var result = await _userManager.CreateAsync(userToAdd, model.Password); // Error
+            var result = await _userManager.CreateAsync(userToAdd, model.Password);
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             try
