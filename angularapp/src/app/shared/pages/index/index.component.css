@@ -1,3 +1,43 @@
 .container{
     width: 100vw;
 }
+.overlay-text {
+    font-family: Pacifico;
+    font-size: 27px !important;
+    text-decoration: none;
+    position: absolute;
+    top: 40%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    color: white;
+    padding: 10px 20px; 
+    text-align: center;
+}
+.btn-outline-light{
+    border-color: transparent;
+    background-color: chocolate;
+}
+.btn-outline-light:hover{
+    background-color: rgb(145, 75, 25);
+    color:white;
+}
+.overlay-btn-login {
+    font-family: Pacifico;
+    font-size: 30px !important;
+    position: absolute;
+    top: 57%; 
+    left: 42%; 
+    transform: translate(-50%, -50%); 
+    padding: 5px 15px; 
+    text-align: center;
+}
+.overlay-btn-signup {
+    font-family: Pacifico;
+    font-size: 30px !important;
+    position: absolute;
+    top: 57%; 
+    left: 55%; 
+    transform: translate(-50%, -50%); 
+    padding: 5px 15px; 
+    text-align: center;
+}

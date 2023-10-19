@@ -1,6 +1,15 @@
-.navbar{
-background-color: cadetblue;
-}
 .btn-outline-dark{
-    border-color:  cadetblue !important;
+    border-color:  transparent !important;
+    color: chocolate;
 }
+.btn-outline-dark:hover{
+    border-color:  transparent !important;
+    background-color: lightgray;
+}
+.heading-font{
+    font-family: Pacifico;
+    text-decoration: none;
+    font-size: 40px;
+    color: chocolate;
+}
+

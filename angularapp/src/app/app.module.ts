@@ -8,7 +8,6 @@ import { RegisterManagerComponent } from './shared/pages/registerManager/registe
 import { IndexComponent } from './shared/pages/index/index.component';
 import { RegisterEmployeeComponent } from './shared/pages/registerEmployee/registerEmployee.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
-import { FooterComponent } from './shared/components/footer/footer.component';
 import { SharedModule } from './shared/shared.module';
 
 @NgModule({
@@ -18,8 +17,7 @@ import { SharedModule } from './shared/shared.module';
     RegisterManagerComponent,
     IndexComponent,
     RegisterEmployeeComponent,
-    NavbarComponent,
-    FooterComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule, 

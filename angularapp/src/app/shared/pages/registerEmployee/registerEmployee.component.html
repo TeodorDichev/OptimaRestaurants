@@ -5,45 +5,47 @@
             <div class="col-lg-5 col-md-7">
                 <div class="panel border bg-white">
                     <div class="panel-heading">
-                        <div class="h3 pt-3 font-weight-bold">Sign Up</div>
+                        <div class="h3 pt-3 mt-2 font-weight-bold">Създаване на акаунт за работник</div>
                     </div>
                     <div class="panel-body p-3">
                         <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()" autocomplete="off">
                                 <div class="form-group pt-3">
                                     <div class="input-field my-2">
                                         <span class="fa fa-user p-2 my2"></span>
-                                        <input formControlName="firstName" type="text" placeholder="First Name">                                       
+                                        <input formControlName="firstName" type="text" placeholder="Име">                                       
                                     </div>
                                     <div class="input-field my-2">
                                         <span class="fa fa-user p-2"></span>
-                                        <input formControlName="lastName" type="text" placeholder="Last Name">                                       
+                                        <input formControlName="lastName" type="text" placeholder="Фамилия">                                       
                                     </div>
                                     <div class="input-field my-2">
                                         <span class="fa fa-map-pin p-2"></span>
-                                        <input formControlName="city" type="text" placeholder="City">                                       
+                                        <input formControlName="city" type="text" placeholder="Град">                                       
                                     </div>
-                                    <div class="input-field my-2">
+                                    <div class="input-field my-2">                                   
                                         <span class="fa fa-calendar p-2"></span>
-                                        <input class="custom-date-input" formControlName="birthDate" type="date" placeholder="Birthdate">                                  
+                                        <div class="text-muted me-3">Дата на раждане:</div>   
+                                        <input class="custom-date-input" formControlName="birthDate" type="date"> 
+                         
                                     </div>
                                     <div class="input-field my-2">
                                         <span class="fa fa-envelope p-2"></span>
-                                        <input formControlName="email" type="text" placeholder="Email">                                       
+                                        <input formControlName="email" type="text" placeholder="Имейл">                                       
                                     </div>
                                                                        
                                     <div class="input-field my-2">
                                         <span class="fa fa-lock p-2"></span>
-                                        <input formControlName="password" [type]="type" placeholder="Password">
+                                        <input formControlName="password" [type]="type" placeholder="Парола">
                                         <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>                                           
                                     </div>
                                 </div>
                                 <div class="text-center pt-4 text-muted">
-                                    <a id="forget" routerLink="/account/registerManager">Change to Manager</a>
+                                    <a id="forget" routerLink="/account/registerManager">Смяна към мениджър</a>
                                 </div>
                                 
-                                <button type="submit" class="btn btn-primary custom-signup-button btn-block mt-4 w-100">Sign Up</button>
-                                <div class="text-center pt-4 text-muted">Already have an account?
-                                    <a id="forget" routerLink="/account/login">Log in</a>
+                                <button type="submit" class="btn btn-primary custom-signup-button btn-block mt-4 w-100">Създаване на акаунт</button>
+                                <div class="text-center pt-4 text-muted">Вече имате акаунт?
+                                    <a id="forget" routerLink="/account/login">Влезте</a>
                                 </div>
                         </form>  
                     </div>

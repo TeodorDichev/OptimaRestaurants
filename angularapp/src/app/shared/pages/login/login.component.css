@@ -1,6 +1,6 @@
 .outer{
     height: 100vh;
-    background: linear-gradient(to top, white 10%, cadetblue 90%) no-repeat;
+    background: linear-gradient(to top, chocolate 10%, white 90%) no-repeat;
 }
 
 .panel-heading{
@@ -13,7 +13,7 @@
     margin-left: auto;
     text-decoration: none;
     cursor: pointer;
-    color: cadetblue;
+    color: chocolate;
 }
 
 a:hover{
@@ -46,15 +46,15 @@ a:hover{
     align-items: center;
     cursor: pointer;
     border: 1px solid #ddd;
-    color: cadetblue;
+    color: chocolate;
 }
 .custom-login-button{
-    background-color: cadetblue;
+    background-color: chocolate;
     color: white;
     border: transparent;
 }
 .custom-login-button:hover{
-    background-color: rgb(85, 144, 146);
+    background-color: rgb(138, 69, 20);
 }
 .input-field.error{
     border: 1px solid red;
