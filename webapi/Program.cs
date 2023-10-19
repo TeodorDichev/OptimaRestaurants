@@ -22,6 +22,7 @@ builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 //to be able to inject JWTServices class inside our controllers
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<ContextSeedService>();
 
 //Defining identity core services
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -87,11 +88,6 @@ app.UseCors(opt =>
     opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
 
-//app.UseCors(opt =>
-//{
-//    opt.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins(builder.Configuration["JWT:ClientUrl"]);
-//});
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -105,16 +101,18 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
 using (var scope = app.Services.CreateScope())
 {
-    await DbSeeder.SeedRoles(scope.ServiceProvider);
-    await DbSeeder.Seed(scope.ServiceProvider);
+    try
+    {
+        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
+        await contextSeedServices.InitializeContextAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+        logger.LogError(ex.Message, "Failed to initialize and seed database ");    
+    }
 }
-
 
 app.Run();
