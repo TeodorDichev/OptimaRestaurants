@@ -9,6 +9,7 @@ import { IndexComponent } from './shared/pages/index/index.component';
 import { RegisterEmployeeComponent } from './shared/pages/registerEmployee/registerEmployee.component';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { SharedModule } from './shared/shared.module';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { SharedModule } from './shared/shared.module';
     BrowserModule, 
     SharedModule,
     HttpClientModule, 
-    AppRoutingModule
+    AppRoutingModule, ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

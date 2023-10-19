@@ -68,7 +68,7 @@ namespace webapi.Controllers
         {
             if (await CheckEmailExistAsync(model.Email))
             {
-                return BadRequest($"Already exists an account with this email address");
+                return BadRequest($"Вече съществува акаунт с този имейл адрес");
             }
 
             var userToAdd = new ApplicationUser
@@ -86,26 +86,26 @@ namespace webapi.Controllers
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
-                    return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, please confirm your address" }));
+                    return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
                 }
             }
             catch (Exception)
             {
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
 
             await _userManager.AddToRoleAsync(userToAdd, Role.Manager.ToString());
             Manager manager = new Manager { Profile = userToAdd };
             await _context.Managers.AddAsync(manager);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, you can login" })); // change to login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
         }
         [HttpPost("api/account/registerEmployee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
             {
-                return BadRequest($"Already exists an account with this email address");
+                return BadRequest($"Вече съществува акаунт с този имейл адрес");
             }
 
             var userToAdd = new ApplicationUser
@@ -123,12 +123,12 @@ namespace webapi.Controllers
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
-                    return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, please confirm your address" }));
+                    return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
                 }
             }
             catch (Exception)
             {
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
 
             await _userManager.AddToRoleAsync(userToAdd, Role.Employee.ToString());
@@ -140,7 +140,7 @@ namespace webapi.Controllers
             };
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Account created", message = "Your account has been created, you can login" })); // change to login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
         }
 
         [HttpPut("confirm-email")]
@@ -158,7 +158,7 @@ namespace webapi.Controllers
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Email confirmed", message = "Your email address has been confirmed, you can login" })); // change to login directly
+                    return Ok(new JsonResult(new { title = "Email confirmed", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
                 }
 
                 return BadRequest("Invalid token. Please try again");
