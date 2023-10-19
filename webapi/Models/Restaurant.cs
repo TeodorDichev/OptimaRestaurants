@@ -16,14 +16,14 @@ namespace webapi.Models
         public decimal AtmosphereAverageRating { get; set; }
         public decimal EmployeesAverageRating { get; set; }
         public decimal RestaurantAverageRating { get; set; }
-        public decimal StandardMontlyPayment { get; set; }
+        public decimal StandardMonthlyPayment { get; set; }
         public int MinRatingForBonuses { get; set; }
         public decimal RatingBonusesAmount { get; set; }
         public int OverWorkingHours { get; set; }
         public decimal OverWorkingAmountPerHour { get; set; }
         public bool UsePercentageGrowth { get; set; }
 
-        public required virtual Manager Employer { get; set; }
+        public required virtual Manager Manager { get; set; }
         public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; }
     }
 }

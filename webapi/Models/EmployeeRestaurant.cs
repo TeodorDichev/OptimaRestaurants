@@ -9,8 +9,8 @@ namespace webapi.Models
         public virtual required Employee Employee { get; set; }
         public virtual required Restaurant Restaurant { get; set; }
         public required DateTime SentOn { get; set; }
-        public DateTime ConfirmedOn { get; set; }
-        public DateTime EndedOn { get; set; }
+        public DateTime? ConfirmedOn { get; set; }
+        public DateTime? EndedOn { get; set; }
 
     }
 }
