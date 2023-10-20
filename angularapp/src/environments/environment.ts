@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
     appUrl: '',
-    userKey: 'OptimaRestaurantsAppUser'
+    userKey: 'identityAppUser'
 };

@@ -1,5 +1,6 @@
 .btn-outline-dark{
     border-color:  transparent !important;
+    text-shadow: 1px 1px black;
     color: chocolate;
 }
 .btn-outline-dark:hover{
@@ -9,6 +10,7 @@
 .heading-font{
     font-family: Pacifico;
     text-decoration: none;
+    text-shadow: 1px 1px black;
     font-size: 40px;
     color: chocolate;
 }

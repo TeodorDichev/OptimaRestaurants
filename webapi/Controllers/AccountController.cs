@@ -41,22 +41,22 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<ApplicationUserDto>> Login(LoginDto model)
+        [HttpPost("api/account/login")]
+        public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null) return Unauthorized("Invalid email or password");
+            if (user == null) return Unauthorized("Грешен имейл или парола!");
 
-            if (user.EmailConfirmed == false) return Unauthorized("Please confirm your email");
+            if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded) return Unauthorized("Invalid email or password");
+            if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
 
             return CreateApplicationUserDto(user);
         }
 
         [Authorize]
-        [HttpGet("refresh-user-token")]
+        [HttpGet("/api/account/refresh-user-token")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken()
         {
             var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email)?.Value);
@@ -68,7 +68,7 @@ namespace webapi.Controllers
         {
             if (await CheckEmailExistAsync(model.Email))
             {
-                return BadRequest($"Вече съществува акаунт с този имейл адрес");
+                return BadRequest($"Вече съществува акаунт с този имейл адрес!");
             }
 
             var userToAdd = new ApplicationUser
@@ -98,7 +98,7 @@ namespace webapi.Controllers
             Manager manager = new Manager { Profile = userToAdd };
             await _context.Managers.AddAsync(manager);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
         }
         [HttpPost("api/account/registerEmployee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
@@ -140,7 +140,7 @@ namespace webapi.Controllers
             };
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
         }
 
         [HttpPut("confirm-email")]
@@ -158,7 +158,7 @@ namespace webapi.Controllers
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Email confirmed", message = "Вашият акаунт беше създаден, може да влезете!" })); // change message and login directly
+                    return Ok(new JsonResult(new { title = "Email confirmed", message = "Вашият акаунт беше създаден!" })); // change message and login directly
                 }
 
                 return BadRequest("Invalid token. Please try again");

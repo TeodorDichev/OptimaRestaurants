@@ -39,7 +39,7 @@ export class RegisterEmployeeComponent implements OnInit{
     this.accountService.registerEmployee(this.registerForm.value).subscribe({
       next: (response: any) => {
         this.sharedService.showNotification(true, response.value.title, response.value.message);
-        this.router.navigateByUrl('/account/login'); // When next page is done, redirect user to it
+        this.router.navigateByUrl('/account/next');
       },
       error: error => {
         if(error.error.errors){

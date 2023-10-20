@@ -4,6 +4,7 @@
 .overlay-text {
     font-family: Roboto Slab;
     font-size: 27px !important;
+    text-shadow: 2px 2px black;
     text-decoration: none;
     position: absolute;
     top: 40%; 
@@ -16,6 +17,7 @@
 .btn-outline-light{
     border-color: transparent;
     background-color: chocolate;
+    box-shadow: 3px 1px black;
 }
 .btn-outline-light:hover{
     background-color: rgb(145, 75, 25);
@@ -24,6 +26,7 @@
 .overlay-btn-login {
     font-family: Pacifico;
     font-size: 30px !important;
+    text-shadow: 2px 2px black;
     position: absolute;
     top: 57%; 
     left: 42%; 
@@ -34,6 +37,7 @@
 .overlay-btn-signup {
     font-family: Pacifico;
     font-size: 30px !important;
+    text-shadow: 2px 2px black;
     position: absolute;
     top: 57%; 
     left: 55%; 
