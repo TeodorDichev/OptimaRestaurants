@@ -148,7 +148,7 @@ namespace webapi.Controllers
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("This email has already been confirmed");
+            if (user.EmailConfirmed == true) return BadRequest("This email has already been confirmed");
 
             try
             {
@@ -321,7 +321,7 @@ namespace webapi.Controllers
                 "<p>Thank you,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, "Forgot username or password", body);
+            var emailSend = new EmailSendDto(user.Email, body, "Forgot username or password");
 
             return await _emailService.SendEmailAsync(emailSend);
         }
@@ -333,12 +333,12 @@ namespace webapi.Controllers
             var url = $"{_configuration["JWT:ClientUrl"]}/{_configuration["Email:ConfirmEmailPath"]}?token={token}&email={user.Email})";
 
             var body = $"<p>Hello: {user.FirstName} {user.LastName}</p>" +
-                "<p>Please confirm your email address by clicking on the following link.</p>" +
+                "<p>Please confirm your email address here:</p>" +
                 $"<p><a href=\"{url}\">Click here</a></p>" +
                 "<p>Thank you,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, "Confirm your email", body);
+            var emailSend = new EmailSendDto(user.Email, body, "Confirm your email");
 
             return await _emailService.SendEmailAsync(emailSend);
         }
