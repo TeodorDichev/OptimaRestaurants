@@ -59,6 +59,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  resendEmailConfirmaitonLink(){
+    this.router.navigateByUrl('/account/sendEmail/resendEmailConfirmationLink');
+  }
+
   isText: boolean = false;
   type: string = "Password";
   eyeIcon: string = "fa-eye-slash";

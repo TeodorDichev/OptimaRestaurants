@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './registerManager.component.html',
   styleUrls: ['./registerManager.component.css']
 })
-export class RegisterManagerComponent implements OnInit{
+export class RegisterManagerComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -17,7 +17,7 @@ export class RegisterManagerComponent implements OnInit{
   constructor(private accountService: AccountService,
     private sharedService: SharedService,
     private router: Router,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -28,30 +28,32 @@ export class RegisterManagerComponent implements OnInit{
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
       email: ['', [Validators.required, Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
       password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
-  })}
-  registerManager(){
+    })
+  }
+  registerManager() {
     this.submitted = true;
     this.errorMessages = [];
 
-    if(this.registerForm.valid){
-    this.accountService.registerManager(this.registerForm.value).subscribe({
-      next: (response: any) => {
-        this.sharedService.showNotification(true, response.value.title, response.value.message);
-        this.router.navigateByUrl('/account/next'); // When next page is done, redirect user to it
-      },
-      error: error => {
-        if(error.error.errors){
-          this.errorMessages = error.error.errors;
-        } else {
-          this.errorMessages.push(error.error);
+    if (this.registerForm.valid) {
+      this.accountService.registerManager(this.registerForm.value).subscribe({
+        next: (response: any) => {
+          this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.router.navigateByUrl('/account/next'); // When next page is done, redirect user to it
+        },
+        error: error => {
+          if (error.error.errors) {
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error);
+          }
         }
-      }     
-    })}
+      })
+    }
   }
   isText: boolean = false;
   type: string = "Password";
   eyeIcon: string = "fa-eye-slash";
-  hideShowPass(){
+  hideShowPass() {
     this.isText = !this.isText;
     this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
     this.isText ? this.type = "text" : this.type = "password";

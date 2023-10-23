@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-center" *ngIf="mode">
+    <div class="col-12 col-lg-5">
+        <form [formGroup]="emailForm" (ngSubmit)="sendEmail()" autocomplete="off">
+            <div class="text-center mb-4">
+                <h1 class="mb-3 font-weight-normal">
+                    <span *ngIf="mode.includes('resendEmailConfirmationLink')">
+                        Resend Email Confirmation Link
+                    </span>
+                </h1>
+            </div>
+            <div class="input-field my-2">
+                <span class="fa fa-envelope p-2"></span>
+                <input class="col-5" formControlName="email" type="text" placeholder="Имейл"
+                    [class.is-invalid]="submitted && emailForm.get('email')?.errors">
+            </div>
+            <span class="text-danger" *ngIf="submitted && emailForm.get('email')?.hasError('required')">
+                Полето е задължително!
+            </span>
+            <span class="text-danger" *ngIf="submitted && emailForm.get('email')?.hasError('pattern')">
+                Невалиден имейл адрес!
+            </span>
+
+            <div class="form-floating" *ngIf="errorMessages.length > 0">
+                <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-block btn-success">Изпращане</button>        
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-block btn-danger" (click)="cancel()">Отказ</button>        
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

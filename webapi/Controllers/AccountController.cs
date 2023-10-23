@@ -168,7 +168,7 @@ namespace webapi.Controllers
                 return BadRequest("Invalid token. Please try again");
             }
         }
-        [HttpPut("resetPassword")]
+        [HttpPut("api/account/resetPassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -194,13 +194,13 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("resend-email-confirmation-link/{email}")]
+        [HttpPost("api/account/resendEmailConfirmationLink/{email}")]
         public async Task<IActionResult> ResendEmailConfimationLink(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("This email has already been confirmed");
+            if (user.EmailConfirmed == true) return BadRequest("This email has already been confirmed");
 
             try
             {
@@ -216,7 +216,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("forget-username-or-password/{email}")]
+        [HttpPost("api/account/forgotUsernameOrPassword/{email}")]
         public async Task<IActionResult> ForgotUsernameOrPassword(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
@@ -239,8 +239,7 @@ namespace webapi.Controllers
             }
         }
 
-        // PUT: api/account/update
-        [HttpPut("updateEmployee")]
+        [HttpPut("api/account/updateEmployee")]
         public async Task<IActionResult> UpdateEmployeeAccount(UpdateEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -275,8 +274,7 @@ namespace webapi.Controllers
             }
         }
 
-        // PUT: api/account/update
-        [HttpPut("updateManager")]
+        [HttpPut("api/account/updateManager")]
         public async Task<IActionResult> UpdateManagerAccount(UpdateManagerDto managerDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

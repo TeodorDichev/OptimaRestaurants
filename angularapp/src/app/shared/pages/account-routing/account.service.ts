@@ -32,6 +32,10 @@ export class AccountService {
     return this.http.put(`${environment.appUrl}/api/account/confirmEmail`, model);
   }
 
+  resendEmailConfirmationLink(email: string){
+    return this.http.post(`${environment.appUrl}/api/account/resendEmailConfirmationLink/${email}`, {});
+  }
+
   login(model: Login) {
     return this.http.post<User>(`${environment.appUrl}/api/account/login`, model).pipe(
       map((user: User) => {

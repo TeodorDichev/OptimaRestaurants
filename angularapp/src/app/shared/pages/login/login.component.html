@@ -32,6 +32,10 @@
                             </div>
                             <div class="form-floating" *ngIf="errorMessages.length > 0">
                                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+                                <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"
+                                *ngIf="errorMessages[0].includes('Моля потвърдете имейл адреса си.')">
+                                Не сте получили имейл за потвърждаване? Натиснете тук.
+                                </a>
                             </div>
                             <div class="form-inline fr mt-4">
                                 <a id="forget" class="font-weight-bold">Забравена парола?</a>
