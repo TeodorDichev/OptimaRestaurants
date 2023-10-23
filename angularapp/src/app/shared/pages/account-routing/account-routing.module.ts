@@ -5,6 +5,7 @@ import { RegisterManagerComponent } from '../registerManager/registerManager.com
 import { RegisterEmployeeComponent } from '../registerEmployee/registerEmployee.component';
 import { ConfirmEmailComponent } from '../confirmEmail/confirmEmail.component';
 import { SendEmailComponent } from '../sendEmail/sendEmail.component';
+import { ResetPasswordComponent } from '../resetPassword/resetPassword.component';
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'registerManager', component: RegisterManagerComponent},
   {path: 'registerEmployee', component: RegisterEmployeeComponent},
   {path: 'confirmEmail', component: ConfirmEmailComponent},
-  {path: 'sendEmail/:mode', component: SendEmailComponent}
+  {path: 'sendEmail/:mode', component: SendEmailComponent},
+  {path: 'resetPassword', component: ResetPasswordComponent}
 ];
 
 @NgModule({

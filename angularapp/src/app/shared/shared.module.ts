@@ -8,6 +8,7 @@ import { NotificationComponent } from './components/errors/modals/notification/n
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmEmailComponent } from './pages/confirmEmail/confirmEmail.component';
 import { SendEmailComponent } from './pages/sendEmail/sendEmail.component';
+import { ResetPasswordComponent } from './pages/resetPassword/resetPassword.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { SendEmailComponent } from './pages/sendEmail/sendEmail.component';
     ValidationMessagesComponent,
     NotificationComponent,
     ConfirmEmailComponent,
-    SendEmailComponent
+    SendEmailComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

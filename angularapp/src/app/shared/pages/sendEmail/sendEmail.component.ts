@@ -55,7 +55,21 @@ export class SendEmailComponent implements OnInit {
         this.accountService.resendEmailConfirmationLink(this.emailForm.get('email')?.value).subscribe({
           next: (response: any) =>{
             this.sharedService.showNotification(true, response.value.title, response.value.message);
-            this.router.navigateByUrl('/account/next');
+            this.router.navigateByUrl('/account/login');
+          },
+          error: error => {
+            if (error.error.errors) {
+              this.errorMessages = error.error.errors;
+            } else {
+              this.errorMessages.push(error.error);
+            }
+          }
+        })
+      } else if (this.mode.includes('forgotUsernameOrPassword')) {
+        this.accountService.forgotUsernameOrPassword(this.emailForm.get('email')?.value).subscribe({
+          next: (response: any) => {
+            this.sharedService.showNotification(true, response.value.title, response.value.message);
+            this.router.navigateByUrl('/account/login');
           },
           error: error => {
             if (error.error.errors) {
@@ -67,6 +81,7 @@ export class SendEmailComponent implements OnInit {
         })
       }
     }
+    
   }
 
   cancel(){

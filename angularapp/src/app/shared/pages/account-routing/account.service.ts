@@ -36,6 +36,10 @@ export class AccountService {
     return this.http.post(`${environment.appUrl}/api/account/resendEmailConfirmationLink/${email}`, {});
   }
 
+  forgotUsernameOrPassword(email: string){
+    return this.http.post(`${environment.appUrl}/api/account/forgotUsernameOrPassword/${email}`, {});
+  }
+
   login(model: Login) {
     return this.http.post<User>(`${environment.appUrl}/api/account/login`, model).pipe(
       map((user: User) => {
