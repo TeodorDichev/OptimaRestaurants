@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { RegisterEmployee } from '../../models/registerEmployee';
+import { RegisterEmployee } from '../../models/account/registerEmployee';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterManager } from '../../models/registerManager';
-import { Login } from '../../models/login';
-import { User } from '../../models/user';
+import { RegisterManager } from '../../models/account/registerManager';
+import { Login } from '../../models/account/login';
+import { User } from '../../models/account/user';
 import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { ConfirmEmail } from '../../models/account/confirmEmail';
 
 
 @Injectable({
@@ -22,36 +23,13 @@ export class AccountService {
   registerEmployee(model: RegisterEmployee) {
     return this.http.post(`${environment.appUrl}/api/account/registerEmployee`, model);
   }
+
   registerManager(model: RegisterManager) {
     return this.http.post(`${environment.appUrl}/api/account/registerManager`, model);
   }
 
-  getJWT() {
-    const key = localStorage.getItem(environment.userKey);
-    if (key) {
-      const user: User = JSON.parse(key);
-      return user.jwt;
-    } else {
-      return null;
-    }
-  }
-
-  refreshUser(jwt: string | null){
-    if (jwt === null){
-      this.userSource.next(null);
-      return of(undefined);
-    }
-    
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', 'Bearer ' + jwt);
-
-    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, {headers}).pipe(
-      map((user: User) => {
-        if (user) {
-          this.setUser(user);
-        }
-      })
-    );
+  confirmEmail(model: ConfirmEmail) {
+    return this.http.put(`${environment.appUrl}/api/account/confirmEmail`, model);
   }
 
   login(model: Login) {
@@ -72,7 +50,32 @@ export class AccountService {
     this.userSource.next(null);
     this.router.navigateByUrl('/');
   }
+  getJWT() {
+    const key = localStorage.getItem(environment.userKey);
+    if (key) {
+      const user: User = JSON.parse(key);
+      return user.jwt;
+    } else {
+      return null;
+    }
+  }
 
+  refreshUser(jwt: string | null){
+    if (jwt === null){
+      this.userSource.next(null);
+      return of(undefined);
+    } 
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + jwt);
+
+    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, {headers}).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setUser(user);
+        }
+      })
+    );
+  }
   private setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user); // we store the user in the local storage in browser and in the angular app - to tell whether the user is logged in and keep him logged after refreshing page

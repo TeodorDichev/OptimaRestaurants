@@ -1,0 +1,10 @@
+<div class="container text-center" *ngIf="success">
+    <a routerLink="/account/next" class="btn btn-primary"> <!-- routes to the next page, currently non existant -->
+        Continue
+    </a>
+</div>
+<div class="container text-center" *ngIf="!success">
+    <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"> <!-- routes to the next page, currently non existant -->
+        Resend email confirmation link
+    </a>
+</div>

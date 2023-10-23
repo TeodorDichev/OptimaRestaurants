@@ -6,12 +6,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './components/errors/modals/notification/notification.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { LoggedEmployeeComponent } from './pages/loggedEmployee/logged-employee/logged-employee.component';
+import { ConfirmEmailComponent } from './pages/confirmEmail/confirmEmail.component';
 
 @NgModule({
   declarations: [
     ValidationMessagesComponent,
     ValidationMessagesComponent,
-    NotificationComponent
+    NotificationComponent,
+    LoggedEmployeeComponent,
+    ConfirmEmailComponent
   ],
   imports: [
     CommonModule,
