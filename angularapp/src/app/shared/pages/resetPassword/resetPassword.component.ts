@@ -5,6 +5,7 @@ import { SharedService } from '../../shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { User } from '../../models/account/user';
+import { ResetPassword } from '../../models/account/resetPassword';
 
 @Component({
   selector: 'app-resetPassword',
@@ -31,10 +32,12 @@ export class ResetPasswordComponent implements OnInit {
         } else {
           this.activatedRoute.queryParamMap.subscribe({
             next: (params: any) => {
-              this.token = params.get('toker');
-              this.email = params.get('email');
+              this.token = params.get('token');
+              this.email = params.get('email');          
               if (this.token && this.email){
                 this.initializeForm(this.email);
+              } else{
+                this.router.navigateByUrl('/account/login');
               }
             }
           })
@@ -51,7 +54,41 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword(){
+    this.submitted = true;
+    this.errorMessages = [];
 
+    if (this.resetPasswordForm.valid && this.email && this.token) {
+      const model: ResetPassword = {
+        token: this.token,
+        email: this.email,
+        password: this.resetPasswordForm.get('newPassword')?.value
+      };
+      this.accountService.resetPassword(model).subscribe({
+        next: (response:any) => {
+          this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.router.navigateByUrl('/account/login')
+        },
+        error: error => {
+          if (error.error.errors) {
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error);
+          }
+        }
+      })
+    }
   }
 
+  cancel(){
+    this.router.navigateByUrl('/account/login');
+  }
+
+  isText: boolean = false;
+  type: string = "Password";
+  eyeIcon: string = "fa-eye-slash";
+  hideShowPass() {
+    this.isText = !this.isText;
+    this.isText ? this.eyeIcon = "fa-eye" : this.eyeIcon = "fa-eye-slash";
+    this.isText ? this.type = "text" : this.type = "password";
+  }
 }

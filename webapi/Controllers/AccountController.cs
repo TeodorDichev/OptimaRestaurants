@@ -169,7 +169,7 @@ namespace webapi.Controllers
             }
         }
         [HttpPut("api/account/resetPassword")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return Unauthorized("This email has not been registered yet");
@@ -222,7 +222,7 @@ namespace webapi.Controllers
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("This email has already been confirmed");
+            if (user.EmailConfirmed == false) return BadRequest("Please confirm your email address first.");
 
             try
             {
@@ -310,7 +310,7 @@ namespace webapi.Controllers
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"{_configuration["JWT:ClientUrl"]}/{_configuration["Email:ResetPasswordPath"]}?token={token}&email={user.Email}";
+            var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ResetPasswordPath"]}?token={token}&email={user.Email}";
 
             var body = $"<p>Hello: {user.FirstName} {user.LastName}</p>" +
                 $"<p>Username: {user.UserName}.</p>" +
@@ -328,7 +328,7 @@ namespace webapi.Controllers
         {
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"{_configuration["JWT:ClientUrl"]}/{_configuration["Email:ConfirmEmailPath"]}?token={token}&email={user.Email}";
+            var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ConfirmEmailPath"]}?token={token}&email={user.Email}";
 
             var body = $"<p>Hello: {user.FirstName} {user.LastName}</p>" +
                 "<p>Please confirm your email address here:</p>" +

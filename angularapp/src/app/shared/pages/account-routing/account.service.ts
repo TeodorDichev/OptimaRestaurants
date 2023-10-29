@@ -8,6 +8,7 @@ import { User } from '../../models/account/user';
 import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../../models/account/confirmEmail';
+import { ResetPassword } from '../../models/account/resetPassword';
 
 
 @Injectable({
@@ -38,6 +39,11 @@ export class AccountService {
 
   forgotUsernameOrPassword(email: string){
     return this.http.post(`${environment.appUrl}/api/account/forgotUsernameOrPassword/${email}`, {});
+  }
+
+  resetPassword(model: ResetPassword) {
+    console.log(model);
+    return this.http.put(`${environment.appUrl}/api/account/resetPassword`, model);
   }
 
   login(model: Login) {
