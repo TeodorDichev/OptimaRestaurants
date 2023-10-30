@@ -5,12 +5,12 @@ import { SharedService } from '../../shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs';
 import { User } from '../../models/account/user';
-import { ResetPassword } from '../../models/account/resetPassword';
+import { ResetPassword } from '../../models/account/reset-password';
 
 @Component({
-  selector: 'app-resetPassword',
-  templateUrl: './resetPassword.component.html',
-  styleUrls: ['./resetPassword.component.css']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
  resetPasswordForm: FormGroup = new FormGroup({});

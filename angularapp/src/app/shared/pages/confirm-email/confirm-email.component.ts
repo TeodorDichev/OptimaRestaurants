@@ -4,12 +4,12 @@ import { SharedService } from '../../shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs';
 import { User } from '../../models/account/user';
-import { ConfirmEmail } from '../../models/account/confirmEmail';
+import { ConfirmEmail } from '../../models/account/confirm-email';
 
 @Component({
-  selector: 'app-confirmEmail',
-  templateUrl: './confirmEmail.component.html',
-  styleUrls: ['./confirmEmail.component.css']
+  selector: 'app-confirm-email',
+  templateUrl: './confirm-email.component.html',
+  styleUrls: ['./confirm-email.component.css']
 })
 export class ConfirmEmailComponent implements OnInit {
   success: boolean = true;
@@ -51,6 +51,6 @@ export class ConfirmEmailComponent implements OnInit {
   }
 
   resendEmailConfirmaitonLink() {
-    this.router.navigateByUrl('/account/sendEmail/resendEmailConfirmationLink');
+    this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
 }

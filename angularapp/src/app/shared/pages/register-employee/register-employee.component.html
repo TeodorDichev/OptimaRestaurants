@@ -5,10 +5,10 @@
             <div class="col-lg-5 col-md-7">
                 <div class="panel border bg-white mt-5">
                     <div class="panel-heading">
-                        <div class="h3 pt-3 font-weight-bold">Създаване на акаунт за мениджър</div>
+                        <div class="h3 pt-3 mt-2 font-weight-bold">Създаване на акаунт за работник</div>
                     </div>
                     <div class="panel-body p-3">
-                        <form [formGroup]="registerForm" (ngSubmit)="registerManager()" autocomplete="off">
+                        <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()" autocomplete="off">
                             <div class="form-group pt-3">
                                 <div class="input-field my-2">
                                     <span class="fa fa-user p-2 my2"></span>
@@ -35,6 +35,25 @@
                                 <span class="text-danger"
                                     *ngIf="submitted && registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
                                     Фамилията трябва да е между 2 и 30 символа!
+                                </span>
+                                <div class="input-field my-2">
+                                    <span class="fa fa-map-pin p-2"></span>
+                                    <input formControlName="city" type="text" placeholder="Град"
+                                        [class.is-invalid]="submitted && registerForm.get('city')?.errors">
+                                </div>
+                                <span class="text-danger"
+                                    *ngIf="submitted && registerForm.get('city')?.hasError('required')">
+                                    Полето е задължително!
+                                </span>
+                                <div class="input-field my-2">
+                                    <span class="fa fa-calendar p-2"></span>
+                                    <div class="text-muted me-3">Дата на раждане:</div>
+                                    <input class="custom-date-input" formControlName="birthDate" type="date"
+                                        [class.is-invalid]="submitted && registerForm.get('birthDate')?.errors">
+                                </div>
+                                <span class="text-danger"
+                                    *ngIf="submitted && registerForm.get('birthDate')?.hasError('required')">
+                                    Полето е задължително!
                                 </span>
                                 <div class="input-field my-2">
                                     <span class="fa fa-envelope p-2"></span>
@@ -68,7 +87,7 @@
                                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
                             </div>
                             <div class="text-center pt-4 text-muted">
-                                <a id="forget" routerLink="/account/registerEmployee">Смяна към работник</a>
+                                <a id="forget" routerLink="/account/register-manager">Смяна към мениджър</a>
                             </div>
                             <button type="submit"
                                 class="btn btn-primary custom-signup-button btn-block mt-4 w-100">Създаване на

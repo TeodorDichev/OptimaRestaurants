@@ -6,9 +6,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationComponent } from './components/errors/modals/notification/notification.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ConfirmEmailComponent } from './pages/confirmEmail/confirmEmail.component';
-import { SendEmailComponent } from './pages/sendEmail/sendEmail.component';
-import { ResetPasswordComponent } from './pages/resetPassword/resetPassword.component';
+import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
+import { SendEmailComponent } from './pages/send-email/send-email.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [

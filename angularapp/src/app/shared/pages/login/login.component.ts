@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
   }
 
   resendEmailConfirmaitonLink(){
-    this.router.navigateByUrl('/account/sendEmail/resendEmailConfirmationLink');
+    this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
 
   isText: boolean = false;

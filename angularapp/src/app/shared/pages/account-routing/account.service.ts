@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { RegisterEmployee } from '../../models/account/registerEmployee';
+import { RegisterEmployee } from '../../models/account/register-employee';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterManager } from '../../models/account/registerManager';
+import { RegisterManager } from '../../models/account/register-manager';
 import { Login } from '../../models/account/login';
 import { User } from '../../models/account/user';
 import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { ConfirmEmail } from '../../models/account/confirmEmail';
-import { ResetPassword } from '../../models/account/resetPassword';
+import { ConfirmEmail } from '../../models/account/confirm-email';
+import { ResetPassword } from '../../models/account/reset-password';
 
 
 @Injectable({
@@ -22,28 +22,28 @@ export class AccountService {
     private router: Router) { }
 
   registerEmployee(model: RegisterEmployee) {
-    return this.http.post(`${environment.appUrl}/api/account/registerEmployee`, model);
+    return this.http.post(`${environment.appUrl}/api/account/register-employee`, model);
   }
 
   registerManager(model: RegisterManager) {
-    return this.http.post(`${environment.appUrl}/api/account/registerManager`, model);
+    return this.http.post(`${environment.appUrl}/api/account/register-manager`, model);
   }
 
   confirmEmail(model: ConfirmEmail) {
-    return this.http.put(`${environment.appUrl}/api/account/confirmEmail`, model);
+    return this.http.put(`${environment.appUrl}/api/account/confirm-email`, model);
   }
 
   resendEmailConfirmationLink(email: string){
-    return this.http.post(`${environment.appUrl}/api/account/resendEmailConfirmationLink/${email}`, {});
+    return this.http.post(`${environment.appUrl}/api/account/resend-email-confirmation-link/${email}`, {});
   }
 
   forgotUsernameOrPassword(email: string){
-    return this.http.post(`${environment.appUrl}/api/account/forgotUsernameOrPassword/${email}`, {});
+    return this.http.post(`${environment.appUrl}/api/account/forgot-username-or-password/${email}`, {});
   }
 
   resetPassword(model: ResetPassword) {
     console.log(model);
-    return this.http.put(`${environment.appUrl}/api/account/resetPassword`, model);
+    return this.http.put(`${environment.appUrl}/api/account/reset-password`, model);
   }
 
   login(model: Login) {

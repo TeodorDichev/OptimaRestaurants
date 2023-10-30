@@ -5,9 +5,9 @@ import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-registerManager',
-  templateUrl: './registerManager.component.html',
-  styleUrls: ['./registerManager.component.css']
+  selector: 'app-register-manager',
+  templateUrl: './register-manager.component.html',
+  styleUrls: ['./register-manager.component.css']
 })
 export class RegisterManagerComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});

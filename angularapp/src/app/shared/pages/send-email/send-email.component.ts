@@ -7,9 +7,9 @@ import { take } from 'rxjs';
 import { User } from '../../models/account/user';
 
 @Component({
-  selector: 'app-sendEmail',
-  templateUrl: './sendEmail.component.html',
-  styleUrls: ['./sendEmail.component.css']
+  selector: 'app-send-email',
+  templateUrl: './send-email.component.html',
+  styleUrls: ['./send-email.component.css']
 })
 export class SendEmailComponent implements OnInit {
   emailForm: FormGroup = new FormGroup({});
@@ -51,7 +51,7 @@ export class SendEmailComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.emailForm.valid && this.mode) {
-      if (this.mode.includes('resendEmailConfirmationLink')) {
+      if (this.mode.includes('resend-email-confirmation-link')) {
         this.accountService.resendEmailConfirmationLink(this.emailForm.get('email')?.value).subscribe({
           next: (response: any) =>{
             this.sharedService.showNotification(true, response.value.title, response.value.message);
@@ -65,7 +65,7 @@ export class SendEmailComponent implements OnInit {
             }
           }
         })
-      } else if (this.mode.includes('forgotUsernameOrPassword')) {
+      } else if (this.mode.includes('forgot-username-or-password')) {
         this.accountService.forgotUsernameOrPassword(this.emailForm.get('email')?.value).subscribe({
           next: (response: any) => {
             this.sharedService.showNotification(true, response.value.title, response.value.message);

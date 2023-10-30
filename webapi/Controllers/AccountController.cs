@@ -63,7 +63,7 @@ namespace webapi.Controllers
             return CreateApplicationUserDto(user);
         }
 
-        [HttpPost("api/account/registerManager")]
+        [HttpPost("api/account/register-manager")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterManager([FromBody] RegisterManagerDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
@@ -100,7 +100,7 @@ namespace webapi.Controllers
             await _context.SaveChangesAsync();
             return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
         }
-        [HttpPost("api/account/registerEmployee")]
+        [HttpPost("api/account/register-employee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
             if (await CheckEmailExistAsync(model.Email))
@@ -143,7 +143,7 @@ namespace webapi.Controllers
             return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
         }
 
-        [HttpPut("api/account/confirmEmail")]
+        [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -168,7 +168,7 @@ namespace webapi.Controllers
                 return BadRequest("Invalid token. Please try again");
             }
         }
-        [HttpPut("api/account/resetPassword")]
+        [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
@@ -194,7 +194,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("api/account/resendEmailConfirmationLink/{email}")]
+        [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfimationLink(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
@@ -216,7 +216,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("api/account/forgotUsernameOrPassword/{email}")]
+        [HttpPost("api/account/forgot-username-or-password/{email}")]
         public async Task<IActionResult> ForgotUsernameOrPassword(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
@@ -239,7 +239,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/account/updateEmployee")]
+        [HttpPut("api/account/update-employee")]
         public async Task<IActionResult> UpdateEmployeeAccount(UpdateEmployeeDto employeeDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -274,7 +274,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/account/updateManager")]
+        [HttpPut("api/account/update-manager")]
         public async Task<IActionResult> UpdateManagerAccount(UpdateManagerDto managerDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
