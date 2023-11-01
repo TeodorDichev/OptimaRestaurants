@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { RegisterEmployee } from '../../models/account/register-employee';
+import { RegisterEmployee } from '../../../models/account/register-employee';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterManager } from '../../models/account/register-manager';
-import { Login } from '../../models/account/login';
-import { User } from '../../models/account/user';
+import { RegisterManager } from '../../../models/account/register-manager';
+import { Login } from '../../../models/account/login';
+import { User } from '../../../models/account/user';
 import { ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { ConfirmEmail } from '../../models/account/confirm-email';
-import { ResetPassword } from '../../models/account/reset-password';
+import { ConfirmEmail } from '../../../models/account/confirm-email';
+import { ResetPassword } from '../../../models/account/reset-password';
 
 
 @Injectable({
@@ -22,11 +22,27 @@ export class AccountService {
     private router: Router) { }
 
   registerEmployee(model: RegisterEmployee) {
-    return this.http.post(`${environment.appUrl}/api/account/register-employee`, model);
+    return this.http.post<User>(`${environment.appUrl}/api/account/register-employee`, model).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setUser(user);
+          return user;
+        }
+        return null;
+      })
+    );
   }
 
   registerManager(model: RegisterManager) {
-    return this.http.post(`${environment.appUrl}/api/account/register-manager`, model);
+    return this.http.post<User>(`${environment.appUrl}/api/account/register-manager`, model).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setUser(user);
+          return user;
+        }
+        return null;
+      })
+    );
   }
 
   confirmEmail(model: ConfirmEmail) {
@@ -50,9 +66,14 @@ export class AccountService {
     return this.http.post<User>(`${environment.appUrl}/api/account/login`, model).pipe(
       map((user: User) => {
         if (user) {
-          this.setUser(user)
-          console.log('in the acc service');
-          this.router.navigateByUrl('/account/employee-logged-view'); // same as in login.component
+          this.setUser(user);
+          console.log(user.isManager);
+          if (user.isManager){
+          this.router.navigateByUrl('/manager');
+          }
+          else {
+            this.router.navigateByUrl('/employee');
+          }
           return user;
         }
         return null;
@@ -94,6 +115,5 @@ export class AccountService {
   private setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user); // we store the user in the local storage in browser and in the angular app - to tell whether the user is logged in and keep him logged after refreshing page
-
   }
 }

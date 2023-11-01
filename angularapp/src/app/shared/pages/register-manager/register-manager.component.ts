@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../account-routing/account.service';
+import { AccountService } from '../page-routing/account/account.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
@@ -39,7 +39,7 @@ export class RegisterManagerComponent implements OnInit {
       this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
-          this.router.navigateByUrl('/account/manager-logged-view');
+          this.router.navigateByUrl('/manager');
         },
         error: error => {
           if (error.error.errors) {

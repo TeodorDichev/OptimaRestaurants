@@ -9,8 +9,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { SendEmailComponent } from './pages/send-email/send-email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { ManagerLoggedViewComponent } from './pages/manager-logged-view/manager-logged-view/manager-logged-view.component';
-import { EmployeeLoggedViewComponent } from './pages/employee-logged-view/employee-logged-view/employee-logged-view.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +17,7 @@ import { EmployeeLoggedViewComponent } from './pages/employee-logged-view/employ
     NotificationComponent,
     ConfirmEmailComponent,
     SendEmailComponent,
-    ResetPasswordComponent,
-    ManagerLoggedViewComponent,
-    EmployeeLoggedViewComponent
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

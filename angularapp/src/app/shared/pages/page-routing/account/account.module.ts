@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccountRoutingModule } from './account-routing.module';
-import { SharedModule } from '../../shared.module';
+import { SharedModule } from '../../../shared.module';
 
 
 

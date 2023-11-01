@@ -52,7 +52,8 @@ namespace webapi.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
 
-            if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) == null) model.IsManager = true;
+            if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) != null) 
+                model.IsManager = true;
 
             return CreateApplicationUserDto(user);
         }
@@ -100,7 +101,7 @@ namespace webapi.Controllers
             Manager manager = new Manager { Profile = userToAdd };
             await _context.Managers.AddAsync(manager);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" }));
         }
         [HttpPost("api/account/register-employee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
@@ -142,7 +143,7 @@ namespace webapi.Controllers
             };
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" })); // login directly
+            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" }));
         }
 
         [HttpPut("api/account/confirm-email")]

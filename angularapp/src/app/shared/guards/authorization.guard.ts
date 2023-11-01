@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { AccountService } from '../pages/account-routing/account.service';
+import { AccountService } from '../pages/page-routing/account/account.service';
 import { SharedService } from '../shared.service';
 import { Observable, map } from 'rxjs';
 import { User } from '../models/account/user';
@@ -22,8 +22,8 @@ export class AuthorizationGuard {
           return true;
         }
         else {
-          this.sharedService.showNotification(false, 'Not authorized', 'This page requires a login. You will be redirected now.');
-          // this.router.navigate(commands) 3:28:37 --> redirect to index page prob.
+          this.sharedService.showNotification(false, 'Not authorized', 'This page requires a login. Please, login first.');
+          this.router.navigateByUrl('/');
           return false;
         }
       })

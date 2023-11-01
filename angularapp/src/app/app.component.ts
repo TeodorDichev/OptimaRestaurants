@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from './shared/pages/account-routing/account.service';
+import { AccountService } from './shared/pages/page-routing/account/account.service';
+import { ManagerService } from './shared/pages/page-routing/manager/manager.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,8 @@ import { AccountService } from './shared/pages/account-routing/account.service';
 })
 export class AppComponent implements OnInit{
   
-  constructor(private accountService: AccountService){
+  constructor(private accountService: AccountService,
+    private managerService: ManagerService){
 
   }
   

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountService } from '../account-routing/account.service';
+import { AccountService } from '../page-routing/account/account.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { User } from '../../models/account/user';
@@ -41,13 +41,9 @@ export class LoginComponent implements OnInit {
   login() {
     this.submitted = true;
     this.errorMessages = [];
-
     if (this.loginForm.valid) {
       this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          // console.log(response);
-          console.log('in the login comp');
-          this.router.navigateByUrl('/account/employee-logged-view'); // Which will be the next page, needing more data from backend
         },
         error: error => {
           if (error.error.errors) {
