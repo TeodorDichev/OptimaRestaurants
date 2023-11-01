@@ -21,7 +21,7 @@ namespace webapi.Controllers
             _restaurantController = restaurantController;
         }
 
-        [HttpGet("{email}")] // pass either email from register or username from login
+        [HttpGet("api/employee{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetEmployee(string email)
         {
             var employee = await _context.Employees
@@ -45,13 +45,6 @@ namespace webapi.Controllers
             return Ok(employeeMainViewDto);
         }
 
-        public async Task<bool> SendRequestToManager(string managerId, string employeeId)
-        {
-            //employeesrestaurants through employee id -> add a record which is not confirmed
-            //send an email to the manager
-            //add a message to the manager inbox "do this gay work there"
-            return true;
-        }
         [HttpPut("api/employee/update-employee")]
         public async Task<IActionResult> UpdateEmployeeAccount(UpdateEmployeeDto employeeDto)
         {

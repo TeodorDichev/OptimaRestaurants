@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
+using webapi.DTOs.Restaurant;
+using webapi.Models;
 
 namespace webapi.Controllers
 {
@@ -24,7 +26,7 @@ namespace webapi.Controllers
             return Ok(_restaurantController.GetAllEmployeesOfARestaurant(restaurantId));
         }
 
-        [HttpGet("{email}")] // pass either email from register or username from login
+        [HttpGet("api/manager/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetManager(string email)
         {
             var manager = await _context.Managers
@@ -34,6 +36,7 @@ namespace webapi.Controllers
 
             var managerMainViewDto = new ManagerMainViewDto
             {
+                Email = email,
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile?.ProfilePictureUrl ?? string.Empty,
@@ -43,12 +46,26 @@ namespace webapi.Controllers
             return Ok(managerMainViewDto);
         }
 
-        public async Task<bool> SendRequestToEmployee(string managerId, string employeeId)
+        [HttpPost()]
+        public async Task<IActionResult> AddNewRestaurant(NewRestaurantDto newRestaurant, string managerEmail)
         {
-            //employeesrestaurants through employee id -> add a record which is not confirmed
-            //send an email to the employee
-            //add a message to the employee inbox "do you work there"
-            return true;
+            var manager = await _context.Managers
+                .FirstOrDefaultAsync(e => e.Profile.Email == managerEmail);
+
+            if (manager == null) return NotFound();
+
+            Restaurant restaurant = new Restaurant
+            {
+                Name = newRestaurant.Name,
+                Address = newRestaurant.Address,
+                City = newRestaurant.City,
+                IsWorking = true,
+                EmployeeCapacity = newRestaurant.EmployeeCapacity,
+                Manager = manager
+            };
+            await _context.Restaurants.AddAsync(restaurant);
+
+            return Ok("You have successfully added a new restaurant");
         }
 
         [HttpPut("api/manager/update-manager")]
