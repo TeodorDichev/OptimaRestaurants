@@ -1,15 +1,17 @@
 .outer{
     height: 100vh;
-    background: linear-gradient(to top, chocolate 10%, white 90%) no-repeat;
+    background-image: url('../../../../assets/images/manager-signup-img.png');
+}
+
+.custom-date-input{
+    border: transparent;
 }
 
 .panel-heading{
     text-align: center;
     margin-bottom: 10px;
 }
-.custom-signup-button:hover{
-    background-color: rgb(138, 69, 20);
-}
+
 #forget{
     min-width: 100px;
     margin-left: auto;
@@ -17,19 +19,9 @@
     cursor: pointer;
     color: chocolate;
 }
-.custom-signup-button{
-    background-color: chocolate;
-    color: white;
-    border: transparent;
-}
+
 a:hover{
     text-decoration: none;
-}
-
-.form-inline{
-    padding-left: 10px;
-    margin:0;
-    cursor: pointer;
 }
 
 .btn{
@@ -38,12 +30,13 @@ a:hover{
 }
 
 .panel{
-    min-height: 380px;
+    min-height: 60vh;
     box-shadow: 20px, 20px, 80px rgb(218,218,218);
     border-radius: 12px;
-    margin-top:100px;
 }
-
+.custom-signup-button:hover{
+    background-color: rgb(138, 69, 20);
+}
 .input-field{
     border-radius: 5px;
     padding: 5px;
@@ -54,9 +47,10 @@ a:hover{
     color: chocolate;
 }
 
-.input-field.error{
-    border: 1px solid red;
-    color:crimson;
+.custom-signup-button{
+    background-color: chocolate;
+    color: white;
+    border: transparent;
 }
 
 input[type='text'],
@@ -72,11 +66,10 @@ input[type='password']{
     outline: none;
     box-shadow: none;
 }
-
-img{
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%;
-    position: relative;
+.chocolate{
+    color: chocolate;
+}
+.h3{
+    color: rgb(248, 168, 110);
+    font-family: Pacifico;
 }
