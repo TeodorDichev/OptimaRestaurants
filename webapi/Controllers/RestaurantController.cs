@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
+using webapi.DTOs.Employee;
+using webapi.DTOs.Restaurant;
 using webapi.Models;
 
 namespace webapi.Controllers
@@ -43,13 +45,13 @@ namespace webapi.Controllers
         {
             return await _context.Restaurants.OrderBy(r => r.RestaurantAverageRating).ThenBy(r => r.Name).ToListAsync();
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         [Authorize(Roles = "Employee")]
         public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByStandardMonthlyPayment(decimal minimum = 0)
         {
             return await _context.Restaurants.OrderBy(r => r.StandardMonthlyPayment > minimum).ThenBy(r => r.Name).ToListAsync();
         }
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Manager")]
         [Authorize(Roles = "Employee")]
         public async Task<IEnumerable<Restaurant>> GetAllRestaurantsWithOpenJobs()
         {
@@ -58,31 +60,80 @@ namespace webapi.Controllers
                 .OrderBy(r => r.Name)
                 .ToListAsync();
         }
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Employee")]
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsOfAManager(string managerEmail)
+
+        [Authorize(Roles = "Manager")]
+        public ICollection<RestaurantDto> GetAllRestaurantsOfAManager(string email)
         {
-            return await _context.Restaurants
-                .Where(r => r.Manager.Profile.Email.ToString() == managerEmail)
+            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+
+            foreach (var restaurant in _context.Restaurants
+                .Where(r => r.Manager.Profile.Email.ToString() == email)
                 .OrderBy(r => r.Name)
-                .ToListAsync();
-        }
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Employee")]
-        public async Task<IEnumerable<Restaurant>> GeAllRestaurantsWhereEmployeeWorks(string employeeEmail)
-        {
-            return await _context.EmployeesRestaurants
-                .Where(x => x.Employee.Profile.Email == employeeEmail && !x.EndedOn.HasValue && x.ConfirmedOn.HasValue)
-                .Select(x => x.Restaurant)
-                .ToListAsync();
-        }
-        public async Task<IEnumerable<Employee>> GeAllEmployeesOfARestaurant(string restaurantId)
-        {
-            return (IEnumerable<Employee>) await _context.Restaurants
-                .Where(r => r.Id.ToString() == restaurantId)
-                .Select(x => x.EmployeesRestaurants.Select(y => y.Employee))
-                .ToListAsync();
+                .ToList())
+            {
+                restaurants.Add(new RestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
+                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
+                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
+                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                });
+            }
+
+            return restaurants;
+
         }
 
+        [Authorize(Roles = "Employee")]
+        public ICollection<RestaurantDto> GetAllRestaurantsWhereEmployeeWorks(string email)
+        {
+            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+
+            foreach(var restaurant in _context.EmployeesRestaurants
+                .Where(x => x.Employee.Profile.Email == email && !x.EndedOn.HasValue && x.ConfirmedOn.HasValue)
+                .Select(x => x.Restaurant)
+                .ToList())
+            {
+                restaurants.Add(new RestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
+                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
+                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
+                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                });
+            }
+
+            return restaurants;
+        }
+
+        [Authorize(Roles = "Manager")]
+        public ICollection<EmployeeDto> GetAllEmployeesOfARestaurant(string restaurantId)
+        {
+            ICollection<EmployeeDto> employees = new List<EmployeeDto>();
+
+            foreach (var emp in _context.EmployeesRestaurants
+                .Where(er => er.Restaurant.Id.ToString() == restaurantId)
+                .Select(e => e.Employee))
+            {
+                employees.Add(new EmployeeDto
+                {
+                    Email = emp.Profile.Email,
+                    FirstName = emp.Profile.FirstName,
+                    LastName = emp.Profile.LastName,
+                    ProfilePictureUrl = emp.Profile?.ProfilePictureUrl ?? string.Empty,
+                    EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1 // in front-end if -1 "no reviews yet"
+                });
+            }
+
+            return employees;
+        }
     }
 }

@@ -52,6 +52,8 @@ namespace webapi.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
 
+            if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) == null) model.IsManager = true;
+
             return CreateApplicationUserDto(user);
         }
 
@@ -195,7 +197,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/account/resend-email-confirmation-link/{email}")]
-        public async Task<IActionResult> ResendEmailConfimationLink(string email)
+        public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
             var user = await _userManager.FindByEmailAsync(email);
@@ -238,73 +240,6 @@ namespace webapi.Controllers
                 return BadRequest("Failed to send email. Please contact admin");
             }
         }
-
-        [HttpPut("api/account/update-employee")]
-        public async Task<IActionResult> UpdateEmployeeAccount(UpdateEmployeeDto employeeDto)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            try
-            {
-                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == employeeDto.CurrentEmployee.Profile.Id);
-                var existingEmp = await _context.Employees.FirstOrDefaultAsync(u => u.Id == employeeDto.CurrentEmployee.Id);
-
-                if (existingUser == null || existingEmp == null) return NotFound("User not found");
-
-                // Update the user's properties
-                existingUser.FirstName = employeeDto.NewFirstName; // by default they are filled with the old data
-                existingUser.LastName = employeeDto.NewLastName;
-                existingUser.Email = employeeDto.NewEmail;
-                // if changed resend email -> ask the user to confirm their email
-                existingUser.PhoneNumber = employeeDto.NewPhoneNumber;
-                existingUser.ProfilePictureUrl = employeeDto.NewPictureUrl;
-                existingEmp.BirthDate = employeeDto.NewBirthDate;
-                existingEmp.City = employeeDto.NewCity;
-                // invoke reset password again
-
-                _context.Entry(existingUser).State = EntityState.Modified;
-                _context.Entry(existingEmp).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                return Ok("Account updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpPut("api/account/update-manager")]
-        public async Task<IActionResult> UpdateManagerAccount(UpdateManagerDto managerDto)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            try
-            {
-                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == managerDto.CurrentManager.Profile.Id);
-
-                if (existingUser == null) return NotFound("User not found");
-
-                // Update the user's properties
-                existingUser.FirstName = managerDto.NewFirstName; // by default they are filled with the old data
-                existingUser.LastName = managerDto.NewLastName;
-                existingUser.Email = managerDto.NewEmail;
-                // if changed resend email -> ask the user to confirm their email
-                existingUser.PhoneNumber = managerDto.NewPhoneNumber;
-                existingUser.ProfilePictureUrl = managerDto.NewPictureUrl;
-                // invoke reset password again
-
-                _context.Entry(existingUser).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                return Ok("Account updated successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
 
         private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
         {
