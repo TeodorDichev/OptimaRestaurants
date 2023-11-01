@@ -1,0 +1,24 @@
+.max-width{
+    max-width: 100vw !important;
+}
+.min-height{
+    min-height: 100vh !important;
+}
+.max-height{
+    max-height: 100vh !important;
+}
+.min-width{
+    min-width: 100vw !important;
+}
+.pacifico-with-shadow{
+    font-family: Pacifico;
+    font-size: 30px !important;
+    text-shadow: 2px 2px black;
+    text-align: center;
+}
+.roboto-with-shadow{
+    font-family: Roboto Slab;
+    font-size: 30px !important;
+    text-shadow: 1px 1px black;
+    text-align: center;
+}

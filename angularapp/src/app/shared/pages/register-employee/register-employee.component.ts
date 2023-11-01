@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-employee',
   templateUrl: './register-employee.component.html',
-  styleUrls: ['./register-employee.component.css']
+  styleUrls: ['./register-employee.component.css',
+  '../../../app.component.css']
 })
 export class RegisterEmployeeComponent implements OnInit{
   registerForm: FormGroup = new FormGroup({});
@@ -39,7 +40,7 @@ export class RegisterEmployeeComponent implements OnInit{
     this.accountService.registerEmployee(this.registerForm.value).subscribe({
       next: (response: any) => {
         this.sharedService.showNotification(true, response.value.title, response.value.message);
-        this.router.navigateByUrl('/account/next');
+        this.router.navigateByUrl('/account/employee-logged-view');
       },
       error: error => {
         if(error.error.errors){

@@ -6,6 +6,8 @@ import { RegisterEmployeeComponent } from '../register-employee/register-employe
 import { ConfirmEmailComponent } from '../confirm-email/confirm-email.component';
 import { SendEmailComponent } from '../send-email/send-email.component';
 import { ResetPasswordComponent } from '../reset-password/reset-password.component';
+import { EmployeeLoggedViewComponent } from '../employee-logged-view/employee-logged-view/employee-logged-view.component';
+import { ManagerLoggedViewComponent } from '../manager-logged-view/manager-logged-view/manager-logged-view.component';
 
 
 const routes: Routes = [
@@ -14,7 +16,9 @@ const routes: Routes = [
   {path: 'register-employee', component: RegisterEmployeeComponent},
   {path: 'confirm-email', component: ConfirmEmailComponent},
   {path: 'send-email/:mode', component: SendEmailComponent},
-  {path: 'reset-password', component: ResetPasswordComponent}
+  {path: 'reset-password', component: ResetPasswordComponent},
+  {path: 'employee-logged-view', component: EmployeeLoggedViewComponent},
+  {path: 'manager-logged-view', component: ManagerLoggedViewComponent}
 ];
 
 @NgModule({

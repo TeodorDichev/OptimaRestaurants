@@ -46,7 +46,8 @@ export class LoginComponent implements OnInit {
       this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           // console.log(response);
-          this.router.navigateByUrl('/account/next'); // When next page is done, redirect user to it
+          console.log('in the login comp');
+          this.router.navigateByUrl('/account/employee-logged-view'); // Which will be the next page, needing more data from backend
         },
         error: error => {
           if (error.error.errors) {

@@ -51,7 +51,8 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setUser(user)
-          this.router.navigateByUrl('/account/next');
+          console.log('in the acc service');
+          this.router.navigateByUrl('/account/employee-logged-view'); // same as in login.component
           return user;
         }
         return null;

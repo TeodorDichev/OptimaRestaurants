@@ -38,7 +38,7 @@ export class RegisterManagerComponent implements OnInit {
       this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
-          this.router.navigateByUrl('/account/next'); // When next page is done, redirect user to it
+          this.router.navigateByUrl('/account/manager-logged-view');
         },
         error: error => {
           if (error.error.errors) {

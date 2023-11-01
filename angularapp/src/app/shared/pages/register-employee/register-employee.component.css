@@ -1,6 +1,6 @@
 .outer{
     height: 100vh;
-    background: linear-gradient(to top, chocolate 10%, white 90%) no-repeat;
+    background-image: url('../../../../assets/images/employee-signup-img.png');
 }
 
 .custom-date-input{
@@ -36,10 +36,9 @@ a:hover{
 }
 
 .panel{
-    min-height: 380px;
+    min-height: 80vh;
     box-shadow: 20px, 20px, 80px rgb(218,218,218);
     border-radius: 12px;
-    margin-top:100px;
 }
 .custom-signup-button:hover{
     background-color: rgb(138, 69, 20);
@@ -53,14 +52,11 @@ a:hover{
     border: 1px solid #ddd;
     color: chocolate;
 }
+
 .custom-signup-button{
     background-color: chocolate;
     color: white;
     border: transparent;
-}
-.input-field.error{
-    border: 1px solid red;
-    color:crimson;
 }
 
 input[type='text'],
@@ -76,11 +72,6 @@ input[type='password']{
     outline: none;
     box-shadow: none;
 }
-
-img{
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 50%;
-    position: relative;
+.h3{
+    color: chocolate;
 }

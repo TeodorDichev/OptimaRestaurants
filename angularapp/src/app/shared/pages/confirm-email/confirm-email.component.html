@@ -1,10 +1,10 @@
 <div class="container text-center" *ngIf="success">
-    <a routerLink="/account/next" class="btn btn-primary"> <!-- routes to the next page, currently non existant -->
+    <a routerLink="/account/employee-logged-view" class="btn btn-primary"> <!-- same as the login thing, redirect user to proper -->
         Continue
     </a>
 </div>
 <div class="container text-center" *ngIf="!success">
-    <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"> <!-- routes to the next page, currently non existant -->
+    <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"> 
         Resend email confirmation link
     </a>
 </div>
