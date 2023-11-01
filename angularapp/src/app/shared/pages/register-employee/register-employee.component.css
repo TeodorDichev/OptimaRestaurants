@@ -24,12 +24,6 @@ a:hover{
     text-decoration: none;
 }
 
-.form-inline{
-    padding-left: 10px;
-    margin:0;
-    cursor: pointer;
-}
-
 .btn{
     margin-top: 20px;
     border-radius: 15px;
@@ -72,6 +66,10 @@ input[type='password']{
     outline: none;
     box-shadow: none;
 }
-.h3{
+.chocolate{
     color: chocolate;
+}
+.h3{
+    color: rgb(248, 168, 110);
+    font-family: Pacifico;
 }
