@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
+using webapi.DTOs.Account;
 using webapi.DTOs.Employee;
+using webapi.DTOs.Manager;
+using webapi.Models;
 
 namespace webapi.Controllers
 {
@@ -14,11 +19,18 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly RestaurantController _restaurantController;
+        private readonly AccountController _accountController;
+        private readonly UserManager<ApplicationUser> _userManager;
+
         public EmployeeController(OptimaRestaurantContext context,
-            RestaurantController restaurantController)
+            RestaurantController restaurantController,
+            AccountController accountController,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _restaurantController = restaurantController;
+            _accountController = accountController;
+            _userManager = userManager;
         }
 
         [HttpGet("api/employee{email}")] // pass either email from register or username from login
@@ -45,31 +57,60 @@ namespace webapi.Controllers
             return Ok(employeeMainViewDto);
         }
 
-        [HttpPut("api/employee/update-employee")]
-        public async Task<IActionResult> UpdateEmployeeAccount(UpdateEmployeeDto employeeDto)
+        [HttpPut("api/employee/{email}")]
+        public async Task<IActionResult> UpdateEmployeeAccount(string email)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
             try
             {
-                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == employeeDto.CurrentEmployee.Profile.Id);
-                var existingEmp = await _context.Employees.FirstOrDefaultAsync(u => u.Id == employeeDto.CurrentEmployee.Id);
+                var existingEmployee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == email);
+                if (existingEmployee == null) return NotFound("User not found");
 
-                if (existingUser == null || existingEmp == null) return NotFound("User not found");
+                UpdateEmployeeDto employeeDto = new UpdateEmployeeDto
+                {
+                    OldEmail = existingEmployee.Profile?.Email ?? string.Empty,
+                    OldPhoneNumber = existingEmployee.Profile?.PhoneNumber ?? string.Empty,
+                    OldFirstName = existingEmployee.Profile?.FirstName ?? string.Empty,
+                    OldLastName = existingEmployee.Profile?.LastName ?? string.Empty,
+                    OldPictureUrl = existingEmployee.Profile?.ProfilePictureUrl ?? string.Empty,
+                    OldBirthDate = existingEmployee?.BirthDate ?? DateTime.Now,
+                    OldCity = existingEmployee?.City ?? string.Empty,
+                };
 
                 // Update the user's properties
-                existingUser.FirstName = employeeDto.NewFirstName; // by default they are filled with the old data
-                existingUser.LastName = employeeDto.NewLastName;
-                existingUser.Email = employeeDto.NewEmail;
-                // if changed resend email -> ask the user to confirm their email
-                existingUser.PhoneNumber = employeeDto.NewPhoneNumber;
-                existingUser.ProfilePictureUrl = employeeDto.NewPictureUrl;
-                existingEmp.BirthDate = employeeDto.NewBirthDate;
-                existingEmp.City = employeeDto.NewCity;
-                // invoke reset password again
+                if (!employeeDto.NewFirstName.IsNullOrEmpty()) existingEmployee.Profile.FirstName = employeeDto.NewFirstName;
+                if (!employeeDto.NewLastName.IsNullOrEmpty()) existingEmployee.Profile.LastName = employeeDto.NewLastName;
+                if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) existingEmployee.Profile.PhoneNumber = employeeDto.NewPhoneNumber;
+                if (!employeeDto.NewPictureUrl.IsNullOrEmpty()) existingEmployee.Profile.ProfilePictureUrl = employeeDto.NewPictureUrl;
+                if (employeeDto.NewBirthDate != null) existingEmployee.BirthDate = employeeDto.NewBirthDate.Value;
+                if (!employeeDto.OldCity.IsNullOrEmpty()) existingEmployee.City = employeeDto.NewCity;
 
-                _context.Entry(existingUser).State = EntityState.Modified;
-                _context.Entry(existingEmp).State = EntityState.Modified;
+                // Reseting password
+                if (!employeeDto.NewPassword.IsNullOrEmpty())
+                {
+                    ResetPasswordDto resetPasswordDto = new ResetPasswordDto
+                    {
+                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingEmployee.Profile),
+                        Email = existingEmployee.Profile.Email,
+                        Password = employeeDto.NewPassword
+                    };
+                    await _accountController.ResetPassword(resetPasswordDto);
+                    await _accountController.ForgotUsernameOrPassword(existingEmployee.Profile.Email);
+                }
+
+                // Reseting email
+                if (!employeeDto.NewEmail.IsNullOrEmpty())
+                {
+                    ConfirmEmailDto confirmEmailDto = new ConfirmEmailDto
+                    {
+                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingEmployee.Profile),
+                        Email = employeeDto.NewEmail,
+                    };
+
+                    existingEmployee.Profile.Email = employeeDto.NewEmail;
+                    await _accountController.ConfirmEmail(confirmEmailDto);
+                }
+
+                _context.Update(existingEmployee);
                 await _context.SaveChangesAsync();
 
                 return Ok("Account updated successfully");
@@ -79,6 +120,5 @@ namespace webapi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
     }
 }
