@@ -42,7 +42,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/account/login")]
-        public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
+        public async Task<ActionResult<LoginDto>> Login([FromBody] LoginDto model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user == null) return Unauthorized("Грешен имейл или парола!");
@@ -55,7 +55,10 @@ namespace webapi.Controllers
             if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) != null) 
                 model.IsManager = true;
 
-            return CreateApplicationUserDto(user);
+            var appUser = CreateApplicationUserDto(user);
+            model.JWT = appUser.JWT;
+
+            return model;
         }
 
         [Authorize]
