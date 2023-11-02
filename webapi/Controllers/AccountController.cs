@@ -89,20 +89,20 @@ namespace webapi.Controllers
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
+                    await _userManager.AddToRoleAsync(userToAdd, Role.Manager.ToString());
+                    Manager manager = new Manager { Profile = userToAdd };
+                    await _context.Managers.AddAsync(manager);
+                    await _context.SaveChangesAsync();
                     return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
                 }
+                else return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
             catch (Exception)
             {
                 return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
-
-            await _userManager.AddToRoleAsync(userToAdd, Role.Manager.ToString());
-            Manager manager = new Manager { Profile = userToAdd };
-            await _context.Managers.AddAsync(manager);
-            await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" }));
         }
+
         [HttpPost("api/account/register-employee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
@@ -126,24 +126,24 @@ namespace webapi.Controllers
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
+                    await _userManager.AddToRoleAsync(userToAdd, Role.Employee.ToString());
+                    Employee employee = new Employee
+                    {
+                        Profile = userToAdd,
+                        City = model.City.ToLower(),
+                        BirthDate = model.BirthDate
+                    };
+                    await _context.Employees.AddAsync(employee);
+                    await _context.SaveChangesAsync();
                     return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
                 }
+                else return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
             catch (Exception)
             {
                 return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
 
-            await _userManager.AddToRoleAsync(userToAdd, Role.Employee.ToString());
-            Employee employee = new Employee
-            {
-                Profile = userToAdd,
-                City = model.City.ToLower(),
-                BirthDate = model.BirthDate
-            };
-            await _context.Employees.AddAsync(employee);
-            await _context.SaveChangesAsync();
-            return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден!" }));
         }
 
         [HttpPut("api/account/confirm-email")]
