@@ -1,19 +1,17 @@
-﻿using Mailjet.Client.Resources;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using webapi.Data;
 using webapi.DTOs.Account;
-using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 
 namespace webapi.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class ManagerController : Controller
     {
         private readonly OptimaRestaurantContext _context;
@@ -30,6 +28,22 @@ namespace webapi.Controllers
             _restaurantController = restaurantController;
             _accountController = accountController;
             _userManager = userManager;
+        }
+
+        [HttpDelete("api/manager/{email}")]
+        public async Task<IActionResult> DeleteManagerAccount(string email)
+        {
+            var manager = await _context.Managers.FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            foreach (var restaurant in manager.Restaurants) restaurant.Manager = null;
+
+            var user = manager.Profile;
+
+            _context.Remove(user);
+            _context.Remove(manager);
+            await _context.SaveChangesAsync();
+
+            return Ok("You have successfully deleted your account");
         }
 
         [HttpGet("{restaurantId}")] // pass the restaurant id to show the employees there

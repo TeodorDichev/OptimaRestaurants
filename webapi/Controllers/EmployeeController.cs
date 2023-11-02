@@ -33,6 +33,27 @@ namespace webapi.Controllers
             _userManager = userManager;
         }
 
+        [HttpDelete("api/employee/{email}")]
+        public async Task<IActionResult> DeleteEmployeeAccount(string email)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            foreach (var er in employee.EmployeesRestaurants)
+            {
+                er.Restaurant.EmployeesRestaurants.Remove(er);
+                _context.Remove(er);
+            }
+
+            var user = employee.Profile;
+
+            _context.Remove(user);
+            _context.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            return Ok("You have successfully deleted your account");
+        }
+
+
         [HttpGet("api/employee{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetEmployee(string email)
         {
