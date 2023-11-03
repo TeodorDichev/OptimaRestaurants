@@ -16,7 +16,7 @@ namespace webapi.Controllers
     /// Manages all tasks related to the accounts of a manager and an employee
     /// Edit account: picture, name, email, password
     /// </summary>
-    
+
     public class AccountController : Controller
     {
         private readonly JWTService _jwtService;
@@ -52,13 +52,10 @@ namespace webapi.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
             if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
 
-            if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) != null) 
-                model.IsManager = true;
-
             return CreateApplicationUserDto(user);
         }
 
-        [Authorize(Roles ="Employee,Manager")]
+        [Authorize(Roles = "Employee,Manager")]
         [HttpGet("/api/account/refresh-user-token")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken()
         {
@@ -279,10 +276,14 @@ namespace webapi.Controllers
 
         private ApplicationUserDto CreateApplicationUserDto(ApplicationUser user)
         {
+            bool isManager = false;
+            if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) != null) isManager = true;
+
             return new ApplicationUserDto
             {
                 Email = user.Email,
-                JWT = _jwtService.CreateJWT(user)
+                JWT = _jwtService.CreateJWT(user),
+                IsManager = isManager
             };
         }
         private async Task<bool> CheckEmailExistAsync(string email)
