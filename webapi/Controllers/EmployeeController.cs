@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
 using webapi.DTOs.Account;
 using webapi.DTOs.Employee;
-using webapi.DTOs.Manager;
 using webapi.Models;
 
 namespace webapi.Controllers
@@ -15,6 +15,7 @@ namespace webapi.Controllers
     /// Edit - city, birthdate
     /// Add/Delete a request to a manager's restaurant
     /// </summary>
+    [Authorize(Roles = "Employee")]
     public class EmployeeController : Controller
     {
         private readonly OptimaRestaurantContext _context;

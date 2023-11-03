@@ -55,13 +55,12 @@ namespace webapi.Controllers
             if (_context.Managers.FirstOrDefault(x => x.Profile.Email == user.Email) != null) 
                 model.IsManager = true;
 
-            var appUser = CreateApplicationUserDto(user);
-            model.JWT = appUser.JWT;
+            model.JWT = _jwtService.CreateJWT(user);
 
             return model;
         }
 
-        [Authorize]
+        [Authorize(Roles ="Employee,Manager")]
         [HttpGet("/api/account/refresh-user-token")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken()
         {
