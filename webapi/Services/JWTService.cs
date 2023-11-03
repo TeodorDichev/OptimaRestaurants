@@ -23,7 +23,6 @@ namespace webapi.Services
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.FirstName),
                 new Claim(ClaimTypes.Surname, user.LastName),
-                //new Claim("new claim", "new claim value"), for the demo
             };
 
             var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha512Signature);
