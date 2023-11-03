@@ -1,20 +1,40 @@
 <header>
     <nav class="navbar navbar-expand navbar-light">
-        <div class="container">
-            <a class="nav-brand heading-font col-lg-11">
+        <div class="container">           
+            <a class="nav-brand heading-font col-lg-9">
                 <a routerLink="/" class="heading-font btn btn-outline-dark">
                     Ресторант Оптима
                 </a>
+                
             </a>
             <button class="navbar-toggler" type="button">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse ms-sm-5">
+                <a class="btn btn-outline-dark m-2" (click)="allRestaurants()"><i class="fa fa-cutlery fa-3x"></i>
+                </a>
                 <ul class="navbar-nav" *ngIf="(accountService.user$ | async) as user">
                     <li class="nav-item">
-                        <a class="btn btn-outline-dark" (click)="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
+                        <a class="btn btn-outline-dark m-2" (click)="inbox()"><i class="fa fa-envelope-o fa-3x"></i></a>
                     </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-dark m-2" (click)="infoUser()"><i class="fa fa-user fa-3x"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-dark m-2" (click)="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
+                    </li>
+                    <ul *ngIf="(isManager)">
+                        
+                    </ul>
                 </ul>
+                <ul class="navbar-nav" *ngIf="!(accountService.user$ | async) as user">                   
+                    <li class="nav-item">
+                        <a class="btn btn-outline-dark m-2" (click)="contact()"><i class="fa fa-phone fa-3x"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-outline-dark m-2" (click)="help()"><i class="fa fa-question fa-3x"></i></a>
+                    </li>
+                </ul>             
             </div>
 
         </div>

@@ -24,6 +24,8 @@ export class AppComponent implements OnInit{
         this.accountService.refreshUser(jwt).subscribe({
           next: _ => {},
           error: _ => {
+            console.log(jwt);
+            console.log(_);
             this.accountService.logout();
           }
         })

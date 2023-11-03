@@ -34,9 +34,7 @@ a:hover{
     box-shadow: 20px, 20px, 80px rgb(218,218,218);
     border-radius: 12px;
 }
-.custom-signup-button:hover{
-    background-color: rgb(138, 69, 20);
-}
+
 .input-field{
     border-radius: 5px;
     padding: 5px;
@@ -52,7 +50,9 @@ a:hover{
     color: white;
     border: transparent;
 }
-
+.custom-signup-button:hover{
+    background-color: rgb(138, 69, 20);
+}
 input[type='text'],
 input[type='password']{
     border: none;

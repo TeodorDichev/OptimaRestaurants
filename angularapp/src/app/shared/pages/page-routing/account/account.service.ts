@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RegisterManager } from '../../../models/account/register-manager';
 import { Login } from '../../../models/account/login';
 import { User } from '../../../models/account/user';
-import { ReplaySubject, map, of } from 'rxjs';
+import { ReplaySubject, map, of, take, timer } from 'rxjs';
 import { Router } from '@angular/router';
 import { ConfirmEmail } from '../../../models/account/confirm-email';
 import { ResetPassword } from '../../../models/account/reset-password';
@@ -15,7 +15,7 @@ import { ResetPassword } from '../../../models/account/reset-password';
   providedIn: 'root'
 })
 export class AccountService {
-  private userSource = new ReplaySubject<User | null>(1); //
+  private userSource = new ReplaySubject<User | null>(1); 
   user$ = this.userSource.asObservable();  // observable, meaning we can subscribe to it at any time
 
   constructor(private http: HttpClient,
@@ -67,7 +67,6 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setUser(user);
-          console.log(user.isManager);
           if (user.isManager){
           this.router.navigateByUrl('/manager');
           }
@@ -103,9 +102,10 @@ export class AccountService {
     } 
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
-
     return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, {headers}).pipe(
+      take(1),
       map((user: User) => {
+        console.log(user);
         if (user) {
           this.setUser(user);
         }

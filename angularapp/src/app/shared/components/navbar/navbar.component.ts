@@ -8,9 +8,26 @@ import { ManagerService } from '../../pages/page-routing/manager/manager.service
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  isManager: boolean = true; //= this.accountService.user$.jwt;
+  
   constructor(public accountService: AccountService,
     public managerService: ManagerService) {}
   logout(){
       this.accountService.logout();
+  }
+  infoUser(){
+
+  }
+  inbox(){
+
+  }
+  contact(){
+
+  }
+  help(){
+
+  }
+  allRestaurants(){
+
   }
 }

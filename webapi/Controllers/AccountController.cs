@@ -55,7 +55,7 @@ namespace webapi.Controllers
             return CreateApplicationUserDto(user);
         }
 
-        [Authorize(Roles = "Employee,Manager")]
+        //[Authorize(Roles = "Employee,Manager")]
         [HttpGet("/api/account/refresh-user-token")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken()
         {
