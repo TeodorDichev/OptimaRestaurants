@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ManagerLoggedViewComponent } from '../../manager-logged-view/manager-logged-view/manager-logged-view.component';
 
 const routes: Routes = [
-  {path: '', component: ManagerLoggedViewComponent}
+  {path: '', component: ManagerLoggedViewComponent},
+  {path: 'employees-looking-for-job', component: ManagerLoggedViewComponent} // TODO -> employees-looking-for-job component
 ];
 
 @NgModule({

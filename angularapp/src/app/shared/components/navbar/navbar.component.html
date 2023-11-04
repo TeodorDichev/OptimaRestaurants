@@ -14,6 +14,12 @@
                 <a class="btn btn-outline-dark m-2" (click)="allRestaurants()"><i class="fa fa-cutlery fa-3x"></i>
                 </a>
                 <ul class="navbar-nav" *ngIf="(accountService.user$ | async) as user">
+                    <li *ngIf="(isManager)">
+                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()"><i class="fa fa-users fa-3x"></i></a>
+                    </li>
+                    <ul *ngIf="!(isManager)">
+                        
+                    </ul>
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="inbox()"><i class="fa fa-envelope-o fa-3x"></i></a>
                     </li>
@@ -23,9 +29,7 @@
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
                     </li>
-                    <ul *ngIf="(isManager)">
-                        
-                    </ul>
+                    
                 </ul>
                 <ul class="navbar-nav" *ngIf="!(accountService.user$ | async) as user">                   
                     <li class="nav-item">
