@@ -12,15 +12,12 @@ using webapi.Models;
 
 namespace webapi.Controllers
 {
-    [Authorize(Roles = "Manager")]
     public class ManagerController : Controller
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public ManagerController(OptimaRestaurantContext context,
-                RestaurantController restaurantController,
-                AccountController accountController,
                 UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -30,7 +27,11 @@ namespace webapi.Controllers
         [HttpDelete("api/manager/{email}")]
         public async Task<IActionResult> DeleteManagerAccount(string email)
         {
-            var manager = await _context.Managers.FirstOrDefaultAsync(e => e.Profile.Email == email);
+            var manager = await _context.Managers
+                .FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            var managerProfile = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email); // for some reason this loads manager.Profile
 
             foreach (var restaurant in manager.Restaurants) restaurant.Manager = null;
 
@@ -69,14 +70,14 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetManager(string email)
         {
             var manager = await _context.Managers
-            .FirstOrDefaultAsync(e => e.Profile.Email == email);
+                .FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            var managerProfile = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == email); // for some reason this loads manager.Profile
 
             ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
 
-            foreach (var restaurant in _context.Restaurants
-                .Where(r => r.Manager.Profile.Email.ToString() == email)
-                .OrderBy(r => r.Name)
-                .ToList())
+            foreach (var restaurant in manager.Restaurants)
             {
                 restaurants.Add(new RestaurantDto
                 {
@@ -99,7 +100,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile?.ProfilePictureUrl ?? string.Empty,
-                Restaurants = restaurants
+                Restaurants = restaurants.IsNullOrEmpty()? restaurants : new List<RestaurantDto>()
             };
 
             return Ok(managerMainViewDto);
@@ -112,6 +113,9 @@ namespace webapi.Controllers
 
             var manager = await _context.Managers
                 .FirstOrDefaultAsync(e => e.Profile.Email == managerEmail);
+
+            var managerProfile = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == managerEmail); // for some reason this loads manager.Profile
 
             if (manager == null) return NotFound();
 

@@ -23,8 +23,6 @@ namespace webapi.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
 
         public EmployeeController(OptimaRestaurantContext context,
-            RestaurantController restaurantController,
-            AccountController accountController,
             UserManager<ApplicationUser> userManager)
         {
             _context = context;
@@ -34,7 +32,11 @@ namespace webapi.Controllers
         [HttpDelete("api/employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
+            var employee = await _context.Employees
+            .FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            var employeeProfile = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
 
             foreach (var er in employee.EmployeesRestaurants)
             {
@@ -58,12 +60,14 @@ namespace webapi.Controllers
             var employee = await _context.Employees
             .FirstOrDefaultAsync(e => e.Profile.Email == email);
 
-            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+            var employeeProfile = await _context.Users
+            .FirstOrDefaultAsync(u => u.Email == email);
 
-            foreach (var restaurant in _context.EmployeesRestaurants
-                .Where(x => x.Employee.Profile.Email == email && !x.EndedOn.HasValue && x.ConfirmedOn.HasValue)
-                .Select(x => x.Restaurant)
-                .ToList())
+            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+            
+            foreach (var restaurant in employee.EmployeesRestaurants
+                .Where(er => !er.EndedOn.HasValue && er.ConfirmedOn.HasValue)
+                .Select(er => er.Restaurant))
             {
                 restaurants.Add(new RestaurantDto
                 {
