@@ -40,7 +40,7 @@ export class ConfirmEmailComponent implements OnInit {
                 },
                 error: error => {
                   this.success = false;
-                  this.sharedService.showNotification(false, "Failed email confirmation", error.error);
+                  this.sharedService.showNotification(false, "Неуспешно потвърждаване на акаунта", error.error);
                 }
               })
             }
@@ -53,4 +53,5 @@ export class ConfirmEmailComponent implements OnInit {
   resendEmailConfirmaitonLink() {
     this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
+
 }

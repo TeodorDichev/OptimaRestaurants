@@ -150,8 +150,8 @@ namespace webapi.Controllers
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == true) return BadRequest("This email has already been confirmed");
+            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
 
             try
             {
@@ -161,22 +161,22 @@ namespace webapi.Controllers
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Email confirmed", message = "Вашият акаунт беше създаден!" })); // change message and login directly
+                    return Ok(new JsonResult(new { title = "Имейлът успешно потвърден!", message = "Вашият акаунт беше създаден!" })); // change message and login directly
                 }
 
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Невалиден токен. Моля, опитайте отново");
             }
             catch (Exception)
             {
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Невалиден токен. Моля, опитайте отново");
             }
         }
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("This email has already been confirmed");
+            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (user.EmailConfirmed == false) return BadRequest("Имейлът ви не е потвърден, моля потвърдете го!");
 
             try
             {
@@ -186,59 +186,59 @@ namespace webapi.Controllers
                 var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.Password);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Password reset success", message = "Your password has been reseted" }));
+                    return Ok(new JsonResult(new { title = "Нулирането на паролата е успешно!", message = "Вашата парола е сменена успешно!" }));
                 }
 
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Невалиден токен. Моля, опитайте отново");
             }
             catch (Exception)
             {
-                return BadRequest("Invalid token. Please try again");
+                return BadRequest("Невалиден токен. Моля, опитайте отново");
             }
         }
 
         [HttpPost("api/account/resend-email-confirmation-link/{email}")]
         public async Task<IActionResult> ResendEmailConfirmationLink(string email)
         {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
+            if (string.IsNullOrEmpty(email)) return BadRequest("Невалиден имейл адрес!");
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == true) return BadRequest("This email has already been confirmed");
+            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
 
             try
             {
                 if (await SendConfirmEmailAddress(user))
                 {
-                    return Ok(new JsonResult(new { title = "Confirmation link send", message = "Please confirm your email address" }));
+                    return Ok(new JsonResult(new { title = "Линкът за потвърждаване е изпратен!", message = "Моля, потвърдете имейл адреса си." }));
                 }
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
             catch (Exception)
             {
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
         }
 
         [HttpPost("api/account/forgot-username-or-password/{email}")]
         public async Task<IActionResult> ForgotUsernameOrPassword(string email)
         {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Invalid email");
+            if (string.IsNullOrEmpty(email)) return BadRequest("Невалиден имейл адрес!");
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return Unauthorized("This email has not been registered yet");
-            if (user.EmailConfirmed == false) return BadRequest("Please confirm your email address first.");
+            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (user.EmailConfirmed == false) return BadRequest("Моля потвърдете имейл адреса си.");
 
             try
             {
                 if (await SendForgotUsernameOrPassword(user))
                 {
-                    return Ok(new JsonResult(new { title = "Forgot username or password email sent", message = "Please check your email" }));
+                    return Ok(new JsonResult(new { title = "Имейлът за подновяване на паролата е изпратен!", message = "Моля, проверете имейл адреса си." }));
                 }
 
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
             catch (Exception)
             {
-                return BadRequest("Failed to send email. Please contact admin");
+                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
         }
 
@@ -248,7 +248,7 @@ namespace webapi.Controllers
             try
             {
                 var existingEmployee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == employeeDto.OldEmail);
-                if (existingEmployee == null) return NotFound("User not found");
+                if (existingEmployee == null) return NotFound("Потребителят не е намерен!");
 
 
                 // Update the user's properties
@@ -289,7 +289,7 @@ namespace webapi.Controllers
                 _context.Update(existingEmployee);
                 await _context.SaveChangesAsync();
 
-                return Ok("Account updated successfully");
+                return Ok("Вашият акаунт беше успешно актуализиран!");
             }
             catch (Exception ex)
             {
@@ -303,7 +303,7 @@ namespace webapi.Controllers
             try
             {
                 var existingUser = await _context.Users.FirstOrDefaultAsync(m => m.Email == email);
-                if (existingUser == null) return NotFound("User not found");
+                if (existingUser == null) return NotFound("Потребителят не е намерен!");
 
                 UpdateManagerDto managerDto = new UpdateManagerDto
                 {
@@ -349,7 +349,7 @@ namespace webapi.Controllers
                 _context.Update(existingUser);
                 await _context.SaveChangesAsync();
 
-                return Ok("Account updated successfully");
+                return Ok("Вашият акаунт беше успешно актуализиран!");
             }
             catch (Exception ex)
             {
@@ -363,11 +363,11 @@ namespace webapi.Controllers
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ResetPasswordPath"]}?token={token}&email={user.Email}";
 
-            var body = $"<p>Hello: {user.FirstName} {user.LastName}</p>" +
-                $"<p>Username: {user.UserName}.</p>" +
-                "<p>You can reset your password by clicking on the following link.</p>" +
-                $"<p><a href=\"{url}\">Click here</a></p>" +
-                "<p>Thank you,</p>" +
+            var body = $"<p>Здравейте: {user.FirstName} {user.LastName}</p>" +
+                $"<p>Имейл: {user.UserName}.</p>" +
+                "<p>Може да подновите паролата си тук.</p>" +
+                $"<p><a href=\"{url}\">Подновяване</a></p>" +
+                "<p>Благодарим ви,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
             var emailSend = new EmailSendDto(user.Email, body, "Forgot username or password");
@@ -381,10 +381,10 @@ namespace webapi.Controllers
             token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
             var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ConfirmEmailPath"]}?token={token}&email={user.Email}";
 
-            var body = $"<p>Hello: {user.FirstName} {user.LastName}</p>" +
-                "<p>Please confirm your email address here:</p>" +
-                $"<p><a href=\"{url}\">Click here</a></p>" +
-                "<p>Thank you,</p>" +
+            var body = $"<p>Здравейте: {user.FirstName} {user.LastName}</p>" +
+                "<p>Моля, потвърдетe имейл адреса си тук:</p>" +
+                $"<p><a href=\"{url}\">Потвърждаване</a></p>" +
+                "<p>Благодарим ви,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
             var emailSend = new EmailSendDto(user.Email, body, "Confirm your email");

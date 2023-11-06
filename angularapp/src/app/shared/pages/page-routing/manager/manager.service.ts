@@ -3,7 +3,7 @@ import { environment } from 'src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AccountService } from '../account/account.service';
-import { NewRestaurant } from 'src/app/shared/models/manager/new-restaurant';
+import { NewRestaurant } from 'src/app/shared/models/restaurant/new-restaurant';
 
 @Injectable({
   providedIn: 'root'

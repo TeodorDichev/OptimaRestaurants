@@ -5,7 +5,11 @@
             <div class="roboto">
                 Вашите ресторанти
             </div>
-            
+            <div *ngFor="let restaurant of this.manager?.restaurants; index as i;">
+                <div>
+                    {{restaurant.name}}
+                </div>
+            </div>
         </div>
         <div class="col-4">
             <div class="roboto">

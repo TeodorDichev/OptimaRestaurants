@@ -13,7 +13,6 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
 @NgModule({
   declarations: [
     ValidationMessagesComponent,
-    ValidationMessagesComponent,
     NotificationComponent,
     ConfirmEmailComponent,
     SendEmailComponent,

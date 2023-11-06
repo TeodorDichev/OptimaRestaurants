@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './shared/pages/page-routing/account/account.service';
-import { ManagerService } from './shared/pages/page-routing/manager/manager.service';
 
 @Component({
   selector: 'app-root',
@@ -9,8 +8,7 @@ import { ManagerService } from './shared/pages/page-routing/manager/manager.serv
 })
 export class AppComponent implements OnInit{
   
-  constructor(private accountService: AccountService,
-    private managerService: ManagerService){
+  constructor(private accountService: AccountService){
 
   }
   
@@ -24,7 +22,6 @@ export class AppComponent implements OnInit{
         this.accountService.refreshUser(jwt).subscribe({
           next: _ => {},
           error: _ => {
-            console.log(jwt);
             console.log(_);
             this.accountService.logout();
           }

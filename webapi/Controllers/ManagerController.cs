@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
-using webapi.DTOs.Account;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Restaurant;
@@ -41,7 +39,7 @@ namespace webapi.Controllers
             _context.Remove(manager);
             await _context.SaveChangesAsync();
 
-            return Ok("You have successfully deleted your account");
+            return Ok("Успешно изтрихте своя акаунт!");
         }
 
         [HttpGet("{restaurantId}")] // pass the restaurant id to show the employees there
@@ -100,7 +98,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile?.ProfilePictureUrl ?? string.Empty,
-                Restaurants = restaurants.IsNullOrEmpty()? restaurants : new List<RestaurantDto>()
+                Restaurants = restaurants.IsNullOrEmpty() ? restaurants : new List<RestaurantDto>()
             };
 
             return Ok(managerMainViewDto);
@@ -130,7 +128,7 @@ namespace webapi.Controllers
             };
             await _context.Restaurants.AddAsync(restaurant);
 
-            return Ok("You have successfully added a new restaurant");
+            return Ok("Успешно добавихте нов ресторант!");
         }
     }
 }

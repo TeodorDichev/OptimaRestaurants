@@ -1,10 +1,8 @@
 <div class="container text-center" *ngIf="success">
-    <a routerLink="/manager" class="btn btn-primary"> <!-- same as the login thing, redirect user to proper -->
-        Continue
-    </a>
+    Имейлът ви беше потвърден, може да затворите екрана!
 </div>
 <div class="container text-center" *ngIf="!success">
     <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"> 
-        Resend email confirmation link
+        Препращане на линк за потвърждение
     </a>
 </div>

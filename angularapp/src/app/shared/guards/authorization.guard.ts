@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { AccountService } from '../pages/page-routing/account/account.service';
 import { SharedService } from '../shared.service';
 import { Observable, map } from 'rxjs';
@@ -14,19 +14,36 @@ export class AuthorizationGuard {
     private sharedService: SharedService,
     private router: Router) { }
 
-  canActivate(route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> {
+    
+
+  canActivate(): Observable<boolean> {
     return this.accountService.user$.pipe(
       map((user: User | null) => {
         if (user) {
-          return true;
+          if (user.isManager){
+            if (!this.router.url.startsWith('/employee')){
+              return true;
+            } else{
+              return this.incorrect();
+            }
+          }
+          else {
+            if (!this.router.url.startsWith('/manager')){
+              return true;
+            } else{
+              return this.incorrect();
+            }
+          }
         }
         else {
-          this.sharedService.showNotification(false, 'Not authorized', 'This page requires a login. Please, login first.');
-          this.router.navigateByUrl('/');
-          return false;
+          return this.incorrect();
         }
       })
     );
+  }
+  private incorrect(){
+    this.sharedService.showNotification(false, 'Not authorized', 'This page requires a login. Please, login first.');
+    this.router.navigateByUrl('/');
+    return false;
   }
 }   

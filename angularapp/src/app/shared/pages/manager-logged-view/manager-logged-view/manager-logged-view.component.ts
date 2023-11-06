@@ -3,6 +3,7 @@ import { ManagerService } from '../../page-routing/manager/manager.service';
 import { Router } from '@angular/router';
 import { AccountService } from '../../page-routing/account/account.service';
 import { User } from 'src/app/shared/models/account/user';
+import { ManagerView } from 'src/app/shared/models/manager/manager-view';
 
 @Component({
   selector: 'app-manager-logged-view',
@@ -13,6 +14,8 @@ import { User } from 'src/app/shared/models/account/user';
 export class ManagerLoggedViewComponent implements OnInit {
   user: User | null | undefined;
   
+  manager: ManagerView | null | undefined;
+
   constructor(private managerService: ManagerService,
     private accountService: AccountService,
     private router: Router){
@@ -23,8 +26,8 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.setManager();
     if (this.user){
     this.managerService.getManager(this.user.email).subscribe(
-      (response) => {
-        console.log(response);
+      (response: any) => {
+        this.manager = response;
       },
       (error) => {      
         console.log(error.error);

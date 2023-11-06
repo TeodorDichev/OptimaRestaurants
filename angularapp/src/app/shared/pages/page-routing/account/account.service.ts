@@ -46,7 +46,16 @@ export class AccountService {
   }
 
   confirmEmail(model: ConfirmEmail) {
-    return this.http.put(`${environment.appUrl}/api/account/confirm-email`, model);
+    return this.http.put<User>(`${environment.appUrl}/api/account/confirm-email`, model).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setUser(user);
+          console.log(this.user$);
+          return user;
+        }
+        return null;
+      })
+    );;
   }
 
   resendEmailConfirmationLink(email: string){
@@ -100,12 +109,12 @@ export class AccountService {
       this.userSource.next(null);
       return of(undefined);
     } 
+    console.log(jwt);
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
     return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, {headers}).pipe(
       take(1),
       map((user: User) => {
-        console.log(user);
         if (user) {
           this.setUser(user);
         }
