@@ -59,10 +59,10 @@ namespace webapi.Controllers
         }
 
         //[Authorize(Roles = "Employee,Manager")]
-        [HttpGet("/api/account/refresh-user-token")]
-        public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken()
+        [HttpGet("/api/account/refresh-user-token/{email}")]
+        public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
         {
-            var user = await _userManager.FindByEmailAsync(User.FindFirst(ClaimTypes.Email)?.Value);
+            var user = await _userManager.FindByEmailAsync(email); 
             return CreateApplicationUserDto(user);
         }
 

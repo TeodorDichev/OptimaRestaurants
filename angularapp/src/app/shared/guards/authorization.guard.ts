@@ -5,6 +5,7 @@ import { SharedService } from '../shared.service';
 import { Observable, map } from 'rxjs';
 import { User } from '../models/account/user';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,36 +15,37 @@ export class AuthorizationGuard {
     private sharedService: SharedService,
     private router: Router) { }
 
-    
+
 
   canActivate(): Observable<boolean> {
+    console.log(this.router.url);
     return this.accountService.user$.pipe(
       map((user: User | null) => {
         if (user) {
-          if (user.isManager){
-            if (!this.router.url.startsWith('/employee')){
-              return true;
-            } else{
-              return this.incorrect();
+          if (user.isManager) {
+            if (this.router.url.startsWith('/manager')) {
+              this.incorrect()
+              return false;
             }
+            return true;
           }
           else {
-            if (!this.router.url.startsWith('/manager')){
-              return true;
-            } else{
-              return this.incorrect();
+            if (this.router.url.startsWith('/manager')) {
+              this.incorrect()
+              return false;
             }
+            return true;
           }
         }
         else {
-          return this.incorrect();
+          this.incorrect()
+          return false;
         }
       })
     );
   }
-  private incorrect(){
+  private incorrect() {
     this.sharedService.showNotification(false, 'Not authorized', 'This page requires a login. Please, login first.');
     this.router.navigateByUrl('/');
-    return false;
   }
 }   

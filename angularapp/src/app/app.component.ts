@@ -18,8 +18,9 @@ export class AppComponent implements OnInit{
 
   private refreshUser(){
     const jwt = this.accountService.getJWT();
+    const email = this.accountService.getEmail();
     if(jwt){
-        this.accountService.refreshUser(jwt).subscribe({
+        this.accountService.refreshUser(jwt, email).subscribe({
           next: _ => {},
           error: _ => {
             console.log(_);
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit{
           }
         })
     } else{
-      this.accountService.refreshUser(null).subscribe();
+      this.accountService.refreshUser(null, null).subscribe();
     }
   }
 }

@@ -103,16 +103,25 @@ export class AccountService {
       return null;
     }
   }
+  getEmail() {
+    const key = localStorage.getItem(environment.userKey);
+    if (key) {
+      const user: User = JSON.parse(key);
+      return user.email.toString();
+    } else {
+      return null;
+    }
+  }
 
-  refreshUser(jwt: string | null){
-    if (jwt === null){
+  refreshUser(jwt: string | null, email: string | null){
+    if (jwt === null || email === null){
       this.userSource.next(null);
       return of(undefined);
     } 
     console.log(jwt);
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
-    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token`, {headers}).pipe(
+    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token/${email}`, {headers}).pipe(
       take(1),
       map((user: User) => {
         if (user) {
