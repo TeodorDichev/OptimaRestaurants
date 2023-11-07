@@ -16,8 +16,7 @@ namespace webapi.Models
         public decimal? CollegialityAverageRating { get; set; }
         public decimal? EmployeeAverageRating { get; set; }
         public bool IsLookingForJob { get; set; } = true;
-        public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; }
-        public virtual ICollection<Transfer> Transfers { get; set; }
-        public virtual ICollection<Shift> Shifts { get; set; }
+        public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; } = new List<EmployeeRestaurant>();
+        public virtual ICollection<Shift> Shifts { get; set; } = new List<Shift>();
     }
 }

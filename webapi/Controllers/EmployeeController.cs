@@ -29,6 +29,8 @@ namespace webapi.Controllers
             _userManager = userManager;
         }
 
+        //confirm request, reject request -> sent requests when browsing restaurants
+
         [HttpDelete("api/employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
@@ -66,7 +68,7 @@ namespace webapi.Controllers
             ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
             
             foreach (var restaurant in employee.EmployeesRestaurants
-                .Where(er => !er.EndedOn.HasValue && er.ConfirmedOn.HasValue)
+                .Where(er => !er.EndedOn.HasValue)
                 .Select(er => er.Restaurant))
             {
                 restaurants.Add(new RestaurantDto

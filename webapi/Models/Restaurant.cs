@@ -22,8 +22,7 @@ namespace webapi.Models
         public int OverWorkingHours { get; set; }
         public decimal OverWorkingAmountPerHour { get; set; }
         public bool UsePercentageGrowth { get; set; }
-
         public virtual Manager? Manager { get; set; }
-        public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; }
+        public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; } = new List<EmployeeRestaurant>();
     }
 }
