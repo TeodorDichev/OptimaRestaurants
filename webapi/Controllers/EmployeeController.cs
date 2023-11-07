@@ -66,7 +66,7 @@ namespace webapi.Controllers
             ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
             
             foreach (var restaurant in employee.EmployeesRestaurants
-                .Where(er => !er.EndedOn.HasValue && er.ConfirmedOn.HasValue)
+                .Where(er => !er.EndedOn.HasValue)
                 .Select(er => er.Restaurant))
             {
                 restaurants.Add(new RestaurantDto
