@@ -29,6 +29,8 @@ namespace webapi.Controllers
             _userManager = userManager;
         }
 
+        //confirm request, reject request -> sent requests when browsing restaurants
+
         [HttpDelete("api/employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {

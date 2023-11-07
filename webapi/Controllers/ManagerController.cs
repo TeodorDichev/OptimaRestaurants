@@ -22,6 +22,8 @@ namespace webapi.Controllers
             _userManager = userManager;
         }
 
+        //confirm request, reject request -> sent requests when browsing employees looking for jobs
+
         [HttpDelete("api/manager/{email}")]
         public async Task<IActionResult> DeleteManagerAccount(string email)
         {
