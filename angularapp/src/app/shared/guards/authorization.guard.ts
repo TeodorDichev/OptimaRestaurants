@@ -18,19 +18,20 @@ export class AuthorizationGuard {
 
 
   canActivate(): Observable<boolean> {
-    console.log(this.router.url);
+    const currentUrl = window.location.href;
+
     return this.accountService.user$.pipe(
       map((user: User | null) => {
         if (user) {
           if (user.isManager) {
-            if (this.router.url.startsWith('/manager')) {
+            if (currentUrl.split('/').at(3) === 'employee') {
               this.incorrect()
               return false;
             }
             return true;
           }
           else {
-            if (this.router.url.startsWith('/manager')) {
+            if (currentUrl.split('/').at(3) === 'manager') {
               this.incorrect()
               return false;
             }
