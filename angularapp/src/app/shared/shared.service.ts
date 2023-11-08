@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { NotificationComponent } from './components/errors/modals/notification/notification.component';
+import { NewRestaurantInputModalComponent } from './components/errors/modals/input/new-restaurant-input-modal/new-restaurant-input-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -19,5 +20,9 @@ export class SharedService {
       }
     };
     this.bsModalRef = this.modalService.show(NotificationComponent, initialState);
+   }
+
+   showRestaurantModal(){
+    this.bsModalRef = this.modalService.show(NewRestaurantInputModalComponent);
    }
 }

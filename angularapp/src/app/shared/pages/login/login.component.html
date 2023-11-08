@@ -11,7 +11,7 @@
                         <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
                             <div class="form-group pt-3">
                                 <div class="input-field my-2">
-                                    <span class="fa fa-user p-2 my2"></span>
+                                    <span class="fa fa-user p-2"></span>
                                     <input formControlName="userName" type="text" placeholder="Имейл"
                                         [class.is-invalid]="submitted && loginForm.get('userName')?.errors">
                                 </div>

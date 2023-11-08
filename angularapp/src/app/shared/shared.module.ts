@@ -9,6 +9,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmEmailComponent } from './pages/confirm-email/confirm-email.component';
 import { SendEmailComponent } from './pages/send-email/send-email.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { NewRestaurantInputModalComponent } from './components/errors/modals/input/new-restaurant-input-modal/new-restaurant-input-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     NotificationComponent,
     ConfirmEmailComponent,
     SendEmailComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    NewRestaurantInputModalComponent
   ],
   imports: [
     CommonModule,

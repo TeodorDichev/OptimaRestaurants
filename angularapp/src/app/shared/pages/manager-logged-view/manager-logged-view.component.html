@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="split-screen border-top">
+    <div class="row">
+        <div class="col-8">
+            <div class="roboto">
+                Вашите ресторанти
+            </div>
+            <div *ngFor="let restaurant of this.manager?.restaurants;">
+                <div>
+                <img src="{{restaurant.iconUrl}}">
+                    {{restaurant.name}}
+                    {{restaurant.address}}
+                    {{restaurant.city}}
+                </div>
+            </div>
+            <div class="text-center">                
+                <button type="button" class="btn btn-primary" (click)="addNewRestaurant()">
+                    Създайте нов ресторант
+                  </button>                             
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="roboto">
+                Всички служители в ресторанта
+            </div>            
+        </div>
+    </div>
+</div>

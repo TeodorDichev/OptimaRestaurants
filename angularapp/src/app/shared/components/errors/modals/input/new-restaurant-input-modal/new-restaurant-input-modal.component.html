@@ -1,0 +1,56 @@
+<div class="modal-dialog-scrollable" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalScrollableTitle">Създаване на нов ресторант</h5>
+    </div>
+    <div class="modal-body text-center">
+      <form [formGroup]="newRestaurantForm" (ngSubmit)="addNewRestaurant()" autocomplete="off">
+        <div class="form-group pt-3">
+          <div class="input-field my-2">
+            <span class="fa fa-cutlery p-2"></span>
+            <input class="col-11" formControlName="name" type="text" placeholder="Име на ресторанта"
+              [class.is-invalid]="submitted && newRestaurantForm.get('name')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('name')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-map-marker p-2"></span>
+            <input class="col-11" formControlName="address" type="text" placeholder="Адрес"
+              [class.is-invalid]="submitted && newRestaurantForm.get('address')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('address')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-location-arrow p-2"></span>
+            <input class="col-11" formControlName="city" type="text" placeholder="Град"
+              [class.is-invalid]="submitted && newRestaurantForm.get('city')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('city')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-user p-2"></span>
+            <input class="col-11" formControlName="employeeCapacity" type="text" placeholder="Максимален капацитет на работници"
+              [class.is-invalid]="submitted && newRestaurantForm.get('employeeCapacity')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('employeeCapacity')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-picture-o p-2"></span>
+            <input class="col-11" formControlName="iconUrl" type="text" placeholder="Лого линк">
+          </div>
+        </div>
+        <div class="form-floating" *ngIf="errorMessages.length > 0">
+          <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="addNewRestaurant()">Save changes</button>
+    </div>
+  </div>
+</div>

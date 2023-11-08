@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EmployeeLoggedViewComponent } from '../../employee-logged-view/employee-logged-view/employee-logged-view.component';
+import { EmployeeLoggedViewComponent } from '../../employee-logged-view/employee-logged-view.component';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [

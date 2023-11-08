@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AccountService } from '../account/account.service';
 import { NewRestaurant } from 'src/app/shared/models/restaurant/new-restaurant';
+import { UpdateManager } from 'src/app/shared/models/manager/update-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,12 @@ export class ManagerService { // add forms for newrest and updatemanager
     return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
   }
 
-  updateManagerAccount(model: NewRestaurant, email: string){
+  updateManagerAccount(model: UpdateManager, email: string){
     return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
+  }
+
+  getRestaurantEmployees(restaurantId: string) {
+    return this.http.get(`${environment.appUrl}/${restaurantId}`);
   }
 
   logout() {

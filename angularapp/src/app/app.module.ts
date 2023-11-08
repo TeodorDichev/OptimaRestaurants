@@ -10,8 +10,8 @@ import { RegisterEmployeeComponent } from './shared/pages/register-employee/regi
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { SharedModule } from './shared/shared.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { ManagerLoggedViewComponent } from './shared/pages/manager-logged-view/manager-logged-view/manager-logged-view.component';
-import { EmployeeLoggedViewComponent } from './shared/pages/employee-logged-view/employee-logged-view/employee-logged-view.component';
+import { ManagerLoggedViewComponent } from './shared/pages/manager-logged-view/manager-logged-view.component';
+import { EmployeeLoggedViewComponent } from './shared/pages/employee-logged-view/employee-logged-view.component';
 
 
 @NgModule({
