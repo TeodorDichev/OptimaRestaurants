@@ -69,11 +69,47 @@ namespace webapi.Controllers
         [HttpGet("api/manager/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetManager(string email)
         {
+            if (_context.Managers.FirstOrDefault(e => e.Profile.Email == email) == null) return BadRequest("No manager with such email");
+
+            return Ok(GenerateNewManagerDto(email));
+        }
+
+        [HttpPost("api/manager/{email}")]
+        public async Task<ActionResult<ManagerMainViewDto>> AddNewRestaurant([FromBody] NewRestaurantDto newRestaurant, string managerEmail)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
             var manager = await _context.Managers
-                .FirstOrDefaultAsync(e => e.Profile.Email == email);
+                .FirstOrDefaultAsync(e => e.Profile.Email == managerEmail);
 
             var managerProfile = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == email); // for some reason this loads manager.Profile
+                .FirstOrDefaultAsync(u => u.Email == managerEmail); // for some reason this loads manager.Profile
+
+            if (manager == null) return BadRequest("No manager with such email");
+
+            Restaurant restaurant = new Restaurant
+            {
+                Name = newRestaurant.Name,
+                Address = newRestaurant.Address,
+                City = newRestaurant.City,
+                IsWorking = true,
+                EmployeeCapacity = newRestaurant.EmployeeCapacity,
+                Manager = manager
+            };
+
+            await _context.Restaurants.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
+
+            return GenerateNewManagerDto(managerEmail);
+        }
+
+        private ManagerMainViewDto GenerateNewManagerDto(string email)
+        {
+            var manager = _context.Managers
+                .FirstOrDefault(e => e.Profile.Email == email);
+
+            var managerProfile = _context.Users
+                .FirstOrDefault(u => u.Email == email); // for some reason this loads manager.Profile
 
             ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
 
@@ -92,8 +128,6 @@ namespace webapi.Controllers
                 });
             }
 
-            if (manager == null) return NotFound();
-
             var managerMainViewDto = new ManagerMainViewDto
             {
                 Email = email,
@@ -103,34 +137,7 @@ namespace webapi.Controllers
                 Restaurants = restaurants.IsNullOrEmpty() ? restaurants : new List<RestaurantDto>()
             };
 
-            return Ok(managerMainViewDto);
-        }
-
-        [HttpPost("api/manager/{email}")]
-        public async Task<IActionResult> AddNewRestaurant([FromBody] NewRestaurantDto newRestaurant, string managerEmail)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var manager = await _context.Managers
-                .FirstOrDefaultAsync(e => e.Profile.Email == managerEmail);
-
-            var managerProfile = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == managerEmail); // for some reason this loads manager.Profile
-
-            if (manager == null) return NotFound();
-
-            Restaurant restaurant = new Restaurant
-            {
-                Name = newRestaurant.Name,
-                Address = newRestaurant.Address,
-                City = newRestaurant.City,
-                IsWorking = true,
-                EmployeeCapacity = newRestaurant.EmployeeCapacity,
-                Manager = manager
-            };
-            await _context.Restaurants.AddAsync(restaurant);
-
-            return Ok("Успешно добавихте нов ресторант!");
+            return managerMainViewDto;
         }
     }
 }

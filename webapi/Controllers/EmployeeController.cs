@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
 using webapi.DTOs.Account;
 using webapi.DTOs.Employee;
+using webapi.DTOs.Manager;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 
@@ -59,14 +60,21 @@ namespace webapi.Controllers
         [HttpGet("api/employee{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetEmployee(string email)
         {
-            var employee = await _context.Employees
-            .FirstOrDefaultAsync(e => e.Profile.Email == email);
+            if (_context.Employees.FirstOrDefault(e => e.Profile.Email == email) == null) return BadRequest("No employee with such email");
 
-            var employeeProfile = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == email);
+            return Ok(GenerateNewEmployeeDto(email));
+        }
+
+        private EmployeeMainViewDto GenerateNewEmployeeDto(string email)
+        {
+            var employee = _context.Employees
+            .FirstOrDefault(e => e.Profile.Email == email);
+
+            var employeeProfile = _context.Users
+            .FirstOrDefault(u => u.Email == email);
 
             ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
-            
+
             foreach (var restaurant in employee.EmployeesRestaurants
                 .Where(er => !er.EndedOn.HasValue)
                 .Select(er => er.Restaurant))
@@ -83,8 +91,6 @@ namespace webapi.Controllers
                     IconUrl = restaurant?.IconUrl ?? string.Empty,
                 });
             }
-
-            if (employee == null) return NotFound();
 
             var employeeMainViewDto = new EmployeeMainViewDto
             {
@@ -103,7 +109,7 @@ namespace webapi.Controllers
                 Restaurants = restaurants
             };
 
-            return Ok(employeeMainViewDto);
+            return employeeMainViewDto;
         }
 
     }
