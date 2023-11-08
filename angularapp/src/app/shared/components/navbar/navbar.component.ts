@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
 
   }
   allRestaurants(){
-
+    
   }
     ngOnInit() {
       this.accountService.user$.subscribe(user => {

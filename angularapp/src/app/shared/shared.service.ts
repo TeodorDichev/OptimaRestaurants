@@ -22,7 +22,7 @@ export class SharedService {
     this.bsModalRef = this.modalService.show(NotificationComponent, initialState);
    }
 
-   showRestaurantModal(){
+   openRestaurantModal() {
     this.bsModalRef = this.modalService.show(NewRestaurantInputModalComponent);
-   }
+  }
 }

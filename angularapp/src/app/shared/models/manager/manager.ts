@@ -1,6 +1,6 @@
 import { Restraurant } from "../restaurant/restaurant";
 
-export interface ManagerView{
+export interface Manager{
     email: string,
     firstName: string,
     lastName: string,

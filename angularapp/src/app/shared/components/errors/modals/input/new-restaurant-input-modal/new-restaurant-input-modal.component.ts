@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
@@ -10,6 +10,7 @@ import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manage
   styleUrls: ['./new-restaurant-input-modal.component.css']
 })
 export class NewRestaurantInputModalComponent implements OnInit {
+
   newRestaurantForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -17,7 +18,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
-    private managerService: ManagerService, 
+    private managerService: ManagerService,
     private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -37,10 +38,11 @@ export class NewRestaurantInputModalComponent implements OnInit {
   addNewRestaurant() {
     this.submitted = true;
     this.errorMessages = [];
-    
+
     if (this.newRestaurantForm.valid && this.email) {
       this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
         next: (response: any) => {
+          this.managerService.setManager(response);
           this.bsModalRef.hide();
         },
         error: error => {
@@ -52,7 +54,6 @@ export class NewRestaurantInputModalComponent implements OnInit {
         }
       });
     }
-    
   }
 
 }
