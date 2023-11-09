@@ -69,7 +69,10 @@ namespace webapi.Controllers
         [HttpGet("api/manager/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetManager(string email)
         {
-            if (_context.Managers.FirstOrDefault(e => e.Profile.Email == email) == null) return BadRequest("No manager with such email");
+            var manager = await _context.Managers
+                .FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            if (manager == null) return BadRequest("No manager with such email");
 
             return Ok(GenerateNewManagerDto(email));
         }
@@ -108,14 +111,17 @@ namespace webapi.Controllers
             var manager = _context.Managers
                 .FirstOrDefault(e => e.Profile.Email == email);
 
+            List<Restaurant> restaurants = _context.Restaurants.Where(r => r.Manager == manager).ToList();
+
             var managerProfile = _context.Users
                 .FirstOrDefault(u => u.Email == email); // for some reason this loads manager.Profile
 
-            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+            ICollection<RestaurantDto> restaurantsDto = new List<RestaurantDto>();
+
 
             foreach (var restaurant in manager.Restaurants)
             {
-                restaurants.Add(new RestaurantDto
+                restaurantsDto.Add(new RestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
@@ -134,7 +140,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile?.ProfilePictureUrl ?? string.Empty,
-                Restaurants = restaurants.IsNullOrEmpty() ? new List<RestaurantDto>() : restaurants
+                Restaurants = restaurants.IsNullOrEmpty() ? new List<RestaurantDto>() : restaurantsDto
             };
 
             return managerMainViewDto;

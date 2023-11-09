@@ -6,11 +6,11 @@
                 Вашите ресторанти
             </div>
             <div class="" *ngFor="let restaurant of this.manager?.restaurants;">
-                <!--restaurant tings-->
+                <!--restaurant things-->
             </div>
             <div class="text-center">                
-                <button class="btn btn-info">
-                    Създаване на акаунт</button>                         
+                <button class="btn btn-info" (click)="addNewRestaurant()">
+                    Добавяне на ресторант</button>                         
             </div>
         </div>
         <div class="col-4">
