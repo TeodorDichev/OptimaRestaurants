@@ -242,51 +242,26 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/employee/update-employee")]
-        public async Task<IActionResult> UpdateEmployeeAccount([FromBody] UpdateEmployeeDto employeeDto)
+        [HttpPut("api/employee/{email}")]
+        public async Task<IActionResult> UpdateEmployeeAccount([FromBody] UpdateEmployeeDto employeeDto, string email)
         {
             try
             {
-                var existingEmployee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == employeeDto.OldEmail);
-                if (existingEmployee == null) return NotFound("Потребителят не е намерен!");
+                var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
+
+                if (employee == null) return NotFound("Потребителят не е намерен!");
 
 
                 // Update the user's properties
-                if (!employeeDto.NewFirstName.IsNullOrEmpty()) existingEmployee.Profile.FirstName = employeeDto.NewFirstName;
-                if (!employeeDto.NewLastName.IsNullOrEmpty()) existingEmployee.Profile.LastName = employeeDto.NewLastName;
-                if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) existingEmployee.Profile.PhoneNumber = employeeDto.NewPhoneNumber;
-                if (!employeeDto.NewPictureUrl.IsNullOrEmpty()) existingEmployee.Profile.ProfilePictureUrl = employeeDto.NewPictureUrl;
-                if (employeeDto.NewBirthDate != null) existingEmployee.BirthDate = employeeDto.NewBirthDate.Value;
-                if (!employeeDto.NewCity.IsNullOrEmpty()) existingEmployee.City = employeeDto.NewCity;
+                if (!employeeDto.NewFirstName.IsNullOrEmpty()) employee.Profile.FirstName = employeeDto.NewFirstName;
+                if (!employeeDto.NewLastName.IsNullOrEmpty()) employee.Profile.LastName = employeeDto.NewLastName;
+                if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) employee.Profile.PhoneNumber = employeeDto.NewPhoneNumber;
+                if (!employeeDto.NewPictureUrl.IsNullOrEmpty()) employee.Profile.ProfilePictureUrl = employeeDto.NewPictureUrl;
+                if (employeeDto.NewBirthDate != null) employee.BirthDate = employeeDto.NewBirthDate.Value;
+                if (!employeeDto.NewCity.IsNullOrEmpty()) employee.City = employeeDto.NewCity;
 
-                // Reseting password
-                if (!employeeDto.NewPassword.IsNullOrEmpty())
-                {
-                    ResetPasswordDto resetPasswordDto = new ResetPasswordDto
-                    {
-                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingEmployee.Profile),
-                        Email = existingEmployee.Profile.Email,
-                        Password = employeeDto.NewPassword
-                    };
-
-                    await ResetPassword(resetPasswordDto);
-                    await ForgotUsernameOrPassword(existingEmployee.Profile.Email);
-                }
-
-                // Reseting email
-                if (!employeeDto.NewEmail.IsNullOrEmpty())
-                {
-                    ConfirmEmailDto confirmEmailDto = new ConfirmEmailDto
-                    {
-                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingEmployee.Profile),
-                        Email = employeeDto.NewEmail,
-                    };
-
-                    existingEmployee.Profile.Email = employeeDto.NewEmail;
-                    await ConfirmEmail(confirmEmailDto);
-                }
-
-                _context.Update(existingEmployee);
+                _context.Update(employee);
                 await _context.SaveChangesAsync();
 
                 return Ok("Вашият акаунт беше успешно актуализиран!");
@@ -298,55 +273,22 @@ namespace webapi.Controllers
         }
 
         [HttpPut("api/manager/{email}")]
-        public async Task<IActionResult> UpdateManagerAccount(string email)
+        public async Task<IActionResult> UpdateManagerAccount([FromBody] UpdateManagerDto managerDto, string email)
         {
             try
             {
-                var existingUser = await _context.Users.FirstOrDefaultAsync(m => m.Email == email);
-                if (existingUser == null) return NotFound("Потребителят не е намерен!");
+                var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+                var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
 
-                UpdateManagerDto managerDto = new UpdateManagerDto
-                {
-                    OldEmail = existingUser?.Email ?? string.Empty,
-                    OldPhoneNumber = existingUser?.PhoneNumber ?? string.Empty,
-                    OldFirstName = existingUser?.FirstName ?? string.Empty,
-                    OldLastName = existingUser?.LastName ?? string.Empty,
-                    OldPictureUrl = existingUser?.ProfilePictureUrl ?? string.Empty,
-                };
+                if (manager == null) return NotFound("Потребителят не е намерен!");
 
                 // Update the user's properties
-                if (!managerDto.NewFirstName.IsNullOrEmpty()) existingUser.FirstName = managerDto.NewFirstName;
-                if (!managerDto.NewLastName.IsNullOrEmpty()) existingUser.LastName = managerDto.NewLastName;
-                if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) existingUser.PhoneNumber = managerDto.NewPhoneNumber;
-                if (!managerDto.NewPictureUrl.IsNullOrEmpty()) existingUser.ProfilePictureUrl = managerDto.NewPictureUrl;
+                if (!managerDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = managerDto.NewFirstName;
+                if (!managerDto.NewLastName.IsNullOrEmpty()) profile.LastName = managerDto.NewLastName;
+                if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = managerDto.NewPhoneNumber;
+                if (!managerDto.NewPictureUrl.IsNullOrEmpty()) profile.ProfilePictureUrl = managerDto.NewPictureUrl;
 
-                // Reseting password
-                if (!managerDto.NewPassword.IsNullOrEmpty())
-                {
-                    ResetPasswordDto resetPasswordDto = new ResetPasswordDto
-                    {
-                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingUser),
-                        Email = existingUser.Email,
-                        Password = managerDto.NewPassword
-                    };
-                    await ResetPassword(resetPasswordDto);
-                    await ForgotUsernameOrPassword(existingUser.Email);
-                }
-
-                // Reseting email
-                if (!managerDto.NewEmail.IsNullOrEmpty())
-                {
-                    ConfirmEmailDto confirmEmailDto = new ConfirmEmailDto
-                    {
-                        Token = await _userManager.GeneratePasswordResetTokenAsync(existingUser),
-                        Email = managerDto.NewEmail,
-                    };
-
-                    existingUser.Email = managerDto.NewEmail;
-                    await ConfirmEmail(confirmEmailDto);
-                }
-
-                _context.Update(existingUser);
+                _context.Update(manager);
                 await _context.SaveChangesAsync();
 
                 return Ok("Вашият акаунт беше успешно актуализиран!");

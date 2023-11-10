@@ -24,6 +24,23 @@ namespace webapi.Controllers
 
         //confirm request, reject request -> sent requests when browsing employees looking for jobs
 
+        [HttpPut("api/manager/{restaurantId}")]
+        public async Task<IActionResult> UpdateRestaurant([FromBody] UpdateRestaurantDto restaurantDto, string restaurantId)
+        {
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+
+            if (restaurantDto.IsWorking.HasValue) restaurant.IsWorking = restaurantDto.IsWorking.Value;
+            if (!restaurantDto.Address.IsNullOrEmpty()) restaurant.Address = restaurantDto.Address;
+            if (!restaurantDto.City.IsNullOrEmpty()) restaurant.City = restaurantDto.City;
+            if (!restaurantDto.IconUrl.IsNullOrEmpty()) restaurant.IconUrl = restaurantDto.IconUrl;
+            if (!restaurantDto.Name.IsNullOrEmpty()) restaurant.Name = restaurantDto.Name;
+
+            _context.Update(restaurant);
+            await _context.SaveChangesAsync();
+            return Ok("Ресторантът беше обновен успешно!");
+        }
+
         [HttpDelete("api/manager/{email}")]
         public async Task<IActionResult> DeleteManagerAccount(string email)
         {
