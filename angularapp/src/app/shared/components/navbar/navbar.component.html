@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand navbar-light">
         <div class="container">           
             <a class="nav-brand heading-font col-lg-9">
-                <a routerLink="/" class="heading-font btn btn-outline-dark">
+                <a (click)="homePage()" class="heading-font btn btn-outline-dark">
                     Ресторант Оптима
                 </a>
                 
@@ -15,7 +15,9 @@
                 </a>
                 <ul class="navbar-nav" *ngIf="(accountService.user$ | async) as user">
                     <li *ngIf="(isManager)">
-                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()"><i class="fa fa-users fa-3x"></i></a>
+                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Работници, търсещи работа">
+                            <i class="fa fa-users fa-3x"></i>
+                        </a>
                     </li>
                     <ul *ngIf="!(isManager)">
                         

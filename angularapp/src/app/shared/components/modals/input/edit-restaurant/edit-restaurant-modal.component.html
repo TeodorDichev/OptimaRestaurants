@@ -1,0 +1,56 @@
+<div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на ресторант</h5>
+    </div>
+    <div class="modal-body text-center">
+      <form [formGroup]="editRestaurantForm" (ngSubmit)="editRestaurant()" autocomplete="off">
+        <div class="form-group pt-3">
+          <div class="input-field my-2">
+            <span class="fa fa-cutlery chocolate p-2"></span>
+            <input class="col-11" formControlName="name" type="text" placeholder="Име на ресторанта"
+              [class.is-invalid]="submitted && editRestaurantForm.get('name')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && editRestaurantForm.get('name')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-map-marker chocolate p-2"></span>
+            <input class="col-11" formControlName="address" type="text" placeholder="Адрес"
+              [class.is-invalid]="submitted && editRestaurantForm.get('address')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && editRestaurantForm.get('address')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-location-arrow chocolate p-2"></span>
+            <input class="col-11" formControlName="city" type="text" placeholder="Град"
+              [class.is-invalid]="submitted && editRestaurantForm.get('city')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && editRestaurantForm.get('city')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-user chocolate p-2"></span>
+            <input class="col-11" formControlName="employeeCapacity" type="text"
+              placeholder="Максимален капацитет на работници"
+              [class.is-invalid]="submitted && editRestaurantForm.get('employeeCapacity')?.errors">
+          </div>
+          <span class="text-danger" *ngIf="submitted && editRestaurantForm.get('employeeCapacity')?.hasError('required')">
+            Полето е задължително!
+          </span>
+          <div class="input-field my-2">
+            <span class="fa fa-picture-o chocolate p-2"></span>
+            <input class="col-11" type="file" (change)="onImageSelected($event)" accept="image/*">
+              <span class="text-danger">Upload file does not work, we don't have a place to store the images!</span>
+          </div>
+        </div>
+        <div class="form-floating" *ngIf="errorMessages.length > 0">
+          <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
+      <button type="button" class="btn btn-chocolate" (click)="editRestaurant()">Запази</button>
+    </div>
+  </div>

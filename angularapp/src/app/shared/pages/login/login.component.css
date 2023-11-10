@@ -53,21 +53,10 @@ input[type='password']{
     box-shadow: none;
     width: 100%;
 }
-.custom-login-button{
-    background-color: chocolate;
-    color: white;
-    border: transparent;
-}
-.custom-login-button:hover{
-    background-color: rgb(138, 69, 20);
-}
 .fa-eye-slash.btn{
     border: none;
     outline: none;
     box-shadow: none;
-}
-.chocolate{
-    color: chocolate;
 }
 .h3{
     color: rgb(248, 168, 110);

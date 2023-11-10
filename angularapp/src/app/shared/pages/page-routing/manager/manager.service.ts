@@ -38,9 +38,14 @@ export class ManagerService {
     return this.http.get(`${environment.appUrl}/${restaurantId}`);
   }
 
+  editRestaurant(model: NewRestaurant, email: string) {
+    return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
+  }
+
   logout() {
     this.accountService.logout();
   }
+  
   setManager(manager: Manager){
     this.userSource.next(manager);
   }

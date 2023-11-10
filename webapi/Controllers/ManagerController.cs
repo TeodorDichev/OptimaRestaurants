@@ -72,7 +72,7 @@ namespace webapi.Controllers
             var manager = await _context.Managers
                 .FirstOrDefaultAsync(e => e.Profile.Email == email);
 
-            if (manager == null) return BadRequest("No manager with such email");
+            if (manager == null) return BadRequest("Няма регистриран менъджър с този имейл!");
 
             return Ok(GenerateNewManagerDto(email));
         }
@@ -88,7 +88,7 @@ namespace webapi.Controllers
             var managerProfile = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == email); // for some reason this loads manager.Profile
 
-            if (manager == null) return BadRequest("No manager with such email");
+            if (manager == null) return BadRequest("Няма регистриран менъджър с този имейл!");
 
             Restaurant restaurant = new Restaurant
             {

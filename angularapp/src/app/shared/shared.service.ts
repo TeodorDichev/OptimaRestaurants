@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
-import { NotificationComponent } from './components/errors/modals/notification/notification.component';
-import { NewRestaurantInputModalComponent } from './components/errors/modals/input/new-restaurant-input-modal/new-restaurant-input-modal.component';
+import { NotificationComponent } from './components/modals/notification/notification.component';
+import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
+import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
+import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
+import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
   bsModalRef?: BsModalRef;
-  constructor(private modalService: BsModalService){
+  constructor(private modalService: BsModalService) {
 
-   }
-   showNotification(isSuccess: boolean, title: string, message: string){
+  }
+  showNotification(isSuccess: boolean, title: string, message: string) {
     const initialState: ModalOptions = {
       initialState: {
         isSuccess,
@@ -20,9 +23,21 @@ export class SharedService {
       }
     };
     this.bsModalRef = this.modalService.show(NotificationComponent, initialState);
-   }
+  }
 
-   openRestaurantModal() {
+  openRestaurantCreateModal() {
     this.bsModalRef = this.modalService.show(NewRestaurantInputModalComponent);
+  }
+
+  openRestaurantEditModal() {
+    this.bsModalRef = this.modalService.show(EditRestaurantModalComponent);
+  }
+
+  openEditManagerModal() {
+    this.bsModalRef = this.modalService.show(EditManagerComponent);
+  }
+
+  openEditEmployeeModal() {
+    this.bsModalRef = this.modalService.show(EditEmployeeComponent);
   }
 }

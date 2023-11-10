@@ -1,30 +1,72 @@
-.max-width{
+.max-width {
     max-width: 100vw !important;
 }
-.min-height{
+
+.min-height {
     min-height: 100vh !important;
 }
-.max-height{
+
+.max-height {
     max-height: 100vh !important;
 }
-.min-width{
+
+.min-width {
     min-width: 100vw !important;
 }
-.pacifico-with-shadow{
+
+.pacifico-with-shadow {
     font-family: Pacifico;
-    font-size: 30px !important;
     text-shadow: 2px 2px black;
     text-align: center;
 }
-.roboto-with-shadow{
+
+.roboto-with-shadow {
     font-family: Roboto Slab;
-    font-size: 30px !important;
     text-shadow: 1px 1px black;
     text-align: center;
 }
-.roboto{
+
+.roboto {
     font-family: Roboto Slab;
 }
-.pacifico{
+
+.pacifico {
     font-family: Pacifico;
+}
+
+.font-size-15 {
+    font-size: 15px !important;
+}
+
+.font-size-20 {
+    font-size: 20px !important;
+}
+
+.font-size-25 {
+    font-size: 25px !important;
+}
+
+.font-size-30 {
+    font-size: 30px !important;
+}
+
+.font-size-40 {
+    font-size: 40px !important;
+}
+
+.scrollable-vert {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.chocolate{
+    color: chocolate;
+}
+.btn-chocolate{
+    background-color: chocolate;
+    color: white;
+    border: transparent;
+}
+.btn-chocolate:hover{
+    background-color: rgb(138, 69, 20);
 }

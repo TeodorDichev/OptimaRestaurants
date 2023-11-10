@@ -1,0 +1,58 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на профил</h5>
+    </div>
+    <div class="modal-body text-center">
+        <form [formGroup]="editManagerForm" (ngSubmit)="editManager()" autocomplete="off">
+            <div class="form-group pt-3">
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newEmail" type="text" placeholder="Нов имейл адрес"
+                        [class.is-invalid]="submitted && editManagerForm.get('newEmail')?.errors">
+                </div>
+                <span class="text-danger"
+                    *ngIf="submitted && editManagerForm.get('newEmail')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"
+                        [class.is-invalid]="submitted && editManagerForm.get('newFirstName')?.errors">
+                </div>
+                <span class="text-danger"
+                    *ngIf="submitted && editManagerForm.get('newFirstName')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия"
+                        [class.is-invalid]="submitted && editManagerForm.get('newLastName')?.errors">
+                </div>
+                <span class="text-danger" *ngIf="submitted && editManagerForm.get('newLastName')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер"
+                        [class.is-invalid]="submitted && editManagerForm.get('newPhoneNumber')?.errors">
+                </div>
+                <span class="text-danger" *ngIf="submitted && editManagerForm.get('newPhoneNumber')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-picture-o chocolate p-2"></span>
+                    <input class="col-11" type="file" (change)="onImageSelected($event)" accept="image/*">
+                    <span class="text-danger">Upload file does not work, we don't have a place to store the
+                        images!</span>
+                </div>
+            </div>
+            <div class="form-floating" *ngIf="errorMessages.length > 0">
+                <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
+        <button type="button" class="btn btn-chocolate" (click)="editManager()">Запази</button>
+    </div>
+</div>

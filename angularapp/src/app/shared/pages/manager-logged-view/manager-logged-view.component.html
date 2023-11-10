@@ -2,21 +2,51 @@
 <div class="split-screen border-top">
     <div class="row max-width">
         <div class="col-8">
-            <div class="roboto">
-                Вашите ресторанти
+            <div class="roboto row my-4">
+                <span class="roboto text-center fw-bold font-size-30">Вашите ресторанти</span>
             </div>
-            <div class="" *ngFor="let restaurant of this.manager?.restaurants;">
-                <!--restaurant things-->
+            <div class="scrollable-vert">
+                <div *ngFor="let restaurant of this.manager?.restaurants;">
+                    <div class="row border-bottom border-top py-3">
+                        <div class="col-2 text-center mx-2 my-auto">
+                            <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
+                        </div>
+                        <div class="col-3 px-4 mx-2 my-auto">
+                            <span class="row roboto text-start fw-bold font-size-25">{{restaurant.name}}</span>
+                            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.address}},</span>
+                            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.city}}</span>
+                        </div>
+                        <div class="col-2 py-2 my-auto">
+                            <span class="row roboto fw-bold font-size-20">Категория:</span>
+                            <span class="row roboto text-start font-size-20">Ястия</span>
+                            <span class="row roboto text-start font-size-20">Атмосфера </span>
+                            <span class="row roboto text-start font-size-20">Работници </span>
+                        </div>
+                        <div class="col-2 my-auto">
+                            <span class="row roboto fw-bold font-size-20">Средна оценка:</span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.cuisineAverageRating"></app-star-rating></span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
+                        </div>
+                        <button class="col-2 btn btn-chocolate roboto font-size-15 my-auto" (click)="editRestaurant()">
+                            Редактиране
+                        </button>
+                    </div>
+                </div>
+
             </div>
-            <div class="text-center">                
-                <button class="btn btn-info" (click)="addNewRestaurant()">
-                    Добавяне на ресторант</button>                         
+            <div class="text-center my-4">
+                <button class="btn btn-chocolate roboto font-size-20" (click)="addNewRestaurant()">
+                    Добавяне на ресторант</button>
             </div>
         </div>
         <div class="col-4">
             <div class="roboto">
-                Всички служители в ресторанта
-            </div>            
+                Всички служители в ресторант /restorant-name/
+            </div>
         </div>
     </div>
 </div>
