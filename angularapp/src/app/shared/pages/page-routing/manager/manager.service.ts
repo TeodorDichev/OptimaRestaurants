@@ -31,15 +31,15 @@ export class ManagerService {
   }
 
   updateManagerAccount(model: UpdateManager, email: string){
-    return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
+    return this.http.patch(`${environment.appUrl}/api/manager/${email}`, model);
   }
 
   getRestaurantEmployees(restaurantId: string) {
     return this.http.get(`${environment.appUrl}/${restaurantId}`);
   }
 
-  editRestaurant(model: NewRestaurant, email: string) {
-    return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
+  editRestaurant(model: NewRestaurant, restaurantId: string) {
+    return this.http.patch(`${environment.appUrl}/api/manager/${restaurantId}`, model);
   }
 
   logout() {

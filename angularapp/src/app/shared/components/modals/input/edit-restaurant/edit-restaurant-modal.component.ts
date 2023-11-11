@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
-import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
 
 @Component({
@@ -12,18 +11,19 @@ import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manage
     '../../../../../app.component.css']
 })
 export class EditRestaurantModalComponent implements OnInit {
+  @Input() currentRestaurant: Restraurant | undefined;
+
   editRestaurantForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
-  email: string | null = this.accountService.getEmail();
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
-    private managerService: ManagerService,
-    private accountService: AccountService) { }
+    private managerService: ManagerService) { }
 
   ngOnInit(): void {
     this.initializeForm();
+
   }
 
   initializeForm() {
@@ -40,8 +40,8 @@ export class EditRestaurantModalComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
 
-    if (this.editRestaurantForm.valid && this.email) {
-      this.managerService.editRestaurant(this.editRestaurantForm.value, this.email).subscribe({
+    if (this.editRestaurantForm.valid && this.currentRestaurant) {
+      this.managerService.editRestaurant(this.editRestaurantForm.value, this.currentRestaurant.id).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.bsModalRef.hide();

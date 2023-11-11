@@ -17,7 +17,7 @@ import { Employee } from '../../models/employee/employee';
 export class ManagerLoggedViewComponent implements OnInit {
 
   editRestaurant() {
-    this.sharedService.openRestaurantEditModal();
+    this.sharedService.openRestaurantEditModal(this.currentRestaurant);
   }
 
   user: User | null | undefined;
