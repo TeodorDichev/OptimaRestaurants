@@ -67,7 +67,6 @@ export class AccountService {
   }
 
   resetPassword(model: ResetPassword) {
-    console.log(model);
     return this.http.put(`${environment.appUrl}/api/account/reset-password`, model);
   }
 

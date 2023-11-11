@@ -10,7 +10,7 @@ img {
     box-shadow: 4px 2px 5px black;
     background-color: rgb(102, 102, 102);
 }
-
-.scrollable-vert {
-    max-height: 70vh;
+ 
+.selected {
+    background-color: gainsboro;
 }

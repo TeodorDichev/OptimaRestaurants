@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
@@ -28,10 +28,10 @@ export class EditRestaurantModalComponent implements OnInit {
 
   initializeForm() {
     this.editRestaurantForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      employeeCapacity: ['', [Validators.required]],
+      name: ['', []],
+      address: ['', []],
+      city: ['', []],
+      employeeCapacity: ['', []],
       iconUrl: ['', []]
     })
   }

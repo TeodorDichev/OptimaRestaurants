@@ -13,8 +13,8 @@ import { NewRestaurantInputModalComponent } from './components/modals/input/new-
 import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
-import { ManagerInfoComponent } from './components/dropdowns/manager-info/manager-info.component';
-import { EmployeeInfoComponent } from './components/dropdowns/employee-info/employee-info.component';
+import { ManagerInfoComponent } from './components/modals/show/manager-info/manager-info.component';
+import { EmployeeInfoComponent } from './components/modals/show/employee-info/employee-info.component';
 
 
 @NgModule({

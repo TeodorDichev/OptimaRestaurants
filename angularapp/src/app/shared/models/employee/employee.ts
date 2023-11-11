@@ -1,4 +1,4 @@
-export interface Manager{
+export interface Employee{
     email: string,
     firstName: string,
     lastName: string,

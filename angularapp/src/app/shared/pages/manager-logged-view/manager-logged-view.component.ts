@@ -5,6 +5,7 @@ import { User } from 'src/app/shared/models/account/user';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { SharedService } from '../../shared.service';
 import { Restraurant } from '../../models/restaurant/restaurant';
+import { Employee } from '../../models/employee/employee';
 
 
 @Component({
@@ -14,12 +15,15 @@ import { Restraurant } from '../../models/restaurant/restaurant';
     '../../../app.component.css']
 })
 export class ManagerLoggedViewComponent implements OnInit {
+
   editRestaurant() {
     this.sharedService.openRestaurantEditModal();
   }
 
   user: User | null | undefined;
   manager: Manager | null | undefined;
+  currentRestaurant: Restraurant | undefined;
+  employees: Employee[] = [];
 
   constructor(private managerService: ManagerService,
     private accountService: AccountService,
@@ -39,21 +43,29 @@ export class ManagerLoggedViewComponent implements OnInit {
         }
       });
     }
+    
   }
 
-  getRestaurantEmployees(restaurantId: string) {
-    this.managerService.getRestaurantEmployees(restaurantId).subscribe(
-      (response: any) => {
-        // this.employees (which needs employee dto []) = response;
-      },
-      (error) => {
-        console.log(error.error);
-      }
-    );
+  getRestaurantEmployees() {  
+    if (this.currentRestaurant?.id) {
+      this.managerService.getRestaurantEmployees(this.currentRestaurant.id).subscribe(
+        (response: any) => {
+          this.employees = response;
+        },
+        (error) => {
+          console.log(error.error);
+        }
+      );
+    }
+    
+  }
+
+  selectedRestaurant(selectedRestaurant: Restraurant) {
+    this.currentRestaurant = selectedRestaurant;
   }
 
   missingIcon(restaurant: Restraurant) {
-    restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png';
+    restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png'; // change logic here, this way a value is given to the iconUrl
   }
 
   private setUser() {
@@ -67,6 +79,10 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.managerService.manager$.subscribe(manager => {
       if (manager) {
         this.manager = manager;
+        if (this.manager.restaurants){
+          this.selectedRestaurant(this.manager.restaurants[0]);
+          this.getRestaurantEmployees();
+        }
       }
     });
   }

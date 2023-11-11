@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Manager } from 'src/app/shared/models/manager/manager';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
@@ -9,13 +10,14 @@ import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manage
   selector: 'app-edit-manager',
   templateUrl: './edit-manager.component.html',
   styleUrls: ['./edit-manager.component.css',
-'../../../../../app.component.css']
+    '../../../../../app.component.css']
 })
 export class EditManagerComponent {
   editManagerForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
   email: string | null = this.accountService.getEmail();
+  manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -28,7 +30,6 @@ export class EditManagerComponent {
 
   initializeForm() {
     this.editManagerForm = this.formBuilder.group({
-      newEmail: ['', [Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
       newFirstName: ['', []],
       newLastName: ['', []],
       newPhoneNumber: ['', []],

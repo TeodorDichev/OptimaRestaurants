@@ -52,10 +52,10 @@ export class NavbarComponent implements OnInit {
   infoUser() {
     if (this.user) {
       if (this.isManager) {
-        this.sharedService.openEditManagerModal();
+        this.sharedService.openManagerInfoModal();
       }
       else {
-        this.sharedService.openEditEmployeeModal();
+        this.sharedService.openEmployeeInfoModal();
       }
     }
   }
@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
 
   }
   contact() {
-
+    
   }
   help() {
 

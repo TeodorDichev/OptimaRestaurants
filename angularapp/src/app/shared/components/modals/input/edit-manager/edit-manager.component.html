@@ -4,16 +4,7 @@
     </div>
     <div class="modal-body text-center">
         <form [formGroup]="editManagerForm" (ngSubmit)="editManager()" autocomplete="off">
-            <div class="form-group pt-3">
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newEmail" type="text" placeholder="Нов имейл адрес"
-                        [class.is-invalid]="submitted && editManagerForm.get('newEmail')?.errors">
-                </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editManagerForm.get('newEmail')?.hasError('required')">
-                    Полето е задължително!
-                </span>
+            <div class="form-group pt-3">             
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
                     <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"

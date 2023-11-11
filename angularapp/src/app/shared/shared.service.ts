@@ -5,6 +5,8 @@ import { NewRestaurantInputModalComponent } from './components/modals/input/new-
 import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
+import { ManagerInfoComponent } from './components/modals/show/manager-info/manager-info.component';
+import { EmployeeInfoComponent } from './components/modals/show/employee-info/employee-info.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +33,14 @@ export class SharedService {
 
   openRestaurantEditModal() {
     this.bsModalRef = this.modalService.show(EditRestaurantModalComponent);
+  }
+
+  openManagerInfoModal() {
+    this.bsModalRef = this.modalService.show(ManagerInfoComponent);
+  }
+
+  openEmployeeInfoModal() {
+    this.bsModalRef = this.modalService.show(EmployeeInfoComponent);
   }
 
   openEditManagerModal() {
