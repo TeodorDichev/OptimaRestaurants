@@ -264,7 +264,7 @@ namespace webapi.Controllers
                 _context.Update(employee);
                 await _context.SaveChangesAsync();
 
-                return Ok("Вашият акаунт беше успешно актуализиран!");
+                return Ok(new JsonResult(new { title = "Успешно обновяване!", message = "Вашият акаунт беше успешно актуализиран!" }));
             }
             catch (Exception ex)
             {
@@ -272,7 +272,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/manager/{email}")]
+        [HttpPut("api/manager/update-manager/{email}")]
         public async Task<IActionResult> UpdateManagerAccount([FromBody] UpdateManagerDto managerDto, string email)
         {
             try
@@ -291,7 +291,7 @@ namespace webapi.Controllers
                 _context.Update(manager);
                 await _context.SaveChangesAsync();
 
-                return Ok("Вашият акаунт беше успешно актуализиран!");
+                return Ok(new JsonResult(new { title = "Успешно обновяване!", message = "Вашият акаунт беше успешно актуализиран!" }));
             }
             catch (Exception ex)
             {

@@ -5,6 +5,7 @@ import { Manager } from 'src/app/shared/models/manager/manager';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-edit-manager',
@@ -22,6 +23,7 @@ export class EditManagerComponent {
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private managerService: ManagerService,
+    private sharedService: SharedService,
     private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -46,6 +48,25 @@ export class EditManagerComponent {
         next: (response: any) => {
           this.managerService.setManager(response);
           this.bsModalRef.hide();
+          this.sharedService.showNotification(true, response.value.title, response.value.message);
+        },
+        error: error => {
+          if (error.error.errors) {
+            this.errorMessages = error.error.errors;
+          } else {
+            this.errorMessages.push(error.error);
+          }
+        }
+      });
+    }
+  }
+
+  deleteManagerAccount() {
+    if (this.email) {
+      this.managerService.deleteManagerAccount(this.email).subscribe({
+        next: (response: any) => {
+          this.bsModalRef.hide();
+          this.sharedService.showNotification(true, response.value.title, response.value.message);
         },
         error: error => {
           if (error.error.errors) {

@@ -4,6 +4,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-new-restaurant-input-modal',
@@ -21,6 +22,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private managerService: ManagerService,
+    private sharedService: SharedService,
     private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -46,6 +48,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
         next: (response: any) => {
           this.managerService.setManager(response);
           this.bsModalRef.hide();
+          this.sharedService.showNotification(true, 'Успешно създаден ресторант!', 'Вашият ресторант беше създаден успешно!');
         },
         error: error => {
           if (error.error.errors) {

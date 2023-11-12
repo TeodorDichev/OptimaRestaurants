@@ -1,48 +1,68 @@
 <header>
     <nav class="navbar navbar-expand navbar-light">
-        <div class="container">           
+        <div class="container">
+
             <a class="nav-brand heading-font col-lg-9">
                 <a (click)="homePage()" class="heading-font btn btn-outline-dark">
                     Ресторант Оптима
                 </a>
-                
             </a>
-            <button class="navbar-toggler" type="button">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+
             <div class="collapse navbar-collapse ms-sm-5">
-                <a class="btn btn-outline-dark m-2" (click)="allRestaurants()"><i class="fa fa-cutlery fa-3x"></i>
-                </a>
+
+                <a class="btn btn-outline-dark m-2" (click)="allRestaurants()">
+                    <i class="fa fa-cutlery fa-3x"></i>
+                </a> 
+
                 <ul class="navbar-nav" *ngIf="(accountService.user$ | async) as user">
+
                     <li *ngIf="(isManager)">
-                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Работници, търсещи работа">
+                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()">
                             <i class="fa fa-users fa-3x"></i>
                         </a>
                     </li>
-                    <ul *ngIf="!(isManager)">
-                        
+
+                    <ul class="navbar-nav" *ngIf="!(isManager)">
+                        <li class="nav-item">
+                            <a class="btn btn-outline-dark m-2" (click)="showCV()">
+                                <i class="fa fa-file-text fa-3x"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-dark m-2" (click)="showQR()">
+                                <i class="fa fa-qrcode fa-3x"></i>
+                            </a>
+                        </li>
                     </ul>
+
+
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="inbox()"><i class="fa fa-envelope-o fa-3x"></i></a>
                     </li>
+
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="infoUser()"><i class="fa fa-user fa-3x"></i></a>
                     </li>
+
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
                     </li>
-                    
+
                 </ul>
-                <ul class="navbar-nav" *ngIf="!(accountService.user$ | async) as user">                   
+
+                <ul class="navbar-nav" *ngIf="!(accountService.user$ | async) as user">
+
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="contact()"><i class="fa fa-phone fa-3x"></i></a>
                     </li>
+
                     <li class="nav-item">
                         <a class="btn btn-outline-dark m-2" (click)="help()"><i class="fa fa-question fa-3x"></i></a>
                     </li>
-                </ul>             
-            </div>
+                    
+                </ul>
 
+            </div>
         </div>
     </nav>
 </header>

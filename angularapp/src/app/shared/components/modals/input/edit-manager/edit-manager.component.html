@@ -4,7 +4,7 @@
     </div>
     <div class="modal-body text-center">
         <form [formGroup]="editManagerForm" (ngSubmit)="editManager()" autocomplete="off">
-            <div class="form-group pt-3">             
+            <div class="form-group pt-3">
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
                     <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"
@@ -27,15 +27,19 @@
                     <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер"
                         [class.is-invalid]="submitted && editManagerForm.get('newPhoneNumber')?.errors">
                 </div>
-                <span class="text-danger" *ngIf="submitted && editManagerForm.get('newPhoneNumber')?.hasError('required')">
+                <span class="text-danger"
+                    *ngIf="submitted && editManagerForm.get('newPhoneNumber')?.hasError('required')">
                     Полето е задължително!
                 </span>
                 <div class="input-field my-2">
                     <span class="fa fa-picture-o chocolate p-2"></span>
                     <input class="col-11" type="file" (change)="onImageSelected($event)" accept="image/*">
-                    <span class="text-danger">Upload file does not work, we don't have a place to store the
-                        images!</span>
+                    <i class="text-danger fa fa-chevron-up"></i>
+                    <span class="text-danger">**Not implemented**</span>
                 </div>
+                <button type="button" class="btn btn-danger" (click)="deleteManagerAccount()">Изтриване на
+                    акаунт</button>
+                <div class="text-danger font-size-15 p-2">Внимание! Тази операция не може да бъде върната!</div>
             </div>
             <div class="form-floating" *ngIf="errorMessages.length > 0">
                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>

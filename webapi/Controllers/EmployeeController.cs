@@ -17,7 +17,7 @@ namespace webapi.Controllers
     /// Edit - city, birthdate
     /// Add/Delete a request to a manager's restaurant
     /// </summary>
-    [Authorize(Roles = "Employee")]
+    //[Authorize(Roles = "Employee")]
     public class EmployeeController : Controller
     {
         private readonly OptimaRestaurantContext _context;
@@ -32,7 +32,7 @@ namespace webapi.Controllers
 
         //confirm request, reject request -> sent requests when browsing restaurants
 
-        [HttpDelete("api/employee/{email}")]
+        [HttpDelete("api/employee/delete-employee{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
             var employee = await _context.Employees
@@ -57,7 +57,7 @@ namespace webapi.Controllers
         }
 
 
-        [HttpGet("api/employee/{email}")] // pass either email from register or username from login
+        [HttpGet("api/employee/get-employee/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetEmployee(string email)
         {
             var employee = await _context.Employees

@@ -3,7 +3,7 @@
     <div class="row max-width">
         <div class="col-8">
             <div class="roboto row my-4">
-                <span class="roboto text-center fw-bold font-size-30">Вашите ресторанти</span>
+                <span class="roboto text-center fw-bold font-size-30">Вашите ресторанти, {{manager?.firstName}}</span>
             </div>
             <div class="scrollable-vert max-height-70vh">
                 <div *ngFor="let restaurant of this.manager?.restaurants;">
@@ -32,7 +32,7 @@
                             <span class="row roboto text-start font-size-20"><app-star-rating
                                     [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
                         </div>
-                        <button class="col-2 btn btn-chocolate roboto font-size-15 my-auto" (click)="editRestaurant()">
+                        <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto" (click)="editRestaurant()">
                             Редактиране
                         </button>
                     </div>

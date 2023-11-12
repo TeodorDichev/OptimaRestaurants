@@ -4,6 +4,7 @@ import { ManagerService } from '../../pages/page-routing/manager/manager.service
 import { User } from '../../models/account/user';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
+import { EmployeeService } from '../../pages/page-routing/employee/employee.service';
 
 @Component({
   selector: 'app-navbar',
@@ -11,11 +12,14 @@ import { SharedService } from '../../shared.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
+
   user: User | null | undefined;
   isManager: boolean = true;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
+    public employeeService: EmployeeService,
     public sharedService: SharedService,
     public router: Router) { }
 
@@ -29,7 +33,11 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-    this.accountService.logout();
+    if (this.user?.isManager){
+      this.managerService.logout();
+    } else {
+      this.employeeService.logout();
+    }
   }
 
   homePage() {
@@ -46,9 +54,18 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  showCV() {
+
+  }
+
+  showQR() {
+    
+  }
+
   employeeSearch() {
 
   }
+
   infoUser() {
     if (this.user) {
       if (this.isManager) {
@@ -59,15 +76,19 @@ export class NavbarComponent implements OnInit {
       }
     }
   }
+
   inbox() {
 
   }
+
   contact() {
-    
+
   }
+
   help() {
 
   }
+
   allRestaurants() {
 
   }

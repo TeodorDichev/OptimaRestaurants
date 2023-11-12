@@ -35,13 +35,14 @@ namespace webapi.Controllers
             if (!restaurantDto.City.IsNullOrEmpty()) restaurant.City = restaurantDto.City;
             if (!restaurantDto.IconUrl.IsNullOrEmpty()) restaurant.IconUrl = restaurantDto.IconUrl;
             if (!restaurantDto.Name.IsNullOrEmpty()) restaurant.Name = restaurantDto.Name;
+            if (restaurantDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)restaurantDto.EmployeeCapacity;
 
             _context.Update(restaurant);
             await _context.SaveChangesAsync();
-            return Ok("Ресторантът беше обновен успешно!");
+            return Ok(new JsonResult(new { title = "Успешно обновяване!", message = "Вашият ресторант беше успешно обновен!" }));
         }
 
-        [HttpDelete("api/manager/{email}")]
+        [HttpDelete("api/manager/delete-manager/{email}")]
         public async Task<IActionResult> DeleteManagerAccount(string email)
         {
             var manager = await _context.Managers
@@ -58,7 +59,7 @@ namespace webapi.Controllers
             _context.Remove(manager);
             await _context.SaveChangesAsync();
 
-            return Ok("Успешно изтрихте своя акаунт!");
+            return Ok(new JsonResult(new { title = "Успешно изтриване!", message = "Успешно изтрихте своя акаунт!" }));
         }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")] // pass the restaurant id to show the employees there
@@ -83,7 +84,7 @@ namespace webapi.Controllers
             return Ok(employees);
         }
 
-        [HttpGet("api/manager/{email}")] // pass either email from register or username from login
+        [HttpGet("api/manager/get-manager/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetManager(string email)
         {
             var manager = await _context.Managers

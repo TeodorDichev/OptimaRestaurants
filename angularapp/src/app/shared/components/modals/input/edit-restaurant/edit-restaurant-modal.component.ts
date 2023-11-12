@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-edit-restaurant-modal',
@@ -19,11 +21,11 @@ export class EditRestaurantModalComponent implements OnInit {
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
+    private sharedService: SharedService,
     private managerService: ManagerService) { }
 
   ngOnInit(): void {
     this.initializeForm();
-
   }
 
   initializeForm() {
@@ -43,10 +45,13 @@ export class EditRestaurantModalComponent implements OnInit {
     if (this.editRestaurantForm.valid && this.currentRestaurant) {
       this.managerService.editRestaurant(this.editRestaurantForm.value, this.currentRestaurant.id).subscribe({
         next: (response: any) => {
-          this.managerService.setManager(response);
+          console.log(response);
+          this.currentRestaurant = this.editRestaurantForm.value;
           this.bsModalRef.hide();
+          this.sharedService.showNotification(true, response.value.title, response.value.message);
         },
         error: error => {
+          console.log(error.error);
           if (error.error.errors) {
             this.errorMessages = error.error.errors;
           } else {
