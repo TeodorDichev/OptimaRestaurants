@@ -54,7 +54,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
             ValidIssuer = builder.Configuration["JWT:Issuer"],
             ValidateIssuer = true,
-            ValidateAudience = false
+            ValidateAudience = true
         };
     });
 
@@ -88,13 +88,11 @@ app.UseCors(opt =>
     opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
 });
 
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

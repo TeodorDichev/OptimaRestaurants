@@ -24,7 +24,7 @@ namespace webapi.Controllers
 
         //confirm request, reject request -> sent requests when browsing employees looking for jobs
 
-        [HttpPut("api/manager/{restaurantId}")]
+        [HttpPut("api/manager/update-restaurant/{restaurantId}")]
         public async Task<IActionResult> UpdateRestaurant([FromBody] UpdateRestaurantDto restaurantDto, string restaurantId)
         {
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
@@ -61,7 +61,7 @@ namespace webapi.Controllers
             return Ok("Успешно изтрихте своя акаунт!");
         }
 
-        [HttpGet("{restaurantId}")] // pass the restaurant id to show the employees there
+        [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")] // pass the restaurant id to show the employees there
         public async Task<IActionResult> GetRestaurantEmployees(string restaurantId)
         {
             ICollection<EmployeeDto> employees = new List<EmployeeDto>();
@@ -94,7 +94,7 @@ namespace webapi.Controllers
             return Ok(GenerateNewManagerDto(email));
         }
 
-        [HttpPost("api/manager/{email}")]
+        [HttpPost("api/manager/add-new-restaurant/{email}")]
         public async Task<ActionResult<ManagerMainViewDto>> AddNewRestaurant([FromBody] NewRestaurantDto newRestaurant, string email)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

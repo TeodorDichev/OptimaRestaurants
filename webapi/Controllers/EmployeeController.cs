@@ -57,10 +57,13 @@ namespace webapi.Controllers
         }
 
 
-        [HttpGet("api/employee{email}")] // pass either email from register or username from login
+        [HttpGet("api/employee/{email}")] // pass either email from register or username from login
         public async Task<IActionResult> GetEmployee(string email)
         {
-            if (_context.Employees.FirstOrDefault(e => e.Profile.Email == email) == null) return BadRequest("No employee with such email");
+            var employee = await _context.Employees
+                .FirstOrDefaultAsync(e => e.Profile.Email == email);
+
+            if (employee == null) return BadRequest("Няма регистриран менъджър с този имейл!");
 
             return Ok(GenerateNewEmployeeDto(email));
         }

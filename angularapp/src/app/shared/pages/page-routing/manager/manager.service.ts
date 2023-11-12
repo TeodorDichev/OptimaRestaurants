@@ -27,19 +27,19 @@ export class ManagerService {
   }
 
   addNewRestaurant(model: NewRestaurant, email: string) {
-    return this.http.post(`${environment.appUrl}/api/manager/${email}`, model);
+    return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, model);
   }
 
   updateManagerAccount(model: UpdateManager, email: string){
-    return this.http.patch(`${environment.appUrl}/api/manager/${email}`, model);
+    return this.http.put(`${environment.appUrl}/api/manager/${email}`, model);
   }
 
   getRestaurantEmployees(restaurantId: string) {
-    return this.http.get(`${environment.appUrl}/${restaurantId}`);
+    return this.http.get(`${environment.appUrl}/api/manager/get-restaurant-employees/${restaurantId}`);
   }
 
   editRestaurant(model: NewRestaurant, restaurantId: string) {
-    return this.http.patch(`${environment.appUrl}/api/manager/${restaurantId}`, model);
+    return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, model);
   }
 
   logout() {
