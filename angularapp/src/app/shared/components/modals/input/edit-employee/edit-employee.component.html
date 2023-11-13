@@ -1,1 +1,62 @@
-<p>edit-employee works!</p>
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на профил</h5>
+    </div>
+    <div class="modal-body text-center">
+        <form [formGroup]="editEmployeeForm" (ngSubmit)="editEmployee()" autocomplete="off">
+            <div class="form-group pt-3">
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"
+                        [class.is-invalid]="submitted && editEmployeeForm.get('newFirstName')?.errors">
+                </div>
+                <span class="text-danger"
+                    *ngIf="submitted && editEmployeeForm.get('newFirstName')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия"
+                        [class.is-invalid]="submitted && editEmployeeForm.get('newLastName')?.errors">
+                </div>
+                <span class="text-danger"
+                    *ngIf="submitted && editEmployeeForm.get('newLastName')?.hasError('required')">
+                    Полето е задължително!
+                </span>
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер"
+                        [class.is-invalid]="submitted && editEmployeeForm.get('newPhoneNumber')?.errors">
+                </div>
+                <span class="text-danger"
+                    *ngIf="submitted && editEmployeeForm.get('newPhoneNumber')?.hasError('required')">
+                    Полето е задължително!
+                </span>               
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град"
+                        [class.is-invalid]="submitted && editEmployeeForm.get('newCity')?.errors">
+                </div>
+                <span class="text-danger" *ngIf="submitted && editEmployeeForm.get('newCity')?.hasError('required')">
+                    Полето е задължително!
+                </span>             
+                <div class="input-field my-2">
+                    <span class="fa fa-picture-o chocolate p-2"></span>
+                    <input class="col-11" type="file" (change)="null" accept="image/*">
+                    <i class="text-danger fa fa-chevron-up"></i>
+                    <span class="text-danger">**Not implemented**</span>
+                </div>
+                <button type="button" class="btn btn-danger" (click)="deleteEmployeeAccount()">Изтриване на
+                    акаунт</button>
+                <div class="text-danger font-size-15 p-2">Внимание! Тази операция не може да бъде върната!</div>
+            </div>
+            <div class="form-floating" *ngIf="errorMessages.length > 0">
+                <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
+        <button type="button" class="btn btn-chocolate" (click)="editEmployee()">Запази</button>
+    </div>
+</div>

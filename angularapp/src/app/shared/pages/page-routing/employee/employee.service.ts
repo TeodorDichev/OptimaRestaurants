@@ -4,6 +4,7 @@ import { ReplaySubject } from 'rxjs';
 import { AccountService } from '../account/account.service';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { environment } from 'src/environments/environment.development';
+import { UpdateEmployee } from 'src/app/shared/models/employee/update-employee';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,12 @@ export class EmployeeService {
     }
 
     deleteEmployeeAccount(email: string){
+      this.logout();
       return this.http.delete(`${environment.appUrl}/api/employee/delete-employee${email}`)
+    }
+
+    updateEmployeeAccount(model: UpdateEmployee, email: string) {
+      return  this.http.put(`${environment.appUrl}/api/employee/update-employee/${email}`, model);
     }
 
     logout() { 

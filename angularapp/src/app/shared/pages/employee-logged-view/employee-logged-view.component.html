@@ -1,15 +1,65 @@
 <app-navbar></app-navbar>
-<div class="split-screen border-top">
-    <div class="row">
+<div class="split-screen border-top max-height-80vh">
+    <div class="row max-width">
         <div class="col-8">
-            <div class="roboto">
-                Ресторантите, в които работите
+            <div class="roboto row my-4">
+                <span class="roboto text-center fw-bold font-size-30">Ресторантите, в които работите</span>
             </div>
-            
+            <div class="scrollable-vert max-height-70vh">
+                <div *ngFor="let restaurant of this.employee?.restaurants;">
+                    <div class="row border-bottom border-top py-3">
+                        <div class="col-2 text-center mx-2 my-auto">
+                            <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
+                        </div>
+                        <div class="col-3 px-4 ms-5 my-auto">
+                            <span class="row roboto text-start fw-bold font-size-25">{{restaurant.name}}</span>
+                            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.address}},</span>
+                            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.city}}</span>
+                        </div>
+                        <div class="col-2 py-2 my-auto">
+                            <span class="row roboto fw-bold font-size-20">Категория:</span>
+                            <span class="row roboto text-start font-size-20">Ястия</span>
+                            <span class="row roboto text-start font-size-20">Атмосфера</span>
+                            <span class="row roboto text-start font-size-20">Работници</span>
+                        </div>
+                        <div class="col-2 my-auto">
+                            <span class="row roboto fw-bold font-size-20">Средна оценка:</span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.cuisineAverageRating"></app-star-rating></span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-4">
-            <div class="roboto">
-                Вашите статистики
+        <div class="col-4 border-start">
+            <div class="roboto row my-4">
+                <span class="roboto text-center fw-bold font-size-30">Вашите статистики, {{employee?.firstName}}</span>
+            </div>
+            <div class="scrollable-vert max-height-80vh mt-5" *ngIf="employee">
+                <div class="row roboto text-start font-size-25 my-3">
+                    <span>Средната ви оценка за бързина:</span>
+                    <app-star-rating [rating]="employee.speedAverageRating"></app-star-rating>
+                </div>
+                <div class="row roboto text-start font-size-25 my-3">
+                    <span>Средната ви оценка за отношение към клиента:</span>
+                    <app-star-rating [rating]="employee.attitudeAverageRating"></app-star-rating>
+                </div>
+                <div class="row roboto text-start font-size-25 my-3">
+                    <span>Средната ви оценка за наказания(?):</span>
+                    <app-star-rating [rating]="employee.punctualityAverageRating"></app-star-rating>
+                </div>
+                <div class="row roboto text-start font-size-25 my-3">
+                    <span>Средната ви оценка за сътрудничество с колеги:</span>
+                    <app-star-rating [rating]="employee.collegialityAverageRating"></app-star-rating>
+                </div>
+                <div class="row roboto text-start font-size-25 my-3">
+                    <span>Общата ви средната оценка:</span>
+                    <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
+                </div>
             </div>
         </div>
     </div>
