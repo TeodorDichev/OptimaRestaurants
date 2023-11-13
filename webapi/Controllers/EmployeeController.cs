@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
-using webapi.DTOs.Account;
 using webapi.DTOs.Employee;
-using webapi.DTOs.Manager;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
+using webapi.Services;
 
 namespace webapi.Controllers
 {
@@ -21,12 +19,15 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PictureAndIconService _pictureService;
 
         public EmployeeController(OptimaRestaurantContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            PictureAndIconService pictureService)
         {
             _context = context;
             _userManager = userManager;
+            _pictureService = pictureService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -49,7 +50,7 @@ namespace webapi.Controllers
             if (!employeeDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = employeeDto.NewFirstName;
             if (!employeeDto.NewLastName.IsNullOrEmpty()) profile.LastName = employeeDto.NewLastName;
             if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = employeeDto.NewPhoneNumber;
-            if (!employeeDto.NewPictureUrl.IsNullOrEmpty()) profile.ProfilePictureUrl = employeeDto.NewPictureUrl;
+            if (employeeDto.ProfilePictureFile != null) await _pictureService.UploadProfilePictureAsync(employeeDto.ProfilePictureFile, email);
 
             _context.Update(employee);
             await _context.SaveChangesAsync();
@@ -98,7 +99,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                    IconData = restaurant?.IconData
                 });
             }
 
@@ -107,7 +108,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = employee.Profile.FirstName,
                 LastName = employee.Profile.LastName,
-                ProfilePictureUrl = employee?.Profile.ProfilePictureUrl ?? string.Empty,
+                ProfilePictureData = employee.Profile.ProfilePictureData,
                 PhoneNumber = employee.Profile?.PhoneNumber ?? string.Empty,
                 City = employee?.City ?? string.Empty,
                 BirthDate = employee?.BirthDate ?? DateTime.Now,

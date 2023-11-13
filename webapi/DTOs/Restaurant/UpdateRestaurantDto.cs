@@ -7,6 +7,6 @@
         public string? City { get; set; }
         public int? EmployeeCapacity { get; set; }
         public bool? IsWorking { get; set; }
-        public string? IconUrl { get; set; }
+        public IFormFile? IconFile { get; set; }
     }
 }

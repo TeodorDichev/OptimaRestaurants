@@ -23,6 +23,7 @@ builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<ContextSeedService>();
+builder.Services.AddScoped<PictureAndIconService>();
 
 //Defining identity core services
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -57,8 +58,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true
         };
     });
-
-
 
 builder.Services.AddCors();
 

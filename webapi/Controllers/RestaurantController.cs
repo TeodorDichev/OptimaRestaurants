@@ -80,7 +80,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                    IconData = restaurant.IconData,
                 });
             }
 
@@ -107,7 +107,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                    IconData = restaurant.IconData,
                 });
             }
 
@@ -128,7 +128,7 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePictureUrl = emp.Profile?.ProfilePictureUrl ?? string.Empty,
+                    ProfilePictureData = emp.Profile.ProfilePictureData,
                     EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1 // in front-end if -1 "no reviews yet"
                 });
             }

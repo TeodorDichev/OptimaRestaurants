@@ -7,6 +7,7 @@ using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
+using webapi.Services;
 
 namespace webapi.Controllers
 {
@@ -14,12 +15,15 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PictureAndIconService _pictureService;
 
         public ManagerController(OptimaRestaurantContext context,
-                UserManager<ApplicationUser> userManager)
+                UserManager<ApplicationUser> userManager,
+                PictureAndIconService pictureService)
         {
             _context = context;
             _userManager = userManager;
+            _pictureService = pictureService;
         }
 
         [HttpGet("api/manager/get-manager/{email}")]
@@ -42,7 +46,7 @@ namespace webapi.Controllers
             if (!managerDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = managerDto.NewFirstName;
             if (!managerDto.NewLastName.IsNullOrEmpty()) profile.LastName = managerDto.NewLastName;
             if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = managerDto.NewPhoneNumber;
-            if (!managerDto.NewPictureUrl.IsNullOrEmpty()) profile.ProfilePictureUrl = managerDto.NewPictureUrl;
+            if (managerDto.ProfilePictureFile != null) await _pictureService.UploadProfilePictureAsync(managerDto.ProfilePictureFile, email);
 
             _context.Update(manager);
             await _context.SaveChangesAsync();
@@ -105,7 +109,7 @@ namespace webapi.Controllers
             if (restaurantDto.IsWorking.HasValue) restaurant.IsWorking = restaurantDto.IsWorking.Value;
             if (!restaurantDto.Address.IsNullOrEmpty()) restaurant.Address = restaurantDto.Address;
             if (!restaurantDto.City.IsNullOrEmpty()) restaurant.City = restaurantDto.City;
-            if (!restaurantDto.IconUrl.IsNullOrEmpty()) restaurant.IconUrl = restaurantDto.IconUrl;
+            if (restaurantDto.IconFile != null) await _pictureService.UploadRestaurantIconAsync(restaurantDto.IconFile, restaurantId);
             if (!restaurantDto.Name.IsNullOrEmpty()) restaurant.Name = restaurantDto.Name;
             if (restaurantDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)restaurantDto.EmployeeCapacity;
 
@@ -128,7 +132,7 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePictureUrl = emp.Profile?.ProfilePictureUrl ?? string.Empty,
+                    ProfilePictureData = emp.Profile.ProfilePictureData,
                     EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1
                 });
             }
@@ -157,7 +161,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl ?? string.Empty,
+                    IconData = restaurant?.IconData,
                 });
             }
 
@@ -166,7 +170,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
-                ProfilePictureUrl = manager.Profile?.ProfilePictureUrl ?? string.Empty,
+                ProfilePictureData = manager.Profile.ProfilePictureData,
                 Restaurants = restaurants.IsNullOrEmpty() ? new List<RestaurantDto>() : restaurantsDto
             };
 
