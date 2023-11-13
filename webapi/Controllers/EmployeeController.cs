@@ -34,7 +34,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<EmployeeMainViewDto>> GetEmployee(string email)
         {
             if (await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email) == null
-                || _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
+                || await _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
 
             return GenerateNewEmployeeDto(email);
         }

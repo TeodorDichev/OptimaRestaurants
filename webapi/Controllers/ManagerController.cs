@@ -30,7 +30,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> GetManager(string email)
         {
             if (await _context.Managers.FirstOrDefaultAsync(e => e.Profile.Email == email) == null
-                || _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
+                || await _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
 
             return Ok(GenerateNewManagerDto(email));
         }
