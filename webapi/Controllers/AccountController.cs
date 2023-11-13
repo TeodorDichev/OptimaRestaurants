@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.Text;
 using webapi.Data;
 using webapi.DTOs.Account;
-using webapi.DTOs.Employee;
-using webapi.DTOs.Manager;
 using webapi.Models;
 using webapi.Services;
 
@@ -42,28 +37,6 @@ namespace webapi.Controllers
             _emailService = emailService;
             _configuration = configuration;
             _context = context;
-        }
-
-        [HttpPost("api/account/login")]
-        public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
-        {
-            var user = await _userManager.FindByNameAsync(model.UserName);
-            if (user == null) return Unauthorized("Грешен имейл или парола!");
-
-            if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-            if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
-
-            return CreateApplicationUserDto(user);
-        }
-
-        //[Authorize(Roles = "Employee,Manager")]
-        [HttpGet("/api/account/refresh-user-token/{email}")]
-        public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email); 
-            return CreateApplicationUserDto(user);
         }
 
         [HttpPost("api/account/register-manager")]
@@ -143,7 +116,27 @@ namespace webapi.Controllers
             {
                 return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
+        }
 
+        [HttpPost("api/account/login")]
+        public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
+        {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (user == null) return Unauthorized("Грешен имейл или парола!");
+
+            if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (!result.Succeeded) return Unauthorized("Грешен имейл или парола!");
+
+            return CreateApplicationUserDto(user);
+        }
+
+        [HttpGet("/api/account/refresh-user-token/{email}")]
+        public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return CreateApplicationUserDto(user);
         }
 
         [HttpPut("api/account/confirm-email")]
@@ -161,7 +154,7 @@ namespace webapi.Controllers
                 var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
                 if (result.Succeeded)
                 {
-                    return Ok(new JsonResult(new { title = "Имейлът успешно потвърден!", message = "Вашият акаунт беше създаден!" })); // change message and login directly
+                    return Ok(new JsonResult(new { title = "Имейлът успешно потвърден!", message = "Вашият акаунт беше създаден!" }));
                 }
 
                 return BadRequest("Невалиден токен. Моля, опитайте отново");
@@ -171,6 +164,7 @@ namespace webapi.Controllers
                 return BadRequest("Невалиден токен. Моля, опитайте отново");
             }
         }
+
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
@@ -242,63 +236,6 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/employee/{email}")]
-        public async Task<IActionResult> UpdateEmployeeAccount([FromBody] UpdateEmployeeDto employeeDto, string email)
-        {
-            try
-            {
-                var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-                var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
-
-                if (employee == null) return NotFound("Потребителят не е намерен!");
-
-
-                // Update the user's properties
-                if (!employeeDto.NewFirstName.IsNullOrEmpty()) employee.Profile.FirstName = employeeDto.NewFirstName;
-                if (!employeeDto.NewLastName.IsNullOrEmpty()) employee.Profile.LastName = employeeDto.NewLastName;
-                if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) employee.Profile.PhoneNumber = employeeDto.NewPhoneNumber;
-                if (!employeeDto.NewPictureUrl.IsNullOrEmpty()) employee.Profile.ProfilePictureUrl = employeeDto.NewPictureUrl;
-                if (employeeDto.NewBirthDate != null) employee.BirthDate = employeeDto.NewBirthDate.Value;
-                if (!employeeDto.NewCity.IsNullOrEmpty()) employee.City = employeeDto.NewCity;
-
-                _context.Update(employee);
-                await _context.SaveChangesAsync();
-
-                return Ok(new JsonResult(new { title = "Успешно обновяване!", message = "Вашият акаунт беше успешно актуализиран!" }));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
-        [HttpPut("api/manager/update-manager/{email}")]
-        public async Task<IActionResult> UpdateManagerAccount([FromBody] UpdateManagerDto managerDto, string email)
-        {
-            try
-            {
-                var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-                var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
-
-                if (manager == null) return NotFound("Потребителят не е намерен!");
-
-                // Update the user's properties
-                if (!managerDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = managerDto.NewFirstName;
-                if (!managerDto.NewLastName.IsNullOrEmpty()) profile.LastName = managerDto.NewLastName;
-                if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = managerDto.NewPhoneNumber;
-                if (!managerDto.NewPictureUrl.IsNullOrEmpty()) profile.ProfilePictureUrl = managerDto.NewPictureUrl;
-
-                _context.Update(manager);
-                await _context.SaveChangesAsync();
-
-                return Ok(new JsonResult(new { title = "Успешно обновяване!", message = "Вашият акаунт беше успешно актуализиран!" }));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
-
         private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -346,6 +283,7 @@ namespace webapi.Controllers
                 IsManager = isManager
             };
         }
+
         private async Task<bool> CheckEmailExistAsync(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
