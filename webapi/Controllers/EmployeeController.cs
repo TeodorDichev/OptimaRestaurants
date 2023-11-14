@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
 using webapi.DTOs.Employee;
+using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 using webapi.Services;
@@ -19,15 +20,12 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly PictureAndIconService _pictureService;
 
         public EmployeeController(OptimaRestaurantContext context,
-            UserManager<ApplicationUser> userManager,
-            PictureAndIconService pictureService)
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _pictureService = pictureService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -50,7 +48,7 @@ namespace webapi.Controllers
             if (!employeeDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = employeeDto.NewFirstName;
             if (!employeeDto.NewLastName.IsNullOrEmpty()) profile.LastName = employeeDto.NewLastName;
             if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = employeeDto.NewPhoneNumber;
-            if (employeeDto.ProfilePictureFile != null) await _pictureService.UploadProfilePictureAsync(employeeDto.ProfilePictureFile, email);
+            if (employeeDto.ProfilePictureFile == null) //service doing work
 
             _context.Update(employee);
             await _context.SaveChangesAsync();
@@ -77,6 +75,80 @@ namespace webapi.Controllers
             return Ok(new JsonResult(new { title = "Успешно изтриване!", message = "Успешно изтрихте своя акаунт!" }));
         }
 
+        [HttpGet("api/employee/get-all-requests/{email}")]
+        public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
+        {
+            var profile = await _userManager.FindByEmailAsync(email);
+            if (profile == null) { return BadRequest("Потребителят не съществува!"); }
+
+            List<RequestDto> requests = new List<RequestDto>();
+            foreach (var r in profile.Requests)
+            {
+                bool? confirmed = null;
+                if (r.ConfirmedOn != null) confirmed = true;
+                if (r.RejectedOn != null) confirmed = false;
+
+                var request = new RequestDto
+                {
+                    Id = r.Id.ToString(),
+                    RestaurantName = r.Restaurant.Name,
+                    SenderEmail = r.Sender.Email,
+                    SentOn = r.SentOn,
+                    Confirmed = confirmed,
+                    Text = $"Работите ли в ресторантът {r.Restaurant.Name}, собственост на {r.Sender.FirstName + " " + r.Sender.LastName}?"
+                };
+
+                requests.Add(request);
+            }
+
+            return Ok(requests);
+        }
+
+        [HttpPost("api/employee/respond-to-request")]
+        public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
+        {
+            var profile = await _userManager.FindByEmailAsync(requestDto.CurrentUserEmail);
+            var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == profile.Email);
+            if (profile == null) { return BadRequest("Потребителят не съществува!"); }
+
+            var request = profile.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
+            if (request == null) return BadRequest("Заявката не съществува!");
+            if (request.ConfirmedOn != null || request.RejectedOn != null) return BadRequest("Заявката вече е отговорена!");
+
+            var senderProfile = request.Sender;
+            var manager = await _context.Managers.FirstOrDefaultAsync(e => e.Profile.Email == senderProfile.Email);
+            if (senderProfile == null || manager == null) return BadRequest("Потребителят изпратил заявката не съществува!");
+
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == requestDto.RestaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+            if (restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
+                .Where(er => er.Restaurant.Id.ToString() == requestDto.RestaurantId).Count())
+                return BadRequest("Ресторантът не наема повече работници!");
+
+            if (requestDto.Confirmed)
+            {
+                request.ConfirmedOn = DateTime.UtcNow;
+                EmployeeRestaurant er = new EmployeeRestaurant
+                {
+                    Employee = employee,
+                    Restaurant = restaurant,
+                    StartedOn = DateTime.UtcNow,
+                };
+                employee.EmployeesRestaurants.Add(er);
+                restaurant.EmployeesRestaurants.Add(er);
+                await _context.EmployeesRestaurants.AddAsync(er);
+                await _context.SaveChangesAsync();
+                return Ok(new JsonResult(new { title = "Успешно потвърдена заявка!", message = $"Вече работите в ресторантът {request.Restaurant.Name}, собственост на {request.Sender.FirstName + " " + request.Sender.LastName}" }));
+            }
+            else
+            {
+                request.RejectedOn = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return Ok(new JsonResult(new { title = "Успешно отхвърлена заявка!", message = $"Заявката на {manager.Profile.FirstName} е отхвърлена!" }));
+            }
+        }
+
         private EmployeeMainViewDto GenerateNewEmployeeDto(string email)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.Profile.Email == email);
@@ -99,7 +171,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconData = restaurant?.IconData
+                    IconUrl = restaurant?.IconUrl
                 });
             }
 
@@ -108,7 +180,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = employee.Profile.FirstName,
                 LastName = employee.Profile.LastName,
-                ProfilePictureData = employee.Profile.ProfilePictureData,
+                ProfilePictureUrl = employee.Profile.ProfilePictureUrl,
                 PhoneNumber = employee.Profile?.PhoneNumber ?? string.Empty,
                 City = employee?.City ?? string.Empty,
                 BirthDate = employee?.BirthDate ?? DateTime.Now,

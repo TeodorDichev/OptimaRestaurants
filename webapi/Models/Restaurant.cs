@@ -11,8 +11,7 @@ namespace webapi.Models
         public required string City { get; set; }
         public int EmployeeCapacity { get; set; }
         public bool IsWorking { get; set; }
-        public byte[]? IconData { get; set; }
-        public string? IconMimeType { get; set; }
+        public string? IconUrl { get; set; }
         public decimal CuisineAverageRating { get; set; }
         public decimal AtmosphereAverageRating { get; set; }
         public decimal EmployeesAverageRating { get; set; }
