@@ -16,12 +16,15 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PicturesAndIconsService _picturesAndIconsService;
 
         public ManagerController(OptimaRestaurantContext context,
-                UserManager<ApplicationUser> userManager)
+                UserManager<ApplicationUser> userManager,
+                PicturesAndIconsService picturesAndIconsService)
         {
             _context = context;
             _userManager = userManager;
+            _picturesAndIconsService = picturesAndIconsService;
         }
 
         [HttpGet("api/manager/get-manager/{email}")]
@@ -44,7 +47,15 @@ namespace webapi.Controllers
             if (!managerDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = managerDto.NewFirstName;
             if (!managerDto.NewLastName.IsNullOrEmpty()) profile.LastName = managerDto.NewLastName;
             if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = managerDto.NewPhoneNumber;
-            if (managerDto.ProfilePictureFile != null) //service doing some work
+            if (managerDto.ProfilePictureFile != null)
+            {
+                if(profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                else
+                {
+                    _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
+                    _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                }
+            }
 
             _context.Update(manager);
             await _context.SaveChangesAsync();
@@ -62,6 +73,8 @@ namespace webapi.Controllers
             var roles = await _userManager.GetRolesAsync(profile);
 
             foreach (var restaurant in manager.Restaurants) restaurant.Manager = null;
+
+            if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
 
             _context.Managers.Remove(manager);
             await _userManager.RemoveFromRolesAsync(profile, roles);
@@ -107,7 +120,15 @@ namespace webapi.Controllers
             if (restaurantDto.IsWorking.HasValue) restaurant.IsWorking = restaurantDto.IsWorking.Value;
             if (!restaurantDto.Address.IsNullOrEmpty()) restaurant.Address = restaurantDto.Address;
             if (!restaurantDto.City.IsNullOrEmpty()) restaurant.City = restaurantDto.City;
-            if (restaurantDto.IconFile != null) //service doing some work
+            if (restaurantDto.IconFile != null)
+            {
+                if (restaurant.IconUrl == null) _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                else
+                {
+                    _picturesAndIconsService.DeleteImage(restaurant.IconUrl);
+                    _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                }
+            }
             if (!restaurantDto.Name.IsNullOrEmpty()) restaurant.Name = restaurantDto.Name;
             if (restaurantDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)restaurantDto.EmployeeCapacity;
 
@@ -220,17 +241,17 @@ namespace webapi.Controllers
             if (manager == null || profile == null) throw new ArgumentNullException("Потребителят не съществува!");
 
             List<Restaurant> restaurants = _context.Restaurants.Where(r => r.Manager == manager).ToList();
-            ICollection<RestaurantDto> restaurantsDto = new List<RestaurantDto>();
+            ICollection<ManagerRestaurantDto> restaurantsDto = new List<ManagerRestaurantDto>();
 
             foreach (var restaurant in manager.Restaurants)
             {
-                restaurantsDto.Add(new RestaurantDto
+                restaurantsDto.Add(new ManagerRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
+                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
                     IconUrl = restaurant?.IconUrl,
@@ -243,7 +264,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile.ProfilePictureUrl,
-                Restaurants = restaurants.IsNullOrEmpty() ? new List<RestaurantDto>() : restaurantsDto
+                Restaurants = restaurants.IsNullOrEmpty() ? new List<ManagerRestaurantDto>() : restaurantsDto
             };
 
             return managerMainViewDto;

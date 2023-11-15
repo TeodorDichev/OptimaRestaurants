@@ -8,6 +8,6 @@ namespace webapi.DTOs.Manager
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public string? ProfilePictureUrl { get; set; }
-        public virtual ICollection<RestaurantDto>? Restaurants { get; set; }
+        public virtual ICollection<ManagerRestaurantDto>? Restaurants { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace webapi.DTOs.Employee
         public required decimal PunctualityAverageRating { get; set; }
         public required decimal CollegialityAverageRating { get; set; }
         public required decimal EmployeeAverageRating { get; set; }
-        public virtual ICollection<RestaurantDto>? Restaurants { get; set; }
+        public virtual ICollection<ManagerRestaurantDto>? Restaurants { get; set; }
 
     }
 }
