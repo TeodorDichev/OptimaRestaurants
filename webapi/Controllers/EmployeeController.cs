@@ -20,12 +20,15 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly PicturesAndIconsService _picturesAndIconsService;
 
         public EmployeeController(OptimaRestaurantContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            PicturesAndIconsService picturesAndIconsService)
         {
             _context = context;
             _userManager = userManager;
+            _picturesAndIconsService = picturesAndIconsService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -48,7 +51,15 @@ namespace webapi.Controllers
             if (!employeeDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = employeeDto.NewFirstName;
             if (!employeeDto.NewLastName.IsNullOrEmpty()) profile.LastName = employeeDto.NewLastName;
             if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = employeeDto.NewPhoneNumber;
-            if (employeeDto.ProfilePictureFile == null) //service doing work
+            if (employeeDto.ProfilePictureFile == null)
+            {
+                if (profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                else
+                {
+                    _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
+                    _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                }
+            }
 
             _context.Update(employee);
             await _context.SaveChangesAsync();
@@ -66,6 +77,8 @@ namespace webapi.Controllers
             var roles = await _userManager.GetRolesAsync(profile);
 
             foreach (var er in employee.EmployeesRestaurants) _context.EmployeesRestaurants.Remove(er);
+
+            if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
 
             _context.Employees.Remove(employee);
             await _userManager.RemoveFromRolesAsync(profile, roles);
