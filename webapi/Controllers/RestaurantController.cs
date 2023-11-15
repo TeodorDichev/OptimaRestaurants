@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
-using webapi.DTOs.Employee;
+using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 
@@ -21,119 +20,107 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByNameAsync(string name)
+        [HttpGet("api/restaurants")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants()
         {
-            return await _context.Restaurants.Where(r => r.Name == name).OrderBy(r => r.Name).ToListAsync();
-        }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByCityAsync(string city)
-        {
-            return await _context.Restaurants.Where(r => r.City == city).OrderBy(r => r.Name).ToListAsync();
-        }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByCuisineAverageRating()
-        {
-            return await _context.Restaurants.OrderBy(r => r.CuisineAverageRating).ThenBy(r => r.Name).ToListAsync();
-        }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByAtmosphereAverageRating()
-        {
-            return await _context.Restaurants.OrderBy(r => r.AtmosphereAverageRating).ThenBy(r => r.Name).ToListAsync();
-        }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByEmployeesAverageRating()
-        {
-            return await _context.Restaurants.OrderBy(r => r.EmployeesAverageRating).ThenBy(r => r.Name).ToListAsync();
-        }
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByRestaurantAverageRating()
-        {
-            return await _context.Restaurants.OrderBy(r => r.RestaurantAverageRating).ThenBy(r => r.Name).ToListAsync();
-        }
-        [Authorize(Roles = "Manager")]
-        [Authorize(Roles = "Employee")]
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsByStandardMonthlyPayment(decimal minimum = 0)
-        {
-            return await _context.Restaurants.OrderBy(r => r.StandardMonthlyPayment > minimum).ThenBy(r => r.Name).ToListAsync();
-        }
-        [Authorize(Roles = "Manager")]
-        [Authorize(Roles = "Employee")]
-        public async Task<IEnumerable<Restaurant>> GetAllRestaurantsWithOpenJobs()
-        {
-            return await _context.Restaurants
-                .Where(r => r.IsWorking && (r.EmployeeCapacity - r.EmployeesRestaurants.Where(x => x.Restaurant.Id == r.Id).Count() > 0))
-                .OrderBy(r => r.Name)
-                .ToListAsync();
-        }
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
 
-        [Authorize(Roles = "Manager")]
-        public ICollection<RestaurantDto> GetAllRestaurantsOfAManager(string email)
-        {
-            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
-
-            foreach (var restaurant in _context.Restaurants
-                .Where(r => r.Manager.Profile.Email.ToString() == email)
-                .OrderBy(r => r.Name)
-                .ToList())
+            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ToListAsync())
             {
-                restaurants.Add(new RestaurantDto
+                restaurantsDto.Add(new BrowseRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
-                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
-                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant.IconUrl,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
                 });
             }
 
-            return restaurants;
-
+            return restaurantsDto;
         }
 
-        [Authorize(Roles = "Employee")]
-        public ICollection<RestaurantDto> GetAllRestaurantsWhereEmployeeWorks(string email)
+        [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]
+        public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurantDetails(string restaurantId)
         {
-            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
 
-            foreach(var restaurant in _context.EmployeesRestaurants
-                .Where(x => x.Employee.Profile.Email == email && !x.EndedOn.HasValue)
-                .Select(x => x.Restaurant)
-                .ToList())
-            {
-                restaurants.Add(new RestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1, // in front-end if -1 "no reviews yet"
-                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
-                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant.IconUrl,
-                });
+            var manager = restaurant.Manager;
+            string managerFullName = "Ресторантът няма мениджър!";
+            string managerEmail = string.Empty;
+            if (manager != null) 
+            { 
+                managerFullName = manager.Profile.FirstName + " " + manager.Profile.LastName;
+                managerEmail = manager.Profile.Email ?? string.Empty;
             }
 
-            return restaurants;
+            var topEmployee = restaurant.EmployeesRestaurants.Select(er => er.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
+            string topEmployeeFullName = "Ресторантът няма работници!";
+            string topEmployeeEmail = string.Empty;
+            decimal topEmployeeRating = 0;
+            if (topEmployee != null)
+            { 
+                topEmployeeFullName = topEmployee.Profile.FirstName + " " + topEmployee.Profile.LastName; 
+                topEmployeeRating = topEmployee.EmployeeAverageRating ?? 0;
+                topEmployeeEmail = topEmployee.Profile.Email ?? string.Empty;
+            }
+
+            var restaurantDto = new RestaurantDetailsDto
+            {
+                Address = restaurant.Address,
+                AtmosphereAverageRating = restaurant.AtmosphereAverageRating,
+                RestaurantAverageRating = restaurant.RestaurantAverageRating,
+                CuisineAverageRating = restaurant.CuisineAverageRating,
+                EmployeesAverageRating = restaurant.EmployeesAverageRating,
+                City = restaurant.City,
+                EmployeeCapacity = restaurant.EmployeeCapacity,
+                IconUrl = restaurant.IconUrl,
+                IsWorking = restaurant.IsWorking,
+                Name = restaurant.Name,
+                Id = restaurant.Id.ToString(),
+                ManagerFullName = managerFullName,
+                TopEmployeeFullName = topEmployeeFullName,
+                TopEmployeeRating = topEmployeeRating,
+                TopEmployeeEmail = topEmployeeEmail,
+                ManagerEmail = managerEmail
+            };
+
+            return restaurantDto;
         }
 
-        [Authorize(Roles = "Manager")]
-        public ICollection<EmployeeDto> GetAllEmployeesOfARestaurant(string restaurantId)
+        [HttpPost("api/restaurants/send-working-request")]
+        public async Task<IActionResult> SendWorkingRequest([FromBody] NewEmployeeRequestDto requestDto)
         {
-            ICollection<EmployeeDto> employees = new List<EmployeeDto>();
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == requestDto.RestaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+            if (restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
+                .Where(er => er.Restaurant.Id.ToString() == requestDto.RestaurantId).Count())
+                return BadRequest("Ресторантът не наема повече работници!");
 
-            foreach (var emp in _context.EmployeesRestaurants
-                .Where(er => er.Restaurant.Id.ToString() == restaurantId)
-                .Select(e => e.Employee))
+
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == requestDto.EmployeeEmail);
+            var employeeProfile = await _context.Users.FirstOrDefaultAsync(p => p.Email == requestDto.EmployeeEmail);
+            if (employee == null || employeeProfile == null) return BadRequest("Потребителят не съществува!");
+
+            var manager = restaurant.Manager;
+            if (manager == null) return BadRequest("Ресторантът няма мениджър!");
+            var managerProfile = manager.Profile;
+
+            Request request = new Request
             {
-                employees.Add(new EmployeeDto
-                {
-                    Email = emp.Profile.Email,
-                    FirstName = emp.Profile.FirstName,
-                    LastName = emp.Profile.LastName,
-                    ProfilePictureUrl = emp.Profile.ProfilePictureUrl,
-                    EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1 // in front-end if -1 "no reviews yet"
-                });
-            }
+                Sender = employeeProfile,
+                Restaurant = restaurant,
+                SentOn = DateTime.UtcNow,
+            };
 
-            return employees;
+            managerProfile.Requests.Add(request);
+            await _context.SaveChangesAsync();
+            return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));
         }
     }
 }

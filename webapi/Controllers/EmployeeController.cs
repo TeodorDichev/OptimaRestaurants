@@ -122,9 +122,6 @@ namespace webapi.Controllers
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == requestDto.RestaurantId);
             if (restaurant == null) return BadRequest("Ресторантът не съществува!");
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
-            if (restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
-                .Where(er => er.Restaurant.Id.ToString() == requestDto.RestaurantId).Count())
-                return BadRequest("Ресторантът не наема повече работници!");
 
             if (requestDto.Confirmed)
             {
@@ -156,13 +153,13 @@ namespace webapi.Controllers
 
             if (employee == null || profile == null) throw new ArgumentNullException("Потребителят не съществува!");
 
-            ICollection<RestaurantDto> restaurants = new List<RestaurantDto>();
+            ICollection<ManagerRestaurantDto> restaurants = new List<ManagerRestaurantDto>();
 
             foreach (var restaurant in employee.EmployeesRestaurants
                 .Where(er => !er.EndedOn.HasValue)
                 .Select(er => er.Restaurant))
             {
-                restaurants.Add(new RestaurantDto
+                restaurants.Add(new ManagerRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
