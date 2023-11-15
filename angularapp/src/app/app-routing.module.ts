@@ -3,10 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './shared/pages/index/index.component';
 import { NotFoundComponent } from './shared/components/errors/not-found/not-found.component';
 import { AuthorizationGuard } from './shared/guards/authorization.guard';
+import { LoggedAuthorizationGuard } from './shared/guards/logged-guard/logged-authorization.guard';
 
 const routes: Routes = [
-  {path: '', component: IndexComponent},
-  {path: 'account', loadChildren:() => import('./shared/pages/page-routing/account/account.module').then(module => module.AccountModule)},
+  {path: '', canActivate:[LoggedAuthorizationGuard], component: IndexComponent},
+  {path: 'account', canActivate:[LoggedAuthorizationGuard], loadChildren:() => import('./shared/pages/page-routing/account/account.module').then(module => module.AccountModule)},
   {path: 'manager', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages/page-routing/manager/manager.module').then(module => module.ManagerModule) },
   {path: 'employee', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages/page-routing/employee/employee.module').then(module => module.EmployeeModule) },
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}

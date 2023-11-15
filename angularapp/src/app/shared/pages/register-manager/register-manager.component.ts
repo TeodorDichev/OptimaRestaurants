@@ -38,7 +38,8 @@ export class RegisterManagerComponent implements OnInit {
     if (this.registerForm.valid) {
       this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
-          this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.accountService.setUser(response);
+          this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
           this.router.navigateByUrl('/manager');
         },
         error: error => {

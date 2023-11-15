@@ -55,15 +55,15 @@ export class NavbarComponent implements OnInit {
   }
 
   showCV() {
-
+    this.sharedService.openCVModal();
   }
 
   showQR() {
-    
+    this.sharedService.openQRCodeModal();
   }
 
   employeeSearch() {
-
+    
   }
 
   infoUser() {
@@ -78,7 +78,14 @@ export class NavbarComponent implements OnInit {
   }
 
   inbox() {
-
+    if (this.user) {
+      if (this.isManager) {
+        this.sharedService.openInboxModalManager();
+      }
+      else {
+        this.sharedService.openInboxModalEmployee();
+      }
+    }
   }
 
   contact() {

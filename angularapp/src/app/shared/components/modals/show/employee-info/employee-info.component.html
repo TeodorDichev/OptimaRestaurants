@@ -5,7 +5,7 @@
     <div class="modal-body text-center roboto font-size-20 m-2">
       <span class="row my-4">Здравейте, {{employee.firstName}} {{employee.lastName}}!</span>
       <span class="row my-4">Имейл: {{employee.email}}</span>
-      <span class="row my-4">Дата на раждане: {{employee.birthDate}}</span>
+      <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
       <span class="row my-4">Град: {{employee.city}}</span>
       <span class="row my-4" *ngIf="!employee.profilePictureUrl">
         Все още нямате профилна снимка.

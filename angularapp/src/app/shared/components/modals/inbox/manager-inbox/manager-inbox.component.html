@@ -1,0 +1,18 @@
+<div class="modal-content" *ngIf="manager"> <!--check is for easier code writing, not neccesary-->
+    <div class="modal-header">
+      <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Вашият профил</h5>
+    </div>
+    <div class="modal-body text-center roboto font-size-20 m-2">
+      <span class="row my-4">Здравейте, {{manager.firstName}} {{manager.lastName}}!</span>
+      <span class="row my-4">Имейл: {{manager.email}}</span>
+      <span class="row my-4" *ngIf="!manager.profilePictureUrl">
+        Все още нямате профилна снимка.
+      </span>
+      <span class="row" *ngIf="manager.profilePictureUrl">
+        <img src="{{manager.profilePictureUrl}}">
+      </span>
+  
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>

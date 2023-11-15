@@ -12,13 +12,14 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class EmployeeInfoComponent {
   employee: Employee | undefined;
-
+  employeeBirthDate: string | undefined;
   constructor(public bsModalRef: BsModalRef,
     private employeeService: EmployeeService,
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.setEmployee();
+    this.employeeBirthDate = this.employee?.birthDate.toString().split('T')[0];
   }
 
   editEmployeeProfile() {

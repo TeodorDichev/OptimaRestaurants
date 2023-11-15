@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, Routes } from '@angular/router';
+import { Router } from '@angular/router';
 import { AccountService } from '../pages/page-routing/account/account.service';
 import { SharedService } from '../shared.service';
 import { Observable, map } from 'rxjs';
@@ -15,11 +15,8 @@ export class AuthorizationGuard {
     private sharedService: SharedService,
     private router: Router) { }
 
-
-
   canActivate(): Observable<boolean> {
-    const currentUrl = window.location.href;
-    const currentPage = currentUrl.split('/').at(3);
+    const currentPage = window.location.href.split('/').at(3);
     return this.accountService.user$.pipe(
       map((user: User | null) => {
         if (user) {
@@ -32,7 +29,7 @@ export class AuthorizationGuard {
           }
           else {
             if (currentPage === 'manager') {
-              this.incorrect('employee')
+              this.incorrect('employee');
               return false;
             }
             return true;
@@ -45,6 +42,8 @@ export class AuthorizationGuard {
       })
     );
   }
+
+
   private incorrect(page: string) {
     this.sharedService.showNotification(false, 'Not authorized', 'You are either not logged in, or do not have access to this page.');
     this.router.navigateByUrl('/' + page);

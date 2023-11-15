@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -66,7 +67,7 @@ namespace webapi.Controllers
                     Manager manager = new Manager { Profile = userToAdd };
                     await _context.Managers.AddAsync(manager);
                     await _context.SaveChangesAsync();
-                    return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
+                    return CreateApplicationUserDto(userToAdd);
                 }
                 else return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
@@ -108,7 +109,7 @@ namespace webapi.Controllers
                     };
                     await _context.Employees.AddAsync(employee);
                     await _context.SaveChangesAsync();
-                    return Ok(new JsonResult(new { title = "Успешно създаден акаунт!", message = "Вашият акаунт беше създаден. Моля, потвърдете имейл адреса си." }));
+                    return CreateApplicationUserDto(userToAdd);
                 }
                 else return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
             }
