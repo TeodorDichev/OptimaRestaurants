@@ -44,14 +44,17 @@ namespace webapi.Controllers
         public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromBody] UpdateEmployeeDto employeeDto, string email)
         {
             var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (profile == null) return BadRequest("Потребителят не съществува");
+
             var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
+            if (employee == null) return BadRequest("Потребителят не съществува");
 
             if (employee == null || profile == null) return BadRequest("Потребителят не е намерен!");
 
-            if (!employeeDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = employeeDto.NewFirstName;
-            if (!employeeDto.NewLastName.IsNullOrEmpty()) profile.LastName = employeeDto.NewLastName;
-            if (!employeeDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = employeeDto.NewPhoneNumber;
-            if (employeeDto.ProfilePictureFile == null)
+            if (employeeDto.NewFirstName != null) profile.FirstName = employeeDto.NewFirstName;
+            if (employeeDto.NewLastName != null) profile.LastName = employeeDto.NewLastName;
+            if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
+            if (employeeDto.ProfilePictureFile != null)
             {
                 if (profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 else
@@ -64,7 +67,7 @@ namespace webapi.Controllers
             _context.Update(employee);
             await _context.SaveChangesAsync();
 
-            return GenerateNewEmployeeDto(profile.Email);
+            return GenerateNewEmployeeDto(profile.Email ?? string.Empty);
         }
 
         [HttpDelete("api/employee/delete-employee{email}")]
@@ -105,7 +108,7 @@ namespace webapi.Controllers
                 {
                     Id = r.Id.ToString(),
                     RestaurantName = r.Restaurant.Name,
-                    SenderEmail = r.Sender.Email,
+                    SenderEmail = r.Sender.Email ?? string.Empty,
                     SentOn = r.SentOn,
                     Confirmed = confirmed,
                     Text = $"Работите ли в ресторантът {r.Restaurant.Name}, собственост на {r.Sender.FirstName + " " + r.Sender.LastName}?"
@@ -121,8 +124,10 @@ namespace webapi.Controllers
         public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
         {
             var profile = await _userManager.FindByEmailAsync(requestDto.CurrentUserEmail);
+            if (profile == null) return BadRequest("Потребителят не съществува!");
+
             var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == profile.Email);
-            if (profile == null) { return BadRequest("Потребителят не съществува!"); }
+            if (employee == null) return BadRequest("Потребителят не съществува!");
 
             var request = profile.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
             if (request == null) return BadRequest("Заявката не съществува!");

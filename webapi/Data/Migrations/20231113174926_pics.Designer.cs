@@ -13,7 +13,9 @@ namespace webapi.Migrations
 {
     [DbContext(typeof(OptimaRestaurantContext))]
     [Migration("20231113174926_pics")]
+#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     partial class pics
+#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -137,6 +137,8 @@ namespace webapi.Controllers
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return BadRequest("Потребителят не съществува!");
+
             return CreateApplicationUserDto(user);
         }
 
@@ -250,7 +252,7 @@ namespace webapi.Controllers
                 "<p>Благодарим ви,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, body, "Forgot username or password");
+            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Forgot username or password");
 
             return await _emailService.SendEmailAsync(emailSend);
         }
@@ -267,7 +269,7 @@ namespace webapi.Controllers
                 "<p>Благодарим ви,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email, body, "Confirm your email");
+            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Confirm your email");
 
             return await _emailService.SendEmailAsync(emailSend);
         }
@@ -279,7 +281,7 @@ namespace webapi.Controllers
 
             return new ApplicationUserDto
             {
-                Email = user.Email,
+                Email = user.Email ?? string.Empty,
                 JWT = _jwtService.CreateJWT(user),
                 IsManager = isManager
             };

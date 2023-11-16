@@ -40,13 +40,14 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> UpdateManager([FromBody] UpdateManagerDto managerDto, string email)
         {
             var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (profile == null) return BadRequest("Потребителят не е намерен!");
+
             var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
+            if (manager == null) return BadRequest("Потребителят не е намерен!");
 
-            if (manager == null || profile == null) return BadRequest("Потребителят не е намерен!");
-
-            if (!managerDto.NewFirstName.IsNullOrEmpty()) profile.FirstName = managerDto.NewFirstName;
-            if (!managerDto.NewLastName.IsNullOrEmpty()) profile.LastName = managerDto.NewLastName;
-            if (!managerDto.NewPhoneNumber.IsNullOrEmpty()) profile.PhoneNumber = managerDto.NewPhoneNumber;
+            if (managerDto.NewFirstName != null) profile.FirstName = managerDto.NewFirstName;
+            if (managerDto.NewLastName != null) profile.LastName = managerDto.NewLastName;
+            if (managerDto.NewPhoneNumber != null) profile.PhoneNumber = managerDto.NewPhoneNumber;
             if (managerDto.ProfilePictureFile != null)
             {
                 if(profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
@@ -60,7 +61,7 @@ namespace webapi.Controllers
             _context.Update(manager);
             await _context.SaveChangesAsync();
 
-            return GenerateNewManagerDto(profile.Email);
+            return GenerateNewManagerDto(profile.Email ?? string.Empty);
         }
 
         [HttpDelete("api/manager/delete-manager/{email}")]
@@ -114,12 +115,17 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> UpdateRestaurant([FromBody] UpdateRestaurantDto restaurantDto, string restaurantId)
         {
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
-
             if (restaurant == null) return BadRequest("Ресторантът не съществува!");
 
+            var manager = restaurant.Manager;
+            if (manager == null) return BadRequest("Потребителят не съществува!");
+
+            var profile = manager.Profile;
+            if (profile == null) return BadRequest("Потребителят не съществува!");
+
             if (restaurantDto.IsWorking.HasValue) restaurant.IsWorking = restaurantDto.IsWorking.Value;
-            if (!restaurantDto.Address.IsNullOrEmpty()) restaurant.Address = restaurantDto.Address;
-            if (!restaurantDto.City.IsNullOrEmpty()) restaurant.City = restaurantDto.City;
+            if (restaurantDto.Address != null) restaurant.Address = restaurantDto.Address;
+            if (restaurantDto.City != null) restaurant.City = restaurantDto.City;
             if (restaurantDto.IconFile != null)
             {
                 if (restaurant.IconUrl == null) _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
@@ -129,12 +135,29 @@ namespace webapi.Controllers
                     _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
                 }
             }
-            if (!restaurantDto.Name.IsNullOrEmpty()) restaurant.Name = restaurantDto.Name;
+            if (restaurantDto.Name != null) restaurant.Name = restaurantDto.Name;
             if (restaurantDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)restaurantDto.EmployeeCapacity;
 
             _context.Update(restaurant);
             await _context.SaveChangesAsync();
-            return GenerateNewManagerDto(restaurant.Manager.Profile.Email);
+            return GenerateNewManagerDto(profile.Email ?? string.Empty);
+        }
+
+        [HttpDelete("api/manager/delete-restaurant/{restaurantId}")]
+        public async Task<ActionResult<ManagerMainViewDto>> DeleteRestaurant(string restaurantId)
+        {
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+
+            var manager = restaurant.Manager;
+            if (manager == null) return BadRequest("Потребителят не съществува!");
+
+            var profile = manager.Profile;
+            if (profile == null) return BadRequest("Потребителят не съществува!");
+
+            foreach (var er in restaurant.EmployeesRestaurants) er.EndedOn = DateTime.UtcNow;
+
+            return GenerateNewManagerDto(profile.Email ?? string.Empty);
         }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
@@ -148,7 +171,7 @@ namespace webapi.Controllers
             {
                 employees.Add(new EmployeeDto
                 {
-                    Email = emp.Profile.Email,
+                    Email = emp.Profile.Email ?? string.Empty,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
                     ProfilePictureUrl = emp.Profile.ProfilePictureUrl,
@@ -176,7 +199,7 @@ namespace webapi.Controllers
                 {
                     Id = r.Id.ToString(),
                     RestaurantName = r.Restaurant.Name,
-                    SenderEmail = r.Sender.Email,
+                    SenderEmail = r.Sender.Email ?? string.Empty,
                     SentOn = r.SentOn,
                     Confirmed = confirmed,
                     Text = $"Работи ли {r.Sender.FirstName + " " + r.Sender.LastName} в {r.Restaurant.Name}?"
@@ -192,8 +215,9 @@ namespace webapi.Controllers
         public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
         {
             var profile = await _userManager.FindByEmailAsync(requestDto.CurrentUserEmail);
+            if (profile == null) return BadRequest("Потребителят не съществува!");
+
             var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Email == profile.Email);
-            if (profile == null) { return BadRequest("Потребителят не съществува!"); }
 
             var request = profile.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
             if (request == null) return BadRequest("Заявката не съществува!");
@@ -233,6 +257,20 @@ namespace webapi.Controllers
             }
         }
 
+        [HttpPut("api/manager/fire/{employeeEmail}/{restaurantId}")]
+        public async Task<ActionResult<List<EmployeeDto>>> FireAnEmployee(string employeeEmail, string restaurantId)
+        {
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+
+            foreach (var er in restaurant.EmployeesRestaurants.Where(er => er.Employee.Profile.Email == employeeEmail))
+            {
+                er.EndedOn = DateTime.UtcNow;
+                _context.EmployeesRestaurants.Update(er);
+            }
+            await _context.SaveChangesAsync();
+            return await GetRestaurantEmployees(restaurantId);
+        }
         private ManagerMainViewDto GenerateNewManagerDto(string email)
         {
             var manager = _context.Managers.FirstOrDefault(e => e.Profile.Email == email);
