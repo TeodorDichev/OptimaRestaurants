@@ -160,6 +160,56 @@ namespace webapi.Controllers
             return GenerateNewManagerDto(profile.Email ?? string.Empty);
         }
 
+        [HttpGet("api/manager/browse-employees/all")]
+        public async Task<ActionResult<List<BrowseEmployeeDto>>> GetAllEmployees()
+        {
+            List<Employee> employees = await _context.Employees.ToListAsync();
+            List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
+
+            foreach (var employee in employees)
+            {
+                employeesDto.Add(new BrowseEmployeeDto
+                {
+                    Email = employee.Profile.Email ?? string.Empty,
+                    FirstName = employee.Profile.FirstName ?? string.Empty,
+                    LastName = employee.Profile.LastName ?? string.Empty,
+                    PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
+                    ProfilePictureUrl = employee.Profile.ProfilePictureUrl ?? string.Empty,
+                    EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
+                    IsLookingForJob = employee.IsLookingForJob,
+                    City = employee.City,
+                    RestaurantsCount = employee.EmployeesRestaurants.Where(er => er.EndedOn == null).Count(),
+                });
+            }
+
+            return employeesDto;
+        }
+
+        [HttpGet("api/manager/browse-employees/looking-for-job")]
+        public async Task<ActionResult<List<BrowseEmployeeDto>>> GetEmployeesLookingForJob()
+        {
+            List<Employee> employees = await _context.Employees.ToListAsync();
+            List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
+
+            foreach (var employee in employees.Where(e => e.IsLookingForJob))
+            {
+                employeesDto.Add(new BrowseEmployeeDto
+                {
+                    Email = employee.Profile.Email ?? string.Empty,
+                    FirstName = employee.Profile.FirstName ?? string.Empty,
+                    LastName = employee.Profile.LastName ?? string.Empty,
+                    PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
+                    ProfilePictureUrl = employee.Profile.ProfilePictureUrl ?? string.Empty,
+                    EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
+                    IsLookingForJob = employee.IsLookingForJob,
+                    City = employee.City,
+                    RestaurantsCount = employee.EmployeesRestaurants.Where(er => er.EndedOn == null).Count(),
+                });
+            }
+
+            return employeesDto;
+        }
+
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
         public async Task<ActionResult<List<EmployeeDto>>> GetRestaurantEmployees(string restaurantId)
         {
@@ -180,6 +230,21 @@ namespace webapi.Controllers
             }
 
             return employees;
+        }
+        
+        [HttpPut("api/manager/fire/{employeeEmail}/{restaurantId}")]
+        public async Task<ActionResult<List<EmployeeDto>>> FireAnEmployee(string employeeEmail, string restaurantId)
+        {
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+
+            foreach (var er in restaurant.EmployeesRestaurants.Where(er => er.Employee.Profile.Email == employeeEmail))
+            {
+                er.EndedOn = DateTime.UtcNow;
+                _context.EmployeesRestaurants.Update(er);
+            }
+            await _context.SaveChangesAsync();
+            return await GetRestaurantEmployees(restaurantId);
         }
 
         [HttpGet("api/manager/get-all-requests/{email}")]
@@ -257,20 +322,6 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/manager/fire/{employeeEmail}/{restaurantId}")]
-        public async Task<ActionResult<List<EmployeeDto>>> FireAnEmployee(string employeeEmail, string restaurantId)
-        {
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
-            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
-
-            foreach (var er in restaurant.EmployeesRestaurants.Where(er => er.Employee.Profile.Email == employeeEmail))
-            {
-                er.EndedOn = DateTime.UtcNow;
-                _context.EmployeesRestaurants.Update(er);
-            }
-            await _context.SaveChangesAsync();
-            return await GetRestaurantEmployees(restaurantId);
-        }
         private ManagerMainViewDto GenerateNewManagerDto(string email)
         {
             var manager = _context.Managers.FirstOrDefault(e => e.Profile.Email == email);

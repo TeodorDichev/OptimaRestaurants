@@ -8,5 +8,6 @@
         public IFormFile? ProfilePictureFile { get; set; }
         public DateTime? NewBirthDate { get; set; }
         public string? NewCity { get; set; }
+        public bool IsLookingForJob { get; set; }
     }
 }

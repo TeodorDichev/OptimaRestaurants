@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +64,7 @@ namespace webapi.Controllers
                     _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 }
             }
+            employee.IsLookingForJob = employeeDto.IsLookingForJob;
 
             _context.Update(employee);
             await _context.SaveChangesAsync();
@@ -89,6 +91,15 @@ namespace webapi.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new JsonResult(new { title = "Успешно изтриване!", message = "Успешно изтрихте своя акаунт!" }));
+        }
+
+        [HttpGet("api/manager/browse-employees/details/{email}")]
+        public async Task<ActionResult<EmployeeMainViewDto>> GetEmployeeDetails(string email)
+        {
+            if (await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email) == null
+                || await _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
+
+            return GenerateNewEmployeeDto(email);
         }
 
         [HttpGet("api/employee/get-all-requests/{email}")]
@@ -193,18 +204,19 @@ namespace webapi.Controllers
             var employeeMainViewDto = new EmployeeMainViewDto
             {
                 Email = email,
-                FirstName = employee.Profile.FirstName,
-                LastName = employee.Profile.LastName,
-                ProfilePictureUrl = employee.Profile.ProfilePictureUrl,
-                PhoneNumber = employee.Profile?.PhoneNumber ?? string.Empty,
-                City = employee?.City ?? string.Empty,
-                BirthDate = employee?.BirthDate ?? DateTime.Now,
-                AttitudeAverageRating = employee?.AttitudeAverageRating ?? -1,
-                CollegialityAverageRating = employee?.CollegialityAverageRating ?? -1,
-                SpeedAverageRating = employee?.SpeedAverageRating ?? -1,
-                PunctualityAverageRating = employee?.PunctualityAverageRating ?? -1,
-                EmployeeAverageRating = employee?.EmployeeAverageRating ?? -1,
-                Restaurants = restaurants
+                FirstName = profile.FirstName,
+                LastName = profile.LastName,
+                ProfilePictureUrl = profile.ProfilePictureUrl,
+                PhoneNumber = profile.PhoneNumber ?? string.Empty,
+                City = employee.City,
+                BirthDate = employee.BirthDate,
+                AttitudeAverageRating = employee.AttitudeAverageRating ?? -1,
+                CollegialityAverageRating = employee.CollegialityAverageRating ?? -1,
+                SpeedAverageRating = employee.SpeedAverageRating ?? -1,
+                PunctualityAverageRating = employee.PunctualityAverageRating ?? -1,
+                EmployeeAverageRating = employee.EmployeeAverageRating ?? -1,
+                Restaurants = restaurants,
+                IsLookingForJob = employee.IsLookingForJob,
             };
 
             return employeeMainViewDto;
