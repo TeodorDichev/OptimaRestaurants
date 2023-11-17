@@ -7,35 +7,19 @@
             <div class="form-group pt-3">
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"
-                        [class.is-invalid]="submitted && editManagerForm.get('newFirstName')?.errors">
+                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име">
                 </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editManagerForm.get('newFirstName')?.hasError('required')">
-                    Полето е задължително!
-                </span>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия"
-                        [class.is-invalid]="submitted && editManagerForm.get('newLastName')?.errors">
+                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия">
                 </div>
-                <span class="text-danger" *ngIf="submitted && editManagerForm.get('newLastName')?.hasError('required')">
-                    Полето е задължително!
-                </span>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер"
-                        [class.is-invalid]="submitted && editManagerForm.get('newPhoneNumber')?.errors">
+                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер">
                 </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editManagerForm.get('newPhoneNumber')?.hasError('required')">
-                    Полето е задължително!
-                </span>
                 <div class="input-field my-2">
                     <span class="fa fa-picture-o chocolate p-2"></span>
-                    <input class="col-11" type="file" (change)="null" accept="image/*">
-                    <i class="text-danger fa fa-chevron-up"></i>
-                    <span class="text-danger">**Not implemented**</span>
+                    <input class="col-11" (change)="onFileSelected($event)" type="file" accept="image/*">
                 </div>
                 <button type="button" class="btn btn-danger" (click)="deleteManagerAccount()">Изтриване на
                     акаунт</button>

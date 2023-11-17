@@ -42,7 +42,7 @@ namespace webapi.Controllers
         }
 
         [HttpPut("api/employee/update-employee/{email}")]
-        public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromBody] UpdateEmployeeDto employeeDto, string email)
+        public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromForm] UpdateEmployeeDto employeeDto, string email)
         {
             var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (profile == null) return BadRequest("Потребителят не съществува");

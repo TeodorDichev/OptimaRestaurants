@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Manager } from 'src/app/shared/models/manager/manager';
-import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -18,7 +16,6 @@ export class EditManagerComponent {
   submitted = false;
   errorMessages: string[] = [];
   email: string | null = this.accountService.getEmail();
-  manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -35,14 +32,23 @@ export class EditManagerComponent {
       newFirstName: ['', []],
       newLastName: ['', []],
       newPhoneNumber: ['', []],
-      newPictureUrl: ['', []]
+      profilePictureFile: ['', []]
     })
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+        this.editManagerForm.patchValue({
+            profilePictureFile: file
+        });
+    }
   }
 
   editManager() {
     this.submitted = true;
     this.errorMessages = [];
-
+    
     if (this.editManagerForm.valid && this.email) {
       this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
         next: (response: any) => {

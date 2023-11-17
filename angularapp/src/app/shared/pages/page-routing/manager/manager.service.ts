@@ -18,37 +18,45 @@ export class ManagerService {
   constructor(private http: HttpClient,
     private accountService: AccountService) { }
 
-  getManager(email: string) { // works
+  getManager(email: string) {
     return this.http.get(`${environment.appUrl}/api/manager/get-manager/${email}`);
   }
 
-  deleteManagerAccount(email: string) {  // works
+  deleteManagerAccount(email: string) {
     this.logout();
     return this.http.delete(`${environment.appUrl}/api/manager/delete-manager/${email}`);
   }
 
-  addNewRestaurant(model: NewRestaurant, email: string) { // works
+  addNewRestaurant(model: NewRestaurant, email: string) {
     return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, model);
   }
 
-  updateManagerAccount(model: UpdateManager, email: string){ // works
-    return this.http.put(`${environment.appUrl}/api/manager/update-manager/${email}`, model);
+  updateManagerAccount(model: UpdateManager, email: string){
+
+    const formData: FormData = new FormData(); // for possible file sending, otherwise I send a link to the image (only way i found)
+
+    formData.append('newFirstName', model.newFirstName);
+    formData.append('newLastName', model.newLastName);
+    formData.append('newPhoneNumber', model.newPhoneNumber);
+    formData.append('profilePictureFile', model.profilePictureFile);
+
+    return this.http.put(`${environment.appUrl}/api/manager/update-manager/${email}`, formData);
   }
 
-  getRestaurantEmployees(restaurantId: string) { // not possible yet, in the making...
+  getRestaurantEmployees(restaurantId: string) {
     return this.http.get(`${environment.appUrl}/api/manager/get-restaurant-employees/${restaurantId}`);
   }
 
-  editRestaurant(model: NewRestaurant, restaurantId: string) { // works
+  editRestaurant(model: NewRestaurant, restaurantId: string) {
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, model);
   }
 
-  logout() { // works
-    this.userSource.next(null); // to ensure we remove the logged MANAGER NOT USER from HERE NOT LOCAL STORAGE
+  logout() {
+    this.userSource.next(null); // to ensure we remove the logged MANAGER {NOT USER} from HERE {NOT LOCAL STORAGE}
     this.accountService.logout();
   }
   
-  setManager(manager: Manager){ // works
+  setManager(manager: Manager){
     this.userSource.next(manager);
   }
 }

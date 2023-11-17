@@ -2,7 +2,8 @@ export interface UpdateEmployee {
     newFirstName: string,
     newLastName: string,
     newPhoneNumber: string,
-    profilePictureFile: string,
+    profilePictureFile: File,
     newBirthDate: Date,
-    newCity: string
+    newCity: string,
+    isLookingForJob: boolean
 }

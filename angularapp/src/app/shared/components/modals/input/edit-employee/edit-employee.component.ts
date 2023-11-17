@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Employee } from 'src/app/shared/models/employee/employee';
 import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages/page-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -17,7 +16,6 @@ export class EditEmployeeComponent {
   submitted = false;
   errorMessages: string[] = [];
   email: string | null = this.accountService.getEmail();
-  employee: Employee | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -34,10 +32,20 @@ export class EditEmployeeComponent {
       newFirstName: ['', []],
       newLastName: ['', []],
       newPhoneNumber: ['', []],
-      newPictureUrl: ['', []],
-      // newBirthDate: ['', []], // in case it's going to be used in the future
-      newCity: ['', []]
+      profilePictureFile: ['', []],
+      newBirthDate: ['', []], 
+      newCity: ['', []],
+      isLookingForJob: ['', []]
     })
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+        this.editEmployeeForm.patchValue({
+            profilePictureFile: file
+        });
+    }
   }
 
   editEmployee() {
@@ -49,7 +57,6 @@ export class EditEmployeeComponent {
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.bsModalRef.hide();
-          console.log(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
         },
         error: error => {
@@ -62,6 +69,7 @@ export class EditEmployeeComponent {
       });
     }
   }
+
   deleteEmployeeAccount() {
     if (this.email) {
       this.employeeService.deleteEmployeeAccount(this.email).subscribe({

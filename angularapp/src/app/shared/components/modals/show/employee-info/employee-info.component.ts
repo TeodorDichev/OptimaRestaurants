@@ -27,7 +27,6 @@ export class EmployeeInfoComponent {
     this.bsModalRef.hide();
   }
 
-
   private setEmployee() {
     this.employeeService.employee$.subscribe({
       next: (response: any) => {

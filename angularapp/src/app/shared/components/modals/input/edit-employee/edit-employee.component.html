@@ -7,44 +7,32 @@
             <div class="form-group pt-3">
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име"
-                        [class.is-invalid]="submitted && editEmployeeForm.get('newFirstName')?.errors">
+                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име">
                 </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editEmployeeForm.get('newFirstName')?.hasError('required')">
-                    Полето е задължително!
-                </span>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия"
-                        [class.is-invalid]="submitted && editEmployeeForm.get('newLastName')?.errors">
-                </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editEmployeeForm.get('newLastName')?.hasError('required')">
-                    Полето е задължително!
-                </span>
+                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия">
+                </div>   
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер"
-                        [class.is-invalid]="submitted && editEmployeeForm.get('newPhoneNumber')?.errors">
+                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер">
+                </div>           
+                <div class="input-field my-3">
+                    <span class="fa fa-calendar chocolate p-2"></span>
+                    <span class="text-muted me-3">Нова дата на раждане:</span>
+                    <input class="custom-date-input" formControlName="newBirthDate" type="date">
                 </div>
-                <span class="text-danger"
-                    *ngIf="submitted && editEmployeeForm.get('newPhoneNumber')?.hasError('required')">
-                    Полето е задължително!
-                </span>               
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град"
-                        [class.is-invalid]="submitted && editEmployeeForm.get('newCity')?.errors">
-                </div>
-                <span class="text-danger" *ngIf="submitted && editEmployeeForm.get('newCity')?.hasError('required')">
-                    Полето е задължително!
-                </span>             
+                    <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град">
+                </div>      
+                <div class="input-field my-2">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град">
+                </div>     
                 <div class="input-field my-2">
                     <span class="fa fa-picture-o chocolate p-2"></span>
-                    <input class="col-11" type="file" (change)="null" accept="image/*">
-                    <i class="text-danger fa fa-chevron-up"></i>
-                    <span class="text-danger">**Not implemented**</span>
+                    <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
                 </div>
                 <button type="button" class="btn btn-danger" (click)="deleteEmployeeAccount()">Изтриване на
                     акаунт</button>

@@ -37,7 +37,7 @@ namespace webapi.Controllers
         }
 
         [HttpPut("api/manager/update-manager/{email}")]
-        public async Task<ActionResult<ManagerMainViewDto>> UpdateManager([FromBody] UpdateManagerDto managerDto, string email)
+        public async Task<ActionResult<ManagerMainViewDto>> UpdateManager([FromForm] UpdateManagerDto managerDto, string email)
         {
             var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (profile == null) return BadRequest("Потребителят не е намерен!");

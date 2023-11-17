@@ -80,3 +80,12 @@
 .max-height-80vh {
     max-height: 80vh;
 }
+.input-field{
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    color: chocolate;
+}

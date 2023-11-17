@@ -13,5 +13,6 @@ export interface Employee{
     punctualityAverageRating: number,
     collegialityAverageRating: number,
     employeeAverageRating: number,
+    isLookingForJob: boolean,
     restaurants: Restraurant[]
 }
