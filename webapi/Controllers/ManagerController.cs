@@ -50,11 +50,11 @@ namespace webapi.Controllers
             if (managerDto.NewPhoneNumber != null) profile.PhoneNumber = managerDto.NewPhoneNumber;
             if (managerDto.ProfilePictureFile != null)
             {
-                if(profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                if(profile.ProfilePictureUrl == null) profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
                 else
                 {
                     _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
-                    _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                    profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
                 }
             }
 
@@ -105,6 +105,8 @@ namespace webapi.Controllers
                 Manager = manager
             };
 
+            if (newRestaurant.IconFile != null) restaurant.IconUrl = _picturesAndIconsService.SaveImage(newRestaurant.IconFile);
+
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
 
@@ -128,11 +130,11 @@ namespace webapi.Controllers
             if (restaurantDto.City != null) restaurant.City = restaurantDto.City;
             if (restaurantDto.IconFile != null)
             {
-                if (restaurant.IconUrl == null) _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                if (restaurant.IconUrl == null) restaurant.IconUrl = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
                 else
                 {
                     _picturesAndIconsService.DeleteImage(restaurant.IconUrl);
-                    _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                    restaurant.IconUrl = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
                 }
             }
             if (restaurantDto.Name != null) restaurant.Name = restaurantDto.Name;

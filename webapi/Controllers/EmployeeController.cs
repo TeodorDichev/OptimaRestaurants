@@ -57,11 +57,11 @@ namespace webapi.Controllers
             if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
             if (employeeDto.ProfilePictureFile != null)
             {
-                if (profile.ProfilePictureUrl == null) _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                if (profile.ProfilePictureUrl == null) profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 else
                 {
                     _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
-                    _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                    profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 }
             }
             employee.IsLookingForJob = employeeDto.IsLookingForJob;
