@@ -8,7 +8,8 @@
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads\\PicturesAndIcons");
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\uploads");
+                var returnPath = Path.Combine("../../../../assets/uploads");
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
@@ -19,11 +20,12 @@
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
+                var returnFileWithPath = returnPath + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
 
-                return fileWithPath;
+                return returnFileWithPath;
             }
             catch (Exception ex)
             {
