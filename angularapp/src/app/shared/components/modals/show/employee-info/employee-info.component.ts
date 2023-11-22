@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';
-import { EmployeeService } from 'src/app/shared/pages/page-routing/employee/employee.service';
+import { EmployeeService } from 'src/app/shared/pages/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({

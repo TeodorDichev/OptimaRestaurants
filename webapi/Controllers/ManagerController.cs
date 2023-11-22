@@ -86,7 +86,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/manager/add-new-restaurant/{email}")]
-        public async Task<ActionResult<ManagerMainViewDto>> AddNewRestaurant([FromBody] NewRestaurantDto newRestaurant, string email)
+        public async Task<ActionResult<ManagerMainViewDto>> AddNewRestaurant([FromForm] NewRestaurantDto newRestaurant, string email)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -114,7 +114,7 @@ namespace webapi.Controllers
         }
 
         [HttpPut("api/manager/update-restaurant/{restaurantId}")]
-        public async Task<ActionResult<ManagerMainViewDto>> UpdateRestaurant([FromBody] UpdateRestaurantDto restaurantDto, string restaurantId)
+        public async Task<ActionResult<ManagerMainViewDto>> UpdateRestaurant([FromForm] UpdateRestaurantDto restaurantDto, string restaurantId)
         {
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
             if (restaurant == null) return BadRequest("Ресторантът не съществува!");

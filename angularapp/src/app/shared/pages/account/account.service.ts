@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { RegisterEmployee } from '../../../models/account/register-employee';
+import { RegisterEmployee } from '../../models/account/register-employee';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterManager } from '../../../models/account/register-manager';
-import { Login } from '../../../models/account/login';
-import { User } from '../../../models/account/user';
+import { RegisterManager } from '../../models/account/register-manager';
+import { Login } from '../../models/account/login';
+import { User } from '../../models/account/user';
 import { ReplaySubject, map, of, take, timer } from 'rxjs';
 import { Router } from '@angular/router';
-import { ConfirmEmail } from '../../../models/account/confirm-email';
-import { ResetPassword } from '../../../models/account/reset-password';
+import { ConfirmEmail } from '../../models/account/confirm-email';
+import { ResetPassword } from '../../models/account/reset-password';
 
 
 @Injectable({

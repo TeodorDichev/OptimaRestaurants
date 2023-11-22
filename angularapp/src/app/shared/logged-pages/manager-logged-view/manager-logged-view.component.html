@@ -7,7 +7,7 @@
             </div>
             <div class="scrollable-vert max-height-70vh">
                 <div *ngFor="let restaurant of this.manager?.restaurants;">
-                    <div class="row border-bottom border-top py-3" (click)="selectedRestaurant(restaurant); getRestaurantEmployees()" 
+                    <div class="row border-bottom border-top py-3" (click)="selectedRestaurant(restaurant)" 
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
                         <div class="col-2 text-center mx-2 my-auto">
                             <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">

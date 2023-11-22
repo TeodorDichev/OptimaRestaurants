@@ -1,16 +1,16 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
-import { AccountService } from 'src/app/shared/pages/page-routing/account/account.service';
-import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
+import { AccountService } from 'src/app/shared/pages/account/account.service';
+import { ManagerService } from 'src/app/shared/pages/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-new-restaurant-input-modal',
   templateUrl: './new-restaurant-input-modal.component.html',
   styleUrls: ['./new-restaurant-input-modal.component.css',
-  '../../../../../app.component.css']
+    '../../../../../app.component.css']
 })
 export class NewRestaurantInputModalComponent implements OnInit {
 
@@ -35,8 +35,17 @@ export class NewRestaurantInputModalComponent implements OnInit {
       address: ['', [Validators.required]],
       city: ['', [Validators.required]],
       employeeCapacity: ['', [Validators.required]],
-      iconUrl: ['', []]
+      iconFile: ['', []]
     })
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+        this.newRestaurantForm.patchValue({
+            iconFile: file
+        });
+    }
   }
 
   addNewRestaurant() {

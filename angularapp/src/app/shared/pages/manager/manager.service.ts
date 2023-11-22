@@ -28,12 +28,20 @@ export class ManagerService {
   }
 
   addNewRestaurant(model: NewRestaurant, email: string) {
-    return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, model);
+    const formData: FormData = new FormData(); 
+
+    formData.append('name', model.name);
+    formData.append('address', model.address);
+    formData.append('city', model.city);
+    formData.append('employeeCapacity', model.employeeCapacity.toString()); 
+    formData.append('iconFile', model.iconFile);
+
+    return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, formData);
   }
 
   updateManagerAccount(model: UpdateManager, email: string){
 
-    const formData: FormData = new FormData(); // for possible file sending, otherwise I send a link to the image (only way i found)
+    const formData: FormData = new FormData(); // for possible file sending, otherwise I send a link to the image (only way i found) //
 
     formData.append('newFirstName', model.newFirstName);
     formData.append('newLastName', model.newLastName);
@@ -48,7 +56,15 @@ export class ManagerService {
   }
 
   editRestaurant(model: NewRestaurant, restaurantId: string) {
-    return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, model);
+    const formData: FormData = new FormData(); 
+
+    formData.append('name', model.name);
+    formData.append('address', model.address);
+    formData.append('city', model.city);
+    formData.append('employeeCapacity', model.employeeCapacity.toString()); 
+    formData.append('iconUrl', model.iconFile);
+
+    return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);
   }
 
   logout() {

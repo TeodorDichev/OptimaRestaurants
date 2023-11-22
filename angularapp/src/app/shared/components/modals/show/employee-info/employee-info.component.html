@@ -7,7 +7,12 @@
     <span class="row my-4">Имейл: {{employee.email}}</span>
     <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
     <span class="row my-4">Град: {{employee.city}}</span>
-    <img src="{{employee.profilePictureUrl}}" alt="Все още нямате профилна снимка.">
+    <span class="row my-4" *ngIf="!employee.profilePictureUrl">
+      Все още нямате профилна снимка.
+    </span>
+    <span class="row" *ngIf="employee.profilePictureUrl">
+      <img src="{{employee.profilePictureUrl}}">
+    </span>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-chocolate" (click)="editEmployeeProfile()">Редактиране на данните</button>

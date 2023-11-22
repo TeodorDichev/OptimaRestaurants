@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Manager } from 'src/app/shared/models/manager/manager';
-import { ManagerService } from 'src/app/shared/pages/page-routing/manager/manager.service';
+import { ManagerService } from 'src/app/shared/pages/manager/manager.service';
 
 
 @Component({

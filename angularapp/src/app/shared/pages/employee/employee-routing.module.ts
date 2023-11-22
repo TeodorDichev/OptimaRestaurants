@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { EmployeeLoggedViewComponent } from '../../employee-logged-view/employee-logged-view.component';
 import { RouterModule, Routes } from '@angular/router';
+import { EmployeeLoggedViewComponent } from '../../logged-pages/employee-logged-view/employee-logged-view.component';
 
 const routes: Routes = [
   {path: '', component: EmployeeLoggedViewComponent}

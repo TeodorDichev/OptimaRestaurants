@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from './shared/pages/page-routing/account/account.service';
+import { AccountService } from './shared/pages/account/account.service';
 
 @Component({
   selector: 'app-root',
