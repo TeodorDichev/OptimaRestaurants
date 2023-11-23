@@ -1,10 +1,18 @@
-export interface Restraurant {
+export interface Restaurant {
     id: string,
     name: string
     address: string,
     city: string,
+    employeeCapacity: number,
+    isWorking: boolean,
     iconUrl: string,
     cuisineAverageRating: number,
     atmosphereAverageRating: number,
-    employeesAverageRating: number
+    employeesAverageRating: number,
+    restaurantAverageRating: number,
+    managerFullName: string,
+    managerEmail: string,
+    topEmployeeFullName: string,
+    topEmployeeEmail: string,
+    topEmployeeRating: string
 }

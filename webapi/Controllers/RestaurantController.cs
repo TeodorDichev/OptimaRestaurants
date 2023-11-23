@@ -20,7 +20,7 @@ namespace webapi.Controllers
             _context = context;
         }
 
-        [HttpGet("api/restaurants")]
+        [HttpGet("api/restaurants/get-all-restaurants")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants()
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();

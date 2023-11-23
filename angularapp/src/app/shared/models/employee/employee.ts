@@ -1,4 +1,4 @@
-import { Restraurant } from "../restaurant/restaurant";
+import { Restaurant } from "../restaurant/restaurant";
 
 export interface Employee{
     email: string,
@@ -14,5 +14,5 @@ export interface Employee{
     collegialityAverageRating: number,
     employeeAverageRating: number,
     isLookingForJob: boolean,
-    restaurants: Restraurant[]
+    restaurants: Restaurant[]
 }

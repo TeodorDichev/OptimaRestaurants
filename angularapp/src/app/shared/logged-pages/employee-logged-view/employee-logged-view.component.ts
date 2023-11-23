@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee/employee';
-import { Restraurant } from '../../models/restaurant/restaurant';
+import { Restaurant } from '../../models/restaurant/restaurant';
 import { SharedService } from '../../shared.service';
 import { EmployeeService } from '../../pages/employee/employee.service';
 import { AccountService } from '../../pages/account/account.service';
@@ -33,7 +33,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
     }
   }
 
-  missingIcon(restaurant: Restraurant) {
+  missingIcon(restaurant: Restaurant) {
     restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png'; // change logic here, this way a value is given to the iconUrl
   }
 

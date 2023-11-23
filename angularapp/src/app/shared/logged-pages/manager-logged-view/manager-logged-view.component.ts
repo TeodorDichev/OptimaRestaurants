@@ -4,7 +4,7 @@ import { AccountService } from '../../pages/account/account.service';
 import { User } from 'src/app/shared/models/account/user';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { SharedService } from '../../shared.service';
-import { Restraurant } from '../../models/restaurant/restaurant';
+import { Restaurant } from '../../models/restaurant/restaurant';
 import { Employee } from '../../models/employee/employee';
 
 
@@ -18,7 +18,7 @@ export class ManagerLoggedViewComponent implements OnInit {
 
   user: User | null | undefined;
   manager: Manager | null | undefined;
-  currentRestaurant: Restraurant | undefined;
+  currentRestaurant: Restaurant | undefined;
   employees: Employee[] = [];
 
   constructor(private managerService: ManagerService,
@@ -56,15 +56,14 @@ export class ManagerLoggedViewComponent implements OnInit {
         }
       );
     }
-
   }
 
-  selectedRestaurant(selectedRestaurant: Restraurant) {
+  selectedRestaurant(selectedRestaurant: Restaurant) {
     this.currentRestaurant = selectedRestaurant;
     this.getCurrrentRestaurantEmployees();
   }
 
-  missingIcon(restaurant: Restraurant) {
+  missingIcon(restaurant: Restaurant) {
     restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png'; 
   }
 

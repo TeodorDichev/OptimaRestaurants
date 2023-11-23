@@ -13,6 +13,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { ManagerLoggedViewComponent } from './shared/logged-pages/manager-logged-view/manager-logged-view.component';
 import { EmployeeLoggedViewComponent } from './shared/logged-pages/employee-logged-view/employee-logged-view.component';
 import { StarRatingComponent } from './shared/components/misc/star-rating/star-rating.component';
+import { BrowseAllRestaurantsComponent } from './shared/restaurants/browse-all-restaurants/browse-all-restaurants.component';
+
 
 
 @NgModule({
@@ -25,7 +27,8 @@ import { StarRatingComponent } from './shared/components/misc/star-rating/star-r
     ManagerLoggedViewComponent,
     EmployeeLoggedViewComponent,
     NavbarComponent,
-    StarRatingComponent
+    StarRatingComponent,
+    BrowseAllRestaurantsComponent
   ],
   imports: [
     BrowserModule, 

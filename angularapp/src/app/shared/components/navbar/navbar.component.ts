@@ -97,7 +97,7 @@ export class NavbarComponent implements OnInit {
   }
 
   allRestaurants() {
-
+    this.router.navigateByUrl('/restaurants');
   }
 
 

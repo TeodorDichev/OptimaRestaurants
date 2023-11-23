@@ -19,7 +19,7 @@ import { EmployeeInboxComponent } from './components/modals/inbox/employee-inbox
 import { ManagerInboxComponent } from './components/modals/inbox/manager-inbox/manager-inbox.component';
 import { CvModalComponent } from './components/modals/show/cv-modal/cv-modal.component';
 import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.component';
-
+import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,8 @@ import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.compon
     EmployeeInboxComponent,
     ManagerInboxComponent,
     CvModalComponent,
-    QrCodeComponent
+    QrCodeComponent,
+    RestaurantInfoComponent
   ],
   imports: [
     CommonModule,

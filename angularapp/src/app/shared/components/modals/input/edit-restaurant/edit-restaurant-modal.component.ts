@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { Title } from '@angular/platform-browser';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Restraurant } from 'src/app/shared/models/restaurant/restaurant';
+import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
 import { ManagerService } from 'src/app/shared/pages/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
@@ -13,7 +12,7 @@ import { SharedService } from 'src/app/shared/shared.service';
     '../../../../../app.component.css']
 })
 export class EditRestaurantModalComponent implements OnInit {
-  @Input() currentRestaurant: Restraurant | undefined;
+  @Input() restaurant: Restaurant | undefined;
 
   editRestaurantForm: FormGroup = new FormGroup({});
   submitted = false;
@@ -51,10 +50,10 @@ export class EditRestaurantModalComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
 
-    if (this.editRestaurantForm.valid && this.currentRestaurant) {
-      this.managerService.editRestaurant(this.editRestaurantForm.value, this.currentRestaurant.id).subscribe({
+    if (this.editRestaurantForm.valid && this.restaurant) {
+      this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).subscribe({
         next: (response: any) => {
-          this.currentRestaurant = this.editRestaurantForm.value;
+          this.restaurant = this.editRestaurantForm.value;
           this.bsModalRef.hide();
           this.sharedService.showNotification(true, response.value.title, response.value.message);
         },
