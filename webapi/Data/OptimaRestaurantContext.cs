@@ -23,4 +23,8 @@ public class OptimaRestaurantContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+    }
 }

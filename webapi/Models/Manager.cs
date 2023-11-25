@@ -7,6 +7,6 @@ namespace webapi.Models
         [Key]
         public Guid Id { get; set; }
         public required virtual ApplicationUser Profile { get; set; }
-        public ICollection<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
+        public virtual ICollection<Restaurant> Restaurants { get; set; } = new List<Restaurant>();
     }
 }
