@@ -20,8 +20,9 @@
                         <div class="col-2 py-2 my-auto">
                             <span class="row roboto fw-bold font-size-20">Категория:</span>
                             <span class="row roboto text-start font-size-20">Ястия</span>
-                            <span class="row roboto text-start font-size-20">Атмосфера </span>
-                            <span class="row roboto text-start font-size-20">Работници </span>
+                            <span class="row roboto text-start font-size-20">Атмосфера</span>
+                            <span class="row roboto text-start font-size-20">Работници</span>
+                            <span class="row roboto text-start font-size-20">Ресторант</span>
                         </div>
                         <div class="col-2 my-auto">
                             <span class="row roboto fw-bold font-size-20">Средна оценка:</span>
@@ -31,6 +32,8 @@
                                     [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
                             <span class="row roboto text-start font-size-20"><app-star-rating
                                     [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
+                            <span class="row roboto text-start font-size-20"><app-star-rating
+                                    [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
                         </div>
                         <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto" (click)="editRestaurant()">
                             Редактиране

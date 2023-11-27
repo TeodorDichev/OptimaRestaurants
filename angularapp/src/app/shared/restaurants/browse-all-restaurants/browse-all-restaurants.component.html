@@ -1,6 +1,9 @@
 <app-navbar></app-navbar>
+<div class="font-size-30 text-center roboto chocolate fw-bold my-4">
+    Всички регистрирани ресторанти
+</div>
 <div *ngFor="let restaurant of allRestaurants">
-    <div class="row border-bottom border-top py-3" (click)="selectedRestaurant(restaurant)"
+    <div class="row max-width border-bottom border-top py-3" (click)="selectedRestaurant(restaurant)"
         [ngClass]="{'selected': restaurant === currentRestaurant}">
         <div class="col-2 img-logo text-center mx-2 my-auto">
             <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
@@ -13,8 +16,9 @@
         <div class="col-2 py-2 my-auto">
             <span class="row roboto fw-bold font-size-20">Категория:</span>
             <span class="row roboto text-start font-size-20">Ястия</span>
-            <span class="row roboto text-start font-size-20">Атмосфера </span>
-            <span class="row roboto text-start font-size-20">Работници </span>
+            <span class="row roboto text-start font-size-20">Атмосфера</span>
+            <span class="row roboto text-start font-size-20">Работници</span>
+            <span class="row roboto text-start font-size-20">Ресторант</span>
         </div>
         <div class="col-2 my-auto">
             <span class="row roboto fw-bold font-size-20">Средна оценка:</span>
@@ -24,8 +28,11 @@
                     [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
             <span class="row roboto text-start font-size-20"><app-star-rating
                     [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
+            <span class="row roboto text-start font-size-20"><app-star-rating
+                    [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
         </div>
-        <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto" (click)="getRestaurantDetails(currentRestaurant.id)">
+        <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto"
+            (click)="getRestaurantDetails(currentRestaurant.id)">
             Информация
         </button>
     </div>

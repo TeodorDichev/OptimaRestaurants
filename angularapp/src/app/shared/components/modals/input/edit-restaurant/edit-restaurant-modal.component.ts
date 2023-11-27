@@ -49,16 +49,14 @@ export class EditRestaurantModalComponent implements OnInit {
   editRestaurant() {
     this.submitted = true;
     this.errorMessages = [];
-
     if (this.editRestaurantForm.valid && this.restaurant) {
       this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).subscribe({
         next: (response: any) => {
-          this.restaurant = this.editRestaurantForm.value;
+          this.managerService.setManager(response);
           this.bsModalRef.hide();
-          this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.sharedService.showNotification(true, "Успешно обновен ресторант!", "Вашият ресторант беше успешно обновен.");
         },
         error: error => {
-          console.log(error.error);
           if (error.error.errors) {
             this.errorMessages = error.error.errors;
           } else {

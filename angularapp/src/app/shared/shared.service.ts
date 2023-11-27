@@ -44,7 +44,7 @@ export class SharedService {
         restaurant
       }
     }
-    this.bsModalRef = this.modalService.show(RestaurantInfoComponent, rest);
+    this.bsModalRef = this.modalService.show(RestaurantInfoComponent, Object.assign(rest, { class: 'modal-xl' }));
   }
 
   openRestaurantEditModal(restaurant: Restaurant | undefined) {
