@@ -1,3 +1,34 @@
-<div class="modal-dialog modal-xl">
-  
+<div class="modal-dialog modal-xl" *ngIf="restaurant">
+  <div class="modal-header">
+    <div class="modal-title roboto fw-bold font-size-40 chocolate">Ресторант
+      <span class="fst-italic">"{{restaurant.name}}"</span>
+    </div>
+  </div>
+  <div class="modal-body roboto font-size-20 m-2">
+    <!--logo image-->
+    <span class="row my-4">Адрес: {{restaurant.address}}</span>
+    <span class="row my-4">Град: {{restaurant.city}}</span>
+    <span class="row my-4">Капацитет на работници: {{restaurant.employeeCapacity}}</span>
+    <span class="row my-4" *ngIf="restaurant.isWorking">Работещ: Да</span>
+    <span class="row my-4" *ngIf="!restaurant.isWorking">Работещ: Не</span>
+    <span class="row my-4">Рейтинг на храната: 
+      <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
+    </span>
+    <span class="row my-4">Рейтинг на атмосферата: 
+      <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>  
+    </span>
+    <span class="row my-4">Рейтинг на работниците: 
+      <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>  
+    </span>
+    <span class="row my-4">Рейтинг на ресторанта: 
+      <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>  
+    </span>
+    <div class="font-size-30">
+      Информация за мениджъра на {{restaurant.name}}
+      <span class="row font-size-20 my-4">Имена: {{restaurant.managerFullName}}</span>
+      <span class="row font-size-20 row my-4">Имейл: {{restaurant.managerEmail}}</span>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
 </div>

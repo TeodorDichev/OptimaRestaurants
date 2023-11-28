@@ -14,6 +14,7 @@ import { ManagerLoggedViewComponent } from './shared/logged-pages/manager-logged
 import { EmployeeLoggedViewComponent } from './shared/logged-pages/employee-logged-view/employee-logged-view.component';
 import { StarRatingComponent } from './shared/components/misc/star-rating/star-rating.component';
 import { BrowseAllRestaurantsComponent } from './shared/restaurants/browse-all-restaurants/browse-all-restaurants.component';
+import { RestaurantInfoComponent } from './shared/components/modals/show/restaurant-info/restaurant-info.component';
 
 
 
@@ -28,7 +29,8 @@ import { BrowseAllRestaurantsComponent } from './shared/restaurants/browse-all-r
     EmployeeLoggedViewComponent,
     NavbarComponent,
     StarRatingComponent,
-    BrowseAllRestaurantsComponent
+    BrowseAllRestaurantsComponent,
+    RestaurantInfoComponent
   ],
   imports: [
     BrowserModule, 
