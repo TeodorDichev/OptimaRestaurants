@@ -26,7 +26,122 @@ namespace webapi.Controllers
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
             if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
 
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            {
+                restaurantsDto.Add(new BrowseRestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
+                });
+            }
+
+            return restaurantsDto;
+        }
+
+        [HttpGet("api/restaurants/get-local-restaurants/{cityName}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName)
+        {
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
+
+            foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            {
+                restaurantsDto.Add(new BrowseRestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
+                });
+            }
+
+            return restaurantsDto;
+        }
+
+        [HttpGet("api/restaurants/get-rating-restaurants/{rating}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating)
+        {
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
+
+            foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            {
+                restaurantsDto.Add(new BrowseRestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
+                });
+            }
+
+            return restaurantsDto;
+        }
+
+        [HttpGet("api/restaurants/get-cuisine-restaurants")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants()
+        {
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
+
+            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            {
+                restaurantsDto.Add(new BrowseRestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
+                });
+            }
+
+            return restaurantsDto;
+        }
+
+        [HttpGet("api/restaurants/get-atmosphere-restaurants")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants()
+        {
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
+
+            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            {
+                restaurantsDto.Add(new BrowseRestaurantDto
+                {
+                    Id = restaurant.Id.ToString(),
+                    Name = restaurant.Name,
+                    Address = restaurant.Address,
+                    City = restaurant.City,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    IsWorking = restaurant?.IsWorking ?? false,
+                    IconUrl = restaurant?.IconUrl,
+                });
+            }
+
+            return restaurantsDto;
+        }
+
+        [HttpGet("api/restaurants/get-employees-restaurants")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants()
+        {
+            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
+            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
+
+            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
                 restaurantsDto.Add(new BrowseRestaurantDto
                 {
