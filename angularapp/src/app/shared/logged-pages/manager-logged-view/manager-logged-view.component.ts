@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ManagerService } from '../../pages/manager/manager.service';
-import { AccountService } from '../../pages/account/account.service';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { AccountService } from '../../pages-routing/account/account.service';
 import { User } from 'src/app/shared/models/account/user';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { SharedService } from '../../shared.service';

@@ -7,10 +7,10 @@ import { LoggedAuthorizationGuard } from './shared/guards/logged-guard/logged-au
 
 const routes: Routes = [
   {path: '', canActivate:[LoggedAuthorizationGuard], component: IndexComponent},
-  {path: 'account', canActivate:[LoggedAuthorizationGuard], loadChildren:() => import('./shared/pages/account/account.module').then(module => module.AccountModule)},
-  {path: 'manager', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages/manager/manager.module').then(module => module.ManagerModule) },
-  {path: 'employee', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages/employee/employee.module').then(module => module.EmployeeModule) },
-  {path: 'restaurants', loadChildren:() => import('./shared/pages/restaurants/restaurants.module').then(module => module.RestaurantsModule) },
+  {path: 'account', canActivate:[LoggedAuthorizationGuard], loadChildren:() => import('./shared/pages-routing/account/account.module').then(module => module.AccountModule)},
+  {path: 'manager', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages-routing/manager/manager.module').then(module => module.ManagerModule) },
+  {path: 'employee', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages-routing/employee/employee.module').then(module => module.EmployeeModule) },
+  {path: 'restaurants', loadChildren:() => import('./shared/pages-routing/restaurants/restaurants.module').then(module => module.RestaurantsModule) },
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
 

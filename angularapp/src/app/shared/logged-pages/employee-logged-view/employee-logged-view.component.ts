@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee/employee';
 import { Restaurant } from '../../models/restaurant/restaurant';
 import { SharedService } from '../../shared.service';
-import { EmployeeService } from '../../pages/employee/employee.service';
-import { AccountService } from '../../pages/account/account.service';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { AccountService } from '../../pages-routing/account/account.service';
 import { User } from '../../models/account/user';
 
 @Component({

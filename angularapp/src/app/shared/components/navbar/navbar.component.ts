@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../pages/account/account.service';
-import { ManagerService } from '../../pages/manager/manager.service';
+import { AccountService } from '../../pages-routing/account/account.service';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
 import { User } from '../../models/account/user';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
-import { EmployeeService } from '../../pages/employee/employee.service';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
 
 @Component({
   selector: 'app-navbar',

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ManagerService } from '../../pages/manager/manager.service'; // for testing only, remove later
+import { ManagerService } from '../../pages-routing/manager/manager.service'; // for testing only, remove later
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',

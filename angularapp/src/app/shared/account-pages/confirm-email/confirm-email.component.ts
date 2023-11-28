@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../pages/account/account.service';
+import { AccountService } from '../../pages-routing/account/account.service';
 import { SharedService } from '../../shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEmail } from '../../models/account/confirm-email';

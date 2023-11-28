@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
-import { ManagerService } from 'src/app/shared/pages/manager/manager.service';
+import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AccountService } from 'src/app/shared/pages/account/account.service';
-import { ManagerService } from 'src/app/shared/pages/manager/manager.service';
+import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
+import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({

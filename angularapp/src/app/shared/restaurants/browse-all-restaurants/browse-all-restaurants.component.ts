@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RestaurantsService } from '../../pages/restaurants/restaurants.service';
+import { RestaurantsService } from '../../pages-routing/restaurants/restaurants.service';
 import { Restaurant } from '../../models/restaurant/restaurant';
 import { SharedService } from '../../shared.service';
 
