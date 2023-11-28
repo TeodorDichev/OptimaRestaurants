@@ -8,8 +8,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 @Component({
   selector: 'app-edit-manager',
   templateUrl: './edit-manager.component.html',
-  styleUrls: ['./edit-manager.component.css',
-    '../../../../../app.component.css']
+  styleUrls: ['./edit-manager.component.css']
 })
 export class EditManagerComponent {
   editManagerForm: FormGroup = new FormGroup({});

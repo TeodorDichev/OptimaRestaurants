@@ -9,8 +9,7 @@ import { User } from '../../models/account/user';
 @Component({
   selector: 'app-employee-logged-view',
   templateUrl: './employee-logged-view.component.html',
-  styleUrls: ['./employee-logged-view.component.css',
-    '../../../app.component.css']
+  styleUrls: ['./employee-logged-view.component.css']
 })
 export class EmployeeLoggedViewComponent implements OnInit {
 

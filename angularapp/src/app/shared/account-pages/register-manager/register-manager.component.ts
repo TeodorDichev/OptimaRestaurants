@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-manager',
   templateUrl: './register-manager.component.html',
-  styleUrls: ['./register-manager.component.css',
-  '../../../app.component.css']
+  styleUrls: ['./register-manager.component.css']
 })
 export class RegisterManagerComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});

@@ -4,8 +4,7 @@ import { ManagerService } from '../../pages/manager/manager.service'; // for tes
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css',
-    '../../../app.component.css']
+  styleUrls: ['./index.component.css']
 })
 export class IndexComponent {
 

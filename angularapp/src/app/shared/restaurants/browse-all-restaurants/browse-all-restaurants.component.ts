@@ -6,8 +6,7 @@ import { SharedService } from '../../shared.service';
 @Component({
   selector: 'app-browse-all-restaurants',
   templateUrl: './browse-all-restaurants.component.html',
-  styleUrls: ['./browse-all-restaurants.component.css',
-    '../../../app.component.css']
+  styleUrls: ['./browse-all-restaurants.component.css']
 })
 export class BrowseAllRestaurantsComponent implements OnInit {
 

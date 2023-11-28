@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register-employee',
   templateUrl: './register-employee.component.html',
-  styleUrls: ['./register-employee.component.css',
-  '../../../app.component.css']
+  styleUrls: ['./register-employee.component.css']
 })
 export class RegisterEmployeeComponent implements OnInit{
   registerForm: FormGroup = new FormGroup({});

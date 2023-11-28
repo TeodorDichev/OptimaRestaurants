@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../pages/account/account.service';
 import { SharedService } from '../../shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
-import { User } from '../../models/account/user';
 import { ConfirmEmail } from '../../models/account/confirm-email';
 
 @Component({

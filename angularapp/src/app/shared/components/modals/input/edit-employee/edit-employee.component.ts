@@ -8,8 +8,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 @Component({
   selector: 'app-edit-employee',
   templateUrl: './edit-employee.component.html',
-  styleUrls: ['./edit-employee.component.css',
-    '../../../../../app.component.css']
+  styleUrls: ['./edit-employee.component.css']
 })
 export class EditEmployeeComponent {
   editEmployeeForm: FormGroup = new FormGroup({});

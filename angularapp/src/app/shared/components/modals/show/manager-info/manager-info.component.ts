@@ -7,8 +7,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 @Component({
   selector: 'app-manager-info',
   templateUrl: './manager-info.component.html',
-  styleUrls: ['./manager-info.component.css',
-    '../../../../../app.component.css']
+  styleUrls: ['./manager-info.component.css']
 })
 export class ManagerInfoComponent implements OnInit {
 

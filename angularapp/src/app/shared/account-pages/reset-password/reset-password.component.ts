@@ -10,8 +10,7 @@ import { ResetPassword } from '../../models/account/reset-password';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.css',
-'../../../app.component.css']
+  styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
  resetPasswordForm: FormGroup = new FormGroup({});

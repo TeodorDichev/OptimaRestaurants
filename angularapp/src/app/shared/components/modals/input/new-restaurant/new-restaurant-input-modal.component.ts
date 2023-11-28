@@ -8,8 +8,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 @Component({
   selector: 'app-new-restaurant-input-modal',
   templateUrl: './new-restaurant-input-modal.component.html',
-  styleUrls: ['./new-restaurant-input-modal.component.css',
-    '../../../../../app.component.css']
+  styleUrls: ['./new-restaurant-input-modal.component.css']
 })
 export class NewRestaurantInputModalComponent implements OnInit {
 

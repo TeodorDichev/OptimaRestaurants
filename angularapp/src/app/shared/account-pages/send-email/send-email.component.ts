@@ -9,8 +9,7 @@ import { User } from '../../models/account/user';
 @Component({
   selector: 'app-send-email',
   templateUrl: './send-email.component.html',
-  styleUrls: ['./send-email.component.css',
-  '../../../app.component.css']
+  styleUrls: ['./send-email.component.css']
 })
 export class SendEmailComponent implements OnInit {
   emailForm: FormGroup = new FormGroup({});

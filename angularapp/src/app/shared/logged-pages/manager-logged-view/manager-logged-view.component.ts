@@ -11,8 +11,7 @@ import { Employee } from '../../models/employee/employee';
 @Component({
   selector: 'app-manager-logged-view',
   templateUrl: './manager-logged-view.component.html',
-  styleUrls: ['./manager-logged-view.component.css',
-    '../../../app.component.css']
+  styleUrls: ['./manager-logged-view.component.css']
 })
 export class ManagerLoggedViewComponent implements OnInit {
 
