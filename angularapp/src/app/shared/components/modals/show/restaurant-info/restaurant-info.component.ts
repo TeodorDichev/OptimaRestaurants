@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
 
 @Component({
@@ -6,10 +7,12 @@ import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
   templateUrl: './restaurant-info.component.html',
   styleUrls: ['./restaurant-info.component.css']
 })
-export class RestaurantInfoComponent implements OnInit{
+export class RestaurantInfoComponent {
   @Input() restaurant: Restaurant | undefined;
 
-  ngOnInit() {
+  constructor(public bsModalRef: BsModalRef) {}
 
-  }
+   close() {
+    this.bsModalRef.hide();
+   }
 }

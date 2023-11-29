@@ -1,0 +1,7 @@
+img {
+    width: 400px !important;
+    height: 300px !important;
+    border-radius: 1%;
+    box-shadow: 4px 2px 3px black;
+    background-color: rgb(102, 102, 102);
+}
