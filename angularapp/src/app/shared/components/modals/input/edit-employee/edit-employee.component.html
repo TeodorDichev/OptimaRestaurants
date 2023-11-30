@@ -2,7 +2,7 @@
     <div class="modal-header">
         <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на профил</h5>
     </div>
-    <div class="modal-body text-center">
+    <div class="modal-body">
         <form [formGroup]="editEmployeeForm" (ngSubmit)="editEmployee()" autocomplete="off">
             <div class="form-group pt-3">
                 <div class="input-field my-2">
@@ -12,31 +12,37 @@
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
                     <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия">
-                </div>   
+                </div>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер">
-                </div>           
-                <div class="input-field my-3">
+                    <input class="col-11" formControlName="newPhoneNumber" type="text"
+                        placeholder="Нов телефонен номер">
+                </div>
+                <div class="input-field my-2">
                     <span class="fa fa-calendar chocolate p-2"></span>
                     <span class="text-muted me-3">Нова дата на раждане:</span>
-                    <input class="custom-date-input" formControlName="newBirthDate" type="date">
+                    <input class="custom-date-input text-muted" formControlName="newBirthDate" type="date">
                 </div>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
                     <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град">
-                </div>      
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newCity" type="text" placeholder="Нов град">
-                </div>     
+                </div>
                 <div class="input-field my-2">
                     <span class="fa fa-picture-o chocolate p-2"></span>
                     <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
                 </div>
-                <button type="button" class="btn btn-danger" (click)="deleteEmployeeAccount()">Изтриване на
-                    акаунт</button>
-                <div class="text-danger font-size-15 p-2">Внимание! Тази операция не може да бъде върната!</div>
+                <div class="input-field my-2 form-check form-switch" *ngIf="employee">
+                    <span class="fa fa-user chocolate p-2"></span>
+                    <span class="col-5 text-muted">Търся си работа</span>
+                    <input class="form-check-input chocolate" type="checkbox" formControlName="isLookingForJob"
+                        [(ngModel)]="employee.isLookingForJob">
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-danger mt-4 text-center" (click)="deleteEmployeeAccount()">
+                        Изтриване на акаунт
+                    </button>
+                </div>
+                <div class="text-danger text-center font-size-15 p-2">Внимание! След тази операция акаунтът не може да бъде върнат!</div>
             </div>
             <div class="form-floating" *ngIf="errorMessages.length > 0">
                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>

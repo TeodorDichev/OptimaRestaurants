@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Manager } from 'src/app/shared/models/manager/manager';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -15,6 +16,7 @@ export class EditManagerComponent {
   submitted = false;
   errorMessages: string[] = [];
   email: string | null = this.accountService.getEmail();
+  manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -23,6 +25,7 @@ export class EditManagerComponent {
     private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.setManager();
     this.initializeForm();
   }
 
@@ -82,5 +85,13 @@ export class EditManagerComponent {
         }
       });
     }
+  }
+
+  private setManager() {
+    this.managerService.manager$.subscribe({
+      next: (response: any) => {
+        this.manager = response;
+      }
+    })
   }
 }

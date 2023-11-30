@@ -61,7 +61,7 @@
 }
 
 .chocolate {
-    color: chocolate;
+    color: chocolate !important;
 }
 
 .btn-chocolate {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Employee } from 'src/app/shared/models/employee/employee';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -15,6 +16,7 @@ export class EditEmployeeComponent {
   submitted = false;
   errorMessages: string[] = [];
   email: string | null = this.accountService.getEmail();
+  employee: Employee | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -23,6 +25,7 @@ export class EditEmployeeComponent {
     private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.setEmployee();
     this.initializeForm();
   }
 
@@ -32,7 +35,7 @@ export class EditEmployeeComponent {
       newLastName: ['', []],
       newPhoneNumber: ['', []],
       profilePictureFile: ['', []],
-      newBirthDate: ['', []], 
+      newBirthDate: ['', []],
       newCity: ['', []],
       isLookingForJob: ['', []]
     })
@@ -41,9 +44,9 @@ export class EditEmployeeComponent {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-        this.editEmployeeForm.patchValue({
-            profilePictureFile: file
-        });
+      this.editEmployeeForm.patchValue({
+        profilePictureFile: file
+      });
     }
   }
 
@@ -85,6 +88,14 @@ export class EditEmployeeComponent {
         }
       });
     }
+  }
+
+  private setEmployee() {
+    this.employeeService.employee$.subscribe({
+      next: (response: any) => {
+        this.employee = response;
+      }
+    })
   }
 }
 
