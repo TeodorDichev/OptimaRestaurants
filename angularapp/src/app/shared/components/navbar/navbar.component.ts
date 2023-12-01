@@ -12,8 +12,6 @@ import { EmployeeService } from '../../pages-routing/employee/employee.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
-
   user: User | null | undefined;
   isManager: boolean = true;
 
@@ -26,14 +24,28 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     this.accountService.user$.subscribe(user => {
       this.user = user;
-      if (user) {
+      if (this.user && user) {
         this.isManager = user.isManager;
+        if (this.isManager) {
+          this.managerService.getManager(this.user.email).subscribe({
+            next: (response: any) => {
+              this.managerService.setManager(response);
+            }
+          })
+        }
+        else {
+          this.employeeService.getEmployee(this.user.email).subscribe({
+            next: (response: any) => {
+              this.employeeService.setEmployee(response);
+            }
+          })
+        }
       }
     });
   }
 
   logout() {
-    if (this.user?.isManager){
+    if (this.user?.isManager) {
       this.managerService.logout();
     } else {
       this.employeeService.logout();
@@ -46,11 +58,11 @@ export class NavbarComponent implements OnInit {
         this.router.navigateByUrl('/manager');
       }
       else {
-        this.router.navigateByUrl('/employee')
+        this.router.navigateByUrl('/employee');
       }
     }
     else {
-      this.router.navigateByUrl('/')
+      this.router.navigateByUrl('/');
     }
   }
 
@@ -63,7 +75,7 @@ export class NavbarComponent implements OnInit {
   }
 
   employeeSearch() {
-    
+    this.router.navigateByUrl('/manager/browse-employees-neshto');
   }
 
   infoUser() {
@@ -80,10 +92,10 @@ export class NavbarComponent implements OnInit {
   inbox() {
     if (this.user) {
       if (this.isManager) {
-        this.sharedService.openInboxModalManager();
+        this.sharedService.openInboxModalManager(this.user.email);
       }
       else {
-        this.sharedService.openInboxModalEmployee();
+        this.sharedService.openInboxModalEmployee(this.user.email);
       }
     }
   }

@@ -55,8 +55,8 @@ export class EditManagerComponent {
       this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
-          this.bsModalRef.hide();
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
+          this.bsModalRef.hide();
         },
         error: error => {
           if (error.error.errors) {

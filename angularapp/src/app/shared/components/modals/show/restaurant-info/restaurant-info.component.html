@@ -7,43 +7,43 @@
   <div class="modal-body text-center roboto font-size-20 m-2">
     <img src="{{restaurant.iconUrl}}">
     <div class="row">
-      <span class="col-6 my-4">Адрес: 
-        <span class="fst-italic chocolate">{{restaurant.address}}</span>
+      <span class="col-6 fw-bold my-4">Адрес: 
+        <span class="fst-italic fw-normal chocolate">{{restaurant.address}}</span>
       </span>
-      <span class="col-6 my-4">Капацитет на работници: 
-        <span class="fst-italic chocolate">{{restaurant.employeeCapacity}}</span>
-      </span>
-    </div>
-    <div class="row">
-      <span class="col-6 my-4">Град: 
-        <span class="fst-italic chocolate">{{restaurant.city}}</span>
-      </span>
-      <span class="col-6 my-4" *ngIf="restaurant.isWorking">Работещ: 
-        <span class="fst-italic chocolate">Да</span>
-      </span>
-      <span class="col-6 my-4" *ngIf="!restaurant.isWorking">Работещ: 
-        <span class="fst-italic chocolate">Не</span>
+      <span class="col-6 fw-bold my-4">Капацитет на работници: 
+        <span class="fst-italic fw-normal chocolate">{{restaurant.employeeCapacity}}</span>
       </span>
     </div>
     <div class="row">
-      <span class="col-6 my-4">Рейтинг на атмосферата
+      <span class="col-6 fw-bold my-4">Град: 
+        <span class="fst-italic fw-normal chocolate">{{restaurant.city}}</span>
+      </span>
+      <span class="col-6 fw-bold my-4" *ngIf="restaurant.isWorking">Работещ: 
+        <span class="fst-italic fw-normal chocolate">Да</span>
+      </span>
+      <span class="col-6 fw-bold my-4" *ngIf="!restaurant.isWorking">Работещ: 
+        <span class="fst-italic fw-normal chocolate">Не</span>
+      </span>
+    </div>
+    <div class="row">
+      <span class="col-6 fw-bold my-4">Рейтинг на атмосферата
         <div class="row">
           <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
         </div>
       </span>     
-      <span class="col-6 my-4">Рейтинг на работниците
+      <span class="col-6 fw-bold my-4">Рейтинг на работниците
         <div class="row">
           <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
         </div>
       </span>
     </div>
     <div class="row">
-      <span class="col-6 my-4">Рейтинг на храната
+      <span class="col-6 fw-bold my-4">Рейтинг на храната
         <div class="row">
           <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
         </div>
       </span>  
-      <span class="col-6 my-4">Рейтинг на ресторанта
+      <span class="col-6 fw-bold my-4">Рейтинг на ресторанта
         <div class="row">
           <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
         </div>
@@ -54,11 +54,16 @@
         Информация за мениджъра на <span class="fst-italic chocolate">{{restaurant.name}}</span>
       </div>
     </div>
-    <div class="font-size-20 text-start my-4 mx-3">Имена: 
-      <span class="fst-italic chocolate">{{restaurant.managerFullName}}</span>
+    <div class="font-size-20 fw-bold text-start my-4 mx-3">Имена: 
+      <span class="fst-italic fw-normal chocolate">{{restaurant.managerFullName}}</span>
     </div>
-    <div class="font-size-20 text-start my-4 mx-3">Имейл: 
-      <span class="fst-italic chocolate">{{restaurant.managerEmail}}</span>
+    <div class="font-size-20 fw-bold text-start my-4 mx-3">Имейл: 
+      <span class="fst-italic fw-normal chocolate">{{restaurant.managerEmail}}</span>
+    </div>
+    <div *ngIf="user?.isManager == false">
+      <div class="btn btn-chocolate roboto font-size-20" (click)="sendWorkingRequest()">
+        Изпращане на заявка за работа в <span class="fst-italic">{{restaurant.name}}</span>
+      </div>
     </div>
   </div>
   <div class="modal-footer">

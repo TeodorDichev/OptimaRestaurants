@@ -162,31 +162,6 @@ namespace webapi.Controllers
             return GenerateNewManagerDto(profile.Email ?? string.Empty);
         }
 
-        [HttpGet("api/manager/browse-employees/all")]
-        public async Task<ActionResult<List<BrowseEmployeeDto>>> GetAllEmployees()
-        {
-            List<Employee> employees = await _context.Employees.ToListAsync();
-            List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
-
-            foreach (var employee in employees)
-            {
-                employeesDto.Add(new BrowseEmployeeDto
-                {
-                    Email = employee.Profile.Email ?? string.Empty,
-                    FirstName = employee.Profile.FirstName ?? string.Empty,
-                    LastName = employee.Profile.LastName ?? string.Empty,
-                    PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
-                    ProfilePictureUrl = employee.Profile.ProfilePictureUrl ?? string.Empty,
-                    EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
-                    IsLookingForJob = employee.IsLookingForJob,
-                    City = employee.City,
-                    RestaurantsCount = employee.EmployeesRestaurants.Where(er => er.EndedOn == null).Count(),
-                });
-            }
-
-            return employeesDto;
-        }
-
         [HttpGet("api/manager/browse-employees/looking-for-job")]
         public async Task<ActionResult<List<BrowseEmployeeDto>>> GetEmployeesLookingForJob()
         {

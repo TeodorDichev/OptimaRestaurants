@@ -1,1 +1,15 @@
-<p>employee-inbox works!</p>
+<div class="modal-content" *ngIf="requests">
+    <div class="modal-header">
+        <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Съобщения</h5>
+    </div>
+    <div class="modal-body">
+        <div class="col-12 my-2" *ngFor="let request of requests">
+            <div class="">
+                {{request.text}}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Затвори</button>
+    </div>
+</div>

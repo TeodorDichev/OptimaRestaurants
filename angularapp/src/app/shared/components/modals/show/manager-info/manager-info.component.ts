@@ -26,7 +26,6 @@ export class ManagerInfoComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-
   private setManager() {
     this.managerService.manager$.subscribe({
       next: (response: any) => {
@@ -34,6 +33,4 @@ export class ManagerInfoComponent implements OnInit {
       }
     })
   }
-
-
 }

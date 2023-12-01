@@ -1,18 +1,20 @@
-<div class="modal-content" *ngIf="manager"> <!--check is for easier code writing, not neccesary-->
-    <div class="modal-header">
-      <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Вашият профил</h5>
-    </div>
-    <div class="modal-body text-center roboto font-size-20 m-2">
-      <span class="row my-4">Здравейте, {{manager.firstName}} {{manager.lastName}}!</span>
-      <span class="row my-4">Имейл: {{manager.email}}</span>
-      <span class="row my-4" *ngIf="!manager.profilePictureUrl">
-        Все още нямате профилна снимка.
-      </span>
-      <span class="row" *ngIf="manager.profilePictureUrl">
-        <img src="{{manager.profilePictureUrl}}">
-      </span>
-  
-    </div>
-    <div class="modal-footer">
-    </div>
+<div class="modal-content" *ngIf="requests">
+  <div class="modal-header">
+      <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Съобщения</h5>
   </div>
+  <div class="modal-body">
+    <div class="roboto fst-italic font-size-15" *ngIf="requests.length == 0">Нямате нови съобщения</div>
+      <div class="col-12 my-2" *ngFor="let request of requests">
+          <div class="roboto font-size-20">
+              {{request.text}} <br>
+              {{request.senderEmail}}<br>
+              {{request.restaurantName}}<br>
+              {{request.sentOn}}<br>
+              {{request.confirmed}}
+          </div>
+      </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Затвори</button>
+  </div>
+</div>

@@ -72,7 +72,7 @@ namespace webapi.Controllers
             return GenerateNewEmployeeDto(profile.Email ?? string.Empty);
         }
 
-        [HttpDelete("api/employee/delete-employee{email}")]
+        [HttpDelete("api/employee/delete-employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
             var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -102,7 +102,7 @@ namespace webapi.Controllers
             return GenerateNewEmployeeDto(email);
         }
 
-        [HttpGet("api/employee/get-all-requests/{email}")]
+        [HttpGet("api/employee/get-all-requests/{email}")]  
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
             var profile = await _userManager.FindByEmailAsync(email);

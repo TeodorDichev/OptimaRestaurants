@@ -6,7 +6,14 @@ input[type='text']{
     outline: none;
     box-shadow: none;
 }
-.form-check-input{
-    background-color: chocolate;
+input[type=checkbox]:unchecked{
+    background-color: white !important;
+
+}
+input[type=checkbox]:checked{
+    background-color: chocolate !important;
     border-color: chocolate;
+}
+.form-check-input:focus{
+    border-color: white;
 }
