@@ -221,7 +221,8 @@ namespace webapi.Controllers
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == requestDto.EmployeeEmail);
             var employeeProfile = await _context.Users.FirstOrDefaultAsync(p => p.Email == requestDto.EmployeeEmail);
             if (employee == null || employeeProfile == null) return BadRequest("Потребителят не съществува!");
-
+            if (employeeProfile.Requests.FirstOrDefault(r => r.Restaurant == restaurant && r.SentOn.AddDays(7) < DateTime.UtcNow) != null) return BadRequest("Вие вече сте изпратили заявка към този ресторант!");
+            if (restaurant.EmployeesRestaurants.FirstOrDefault(er => er.Employee == employee && er.EndedOn == null) != null) return BadRequest("Вие работите в този ресторант!");
             var manager = restaurant.Manager;
             if (manager == null) return BadRequest("Ресторантът няма мениджър!");
             var managerProfile = manager.Profile;
