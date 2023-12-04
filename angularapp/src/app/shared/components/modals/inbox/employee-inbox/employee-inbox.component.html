@@ -3,9 +3,22 @@
         <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Съобщения</h5>
     </div>
     <div class="modal-body">
-        <div class="col-12 my-2" *ngFor="let request of requests">
-            <div class="">
-                {{request.text}}
+        <div class="roboto fst-italic font-size-15" *ngIf="requests.length == 0">
+            Нямате нови съобщения
+        </div>
+        <div class="row col-12 my-2 border-top border-bottom" *ngFor="let request of requests">
+            <div class="col-10 roboto font-size-20"> {{request.text}}
+                <span class="fst-italic text-muted font-size-15">
+                    {{request.senderEmail}}, {{convertDate(request.sentOn)}}
+                </span>
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-success" (click)="requestToResponse(true, request)">
+                    <i class="fa fa-check-circle"></i>
+                </button>
+                <button type="button" class="btn btn-danger" (click)="requestToResponse(false, request)">
+                    <i class="fa fa-times-circle"></i>
+                </button>
             </div>
         </div>
     </div>

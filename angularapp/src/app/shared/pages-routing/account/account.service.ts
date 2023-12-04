@@ -117,7 +117,6 @@ export class AccountService {
       this.userSource.next(null);
       return of(undefined);
     } 
-    console.log(jwt);
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
     return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token/${email}`, {headers}).pipe(

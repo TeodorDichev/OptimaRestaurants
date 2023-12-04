@@ -18,14 +18,14 @@ export class LoginComponent implements OnInit {
   constructor(private accountService: AccountService,
     private router: Router,
     private formBuilder: FormBuilder) {
-      this.accountService.user$.pipe(take(1)).subscribe({
-        next: (user: User | null) => {
-          if (user) {
-            this.router.navigateByUrl('/');
-          }
+    this.accountService.user$.pipe(take(1)).subscribe({
+      next: (user: User | null) => {
+        if (user) {
+          this.router.navigateByUrl('/');
         }
-      });
-     }
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  resendEmailConfirmaitonLink(){
+  resendEmailConfirmaitonLink() {
     this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
 

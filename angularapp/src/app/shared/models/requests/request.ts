@@ -2,7 +2,7 @@ export interface Request{
     id: string,
     text: string,
     senderEmail: string,
-    restaurantName: string,
+    restaurantId: string,
     sentOn: Date,
     confirmed: boolean
 }

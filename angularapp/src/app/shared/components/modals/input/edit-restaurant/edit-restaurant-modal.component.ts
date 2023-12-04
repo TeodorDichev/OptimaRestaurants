@@ -52,8 +52,8 @@ export class EditRestaurantModalComponent implements OnInit {
       this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
-          this.bsModalRef.hide();
           this.sharedService.showNotification(true, "Успешно обновен ресторант!", "Вашият ресторант беше успешно обновен.");
+          this.bsModalRef.hide();
         },
         error: error => {
           if (error.error.errors) {
