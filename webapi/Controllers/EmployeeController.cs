@@ -105,11 +105,10 @@ namespace webapi.Controllers
         [HttpGet("api/employee/get-all-requests/{email}")]  
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
-            var profile = await _userManager.FindByEmailAsync(email);
-            if (profile == null) { return BadRequest("Потребителят не съществува!"); }
+            if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
 
             List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in profile.Requests)
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email))
             {
                 bool? confirmed = null;
                 if (r.ConfirmedOn != null) confirmed = true;
@@ -140,7 +139,7 @@ namespace webapi.Controllers
             var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Email == profile.Email);
             if (employee == null) return BadRequest("Потребителят не съществува!");
 
-            var request = profile.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
+            var request = _context.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
             if (request == null) return BadRequest("Заявката не съществува!");
             if (request.ConfirmedOn != null || request.RejectedOn != null) return BadRequest("Заявката вече е отговорена!");
 

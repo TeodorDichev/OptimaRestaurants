@@ -6,6 +6,7 @@ namespace webapi.Models
     {
         [Key]
         public Guid Id { get; set; }
+        public required virtual ApplicationUser Receiver { get; set; }
         public required virtual ApplicationUser Sender { get; set; }
         public required virtual Restaurant Restaurant { get; set; }
         public required DateTime SentOn { get; set; }

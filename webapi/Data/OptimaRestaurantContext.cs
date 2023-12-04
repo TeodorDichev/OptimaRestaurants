@@ -12,6 +12,7 @@ public class OptimaRestaurantContext : IdentityDbContext<ApplicationUser>
     public DbSet<Manager> Managers { get; set; }
     public DbSet<Restaurant> Restaurants { get; set; }
     public DbSet<Employee> Employees { get; set; }
+    public DbSet<Request> Requests { get; set; }
     public DbSet<Transfer> Transfers { get; set; }
     public DbSet<EmployeeRestaurant> EmployeesRestaurants { get; set; }
     public DbSet<CustomerReview> CustomerReviews { get; set; }

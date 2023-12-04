@@ -221,7 +221,7 @@ namespace webapi.Controllers
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == requestDto.EmployeeEmail);
             var employeeProfile = await _context.Users.FirstOrDefaultAsync(p => p.Email == requestDto.EmployeeEmail);
             if (employee == null || employeeProfile == null) return BadRequest("Потребителят не съществува!");
-            if (employeeProfile.Requests.FirstOrDefault(r => r.Restaurant == restaurant && r.SentOn.AddDays(7) < DateTime.UtcNow) != null) return BadRequest("Вие вече сте изпратили заявка към този ресторант!");
+            if (_context.Requests.FirstOrDefault(r => r.Restaurant == restaurant && r.SentOn.AddDays(7) < DateTime.UtcNow) != null) return BadRequest("Вие вече сте изпратили заявка към този ресторант!");
             if (restaurant.EmployeesRestaurants.FirstOrDefault(er => er.Employee == employee && er.EndedOn == null) != null) return BadRequest("Вие работите в този ресторант!");
             var manager = restaurant.Manager;
             if (manager == null) return BadRequest("Ресторантът няма мениджър!");
@@ -230,17 +230,19 @@ namespace webapi.Controllers
             Request request = new Request
             {
                 Sender = employeeProfile,
+                Receiver = managerProfile,
                 Restaurant = restaurant,
                 SentOn = DateTime.UtcNow,
             };
 
-            managerProfile.Requests.Add(request);
+            await _context.Requests.AddAsync(request);
             await _context.SaveChangesAsync();
 
             // TEMPORARY
-            var requestFix = managerProfile.Requests.FirstOrDefault(x => x.Restaurant == restaurant);
-            requestFix.Sender = employeeProfile;
-            await _context.SaveChangesAsync();
+            // var requestFix = managerProfile.Requests.FirstOrDefault(x => x.Restaurant == restaurant);
+            //requestFix.Sender = employeeProfile;
+            //_context.Update(managerProfile);
+            //await _context.SaveChangesAsync();
 
             return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));
         }
