@@ -240,7 +240,7 @@ namespace webapi.Controllers
                 var request = new RequestDto
                 {
                     Id = r.Id.ToString(),
-                    RestaurantName = r.Restaurant.Name,
+                    RestaurantId = r.Restaurant.Id.ToString(),
                     SenderEmail = r.Sender.Email ?? string.Empty,
                     SentOn = r.SentOn,
                     Confirmed = confirmed,

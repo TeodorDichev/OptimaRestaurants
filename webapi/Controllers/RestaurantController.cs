@@ -236,6 +236,12 @@ namespace webapi.Controllers
 
             managerProfile.Requests.Add(request);
             await _context.SaveChangesAsync();
+
+            // TEMPORARY
+            var requestFix = managerProfile.Requests.FirstOrDefault(x => x.Restaurant == restaurant);
+            requestFix.Sender = employeeProfile;
+            await _context.SaveChangesAsync();
+
             return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));
         }
     }
