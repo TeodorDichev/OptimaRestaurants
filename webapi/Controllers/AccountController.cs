@@ -239,6 +239,40 @@ namespace webapi.Controllers
             }
         }
 
+        [HttpGet("api/account/search/{str}")]
+        public async Task<ActionResult<SearchedAccountDto>> SearchAccount(string str)
+        {
+            var userWithEmail = await _userManager.Users.FirstOrDefaultAsync(u => u.Email.StartsWith(str, StringComparison.OrdinalIgnoreCase));
+            var userWithName = await _userManager.Users.FirstOrDefaultAsync(u => 
+                u.FirstName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
+                || u.LastName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
+                || u.FirstName.ToLower() + " "+ u.LastName.ToLower() == str.ToLower());
+
+            if (userWithEmail != null)
+            {
+                SearchedAccountDto account = new SearchedAccountDto()
+                {
+                    Username = userWithEmail.Email,
+                    Role = _userManager.GetRolesAsync(userWithEmail).ToString(),
+                    PictureUrl = userWithEmail.ProfilePictureUrl
+                };
+
+                return account;
+            }
+            else if (userWithName != null)
+            {
+                SearchedAccountDto account = new SearchedAccountDto()
+                {
+                    Username = userWithName.FirstName + " " + userWithName.LastName,
+                    Role = _userManager.GetRolesAsync(userWithName).ToString(),
+                    PictureUrl = userWithName.ProfilePictureUrl
+                };
+
+                return account;
+            }
+            else return BadRequest("Този профил не съществува!");
+        }
+
         private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
         {
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
