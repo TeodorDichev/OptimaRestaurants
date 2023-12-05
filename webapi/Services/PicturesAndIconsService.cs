@@ -26,7 +26,7 @@
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                url = "../../../../assets/uploads" + $"/{newFileName}";
+                url = "../../../../assets/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
