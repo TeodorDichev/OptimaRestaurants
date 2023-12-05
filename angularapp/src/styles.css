@@ -81,7 +81,12 @@
 .max-height-80vh {
     max-height: 80vh;
 }
-.input-field{
+
+.max-height-90vh {
+    max-height: 90vh !important;
+}
+
+.input-field {
     border-radius: 5px;
     padding: 5px;
     display: flex;

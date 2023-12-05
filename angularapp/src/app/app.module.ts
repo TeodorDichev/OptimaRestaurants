@@ -15,8 +15,7 @@ import { EmployeeLoggedViewComponent } from './shared/logged-pages/employee-logg
 import { StarRatingComponent } from './shared/components/misc/star-rating/star-rating.component';
 import { BrowseAllRestaurantsComponent } from './shared/restaurants/browse-all-restaurants/browse-all-restaurants.component';
 import { RestaurantInfoComponent } from './shared/components/modals/show/restaurant-info/restaurant-info.component';
-
-
+import { EmployeesLookingForJobComponent } from './shared/logged-pages/manager-employee-search/employees-looking-for-job.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,8 @@ import { RestaurantInfoComponent } from './shared/components/modals/show/restaur
     NavbarComponent,
     StarRatingComponent,
     BrowseAllRestaurantsComponent,
-    RestaurantInfoComponent
+    RestaurantInfoComponent,
+    EmployeesLookingForJobComponent
   ],
   imports: [
     BrowserModule, 

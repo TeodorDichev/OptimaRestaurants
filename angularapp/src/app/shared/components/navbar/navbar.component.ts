@@ -75,7 +75,7 @@ export class NavbarComponent implements OnInit {
   }
 
   employeeSearch() {
-    this.router.navigateByUrl('/manager/browse-employees-neshto');
+    this.router.navigateByUrl('/manager/employees-looking-for-job');
   }
 
   infoUser() {
