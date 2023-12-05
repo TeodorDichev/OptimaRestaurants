@@ -1,5 +1,4 @@
-﻿using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -240,37 +239,26 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/account/search/{str}")]
-        public async Task<ActionResult<SearchedAccountDto>> SearchAccount(string str)
+        public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string str)
         {
-            var userWithEmail = await _userManager.Users.FirstOrDefaultAsync(u => u.Email.StartsWith(str, StringComparison.OrdinalIgnoreCase));
-            var userWithName = await _userManager.Users.FirstOrDefaultAsync(u => 
-                u.FirstName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
-                || u.LastName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
-                || u.FirstName.ToLower() + " "+ u.LastName.ToLower() == str.ToLower());
+            List<ApplicationUser> usersWithMatchingData = await _userManager.Users
+                .Where(u =>
+                    EF.Functions.Like(u.Email, $"{str}%") ||
+                    EF.Functions.Like(u.FirstName, $"{str}%") ||
+                    EF.Functions.Like(u.LastName, $"{str}%")).ToListAsync();
 
-            if (userWithEmail != null)
-            {
-                SearchedAccountDto account = new SearchedAccountDto()
+            List<SearchedAccountDto> accounts = new List<SearchedAccountDto>();
+
+            foreach (var user in usersWithMatchingData)
+                accounts.Add(new SearchedAccountDto()
                 {
-                    Username = userWithEmail.Email,
-                    Role = _userManager.GetRolesAsync(userWithEmail).ToString(),
-                    PictureUrl = userWithEmail.ProfilePictureUrl
-                };
+                    Fullname = user.FirstName + " " + user.LastName,
+                    Email = user.Email,
+                    Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
+                    PictureUrl = user.ProfilePictureUrl
+                });
 
-                return account;
-            }
-            else if (userWithName != null)
-            {
-                SearchedAccountDto account = new SearchedAccountDto()
-                {
-                    Username = userWithName.FirstName + " " + userWithName.LastName,
-                    Role = _userManager.GetRolesAsync(userWithName).ToString(),
-                    PictureUrl = userWithName.ProfilePictureUrl
-                };
-
-                return account;
-            }
-            else return BadRequest("Този профил не съществува!");
+            return accounts;
         }
 
         private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
