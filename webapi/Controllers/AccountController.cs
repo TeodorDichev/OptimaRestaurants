@@ -1,5 +1,4 @@
-﻿using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -248,26 +247,18 @@ namespace webapi.Controllers
                     EF.Functions.Like(u.FirstName, $"{str}%") ||
                     EF.Functions.Like(u.LastName, $"{str}%")).ToListAsync();
 
-            if (usersWithMatchingData.Count != 0)
-            {
-                List<SearchedAccountDto> accounts = new List<SearchedAccountDto>();
+            List<SearchedAccountDto> accounts = new List<SearchedAccountDto>();
 
-                foreach (var user in usersWithMatchingData)
+            foreach (var user in usersWithMatchingData)
+                accounts.Add(new SearchedAccountDto()
                 {
-                    SearchedAccountDto account = new SearchedAccountDto()
-                    {
-                        Fullname = user.FirstName + " " + user.LastName,
-                        Email = user.Email,
-                        Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
-                        PictureUrl = user.ProfilePictureUrl
-                    };
+                    Fullname = user.FirstName + " " + user.LastName,
+                    Email = user.Email,
+                    Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
+                    PictureUrl = user.ProfilePictureUrl
+                });
 
-                    accounts.Add(account);
-                }
-
-                return accounts;
-            }
-            else return BadRequest("Този профил не съществува!");
+            return accounts;
         }
 
         private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
