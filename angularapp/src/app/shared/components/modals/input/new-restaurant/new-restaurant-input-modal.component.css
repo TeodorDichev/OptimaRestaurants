@@ -1,0 +1,16 @@
+input[type='text']{
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+input[type=checkbox]:unchecked{
+    background-color: white !important;
+
+}
+input[type=checkbox]:checked{
+    background-color: chocolate !important;
+    border-color: chocolate;
+}
+.form-check-input:focus{
+    border-color: white;
+}

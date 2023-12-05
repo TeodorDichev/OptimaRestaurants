@@ -51,7 +51,7 @@ export class RestaurantInfoComponent implements OnInit {
           this.bsModalRef.hide();
         },
         error: error => {
-          this.sharedService.showNotification(false, error.value.title, error.value.message);
+          this.sharedService.showNotification(false, 'Неуспешно изпращане!', error.error);
         }
       })
     }

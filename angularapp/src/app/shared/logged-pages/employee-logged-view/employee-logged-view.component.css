@@ -1,0 +1,11 @@
+img {
+    width: 200px !important;
+    height: 150px !important;
+    border-radius: 50%;
+    box-shadow: 4px 2px 5px black;
+    background-color: rgb(102, 102, 102);
+}
+ 
+.selected {
+    background-color: gainsboro;
+}

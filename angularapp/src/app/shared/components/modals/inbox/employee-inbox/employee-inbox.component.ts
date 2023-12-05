@@ -15,7 +15,6 @@ export class EmployeeInboxComponent implements OnInit {
   requests: Request[] = [];
   requestResponse: RequestResponse = {
     confirmed: false,
-    currentUserEmail: '',
     restaurantId: '',
     requestId: ''
   };
@@ -48,7 +47,6 @@ export class EmployeeInboxComponent implements OnInit {
     // set values for the response dto
     if (this.email) {
       this.requestResponse.confirmed = confirmed;
-      this.requestResponse.currentUserEmail = this.email;
       this.requestResponse.requestId = currentRequest.id;
       this.requestResponse.restaurantId = currentRequest.restaurantId;
 
