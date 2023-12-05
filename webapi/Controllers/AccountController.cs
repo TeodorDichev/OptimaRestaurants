@@ -240,35 +240,32 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/account/search/{str}")]
-        public async Task<ActionResult<SearchedAccountDto>> SearchAccount(string str)
+        public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string str)
         {
-            var userWithEmail = await _userManager.Users.FirstOrDefaultAsync(u => u.Email.StartsWith(str, StringComparison.OrdinalIgnoreCase));
-            var userWithName = await _userManager.Users.FirstOrDefaultAsync(u => 
-                u.FirstName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
-                || u.LastName.StartsWith(str, StringComparison.OrdinalIgnoreCase)
-                || u.FirstName.ToLower() + " "+ u.LastName.ToLower() == str.ToLower());
+            List<ApplicationUser> usersWithMatchingData = await _userManager.Users
+                .Where(u =>
+                    EF.Functions.Like(u.Email, $"{str}%") ||
+                    EF.Functions.Like(u.FirstName, $"{str}%") ||
+                    EF.Functions.Like(u.LastName, $"{str}%")).ToListAsync();
 
-            if (userWithEmail != null)
+            if (usersWithMatchingData.Count != 0)
             {
-                SearchedAccountDto account = new SearchedAccountDto()
-                {
-                    Username = userWithEmail.Email,
-                    Role = _userManager.GetRolesAsync(userWithEmail).ToString(),
-                    PictureUrl = userWithEmail.ProfilePictureUrl
-                };
+                List<SearchedAccountDto> accounts = new List<SearchedAccountDto>();
 
-                return account;
-            }
-            else if (userWithName != null)
-            {
-                SearchedAccountDto account = new SearchedAccountDto()
+                foreach (var user in usersWithMatchingData)
                 {
-                    Username = userWithName.FirstName + " " + userWithName.LastName,
-                    Role = _userManager.GetRolesAsync(userWithName).ToString(),
-                    PictureUrl = userWithName.ProfilePictureUrl
-                };
+                    SearchedAccountDto account = new SearchedAccountDto()
+                    {
+                        Fullname = user.FirstName + " " + user.LastName,
+                        Email = user.Email,
+                        Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
+                        PictureUrl = user.ProfilePictureUrl
+                    };
 
-                return account;
+                    accounts.Add(account);
+                }
+
+                return accounts;
             }
             else return BadRequest("Този профил не съществува!");
         }
