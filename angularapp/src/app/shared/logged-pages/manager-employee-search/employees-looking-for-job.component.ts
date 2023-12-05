@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Employee } from '../../models/employee/employee';
 
 @Component({
   selector: 'app-employees-looking-for-job',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./employees-looking-for-job.component.css']
 })
 export class EmployeesLookingForJobComponent {
-
+  employeesLookingForJob: Employee[] = [];
 }

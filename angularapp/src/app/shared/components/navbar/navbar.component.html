@@ -1,52 +1,73 @@
-<header>
-    <nav class="navbar navbar-expand navbar-light max-width">
-        <div class="container">
-            <a class="nav-brand heading-font col-lg-9">
-                <a (click)="homePage()" class="heading-font btn btn-outline-dark">
-                    Ресторант Оптима
-                </a>
-            </a>
-            <div class="collapse navbar-collapse">
-                <a class="btn btn-outline-dark m-2" (click)="allRestaurants()">
-                    <i class="fa fa-cutlery fa-3x"></i>
-                </a>
-                <ul class="navbar-nav" *ngIf="(accountService.user$ | async) as user">
-                    <li *ngIf="(isManager)">
-                        <a class="btn btn-outline-dark m-2" (click)="employeeSearch()">
-                            <i class="fa fa-users fa-3x"></i>
-                        </a>
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-transparent">
+    <div class="container-fluid">
+        <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-choco ms-lg-5" (click)="homePage()">
+            Оптима Ресторанти
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItemsCollapse"
+            aria-controls="navbarItemsCollapse" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarItemsCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        (click)="allRestaurants()">
+                        <i class="fa fa-cutlery fa-lg"></i>
+                    </div>
+                </li>
+                    <li class="nav-item" *ngIf="!this.user">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="contact()">
+                            <i class="fa fa-phone fa-lg"></i>
+                        </div>
                     </li>
-                    <ul class="navbar-nav" *ngIf="!(isManager)">
-                        <li class="nav-item">
-                            <a class="btn btn-outline-dark m-2" (click)="showCV()">
-                                <i class="fa fa-file-text fa-3x"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-dark m-2" (click)="showQR()">
-                                <i class="fa fa-qrcode fa-3x"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-dark m-2" (click)="inbox()"><i class="fa fa-envelope-o fa-3x"></i></a>
+                    <li class="nav-item" *ngIf="!this.user">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="help()">
+                            <i class="fa fa-question fa-lg"></i>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-dark m-2" (click)="infoUser()"><i class="fa fa-user fa-3x"></i></a>
+                    <li class="nav-item" *ngIf="this.user?.isManager">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="employeeSearch()">
+                            <i class="fa fa-users fa-lg"></i>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-dark m-2" (click)="logout()"><i class="fa fa-sign-out fa-3x"></i></a>
+                    <li class="nav-item" *ngIf="this.user?.isManager == false">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="showCV()">
+                            <i class="fa fa-file-text fa-lg"></i>
+                        </div>
                     </li>
-                </ul>
-                <ul class="navbar-nav" *ngIf="!(accountService.user$ | async) as user">
-                    <li class="nav-item">
-                        <a class="btn btn-outline-dark m-2" (click)="contact()"><i class="fa fa-phone fa-3x"></i></a>
+                    <li class="nav-item" *ngIf="this.user?.isManager == false">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="showQR()">
+                            <i class="fa fa-qrcode fa-lg"></i>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-outline-dark m-2" (click)="help()"><i class="fa fa-question fa-3x"></i></a>
+                    <li class="nav-item" *ngIf="this.user">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="infoUser()">
+                            <i class="fa fa-user fa-lg"></i>
+                        </div>
                     </li>
-                </ul>
+                    <li class="nav-item" *ngIf="this.user">
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                            (click)="inbox()">
+                            <i class="fa fa-envelope-o fa-lg"></i>
+                        </div>
+                    </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Търси" aria-label="Search">
+                <button class="btn btn-outline-success me-3" type="submit">
+                    <i class="fa fa-search fa-lg"></i>
+                </button>
+            </form>
+            <div class="btn btn-outline-dark btn-yellow roboto font-size-30" aria-current="page" (click)="logout()"
+                *ngIf="this.user">
+                <i class="fa fa-sign-out fa-lg"></i>
             </div>
         </div>
-    </nav>
-</header>
+    </div>
+</nav>

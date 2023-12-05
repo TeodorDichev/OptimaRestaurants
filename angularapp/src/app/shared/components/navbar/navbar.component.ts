@@ -13,7 +13,6 @@ import { EmployeeService } from '../../pages-routing/employee/employee.service';
 })
 export class NavbarComponent implements OnInit {
   user: User | null | undefined;
-  isManager: boolean = true;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
@@ -25,8 +24,7 @@ export class NavbarComponent implements OnInit {
     this.accountService.user$.subscribe(user => {
       this.user = user;
       if (this.user && user) {
-        this.isManager = user.isManager;
-        if (this.isManager) {
+        if (this.user.isManager) {
           this.managerService.getManager(this.user.email).subscribe({
             next: (response: any) => {
               this.managerService.setManager(response);
@@ -54,7 +52,7 @@ export class NavbarComponent implements OnInit {
 
   homePage() {
     if (this.user) {
-      if (this.isManager) {
+      if (this.user.isManager) {
         this.router.navigateByUrl('/manager');
       }
       else {
@@ -80,7 +78,7 @@ export class NavbarComponent implements OnInit {
 
   infoUser() {
     if (this.user) {
-      if (this.isManager) {
+      if (this.user.isManager) {
         this.sharedService.openManagerInfoModal();
       }
       else {
@@ -91,7 +89,7 @@ export class NavbarComponent implements OnInit {
 
   inbox() {
     if (this.user) {
-      if (this.isManager) {
+      if (this.user.isManager) {
         this.sharedService.openInboxModalManager(this.user.email);
       }
       else {
@@ -100,17 +98,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  contact() {
+  contact() { }
 
-  }
-
-  help() {
-
-  }
+  help() { }
 
   allRestaurants() {
     this.router.navigateByUrl('/restaurants');
   }
-
 
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ManagerService } from '../../pages-routing/manager/manager.service'; // for testing only, remove later
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -8,10 +8,7 @@ import { ManagerService } from '../../pages-routing/manager/manager.service'; //
 })
 export class IndexComponent {
 
-
-  constructor(private router: Router,
-    private managerService: ManagerService) { }
-
+  constructor(private router: Router) { }
 
   login() {
     this.router.navigateByUrl('/account/login');

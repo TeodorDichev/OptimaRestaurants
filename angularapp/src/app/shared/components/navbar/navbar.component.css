@@ -1,20 +1,26 @@
-.btn-outline-dark{
-    border-color:  transparent !important;
+.btn-choco {
+    border-color: transparent !important;
     text-shadow: 1px 1px black;
     color: chocolate;
-}
-.btn-outline-dark:hover{
-    border-color:  transparent !important;
-    background-color: lightgray;
-}
-.heading-font{
-    font-family: Pacifico;
-    text-decoration: none;
-    text-shadow: 1px 1px black;
-    font-size: 40px;
-    color: chocolate;
-}
-.navbar{
-    background-color: rgba(255, 255, 255, 0.6); 
 }
 
+.btn-choco:hover {
+    border-color: transparent !important;
+    background-color: lightgray;
+}
+
+.btn-yellow {
+    border-color: transparent !important;
+    text-shadow: 1px 1px black;  
+    color:rgb(252, 154, 43);
+}
+
+.btn-yellow:hover {
+    border-color: transparent !important;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(252, 154, 43);
+}
+
+.navbar-transparent {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+}
