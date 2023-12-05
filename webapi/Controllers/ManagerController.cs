@@ -230,7 +230,7 @@ namespace webapi.Controllers
             if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
 
             List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email))
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderBy(r => r.SentOn))
             {
                 bool? confirmed = null;
                 if (r.ConfirmedOn != null) confirmed = true;
@@ -255,22 +255,23 @@ namespace webapi.Controllers
         [HttpPost("api/manager/respond-to-request")]
         public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
         {
-            var profile = await _userManager.FindByEmailAsync(requestDto.CurrentUserEmail);
-            if (profile == null) return BadRequest("Потребителят не съществува!");
-
-            var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Email == profile.Email);
-
             var request = _context.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
             if (request == null) return BadRequest("Заявката не съществува!");
             if (request.ConfirmedOn != null || request.RejectedOn != null) return BadRequest("Заявката вече е отговорена!");
 
-            var senderProfile = request.Sender;
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == senderProfile.Email);
-            if (senderProfile == null || employee == null) return BadRequest("Потребителят изпратил заявката не съществува!");
+
+            var managerProfile = request.Receiver;
+            var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Email == managerProfile.Email);
+            if (managerProfile == null) return BadRequest("Потребителят не съществува!");
+
+            var employeeProfile = request.Sender;
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == employeeProfile.Email);
+            if (employeeProfile == null || employee == null) return BadRequest("Потребителят изпратил заявката не съществува!");
 
             var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == requestDto.RestaurantId);
             if (restaurant == null) return BadRequest("Ресторантът не съществува!");
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+
             if (restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
                 .Where(er => er.Restaurant.Id.ToString() == requestDto.RestaurantId).Count())
                     return BadRequest("Ресторантът не наема повече работници!");
