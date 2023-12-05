@@ -23,13 +23,15 @@ namespace webapi.Controllers
         private readonly EmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly OptimaRestaurantContext _context;
+        private readonly QrCodesService _qrCodesService;
 
         public AccountController(JWTService jwtService,
         SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
         EmailService emailService,
         IConfiguration configuration,
-        OptimaRestaurantContext context)
+        OptimaRestaurantContext context,
+        QrCodesService qrCodesService)
         {
             _jwtService = jwtService;
             _signInManager = signInManager;
@@ -37,6 +39,7 @@ namespace webapi.Controllers
             _emailService = emailService;
             _configuration = configuration;
             _context = context;
+            _qrCodesService = qrCodesService;
         }
 
         [HttpPost("api/account/register-manager")]
@@ -104,7 +107,8 @@ namespace webapi.Controllers
                     {
                         Profile = userToAdd,
                         City = model.City.ToLower(),
-                        BirthDate = model.BirthDate
+                        BirthDate = model.BirthDate,
+                        QrCodeUrl = _qrCodesService.GenerateQrCode($"https://localhost:4200/review/{userToAdd.Email}")
                     };
                     await _context.Employees.AddAsync(employee);
                     await _context.SaveChangesAsync();

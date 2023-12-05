@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using ZXing;
-using ZXing.Common;
-using ZXing.QrCode;
+﻿using ZXing.QrCode;
 
 namespace webapi.Services
 {
@@ -14,29 +10,62 @@ namespace webapi.Services
             _configuration = configuration;
         }
 
-        public string SaveQrCode(string url)
+        public string GenerateQrCode(string url)
         {
-            string outputPath = "qrcode.svg"; // Replace with your desired output path and file extension
-
-            // Create a ZXing QR code writer with SvgBarcodeWriter
-            BarcodeWriterSvg barcodeWriter = new BarcodeWriterSvg
+            Byte[] byteArray;
+            string onlinePath;
+            var width = 250; // width of the Qr Code
+            var height = 250; // height of the Qr Code
+            var margin = 0;
+            var qrCodeWriter = new ZXing.BarcodeWriterPixelData
             {
-                Format = BarcodeFormat.QR_CODE,
-                Options = new ZXing.Common.EncodingOptions
+                Format = ZXing.BarcodeFormat.QR_CODE,
+                Options = new QrCodeEncodingOptions
                 {
-                    Width = 300, // Adjust the width of the QR code as needed
-                    Height = 300, // Adjust the height of the QR code as needed
-                    Margin = 10 // Adjust the margin of the QR code as needed
+                    Height = height,
+                    Width = width,
+                    Margin = margin
                 }
             };
+            var pixelData = qrCodeWriter.Write(url);
 
-            // Generate the QR code as SVG string
-            string svgCode = barcodeWriter.Write(url).ToString();
+            // creating a bitmap from the raw pixel data; if only black and white colors are used it makes no difference
+            // that the pixel data ist BGRA oriented and the bitmap is initialized with RGB
+            using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+            {
+                using (var ms = new MemoryStream())
+                {
+                    var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                    try
+                    {
+                        // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
+                        System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+                    }
+                    finally
+                    {
+                        bitmap.UnlockBits(bitmapData);
+                    }
 
-            // Save the SVG code to a file
-            File.WriteAllText(outputPath, svgCode);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty);
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-            return outputPath;
+                    var ext = ".png";
+
+                    string uniqueString = Guid.NewGuid().ToString();
+                    var newFileName = uniqueString + ext;
+
+                    var fileWithPath = Path.Combine(path, newFileName);
+                    onlinePath = "../../../../assets/uploads/qrcodes" + $"/{newFileName}";
+
+                    bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
+
+                    // save to stream as PNG
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byteArray = ms.ToArray();
+                }
+            }
+
+            return onlinePath;
         }
     }
 }
