@@ -22,14 +22,17 @@ namespace webapi.Controllers
         private readonly OptimaRestaurantContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly PicturesAndIconsService _picturesAndIconsService;
+        private readonly QrCodesService _qrCodesService;
 
         public EmployeeController(OptimaRestaurantContext context,
             UserManager<ApplicationUser> userManager,
-            PicturesAndIconsService picturesAndIconsService)
+            PicturesAndIconsService picturesAndIconsService,
+            QrCodesService qrCodesService)
         {
             _context = context;
             _userManager = userManager;
             _picturesAndIconsService = picturesAndIconsService;
+            _qrCodesService = qrCodesService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -82,8 +85,10 @@ namespace webapi.Controllers
             var roles = await _userManager.GetRolesAsync(profile);
 
             foreach (var er in employee.EmployeesRestaurants) _context.EmployeesRestaurants.Remove(er);
+            foreach (var r in _context.Requests.Where(r => r.Sender.Email == email || r.Receiver.Email == email)) _context.Requests.Remove(r);
 
             if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
+            if (employee.QrCodeUrl != null) _qrCodesService.DeleteQrCode(employee.QrCodeUrl);
 
             _context.Employees.Remove(employee);
             await _userManager.RemoveFromRolesAsync(profile, roles);

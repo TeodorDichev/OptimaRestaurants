@@ -44,7 +44,7 @@
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(imageFileUrl);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty) + imageFileUrl.Split('/').Last();
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);

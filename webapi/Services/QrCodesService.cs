@@ -67,5 +67,26 @@ namespace webapi.Services
 
             return onlinePath;
         }
+
+        public bool DeleteQrCode(string qrCodeFileUrl)
+        {
+#pragma warning disable CS0168 // Variable is declared but never used
+            try
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty) + qrCodeFileUrl.Split('/').Last();
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+#pragma warning restore CS0168 // Variable is declared but never used
+        }
+
     }
 }

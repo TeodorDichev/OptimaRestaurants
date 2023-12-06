@@ -76,6 +76,7 @@ namespace webapi.Controllers
             foreach (var restaurant in manager.Restaurants) restaurant.Manager = null;
 
             if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
+            foreach (var r in _context.Requests.Where(r => r.Sender.Email == email || r.Receiver.Email == email)) _context.Requests.Remove(r);
 
             _context.Managers.Remove(manager);
             await _userManager.RemoveFromRolesAsync(profile, roles);
