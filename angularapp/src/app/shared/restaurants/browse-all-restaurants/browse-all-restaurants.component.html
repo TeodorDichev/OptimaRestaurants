@@ -2,34 +2,30 @@
 <div class="font-size-30 text-center roboto chocolate fw-bold my-4">
     Всички регистрирани ресторанти
 </div>
-<div *ngFor="let restaurant of allRestaurants">
+<div class="roboto max-width text-start" *ngFor="let restaurant of allRestaurants">
     <div class="row max-width border-top py-3" (click)="selectedRestaurant(restaurant)"
         [ngClass]="{'selected': restaurant === currentRestaurant}">
         <div class="col-2 img-logo text-center mx-2 my-auto">
             <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
         </div>
         <div class="col-3 px-4 ms-5 my-auto">
-            <span class="row roboto text-start fw-bold font-size-25">{{restaurant.name}}</span>
-            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.address}},</span>
-            <span class="row roboto text-start fst-italic font-size-20">{{restaurant.city}}</span>
+            <span class="row fw-bold font-size-25">{{restaurant.name}}</span>
+            <span class="row fst-italic font-size-20">{{restaurant.address}},</span>
+            <span class="row fst-italic font-size-20">{{restaurant.city}}</span>
         </div>
-        <div class="col-2 py-2 my-auto">
-            <span class="row roboto fw-bold font-size-20">Категория:</span>
-            <span class="row roboto text-start font-size-20">Ястия</span>
-            <span class="row roboto text-start font-size-20">Атмосфера</span>
-            <span class="row roboto text-start font-size-20">Работници</span>
-            <span class="row roboto text-start font-size-20">Ресторант</span>
+        <div class="col-2 font-size-20 py-2 my-auto">
+            <span class="row fw-bold">Категория:</span>
+            <span class="row">Ястия</span>
+            <span class="row">Атмосфера</span>
+            <span class="row">Работници</span>
+            <span class="row">Ресторант</span>
         </div>
-        <div class="col-2 my-auto">
-            <span class="row roboto fw-bold font-size-20">Средна оценка:</span>
-            <span class="row roboto text-start font-size-20"><app-star-rating
-                    [rating]="restaurant.cuisineAverageRating"></app-star-rating></span>
-            <span class="row roboto text-start font-size-20"><app-star-rating
-                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
-            <span class="row roboto text-start font-size-20"><app-star-rating
-                    [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
-            <span class="row roboto text-start font-size-20"><app-star-rating
-                    [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
+        <div class="col-2 my-auto font-size-20">
+            <span class="row fw-bold ">Средна оценка:</span>
+            <span class="row"><app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating></span>
+            <span class="row"><app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating></span>
+            <span class="row"><app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
+            <span class="row"><app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
         </div>
         <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto"
             (click)="getRestaurantDetails(currentRestaurant.id)">

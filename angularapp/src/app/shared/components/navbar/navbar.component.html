@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-transparent">
     <div class="container-fluid">
-        <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-choco ms-lg-5" (click)="homePage()">
+        <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-choco ms-xl-5" (click)="homePage()">
             Оптима Ресторанти
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItemsCollapse"
@@ -8,58 +8,60 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarItemsCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav mb-2 me-auto mb-lg-0">
                 <li class="nav-item">
-                    <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                    <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
+                        (click)="help()">
+                        <i class="fa-solid fa-question fa-lg"></i>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                         (click)="allRestaurants()">
-                        <i class="fa fa-cutlery fa-lg"></i>
+                        <i class="fa-solid fa-store fa-lg"></i>
                     </div>
                 </li>
                     <li class="nav-item" *ngIf="!this.user">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="contact()">
                             <i class="fa fa-phone fa-lg"></i>
                         </div>
                     </li>
-                    <li class="nav-item" *ngIf="!this.user">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
-                            (click)="help()">
-                            <i class="fa fa-question fa-lg"></i>
-                        </div>
-                    </li>
                     <li class="nav-item" *ngIf="this.user?.isManager">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="employeeSearch()">
-                            <i class="fa fa-users fa-lg"></i>
+                            <i class="fa-solid fa-users-between-lines fa-lg"></i>
                         </div>
                     </li>
                     <li class="nav-item" *ngIf="this.user?.isManager == false">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="showCV()">
-                            <i class="fa fa-file-text fa-lg"></i>
+                            <i class="fa-solid fa-file-pdf fa-lg"></i>
                         </div>
                     </li>
                     <li class="nav-item" *ngIf="this.user?.isManager == false">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="showQR()">
-                            <i class="fa fa-qrcode fa-lg"></i>
+                            <i class="fa-solid fa-qrcode fa-lg"></i>
                         </div>
                     </li>
                     <li class="nav-item" *ngIf="this.user">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="infoUser()">
-                            <i class="fa fa-user fa-lg"></i>
+                            <i class="fa-solid fa-user-pen fa-lg"></i>
                         </div>
                     </li>
                     <li class="nav-item" *ngIf="this.user">
-                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 me-2" aria-current="page"
+                        <div class="btn btn-outline-dark btn-yellow roboto font-size-30 mx-xl-2" aria-current="page"
                             (click)="inbox()">
                             <i class="fa fa-envelope-o fa-lg"></i>
                         </div>
                     </li>
             </ul>
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Търси" aria-label="Search">
+                <input class="form-control mx-2" type="search" placeholder="Търси" aria-label="Search">
                 <button class="btn btn-outline-success me-3" type="submit">
                     <i class="fa fa-search fa-lg"></i>
                 </button>
