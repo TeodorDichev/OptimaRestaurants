@@ -73,8 +73,8 @@ export class EditManagerComponent {
     if (this.email) {
       this.managerService.deleteManagerAccount(this.email).subscribe({
         next: (response: any) => {
-          this.bsModalRef.hide();
           this.sharedService.showNotification(true, response.value.title, response.value.message);
+          this.bsModalRef.hide();
         },
         error: error => {
           if (error.error.errors) {

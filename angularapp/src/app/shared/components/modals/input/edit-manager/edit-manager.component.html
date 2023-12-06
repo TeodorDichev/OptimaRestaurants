@@ -7,21 +7,21 @@
             <div class="form-group pt-3">
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име">
+                    <input class="col-11" formControlName="newFirstName" type="text" placeholder="Ново първо име ({{manager?.firstName}})">
                 </div>
                 <div class="input-field my-2">
                     <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия">
+                    <input class="col-11" formControlName="newLastName" type="text" placeholder="Нова фамилия ({{manager?.lastName}})">
                 </div>
                 <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер">
+                    <span class="fa fa-phone chocolate p-2"></span>
+                    <input class="col-11" formControlName="newPhoneNumber" type="text" placeholder="Нов телефонен номер (not send from backend :/)">
                 </div>
                 <div class="input-field my-2">
                     <span class="fa fa-picture-o chocolate p-2"></span>
                     <input class="col-11" (change)="onFileSelected($event)" type="file" accept="image/*">
                 </div>
-                <button type="button" class="btn btn-danger" (click)="deleteManagerAccount()">Изтриване на
+                <button type="button" class="btn btn-danger mt-3" (click)="deleteManagerAccount()">Изтриване на
                     акаунт</button>
                 <div class="text-danger font-size-15 p-2">Внимание! Тази операция не може да бъде върната!</div>
             </div>

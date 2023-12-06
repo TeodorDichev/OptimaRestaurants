@@ -27,7 +27,7 @@
             <span class="row"><app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
             <span class="row"><app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
         </div>
-        <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-chocolate roboto font-size-15 my-auto"
+        <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-yellow roboto font-size-15 my-auto"
             (click)="getRestaurantDetails(currentRestaurant.id)">
             Информация
         </button>

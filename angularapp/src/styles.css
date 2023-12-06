@@ -3,6 +3,7 @@ body {
     width: 100vw !important;
     height: 100vh !important;
 }
+
 .max-width {
     max-width: 100% !important;
 }
@@ -76,6 +77,31 @@ body {
 
 .btn-chocolate:hover {
     background-color: rgb(138, 69, 20);
+}
+
+.btn-yellow-inverted {
+    border-color: transparent !important;
+    text-shadow: 1px 1px black;
+    color: rgb(252, 154, 43);
+}
+
+.btn-yellow-inverted:hover {
+    border-color: transparent !important;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(252, 154, 43);
+}
+
+.btn-yellow {
+    border-color: transparent !important;
+    text-shadow: 1px 1px black;
+    color: rgba(255, 255, 255, 0.9);
+    background-color: rgb(252, 154, 43);
+}
+
+.btn-yellow:hover {
+    border-color: transparent !important;
+    background-color:  rgba(255, 255, 255, 0.9);
+    color: rgb(252, 154, 43);
 }
 
 .max-height-70vh {

@@ -9,18 +9,6 @@
     background-color: lightgray;
 }
 
-.btn-yellow {
-    border-color: transparent !important;
-    text-shadow: 1px 1px black;  
-    color:rgb(252, 154, 43);
-}
-
-.btn-yellow:hover {
-    border-color: transparent !important;
-    color: rgba(255, 255, 255, 0.9);
-    background-color: rgb(252, 154, 43);
-}
-
 .navbar-transparent {
     background-color: rgba(255, 255, 255, 0.6) !important;
 }
