@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace webapi.Models
 {
@@ -11,10 +12,15 @@ namespace webapi.Models
         public required string QrCodePath { get; set; }
         public string? ResumePath { get; set; }
         public required DateTime BirthDate { get; set; }
+        [Precision(2, 2)]
         public decimal? SpeedAverageRating { get; set; }
+        [Precision(2, 2)]
         public decimal? AttitudeAverageRating { get; set; }
+        [Precision(2, 2)]
         public decimal? PunctualityAverageRating { get; set; }
+        [Precision(2, 2)]
         public decimal? CollegialityAverageRating { get; set; }
+        [Precision(2, 2)]
         public decimal? EmployeeAverageRating { get; set; }
         public bool IsLookingForJob { get; set; } = true;
         public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; } = new List<EmployeeRestaurant>();

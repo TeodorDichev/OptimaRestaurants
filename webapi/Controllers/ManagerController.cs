@@ -318,9 +318,10 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
-                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
-                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
+                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
+                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
+                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IconUrl = restaurant?.IconPath,
                 });
             }

@@ -10,5 +10,6 @@
         public required decimal CuisineAverageRating { get; set; }
         public required decimal AtmosphereAverageRating { get; set; }
         public required decimal EmployeesAverageRating { get; set; }
+        public required decimal RestaurantAverageRating { get; set; }
     }
 }

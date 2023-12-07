@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 using webapi.Data;
-using webapi.DTOs.Account;
 using webapi.DTOs.Restaurant;
 using webapi.DTOs.Review;
 using webapi.Models;
@@ -15,43 +11,25 @@ namespace webapi.Controllers
     public class ReviewController : Controller
     {
         private readonly JWTService _jwtService;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly EmailService _emailService;
-        private readonly IConfiguration _configuration;
         private readonly OptimaRestaurantContext _context;
-        private readonly QrCodesService _qrCodesService;
 
         public ReviewController(JWTService jwtService,
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
-            EmailService emailService,
-            IConfiguration configuration,
-            OptimaRestaurantContext context,
-            QrCodesService qrCodesService)
+            OptimaRestaurantContext context)
         {
             _jwtService = jwtService;
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _emailService = emailService;
-            _configuration = configuration;
             _context = context;
-            _qrCodesService = qrCodesService;
         }
 
 
         [HttpGet("api/review-employee/{email}/{token}")]
-        public async Task<ActionResult<ReviewDto>> GetReviewForm(string email, string token)
+        public async Task<ActionResult<ReviewDto>> GetCustomerReviewForm(string email, string token)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
             if (employee == null) return Unauthorized("Този имейл не е регистриран в системата.");
 
             var isValidToken = _jwtService.ValidateQrToken(token, email);
 
-            if (!isValidToken)
-            {
-                return BadRequest("Невалиден токен. Моля, опитайте отново");
-            }
+            if (!isValidToken) return BadRequest("Невалиден токен. Моля, опитайте отново");
 
             ICollection<BrowseRestaurantDto> restaurants = new List<BrowseRestaurantDto>();
 
@@ -67,14 +45,14 @@ namespace webapi.Controllers
                     Address = restaurant.Address,
                     City = restaurant.City,
                     IsWorking = restaurant.IsWorking,
-                    RestaurantAverageRating = restaurant.RestaurantAverageRating,
+                    RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
                     IconUrl = restaurant?.IconPath
                 });
             }
 
-            ReviewDto reviewDto = new ReviewDto 
-            { 
-                JwtToken = token, 
+            ReviewDto reviewDto = new ReviewDto
+            {
+                JwtToken = token,
                 EmployeeEmail = email,
                 RestaurantDtos = restaurants.ToList()
             };
@@ -82,7 +60,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/review-employee")]
-        public async Task<IActionResult> SubmitReview([FromBody] CustomerReviewDto model)
+        public async Task<IActionResult> SubmitCustomerReview([FromBody] CustomerReviewDto model)
         {
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == model.EmployeeEmail);
             if (employee == null) return BadRequest("Потребителят не съществува!");
@@ -102,9 +80,62 @@ namespace webapi.Controllers
                 CuisineRating = model.CuisineRating,
             };
 
-            // implement calculations for the models
+            await _context.CustomerReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
 
-            return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
+            if (UpdateStatistics(employee, restaurant))
+                return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
+            else
+                return BadRequest("Неуспешно обновени данни!");
+        }
+
+        private bool UpdateStatistics(Employee employee, Restaurant restaurant)
+        {
+            try
+            {
+                //updating employee statistics
+                employee.AttitudeAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.AttitudeRating != null)
+                    .Select(cr => cr.AttitudeRating)
+                    .Average();
+
+                employee.SpeedAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.SpeedRating != null)
+                    .Select(cr => cr.SpeedRating)
+                    .Average();
+
+                employee.EmployeeAverageRating = (employee.PunctualityAverageRating
+                    + employee.AttitudeAverageRating
+                    + employee.CollegialityAverageRating
+                    + employee.SpeedAverageRating) / 4;
+
+                //updating restaurants statistics
+                restaurant.AtmosphereAverageRating = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant && cr.AtmosphereRating != null)
+                    .Select(cr => cr.AtmosphereRating)
+                    .Average();
+
+                restaurant.CuisineAverageRating = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant && cr.CuisineRating != null)
+                    .Select(cr => cr.CuisineRating)
+                    .Average();
+
+                restaurant.EmployeesAverageRating = restaurant.EmployeesRestaurants
+                    .Select(er => er.Employee)
+                    .Select(e => e.EmployeeAverageRating)
+                    .Average();
+
+                restaurant.RestaurantAverageRating = (restaurant.CuisineAverageRating
+                    + restaurant.AtmosphereAverageRating
+                    + restaurant.EmployeesAverageRating) / 3;
+
+                //saving the changes
+                _context.Employees.Update(employee);
+                _context.Restaurants.Update(restaurant);
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

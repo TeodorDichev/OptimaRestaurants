@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace webapi.Models
 {
@@ -12,10 +13,15 @@ namespace webapi.Models
         public int EmployeeCapacity { get; set; }
         public bool IsWorking { get; set; }
         public string? IconPath { get; set; }
-        public decimal CuisineAverageRating { get; set; }
-        public decimal AtmosphereAverageRating { get; set; }
-        public decimal EmployeesAverageRating { get; set; }
-        public decimal RestaurantAverageRating { get; set; }
+
+        [Precision(2, 2)]
+        public decimal? CuisineAverageRating { get; set; }
+        [Precision(2, 2)]
+        public decimal? AtmosphereAverageRating { get; set; }
+        [Precision(2, 2)]
+        public decimal? EmployeesAverageRating { get; set; }
+        [Precision(2, 2)]
+        public decimal? RestaurantAverageRating { get; set; }
         public decimal StandardMonthlyPayment { get; set; }
         public int MinRatingForBonuses { get; set; }
         public decimal RatingBonusesAmount { get; set; }

@@ -187,10 +187,11 @@ namespace webapi.Controllers
             var restaurantDto = new RestaurantDetailsDto
             {
                 Address = restaurant.Address,
-                AtmosphereAverageRating = restaurant.AtmosphereAverageRating,
-                RestaurantAverageRating = restaurant.RestaurantAverageRating,
-                CuisineAverageRating = restaurant.CuisineAverageRating,
-                EmployeesAverageRating = restaurant.EmployeesAverageRating,
+                AtmosphereAverageRating = restaurant.AtmosphereAverageRating ?? 0,
+                RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
+                CuisineAverageRating = restaurant.CuisineAverageRating ?? 0,
+                EmployeesAverageRating = restaurant.EmployeesAverageRating ?? 0,
+                RatingsCount = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant).Count(),
                 City = restaurant.City,
                 EmployeeCapacity = restaurant.EmployeeCapacity,
                 IconUrl = restaurant.IconPath,
