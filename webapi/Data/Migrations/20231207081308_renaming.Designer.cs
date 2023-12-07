@@ -12,15 +12,18 @@ using webapi.Data;
 namespace webapi.Migrations
 {
     [DbContext(typeof(OptimaRestaurantContext))]
-    [Migration("20231010092146_CompleteDatabase")]
-    partial class CompleteDatabase
+    [Migration("20231207081308_renaming")]
+    partial class renaming
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.13")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -170,6 +173,9 @@ namespace webapi.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -203,13 +209,12 @@ namespace webapi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProfileImageUrl")
+                    b.Property<string>("ProfilePicturePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -280,34 +285,44 @@ namespace webapi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("AttitudeAverageRating")
+                    b.Property<decimal?>("AttitudeAverageRating")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("CollegialityAverageRating")
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("CollegialityAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("EmployeeAverageRating")
+                    b.Property<decimal?>("EmployeeAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("PunctualityAverageRating")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<bool>("IsLookingForJob")
+                        .HasColumnType("bit");
 
-                    b.Property<decimal>("SpeedAverageRating")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("ProfileId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("PunctualityAverageRating")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("QrCodePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResumePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("SpeedAverageRating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Employees");
                 });
@@ -318,19 +333,16 @@ namespace webapi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ConfirmedOn")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("EmployeeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("EndedOn")
+                    b.Property<DateTime?>("EndedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid>("RestaurantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("SentOn")
+                    b.Property<DateTime>("StartedOn")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -342,23 +354,23 @@ namespace webapi.Migrations
                     b.ToTable("EmployeesRestaurants");
                 });
 
-            modelBuilder.Entity("webapi.Models.Employer", b =>
+            modelBuilder.Entity("webapi.Models.Manager", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("ProfileId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProfileId");
 
-                    b.ToTable("Employers");
+                    b.ToTable("Managers");
                 });
 
-            modelBuilder.Entity("webapi.Models.EmployerReview", b =>
+            modelBuilder.Entity("webapi.Models.ManagerReview", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -389,7 +401,42 @@ namespace webapi.Migrations
 
                     b.HasIndex("EmployerId");
 
-                    b.ToTable("EmployersReviews");
+                    b.ToTable("ManagerReviews");
+                });
+
+            modelBuilder.Entity("webapi.Models.Request", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ConfirmedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("RejectedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("RestaurantId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Requests");
                 });
 
             modelBuilder.Entity("webapi.Models.Restaurant", b =>
@@ -405,6 +452,10 @@ namespace webapi.Migrations
                     b.Property<decimal>("AtmosphereAverageRating")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("CuisineAverageRating")
                         .HasColumnType("decimal(18,2)");
 
@@ -414,15 +465,14 @@ namespace webapi.Migrations
                     b.Property<decimal>("EmployeesAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("EmployerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("IconPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsWorking")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MinRatingForBonuses")
                         .HasColumnType("int");
@@ -443,7 +493,7 @@ namespace webapi.Migrations
                     b.Property<decimal>("RestaurantAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("StandartMontlyPayment")
+                    b.Property<decimal>("StandardMonthlyPayment")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("UsePercentageGrowth")
@@ -451,7 +501,7 @@ namespace webapi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployerId");
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Restaurants");
                 });
@@ -598,11 +648,11 @@ namespace webapi.Migrations
 
             modelBuilder.Entity("webapi.Models.Employee", b =>
                 {
-                    b.HasOne("webapi.Models.ApplicationUser", "User")
+                    b.HasOne("webapi.Models.ApplicationUser", "Profile")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ProfileId");
 
-                    b.Navigation("User");
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("webapi.Models.EmployeeRestaurant", b =>
@@ -624,16 +674,16 @@ namespace webapi.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("webapi.Models.Employer", b =>
+            modelBuilder.Entity("webapi.Models.Manager", b =>
                 {
-                    b.HasOne("webapi.Models.ApplicationUser", "User")
+                    b.HasOne("webapi.Models.ApplicationUser", "Profile")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("ProfileId");
 
-                    b.Navigation("User");
+                    b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("webapi.Models.EmployerReview", b =>
+            modelBuilder.Entity("webapi.Models.ManagerReview", b =>
                 {
                     b.HasOne("webapi.Models.Employee", "Employee")
                         .WithMany()
@@ -641,7 +691,7 @@ namespace webapi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("webapi.Models.Employer", "Employer")
+                    b.HasOne("webapi.Models.Manager", "Employer")
                         .WithMany()
                         .HasForeignKey("EmployerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -652,15 +702,36 @@ namespace webapi.Migrations
                     b.Navigation("Employer");
                 });
 
-            modelBuilder.Entity("webapi.Models.Restaurant", b =>
+            modelBuilder.Entity("webapi.Models.Request", b =>
                 {
-                    b.HasOne("webapi.Models.Employer", "Employer")
-                        .WithMany("Restaurants")
-                        .HasForeignKey("EmployerId")
+                    b.HasOne("webapi.Models.ApplicationUser", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("webapi.Models.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employer");
+                    b.HasOne("webapi.Models.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("webapi.Models.Restaurant", b =>
+                {
+                    b.HasOne("webapi.Models.Manager", "Manager")
+                        .WithMany("Restaurants")
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("Manager");
                 });
 
             modelBuilder.Entity("webapi.Models.Shift", b =>
@@ -689,7 +760,7 @@ namespace webapi.Migrations
             modelBuilder.Entity("webapi.Models.Transfer", b =>
                 {
                     b.HasOne("webapi.Models.Employee", "Employee")
-                        .WithMany("Transfers")
+                        .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -702,11 +773,9 @@ namespace webapi.Migrations
                     b.Navigation("EmployeesRestaurants");
 
                     b.Navigation("Shifts");
-
-                    b.Navigation("Transfers");
                 });
 
-            modelBuilder.Entity("webapi.Models.Employer", b =>
+            modelBuilder.Entity("webapi.Models.Manager", b =>
                 {
                     b.Navigation("Restaurants");
                 });

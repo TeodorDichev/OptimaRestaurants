@@ -464,7 +464,7 @@ namespace webapi.Migrations
                     b.Property<decimal>("EmployeesAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("IconPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsWorking")

@@ -50,11 +50,11 @@ namespace webapi.Controllers
             if (managerDto.NewPhoneNumber != null) profile.PhoneNumber = managerDto.NewPhoneNumber;
             if (managerDto.ProfilePictureFile != null)
             {
-                if(profile.ProfilePictureUrl == null) profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                if(profile.ProfilePicturePath == null) profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
                 else
                 {
-                    _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
-                    profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
+                    _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
+                    profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(managerDto.ProfilePictureFile);
                 }
             }
 
@@ -75,7 +75,7 @@ namespace webapi.Controllers
 
             foreach (var restaurant in manager.Restaurants) restaurant.Manager = null;
 
-            if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
+            if (profile.ProfilePicturePath != null) _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
             foreach (var r in _context.Requests.Where(r => r.Sender.Email == email || r.Receiver.Email == email)) _context.Requests.Remove(r);
 
             _context.Managers.Remove(manager);
@@ -106,7 +106,7 @@ namespace webapi.Controllers
                 Manager = manager
             };
 
-            if (newRestaurant.IconFile != null) restaurant.IconUrl = _picturesAndIconsService.SaveImage(newRestaurant.IconFile);
+            if (newRestaurant.IconFile != null) restaurant.IconPath = _picturesAndIconsService.SaveImage(newRestaurant.IconFile);
 
             await _context.Restaurants.AddAsync(restaurant);
             await _context.SaveChangesAsync();
@@ -131,11 +131,11 @@ namespace webapi.Controllers
             if (restaurantDto.City != null) restaurant.City = restaurantDto.City;
             if (restaurantDto.IconFile != null)
             {
-                if (restaurant.IconUrl == null) restaurant.IconUrl = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                if (restaurant.IconPath == null) restaurant.IconPath = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
                 else
                 {
-                    _picturesAndIconsService.DeleteImage(restaurant.IconUrl);
-                    restaurant.IconUrl = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
+                    _picturesAndIconsService.DeleteImage(restaurant.IconPath);
+                    restaurant.IconPath = _picturesAndIconsService.SaveImage(restaurantDto.IconFile);
                 }
             }
             if (restaurantDto.Name != null) restaurant.Name = restaurantDto.Name;
@@ -177,7 +177,7 @@ namespace webapi.Controllers
                     FirstName = employee.Profile.FirstName ?? string.Empty,
                     LastName = employee.Profile.LastName ?? string.Empty,
                     PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
-                    ProfilePictureUrl = employee.Profile.ProfilePictureUrl ?? string.Empty,
+                    ProfilePictureUrl = employee.Profile.ProfilePicturePath ?? string.Empty,
                     EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
                     IsLookingForJob = employee.IsLookingForJob,
                     City = employee.City,
@@ -202,7 +202,7 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email ?? string.Empty,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePictureUrl = emp.Profile.ProfilePictureUrl,
+                    ProfilePictureUrl = emp.Profile.ProfilePicturePath,
                     EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1
                 });
             }
@@ -321,7 +321,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -330,7 +330,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
-                ProfilePictureUrl = manager.Profile.ProfilePictureUrl,
+                ProfilePictureUrl = manager.Profile.ProfilePicturePath,
                 Restaurants = restaurants.IsNullOrEmpty() ? new List<ManagerRestaurantDto>() : restaurantsDto
             };
 

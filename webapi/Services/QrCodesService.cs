@@ -46,7 +46,7 @@ namespace webapi.Services
                         bitmap.UnlockBits(bitmapData);
                     }
 
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                     var ext = ".png";
@@ -73,7 +73,7 @@ namespace webapi.Services
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty) + qrCodeFileUrl.Split('/').Last();
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty) + "\\" + qrCodeFileUrl.Split('/').Last();
                 if (System.IO.File.Exists(path))
                 {
                     System.IO.File.Delete(path);

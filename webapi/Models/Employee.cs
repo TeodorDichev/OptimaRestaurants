@@ -8,8 +8,8 @@ namespace webapi.Models
         public Guid Id { get; set; }
         public required virtual ApplicationUser Profile { get; set; }
         public required string City { get; set; }
-        public string? QrCodeUrl { get; set; }
-        public string? ResumeUrl { get; set; }
+        public required string QrCodePath { get; set; }
+        public string? ResumePath { get; set; }
         public required DateTime BirthDate { get; set; }
         public decimal? SpeedAverageRating { get; set; }
         public decimal? AttitudeAverageRating { get; set; }

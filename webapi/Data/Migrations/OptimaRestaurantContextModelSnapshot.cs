@@ -211,7 +211,7 @@ namespace webapi.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProfilePictureUrl")
+                    b.Property<string>("ProfilePicturePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -307,10 +307,11 @@ namespace webapi.Migrations
                     b.Property<decimal?>("PunctualityAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("QrCodeUrl")
+                    b.Property<string>("QrCodePath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ResumeUrl")
+                    b.Property<string>("ResumePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("SpeedAverageRating")
@@ -461,7 +462,7 @@ namespace webapi.Migrations
                     b.Property<decimal>("EmployeesAverageRating")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("IconPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsWorking")

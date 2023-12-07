@@ -421,7 +421,7 @@ namespace webapi.Migrations
                     b.Property<Guid>("EmployerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("IconUrl")
+                    b.Property<string>("IconPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

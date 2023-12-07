@@ -36,7 +36,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -59,7 +59,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -82,7 +82,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -105,7 +105,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -128,7 +128,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -151,7 +151,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconUrl,
+                    IconUrl = restaurant?.IconPath,
                 });
             }
 
@@ -193,7 +193,7 @@ namespace webapi.Controllers
                 EmployeesAverageRating = restaurant.EmployeesAverageRating,
                 City = restaurant.City,
                 EmployeeCapacity = restaurant.EmployeeCapacity,
-                IconUrl = restaurant.IconUrl,
+                IconUrl = restaurant.IconPath,
                 IsWorking = restaurant.IsWorking,
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),

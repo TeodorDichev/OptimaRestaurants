@@ -108,7 +108,7 @@ namespace webapi.Controllers
                         Profile = userToAdd,
                         City = model.City.ToLower(),
                         BirthDate = model.BirthDate,
-                        QrCodeUrl = _qrCodesService.GenerateQrCode($"https://localhost:4200/review/{userToAdd.Email}")
+                        QrCodePath = _qrCodesService.GenerateQrCode($"https://localhost:4200/review/{userToAdd.Email}")
                     };
                     await _context.Employees.AddAsync(employee);
                     await _context.SaveChangesAsync();
@@ -259,7 +259,7 @@ namespace webapi.Controllers
                     Fullname = user.FirstName + " " + user.LastName,
                     Email = user.Email,
                     Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
-                    PictureUrl = user.ProfilePictureUrl
+                    PictureUrl = user.ProfilePicturePath
                 });
 
             return accounts;

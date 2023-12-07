@@ -1,4 +1,5 @@
-﻿using Mailjet.Client.Resources;
+﻿using iText.IO.Image;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,16 +24,19 @@ namespace webapi.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly PicturesAndIconsService _picturesAndIconsService;
         private readonly QrCodesService _qrCodesService;
+        private readonly IConfiguration _configuration;
 
         public EmployeeController(OptimaRestaurantContext context,
             UserManager<ApplicationUser> userManager,
             PicturesAndIconsService picturesAndIconsService,
-            QrCodesService qrCodesService)
+            QrCodesService qrCodesService,
+            IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
             _picturesAndIconsService = picturesAndIconsService;
             _qrCodesService = qrCodesService;
+            _configuration = configuration;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -60,11 +64,11 @@ namespace webapi.Controllers
             if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
             if (employeeDto.ProfilePictureFile != null)
             {
-                if (profile.ProfilePictureUrl == null) profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                if (profile.ProfilePicturePath == null) profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 else
                 {
-                    _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
-                    profile.ProfilePictureUrl = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
+                    _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
+                    profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
                 }
             }
             employee.IsLookingForJob = employeeDto.IsLookingForJob;
@@ -87,8 +91,8 @@ namespace webapi.Controllers
             foreach (var er in employee.EmployeesRestaurants) _context.EmployeesRestaurants.Remove(er);
             foreach (var r in _context.Requests.Where(r => r.Sender.Email == email || r.Receiver.Email == email)) _context.Requests.Remove(r);
 
-            if (profile.ProfilePictureUrl != null) _picturesAndIconsService.DeleteImage(profile.ProfilePictureUrl);
-            if (employee.QrCodeUrl != null) _qrCodesService.DeleteQrCode(employee.QrCodeUrl);
+            if (profile.ProfilePicturePath != null) _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
+            if (employee.QrCodePath != null) _qrCodesService.DeleteQrCode(employee.QrCodePath);
 
             _context.Employees.Remove(employee);
             await _userManager.RemoveFromRolesAsync(profile, roles);
@@ -178,6 +182,25 @@ namespace webapi.Controllers
             }
         }
 
+        [HttpGet("api/employee/download-qrcode/{email}")]
+        public async Task<IActionResult> DownloadQrCode(string email)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
+            if (employee == null) return BadRequest("Потребителят не съществува!");
+
+            string imageName = employee.QrCodePath.Split("/").Last();
+            string imagePath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty, imageName);
+            
+            if (System.IO.File.Exists(imagePath))
+            {
+                return PhysicalFile(imagePath, "image/png", "qrcode.png");
+            }
+            else
+            {
+                return BadRequest("Вашият QrCode не беше намерен!");
+            }
+        }
+
         private EmployeeMainViewDto GenerateNewEmployeeDto(string email)
         {
             var employee = _context.Employees.FirstOrDefault(e => e.Profile.Email == email);
@@ -200,7 +223,7 @@ namespace webapi.Controllers
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? -1,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? -1,
-                    IconUrl = restaurant?.IconUrl
+                    IconUrl = restaurant?.IconPath
                 });
             }
 
@@ -209,7 +232,8 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                ProfilePictureUrl = profile.ProfilePictureUrl,
+                ProfilePictureUrl = profile.ProfilePicturePath,
+                QrCodeUrl = employee.QrCodePath,
                 PhoneNumber = profile.PhoneNumber ?? string.Empty,
                 City = employee.City,
                 BirthDate = employee.BirthDate,

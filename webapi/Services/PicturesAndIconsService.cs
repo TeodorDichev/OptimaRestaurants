@@ -11,7 +11,7 @@
 
         public string SaveImage(IFormFile imageFile)
         {
-            string url = "";
+            string onlinePath = "";
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
@@ -20,22 +20,22 @@
 
                 var ext = Path.GetExtension(imageFile.FileName);
                 var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
-                if (!allowedExtensions.Contains(ext)) return url;
+                if (!allowedExtensions.Contains(ext)) return onlinePath;
 
                 string uniqueString = Guid.NewGuid().ToString();
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                url = "../../../../assets/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "../../../../assets/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
 
-                return url;
+                return onlinePath;
             }
             catch (Exception ex)
             {
-                return url;
+                return onlinePath;
             }
 #pragma warning restore CS0168 // Variable is declared but never used
         }
