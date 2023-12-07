@@ -308,11 +308,11 @@ namespace webapi.Controllers
             if (manager == null || profile == null) throw new ArgumentNullException("Потребителят не съществува!");
 
             List<Restaurant> restaurants = _context.Restaurants.Where(r => r.Manager == manager).ToList();
-            ICollection<ManagerRestaurantDto> restaurantsDto = new List<ManagerRestaurantDto>();
+            ICollection<AccountRestaurantDto> restaurantsDto = new List<AccountRestaurantDto>();
 
             foreach (var restaurant in manager.Restaurants)
             {
-                restaurantsDto.Add(new ManagerRestaurantDto
+                restaurantsDto.Add(new AccountRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
@@ -331,7 +331,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 ProfilePictureUrl = manager.Profile.ProfilePicturePath,
-                Restaurants = restaurants.IsNullOrEmpty() ? new List<ManagerRestaurantDto>() : restaurantsDto
+                Restaurants = restaurants.IsNullOrEmpty() ? new List<AccountRestaurantDto>() : restaurantsDto
             };
 
             return managerMainViewDto;

@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace webapi.Models
+namespace webapi.DTOs.Review
 {
-    public class CustomerReview
+    public class CustomerReviewDto
     {
-        [Key]
-        public Guid Id { get; set; }
-        public virtual required Employee Employee { get; set; }
-        public virtual required Restaurant Restaurant { get; set; }
-        public required DateTime DateTime { get; set; }
+        public required string RestaurantId { get; set; }
+        public required string EmployeeEmail { get; set; }
+
+        [MaxLength(255)]
         public string? Comment { get; set; }
         public decimal? SpeedRating { get; set; }
         public decimal? AttitudeRating { get; set; }

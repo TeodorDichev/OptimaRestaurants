@@ -208,13 +208,13 @@ namespace webapi.Controllers
 
             if (employee == null || profile == null) throw new ArgumentNullException("Потребителят не съществува!");
 
-            ICollection<ManagerRestaurantDto> restaurants = new List<ManagerRestaurantDto>();
+            ICollection<AccountRestaurantDto> restaurants = new List<AccountRestaurantDto>();
 
             foreach (var restaurant in employee.EmployeesRestaurants
                 .Where(er => !er.EndedOn.HasValue)
                 .Select(er => er.Restaurant))
             {
-                restaurants.Add(new ManagerRestaurantDto
+                restaurants.Add(new AccountRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,

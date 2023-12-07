@@ -43,5 +43,59 @@ namespace webapi.Services
             var jwt = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(jwt);
         }
+
+        public string GenerateQrToken(string email)
+        {
+            var claims = new[]
+            {
+            new Claim(ClaimTypes.Email, email),
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Issuer"],
+                claims,
+                //expires: DateTime.UtcNow.AddMinutes(15), // Set the token expiry time
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public bool ValidateQrToken(string token, string email)
+        {
+            try
+            {
+                var decodedTokenBytes = Convert.FromBase64String(token);
+                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+                tokenHandler.ValidateToken(decodedToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = _configuration["Jwt:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = _configuration["Jwt:Issuer"],
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                }, out var validatedToken);
+
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var emailClaim = jwtToken?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                return emailClaim == email;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace webapi.DTOs.Restaurant
 {
-    public class ManagerRestaurantDto
+    public class AccountRestaurantDto
     {
         public required string Id { get; set; }
         public required string Name { get; set; }

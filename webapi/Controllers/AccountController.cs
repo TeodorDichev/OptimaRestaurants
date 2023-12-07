@@ -108,7 +108,7 @@ namespace webapi.Controllers
                         Profile = userToAdd,
                         City = model.City.ToLower(),
                         BirthDate = model.BirthDate,
-                        QrCodePath = _qrCodesService.GenerateQrCode($"https://localhost:4200/review/{userToAdd.Email}")
+                        QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review/{userToAdd.Email}{_jwtService.GenerateQrToken(model.Email)}")
                     };
                     await _context.Employees.AddAsync(employee);
                     await _context.SaveChangesAsync();
