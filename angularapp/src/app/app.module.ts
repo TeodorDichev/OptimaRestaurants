@@ -16,6 +16,7 @@ import { StarRatingComponent } from './shared/components/misc/star-rating/star-r
 import { BrowseAllRestaurantsComponent } from './shared/restaurants/browse-all-restaurants/browse-all-restaurants.component';
 import { RestaurantInfoComponent } from './shared/components/modals/show/restaurant-info/restaurant-info.component';
 import { EmployeesLookingForJobComponent } from './shared/logged-pages/manager-employee-search/employees-looking-for-job.component';
+import { InboxComponent } from './shared/components/collapses/inbox.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { EmployeesLookingForJobComponent } from './shared/logged-pages/manager-e
     StarRatingComponent,
     BrowseAllRestaurantsComponent,
     RestaurantInfoComponent,
-    EmployeesLookingForJobComponent
+    EmployeesLookingForJobComponent,
+    InboxComponent
   ],
   imports: [
     BrowserModule, 

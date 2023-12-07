@@ -1,17 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { Request } from 'src/app/shared/models/requests/request';
 import { RequestResponse } from 'src/app/shared/models/requests/requestResponse';
-import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
 
 @Component({
-  selector: 'app-employee-inbox',
-  templateUrl: './employee-inbox.component.html',
-  styleUrls: ['./employee-inbox.component.css']
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html',
+  styleUrls: ['./inbox.component.css']
 })
-export class EmployeeInboxComponent implements OnInit {
-  @Input() email: string | undefined; // employee email
+export class InboxComponent implements OnInit {
+  @Input() email: string | undefined;
+  @Input() isManager: boolean | undefined;
   requests: Request[] = [];
   requestResponse: RequestResponse = {
     confirmed: false,
@@ -20,6 +22,7 @@ export class EmployeeInboxComponent implements OnInit {
   };
 
   constructor(public bsModalRef: BsModalRef,
+    private managerService: ManagerService,
     private employeeService: EmployeeService,
     private sharedService: SharedService) { }
 
@@ -29,11 +32,20 @@ export class EmployeeInboxComponent implements OnInit {
 
   getRequests() {
     if (this.email) {
-      this.employeeService.getRequests(this.email).subscribe({
-        next: (response: any) => {
-          this.requests = response;
-        }
-      })
+      if (this.isManager) {
+        this.managerService.getRequests(this.email).subscribe({
+          next: (response: any) => {
+            this.requests = response;
+          }
+        })
+      }
+      else {
+        this.employeeService.getRequests(this.email).subscribe({
+          next: (response: any) => {
+            this.requests = response;
+          }
+        })
+      }
     }
   }
 
@@ -50,8 +62,7 @@ export class EmployeeInboxComponent implements OnInit {
       this.requestResponse.requestId = currentRequest.id;
       this.requestResponse.restaurantId = currentRequest.restaurantId;
 
-      console.log(this.requestResponse);
-      this.employeeService.respondToRequest(this.requestResponse).subscribe({
+      this.managerService.respondToRequest(this.requestResponse).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();

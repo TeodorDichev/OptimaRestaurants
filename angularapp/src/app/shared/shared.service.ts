@@ -8,12 +8,11 @@ import { EditEmployeeComponent } from './components/modals/input/edit-employee/e
 import { ManagerInfoComponent } from './components/modals/show/manager-info/manager-info.component';
 import { EmployeeInfoComponent } from './components/modals/show/employee-info/employee-info.component';
 import { Restaurant } from './models/restaurant/restaurant';
-import { ManagerInboxComponent } from './components/modals/inbox/manager-inbox/manager-inbox.component';
-import { EmployeeInboxComponent } from './components/modals/inbox/employee-inbox/employee-inbox.component';
 import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.component';
 import { CvModalComponent } from './components/modals/show/cv-modal/cv-modal.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { User } from './models/account/user';
+import { InboxComponent } from './components/collapses/inbox.component';
 
 @Injectable({
   providedIn: 'root'
@@ -71,24 +70,6 @@ export class SharedService {
 
   openEditEmployeeModal() {
     this.bsModalRef = this.modalService.show(EditEmployeeComponent);
-  }
-
-  openInboxModalManager(email: string) {
-    const managerEmail: ModalOptions = {
-      initialState: {
-        email
-      }
-    }
-    this.bsModalRef = this.modalService.show(ManagerInboxComponent, managerEmail);
-  }
-
-  openInboxModalEmployee(email: string) {
-    const employeeEmail: ModalOptions = {
-      initialState: {
-        email
-      }
-    }
-    this.bsModalRef = this.modalService.show(EmployeeInboxComponent, employeeEmail);
   }
 
   openQRCodeModal() {

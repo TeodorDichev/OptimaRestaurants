@@ -5,6 +5,7 @@ import { User } from '../../models/account/user';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-navbar',
@@ -83,17 +84,6 @@ export class NavbarComponent implements OnInit {
       }
       else {
         this.sharedService.openEmployeeInfoModal();
-      }
-    }
-  }
-
-  inbox() {
-    if (this.user) {
-      if (this.user.isManager) {
-        this.sharedService.openInboxModalManager(this.user.email);
-      }
-      else {
-        this.sharedService.openInboxModalEmployee(this.user.email);
       }
     }
   }

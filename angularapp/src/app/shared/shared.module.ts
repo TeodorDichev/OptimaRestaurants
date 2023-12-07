@@ -15,8 +15,6 @@ import { EditManagerComponent } from './components/modals/input/edit-manager/edi
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 import { ManagerInfoComponent } from './components/modals/show/manager-info/manager-info.component';
 import { EmployeeInfoComponent } from './components/modals/show/employee-info/employee-info.component';
-import { EmployeeInboxComponent } from './components/modals/inbox/employee-inbox/employee-inbox.component';
-import { ManagerInboxComponent } from './components/modals/inbox/manager-inbox/manager-inbox.component';
 import { CvModalComponent } from './components/modals/show/cv-modal/cv-modal.component';
 import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.component';
 
@@ -33,8 +31,6 @@ import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.compon
     EditEmployeeComponent,
     ManagerInfoComponent,
     EmployeeInfoComponent,
-    EmployeeInboxComponent,
-    ManagerInboxComponent,
     CvModalComponent,
     QrCodeComponent
   ],
