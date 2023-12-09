@@ -36,7 +36,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -57,9 +57,9 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -80,9 +80,9 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -103,9 +103,9 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -126,9 +126,9 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -149,9 +149,9 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -194,7 +194,7 @@ namespace webapi.Controllers
                 RatingsCount = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant).Count(),
                 City = restaurant.City,
                 EmployeeCapacity = restaurant.EmployeeCapacity,
-                IconUrl = restaurant.IconPath,
+                IconPath = restaurant.IconPath,
                 IsWorking = restaurant.IsWorking,
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),

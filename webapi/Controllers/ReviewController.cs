@@ -46,7 +46,7 @@ namespace webapi.Controllers
                     City = restaurant.City,
                     IsWorking = restaurant.IsWorking,
                     RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
-                    IconUrl = restaurant?.IconPath
+                    IconPath = restaurant?.IconPath
                 });
             }
 

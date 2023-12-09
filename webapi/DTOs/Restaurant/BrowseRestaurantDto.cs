@@ -8,6 +8,6 @@
         public required string City { get; set; }
         public required bool IsWorking { get; set; }
         public required decimal RestaurantAverageRating { get; set; }
-        public string? IconUrl { get; set; }
+        public string? IconPath { get; set; }
     }
 }

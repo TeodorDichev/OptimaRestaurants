@@ -13,7 +13,7 @@
         public required decimal EmployeesAverageRating { get; set; }
         public required decimal RestaurantAverageRating { get; set; }
         public required int RatingsCount { get; set; }
-        public string? IconUrl { get; set; }
+        public string? IconPath { get; set; }
         public string? ManagerFullName { get; set; }
         public string? ManagerEmail { get; set; }
         public string? TopEmployeeFullName { get; set; }

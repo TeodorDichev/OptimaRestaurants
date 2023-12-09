@@ -177,7 +177,7 @@ namespace webapi.Controllers
                     FirstName = employee.Profile.FirstName ?? string.Empty,
                     LastName = employee.Profile.LastName ?? string.Empty,
                     PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
-                    ProfilePictureUrl = employee.Profile.ProfilePicturePath ?? string.Empty,
+                    ProfilePicturePath = employee.Profile.ProfilePicturePath ?? string.Empty,
                     EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
                     IsLookingForJob = employee.IsLookingForJob,
                     City = employee.City,
@@ -202,8 +202,8 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email ?? string.Empty,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePictureUrl = emp.Profile.ProfilePicturePath,
-                    EmployeeAverageRating = emp?.EmployeeAverageRating ?? -1
+                    ProfilePicturePath = emp.Profile.ProfilePicturePath,
+                    EmployeeAverageRating = emp?.EmployeeAverageRating ?? 0
                 });
             }
 
@@ -322,7 +322,7 @@ namespace webapi.Controllers
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IconUrl = restaurant?.IconPath,
+                    IconPath = restaurant?.IconPath,
                 });
             }
 
@@ -331,7 +331,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
-                ProfilePictureUrl = manager.Profile.ProfilePicturePath,
+                ProfilePicturePath = manager.Profile.ProfilePicturePath,
                 Restaurants = restaurants.IsNullOrEmpty() ? new List<AccountRestaurantDto>() : restaurantsDto
             };
 

@@ -259,7 +259,7 @@ namespace webapi.Controllers
                     Fullname = user.FirstName + " " + user.LastName,
                     Email = user.Email,
                     Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
-                    PictureUrl = user.ProfilePicturePath
+                    PicturePath = user.ProfilePicturePath
                 });
 
             return accounts;

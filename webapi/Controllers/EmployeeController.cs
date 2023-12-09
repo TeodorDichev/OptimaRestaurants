@@ -224,7 +224,7 @@ namespace webapi.Controllers
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IconUrl = restaurant?.IconPath
+                    IconPath = restaurant?.IconPath
                 });
             }
 
@@ -233,16 +233,16 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = profile.FirstName,
                 LastName = profile.LastName,
-                ProfilePictureUrl = profile.ProfilePicturePath,
-                QrCodeUrl = employee.QrCodePath,
+                ProfilePicturePath = profile.ProfilePicturePath,
+                QrCodePath = employee.QrCodePath,
                 PhoneNumber = profile.PhoneNumber ?? string.Empty,
                 City = employee.City,
                 BirthDate = employee.BirthDate,
-                AttitudeAverageRating = employee.AttitudeAverageRating ?? -1,
-                CollegialityAverageRating = employee.CollegialityAverageRating ?? -1,
-                SpeedAverageRating = employee.SpeedAverageRating ?? -1,
-                PunctualityAverageRating = employee.PunctualityAverageRating ?? -1,
-                EmployeeAverageRating = employee.EmployeeAverageRating ?? -1,
+                AttitudeAverageRating = employee.AttitudeAverageRating ?? 0,
+                CollegialityAverageRating = employee.CollegialityAverageRating ?? 0,
+                SpeedAverageRating = employee.SpeedAverageRating ?? 0,
+                PunctualityAverageRating = employee.PunctualityAverageRating ?? 0,
+                EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
                 Restaurants = restaurants,
                 IsLookingForJob = employee.IsLookingForJob,
             };
