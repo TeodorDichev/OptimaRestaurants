@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace webapi.Models
 {
@@ -9,8 +10,10 @@ namespace webapi.Models
         public virtual required Employee Employee { get; set; }
         public virtual required Manager Employer { get; set; }
         public required DateTime DateTime { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
+        [Precision(2, 2)]
         public decimal PunctualityRating { get; set; }
+        [Precision(2, 2)]
         public decimal CollegialityRating { get; set; }
     }
 }
