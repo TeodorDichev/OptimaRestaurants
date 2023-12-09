@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from '../pages-routing/account/account.service';
-import { SharedService } from '../shared.service';
+import { AccountService } from '../../pages-routing/account/account.service';
+import { SharedService } from '../../shared.service';
 import { Observable, map } from 'rxjs';
-import { User } from '../models/account/user';
+import { User } from '../../models/account/user';
 
 
 @Injectable({

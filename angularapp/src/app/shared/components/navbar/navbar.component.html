@@ -10,64 +10,58 @@
         <div class="collapse navbar-collapse" id="navbarItemsCollapse">
             <ul class="navbar-nav mb-2 me-auto mb-lg-0">
                 <li class="nav-item">
-                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                        (click)="help()">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="help()">
                         <i class="fa-solid fa-question fa-lg"></i>
                     </div>
                 </li>
             </ul>
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                        (click)="allRestaurants()">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="allRestaurants()">
                         <i class="fa-solid fa-store fa-lg"></i>
                     </div>
                 </li>
-                    <li class="nav-item" *ngIf="!this.user">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="contact()">
-                            <i class="fa fa-phone fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="nav-item" *ngIf="this.user?.isManager">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="employeeSearch()">
-                            <i class="fa-solid fa-users-between-lines fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="nav-item" *ngIf="this.user?.isManager == false">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="showCV()">
-                            <i class="fa-solid fa-file-pdf fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="nav-item" *ngIf="this.user?.isManager == false">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="showQR()">
-                            <i class="fa-solid fa-qrcode fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="nav-item" *ngIf="this.user">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="infoUser()">
-                            <i class="fa-solid fa-user-pen fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="nav-item" *ngIf="this.user">
-                        <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-                            (click)="inbox()">
-                            <i class="fa fa-envelope-o fa-lg"></i>
-                        </div>
-                    </li>
-                    <li class="dropdown" *ngIf="this.user">
-                        <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="fa fa-envelope-o fa-lg"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                           
-                        </ul>
-                    </li>    
+                <li class="nav-item" *ngIf="!this.user">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="contact()">
+                        <i class="fa fa-phone fa-lg"></i>
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="this.user?.isManager">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="employeeSearch()">
+                        <i class="fa-solid fa-users-between-lines fa-lg"></i>
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="this.user?.isManager == false">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="showCV()">
+                        <i class="fa-solid fa-file-pdf fa-lg"></i>
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="this.user?.isManager == false">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="showQR()">
+                        <i class="fa-solid fa-qrcode fa-lg"></i>
+                    </div>
+                </li>
+                <li class="nav-item" *ngIf="this.user">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="infoUser()">
+                        <i class="fa-solid fa-user-pen fa-lg"></i>
+                    </div>
+                </li>
+                <li class="dropdown" *ngIf="this.user">
+                    <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted btn-yellow-dropdown roboto font-size-30 mx-xl-2"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-envelope-o fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <app-inbox [email]="this.user.email" [isManager]="this.user.isManager"></app-inbox>
+                    </ul>
+                </li>
             </ul>
             <form class="d-flex" role="search">
                 <input class="form-control mx-2" type="search" placeholder="Търси" aria-label="Search">
@@ -75,8 +69,8 @@
                     <i class="fa fa-search fa-lg"></i>
                 </button>
             </form>
-            <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30" aria-current="page" (click)="logout()"
-                *ngIf="this.user">
+            <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30" aria-current="page"
+                (click)="logout()" *ngIf="this.user">
                 <i class="fa fa-sign-out fa-lg"></i>
             </div>
         </div>
