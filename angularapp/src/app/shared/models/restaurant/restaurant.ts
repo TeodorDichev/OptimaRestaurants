@@ -5,7 +5,7 @@ export interface Restaurant {
     city: string,
     employeeCapacity: number,
     isWorking: boolean,
-    iconUrl: string,
+    iconPath: string,
     cuisineAverageRating: number,
     atmosphereAverageRating: number,
     employeesAverageRating: number,

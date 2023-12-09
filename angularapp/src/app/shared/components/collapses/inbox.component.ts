@@ -56,7 +56,6 @@ export class InboxComponent implements OnInit {
   }
 
   requestToResponse(confirmed: boolean, currentRequest: Request) {
-    // set values for the response dto
     if (this.email) {
       this.requestResponse.confirmed = confirmed;
       this.requestResponse.requestId = currentRequest.id;

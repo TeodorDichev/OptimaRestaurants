@@ -6,7 +6,7 @@
     <div class="row max-width border-top py-3" (click)="selectedRestaurant(restaurant)"
         [ngClass]="{'selected': restaurant === currentRestaurant}">
         <div class="col-2 img-logo text-center mx-2 my-auto">
-            <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
+            <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
         </div>
         <div class="col-3 px-4 ms-5 my-auto">
             <span class="row fw-bold font-size-25">{{restaurant.name}}</span>

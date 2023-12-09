@@ -63,7 +63,7 @@ export class ManagerLoggedViewComponent implements OnInit {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png'; 
+    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png'; 
   }
 
   private setUser() {

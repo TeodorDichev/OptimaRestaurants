@@ -7,11 +7,11 @@
     <span class="row my-4">Имейл: {{employee.email}}</span>
     <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
     <span class="row my-4">Град: {{employee.city}}</span>
-    <span class="row my-4" *ngIf="!employee.profilePictureUrl">
+    <span class="row my-4" *ngIf="!employee.profilePicturePath">
       Все още нямате профилна снимка.
     </span>
-    <span class="row" *ngIf="employee.profilePictureUrl">
-      <img src="{{employee.profilePictureUrl}}">
+    <span class="row" *ngIf="employee.profilePicturePath">
+      <img src="{{employee.profilePicturePath}}">
     </span>
   </div>
   <div class="modal-footer">

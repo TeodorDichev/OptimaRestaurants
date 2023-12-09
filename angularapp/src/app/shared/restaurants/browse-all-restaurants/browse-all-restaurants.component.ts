@@ -42,6 +42,6 @@ export class BrowseAllRestaurantsComponent implements OnInit {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png';
+    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
   }
 }

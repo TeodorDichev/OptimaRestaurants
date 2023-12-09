@@ -13,6 +13,11 @@
     background-color: rgba(255, 255, 255, 0.6) !important;
 }
 
-.btn-yellow-dropdown {
-    
+.dropdown-toggle.show {
+    background-color: rgb(255, 147, 17) !important;
+    /* Change background color when dropdown is open */
+}
+
+.dropdown-toggle::after {
+    display: none;
 }

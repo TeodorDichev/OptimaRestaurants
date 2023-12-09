@@ -54,8 +54,8 @@ export class NewRestaurantInputModalComponent implements OnInit {
       this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
-          this.bsModalRef.hide();
           this.sharedService.showNotification(true, 'Успешно създаден ресторант!', 'Вашият ресторант беше създаден успешно!');
+          this.bsModalRef.hide();
         },
         error: error => {
           if (error.error.errors) {

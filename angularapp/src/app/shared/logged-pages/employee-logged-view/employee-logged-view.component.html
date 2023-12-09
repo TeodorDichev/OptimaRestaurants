@@ -9,7 +9,7 @@
                 <div *ngFor="let restaurant of this.employee?.restaurants;">
                     <div class="row border-bottom border-top py-3">
                         <div class="col-2 text-center mx-2 my-auto">
-                            <img src="{{restaurant.iconUrl}}" (error)="missingIcon(restaurant)">
+                            <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                         </div>
                         <div class="col-3 px-4 ms-5 my-auto">
                             <span class="row roboto text-start fw-bold font-size-25">{{restaurant.name}}</span>

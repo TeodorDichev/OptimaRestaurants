@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from '../../models/account/user';
 import { Employee } from '../../models/employee/employee';
 import { Restaurant } from '../../models/restaurant/restaurant';
-import { SharedService } from '../../shared.service';
-import { EmployeeService } from '../../pages-routing/employee/employee.service';
 import { AccountService } from '../../pages-routing/account/account.service';
-import { User } from '../../models/account/user';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
 
 @Component({
   selector: 'app-employee-logged-view',
@@ -16,8 +15,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   user: User | undefined;
   employee: Employee | undefined;
 
-  constructor(private sharedService: SharedService,
-    private employeeService: EmployeeService,
+  constructor(private employeeService: EmployeeService,
     private accountService: AccountService) { }
 
   ngOnInit(): void {
@@ -35,7 +33,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconUrl = 'assets/images/logo-bw-with-bg.png'; // change logic here, this way a value is given to the iconUrl
+    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png'; 
   }
 
   private setUser() {

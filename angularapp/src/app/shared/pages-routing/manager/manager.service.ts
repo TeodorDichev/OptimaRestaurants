@@ -40,7 +40,7 @@ export class ManagerService {
     return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, formData);
   }
 
-  getRequests(email: string) {
+  getRequests(email: string) {  
     return this.http.get(`${environment.appUrl}/api/manager/get-all-requests/${email}`);
   }
 
