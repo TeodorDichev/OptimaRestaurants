@@ -23,6 +23,7 @@ builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<QrCodesService>();
+builder.Services.AddScoped<PdfFilesService>();
 builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
 
@@ -95,6 +96,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//app.UseStaticFiles(); // to use files out of angularapp
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

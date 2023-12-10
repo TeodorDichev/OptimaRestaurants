@@ -1,9 +1,6 @@
-﻿using iText.IO.Image;
-using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using webapi.Data;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
@@ -24,12 +21,14 @@ namespace webapi.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly PicturesAndIconsService _picturesAndIconsService;
         private readonly QrCodesService _qrCodesService;
+        private readonly PdfFilesService _pdfFilesService;
         private readonly IConfiguration _configuration;
 
         public EmployeeController(OptimaRestaurantContext context,
             UserManager<ApplicationUser> userManager,
             PicturesAndIconsService picturesAndIconsService,
             QrCodesService qrCodesService,
+            PdfFilesService pdfFilesService,
             IConfiguration configuration)
         {
             _context = context;
@@ -37,6 +36,7 @@ namespace webapi.Controllers
             _picturesAndIconsService = picturesAndIconsService;
             _qrCodesService = qrCodesService;
             _configuration = configuration;
+            _pdfFilesService = pdfFilesService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -111,7 +111,7 @@ namespace webapi.Controllers
             return GenerateNewEmployeeDto(email);
         }
 
-        [HttpGet("api/employee/get-all-requests/{email}")]  
+        [HttpGet("api/employee/get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
             if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
@@ -188,17 +188,26 @@ namespace webapi.Controllers
             var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
             if (employee == null) return BadRequest("Потребителят не съществува!");
 
-            string imageName = employee.QrCodePath.Split("/").Last();
-            string imagePath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty, imageName);
-            
-            if (System.IO.File.Exists(imagePath))
+            string qrCodeName = employee.QrCodePath.Split("/").Last();
+            string qrCodePath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty, qrCodeName);
+
+            if (System.IO.File.Exists(qrCodePath))
             {
-                return PhysicalFile(imagePath, "image/png", "qrcode.png");
+                return PhysicalFile(qrCodePath, "image/png", $"{employee.Profile.FirstName}_qrcode.png");
             }
             else
             {
                 return BadRequest("Вашият QrCode не беше намерен!");
             }
+        }
+
+        [HttpGet("api/employee/download-cv/{email}")]
+        public async Task<IActionResult> DownloadCV(string email)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
+            if (employee == null) return BadRequest("Потребителят не съществува!");
+
+            return File(_pdfFilesService.GenerateCv(employee), "application/pdf", $"{employee.Profile.FirstName}_cv.pdf");
         }
 
         private EmployeeMainViewDto GenerateNewEmployeeDto(string email)
