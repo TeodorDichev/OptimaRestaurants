@@ -6,7 +6,7 @@
                 <span class="roboto text-center fw-bold font-size-30">Вашите ресторанти, {{manager?.firstName}}</span>
             </div>
             <div class="max-height">
-                <div class="scrollable-vert">
+                <div class="scrollable-vert max-height-80vh">
                     <div *ngFor="let restaurant of this.manager?.restaurants;">
                         <div class="row border-bottom border-top py-3" (click)="selectedRestaurant(restaurant)" 
                         [ngClass]="{'selected': restaurant === currentRestaurant}">
@@ -47,7 +47,6 @@
                         Добавяне на ресторант</button>
                 </div>
             </div>
-            
         </div>
         <div class="col-4">
             <div class="roboto row my-4">

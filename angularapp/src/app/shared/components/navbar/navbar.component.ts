@@ -5,7 +5,6 @@ import { User } from '../../models/account/user';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-navbar',
@@ -65,27 +64,9 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  showCV() {
-    this.sharedService.openCVModal();
-  }
-
-  showQR() {
-    this.sharedService.openQRCodeModal();
-  }
 
   employeeSearch() {
     this.router.navigateByUrl('/manager/employees-looking-for-job');
-  }
-
-  infoUser() {
-    if (this.user) {
-      if (this.user.isManager) {
-        this.sharedService.openManagerInfoModal();
-      }
-      else {
-        this.sharedService.openEmployeeInfoModal();
-      }
-    }
   }
 
   contact() { }

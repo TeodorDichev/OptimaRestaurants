@@ -4,7 +4,7 @@ import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.ser
 import { Request } from 'src/app/shared/models/requests/request';
 import { RequestResponse } from 'src/app/shared/models/requests/requestResponse';
 import { SharedService } from 'src/app/shared/shared.service';
-import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { EmployeeService } from '../../../pages-routing/employee/employee.service';
 
 @Component({
   selector: 'app-inbox',
