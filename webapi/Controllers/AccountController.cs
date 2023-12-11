@@ -52,8 +52,8 @@ namespace webapi.Controllers
 
             var userToAdd = new ApplicationUser
             {
-                FirstName = model.FirstName.ToLower(),
-                LastName = model.LastName.ToLower(),
+                FirstName = model.FirstName.ToUpper().First() + model.FirstName.Substring(1).ToLower(),
+                LastName = model.LastName.ToUpper().First() + model.LastName.Substring(1).ToLower(),
                 Email = model.Email.ToLower(),
                 UserName = model.Email.ToLower(),
             };
@@ -89,8 +89,8 @@ namespace webapi.Controllers
 
             var userToAdd = new ApplicationUser
             {
-                FirstName = model.FirstName.ToLower(),
-                LastName = model.LastName.ToLower(),
+                FirstName = model.FirstName.ToUpper().First() + model.FirstName.Substring(1).ToLower(),
+                LastName = model.LastName.ToUpper().First() + model.LastName.Substring(1).ToLower(),
                 Email = model.Email.ToLower(),
                 UserName = model.Email.ToLower(),
             };
@@ -106,7 +106,7 @@ namespace webapi.Controllers
                     Employee employee = new Employee
                     {
                         Profile = userToAdd,
-                        City = model.City.ToLower(),
+                        City = model.City.ToUpper().First() + model.LastName.Substring(1).ToLower(),
                         BirthDate = model.BirthDate,
                         QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review/{userToAdd.Email}{_jwtService.GenerateQrToken(model.Email)}")
                     };
