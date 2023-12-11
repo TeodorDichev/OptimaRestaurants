@@ -16,5 +16,6 @@ export interface Employee{
     collegialityAverageRating: number,
     employeeAverageRating: number,
     isLookingForJob: boolean,
-    restaurants: Restaurant[]
+    restaurants: Restaurant[],
+    qrCodePath: string
 }

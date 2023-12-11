@@ -1,11 +1,15 @@
-<div class="max-height-70vh collapse-body scrollable-vert">
-    <div class="roboto font-size-20 text-danger fst-italic m-3" *ngIf="!qrCode">
-        {{message}}
+<div class="max-height-70vh collapse-body scrollable-vert text-center">
+    <div class="roboto fw-bold m-3 font-size-40 chocolate">
+        Вашият QR Код
     </div>
-    <div>
-        
+    <div class="roboto font-size-20 text-danger fst-italic m-3" *ngIf="!employee?.qrCodePath"> 
+        {{message}} 
     </div>
+    <img src="{{employee?.qrCodePath}}" *ngIf="employee?.qrCodePath">
+    <a class="download-qr roboto fst-italic fw-bold m-3 font-size-20 chocolate" (click)="downloadQRCode()">
+        Свалете вашия код
+    </a>
     <div class="text-end border-top">
         <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
-      </div>
+    </div>
 </div>

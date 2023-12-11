@@ -24,7 +24,7 @@ export class EmployeeService {
   deleteEmployeeAccount(email: string) {
     this.logout();
     return this.http.delete(`${environment.appUrl}/api/employee/delete-employee/${email}`);
-    
+
   }
 
   updateEmployeeAccount(model: UpdateEmployee, email: string) {
@@ -34,7 +34,7 @@ export class EmployeeService {
     formData.append('newFirstName', model.newFirstName);
     formData.append('newLastName', model.newLastName);
     formData.append('newPhoneNumber', model.newPhoneNumber);
-    formData.append('profilePictureFile', model.profilePictureFile); 
+    formData.append('profilePictureFile', model.profilePictureFile);
     formData.append('newBirthDate', model.newBirthDate.toString());
     formData.append('newCity', model.newCity);
     formData.append('isLookingForJob', model.isLookingForJob.toString());
@@ -42,7 +42,7 @@ export class EmployeeService {
     return this.http.put(`${environment.appUrl}/api/employee/update-employee/${email}`, formData);
   }
 
-  getRequests(email:string) {
+  getRequests(email: string) {
     return this.http.get(`${environment.appUrl}/api/employee/get-all-requests/${email}`);
   }
 
@@ -50,8 +50,8 @@ export class EmployeeService {
     return this.http.post(`${environment.appUrl}/api/employee/respond-to-request`, requestResponse);
   }
 
-  getQRCode(email: string) {
-    return this.http.get(`${environment.appUrl}/api/employee/download-qrcode/${email}`);
+  getQRCode(email: string): Observable<Blob> {
+    return this.http.get(`${environment.appUrl}/api/employee/download-qrcode/${email}`, { responseType: 'blob' });
   }
 
   getPDFFile(email: string): Observable<Blob> {

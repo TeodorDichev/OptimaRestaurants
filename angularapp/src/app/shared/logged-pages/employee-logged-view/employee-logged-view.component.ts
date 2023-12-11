@@ -25,7 +25,6 @@ export class EmployeeLoggedViewComponent implements OnInit {
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.setEmployee();
-          console.log(response);
         }
       });
     }

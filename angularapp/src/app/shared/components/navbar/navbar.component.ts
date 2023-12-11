@@ -97,7 +97,8 @@ export class NavbarComponent implements OnInit {
           window.URL.revokeObjectURL(blobUrl);
         },
         error: (error: any) => {
-          console.error('Error downloading PDF:', error);
+          this.sharedService.showNotification(false, 'Грешка при сваляне', error.message);
+          console.log(error);
         }
       });
     }

@@ -1,3 +1,4 @@
+import { Employee } from 'src/app/shared/models/employee/employee';
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
@@ -9,26 +10,43 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
 })
 export class QrCodeComponent implements OnInit {
   @Input() employeeEmail: string | undefined;
-  qrCode: File | undefined;
   message: string | undefined;
+  employee: Employee | undefined;
 
   constructor(private employeeService: EmployeeService,
     public bsModalRef: BsModalRef) {}
 
   ngOnInit() {
-    this.getQRCode();
+    this.getEmployee();
   }
 
-  getQRCode() {
+  getEmployee() {
     if (this.employeeEmail){
-      this.employeeService.getQRCode(this.employeeEmail).subscribe({
+      this.employeeService.getEmployee(this.employeeEmail).subscribe({
         next: (response: any) => {
-          this.qrCode = response;
-        },
-        error: error => {
-          this.message = error.error;
+          this.employee = response;
         }
       })
+    } 
+  }
+
+  downloadQRCode() {
+    if (this.employeeEmail){
+      this.employeeService.getQRCode(this.employeeEmail).subscribe({
+        next: (response: Blob) => {
+          const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
+          const a = document.createElement('a');// Create an anchor element and trigger a click to start the download
+          a.href = blobUrl;
+          a.download = this.employee?.firstName + '_cv.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a); // Cleanup: Remove the anchor and revoke the Blob URL
+          window.URL.revokeObjectURL(blobUrl);
+        },
+        error: (error: any) => {
+          console.error('Error downloading PDF:', error);
+        }
+      });
     }
   }
 }
