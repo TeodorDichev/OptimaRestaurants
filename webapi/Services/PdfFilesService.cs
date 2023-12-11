@@ -29,7 +29,7 @@ namespace webapi.Services
                     {
                         Document document = new Document(pdf);
 
-                        string fontPath = "D:\\Repos\\OptimaRestaurant\\webapi\\wwwroot\\resources\\dejavu-fonts-ttf-2.37\\ttf\\DejaVuSans.ttf";
+                        string fontPath = Directory.GetCurrentDirectory() + "\\wwwroot\\resources\\dejavu-fonts-ttf-2.37\\ttf\\DejaVuSans.ttf";
                         PdfFont font = PdfFontFactory.CreateFont(fontPath, PdfEncodings.IDENTITY_H);
                         Text title = new Text($"{employee.Profile.FirstName} {employee.Profile.LastName}\n").SetFont(font).SetFontSize(32);
 
