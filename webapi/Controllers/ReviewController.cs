@@ -54,6 +54,7 @@ namespace webapi.Controllers
             {
                 JwtToken = token,
                 EmployeeEmail = email,
+                EmployeeName = employee.Profile.FirstName + " " + employee.Profile.LastName,
                 RestaurantDtos = restaurants.ToList()
             };
             return reviewDto;
@@ -88,6 +89,35 @@ namespace webapi.Controllers
             else
                 return BadRequest("Неуспешно обновени данни!");
         }
+        [HttpPost("api/manage/review-employee")]
+        public async Task<IActionResult> SubmitManagerReview([FromBody] ManagerReviewDto model)
+        {
+            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == model.EmployeeEmail);
+            if (employee == null) return BadRequest("Потребителят не съществува!");
+
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(e => e.Id.ToString() == model.RestaurantId);
+            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+
+            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null) return BadRequest("Потребителят не работи за вас!");
+
+            ManagerReview review = new ManagerReview()
+            {
+                Employee = employee,
+                Restaurant = restaurant,
+                DateTime = DateTime.UtcNow,
+                Comment = model.Comment,
+                CollegialityRating = model.CollegialityRating,
+                PunctualityRating = model.PunctualityRating,
+            };
+
+            await _context.ManagerReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+
+            if (UpdateStatistics(employee, restaurant))
+                return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
+            else
+                return BadRequest("Неуспешно обновени данни!");
+        }
 
         private bool UpdateStatistics(Employee employee, Restaurant restaurant)
         {
@@ -100,6 +130,14 @@ namespace webapi.Controllers
 
                 employee.SpeedAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.SpeedRating != null)
                     .Select(cr => cr.SpeedRating)
+                    .Average();
+
+                employee.PunctualityAverageRating = _context.ManagerReviews.Where(mr => mr.Employee == employee && mr.PunctualityRating != null)
+                    .Select(mr => mr.PunctualityRating)
+                    .Average();
+
+                employee.CollegialityAverageRating = _context.ManagerReviews.Where(mr => mr.Employee == employee && mr.CollegialityRating != null)
+                    .Select(mr => mr.CollegialityRating)
                     .Average();
 
                 employee.EmployeeAverageRating = (employee.PunctualityAverageRating

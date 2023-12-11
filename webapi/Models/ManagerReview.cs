@@ -8,12 +8,12 @@ namespace webapi.Models
         [Key]
         public Guid Id { get; set; }
         public virtual required Employee Employee { get; set; }
-        public virtual required Manager Employer { get; set; }
+        public virtual required Restaurant Restaurant { get; set; }
         public required DateTime DateTime { get; set; }
         public string? Comment { get; set; }
         [Precision(2, 2)]
-        public decimal PunctualityRating { get; set; }
+        public decimal? PunctualityRating { get; set; }
         [Precision(2, 2)]
-        public decimal CollegialityRating { get; set; }
+        public decimal? CollegialityRating { get; set; }
     }
 }
