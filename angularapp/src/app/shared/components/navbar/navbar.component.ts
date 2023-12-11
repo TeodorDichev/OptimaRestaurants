@@ -13,6 +13,7 @@ import { EmployeeService } from '../../pages-routing/employee/employee.service';
 })
 export class NavbarComponent implements OnInit {
   user: User | null | undefined;
+  fileName: string | undefined;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
@@ -77,4 +78,28 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/restaurants');
   }
 
+  downloadPDF() {
+    if (this.user?.email) {
+      this.employeeService.employee$.subscribe({
+        next: (response: any) => {
+          this.fileName = response.firstName;
+        }
+      })
+      this.employeeService.getPDFFile(this.user.email).subscribe({
+        next: (response: Blob) => {
+          const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
+          const a = document.createElement('a');// Create an anchor element and trigger a click to start the download
+          a.href = blobUrl;
+          a.download = this.fileName + '_cv.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a); // Cleanup: Remove the anchor and revoke the Blob URL
+          window.URL.revokeObjectURL(blobUrl);
+        },
+        error: (error: any) => {
+          console.error('Error downloading PDF:', error);
+        }
+      });
+    }
+  }
 }

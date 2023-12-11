@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { AccountService } from '../account/account.service';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { environment } from 'src/environments/environment.development';
@@ -48,6 +48,14 @@ export class EmployeeService {
 
   respondToRequest(requestResponse: RequestResponse) {
     return this.http.post(`${environment.appUrl}/api/employee/respond-to-request`, requestResponse);
+  }
+
+  getQRCode(email: string) {
+    return this.http.get(`${environment.appUrl}/api/employee/download-qrcode/${email}`);
+  }
+
+  getPDFFile(email: string): Observable<Blob> {
+    return this.http.get(`${environment.appUrl}/api/employee/download-cv/${email}`, { responseType: 'blob' });
   }
 
   logout() {

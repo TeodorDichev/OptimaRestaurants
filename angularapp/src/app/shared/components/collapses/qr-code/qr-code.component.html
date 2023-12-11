@@ -1,3 +1,11 @@
 <div class="max-height-70vh collapse-body scrollable-vert">
-    Testicles
+    <div class="roboto font-size-20 text-danger fst-italic m-3" *ngIf="!qrCode">
+        {{message}}
+    </div>
+    <div>
+        
+    </div>
+    <div class="text-end border-top">
+        <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
+      </div>
 </div>

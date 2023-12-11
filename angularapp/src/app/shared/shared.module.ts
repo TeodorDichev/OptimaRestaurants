@@ -11,10 +11,8 @@ import { RegisterEmployeeComponent } from './account-pages/register-employee/reg
 import { RegisterManagerComponent } from './account-pages/register-manager/register-manager.component';
 import { ResetPasswordComponent } from './account-pages/reset-password/reset-password.component';
 import { SendEmailComponent } from './account-pages/send-email/send-email.component';
-import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
 import { InboxComponent } from './components/collapses/inbox/inbox.component';
 import { ManagerInfoComponent } from './components/collapses/manager-info/manager-info.component';
-import { PdfEmployeeComponent } from './components/collapses/pdf-employee/pdf-employee.component';
 import { QrCodeComponent } from './components/collapses/qr-code/qr-code.component';
 import { ValidationMessagesComponent } from './components/errors/validation-messages/validation-messages.component';
 import { StarRatingComponent } from './components/misc/star-rating/star-rating.component';
@@ -29,6 +27,7 @@ import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view
 import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee-search/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
+import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +38,7 @@ import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaura
     RegisterEmployeeComponent,
     ManagerLoggedViewComponent,
     EmployeeLoggedViewComponent,
+    EmployeeInfoComponent,
     StarRatingComponent,
     BrowseAllRestaurantsComponent,
     RestaurantInfoComponent,
@@ -52,8 +52,6 @@ import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaura
     EditManagerComponent,
     EditEmployeeComponent,
     ManagerInfoComponent,
-    EmployeeInfoComponent,
-    PdfEmployeeComponent,
     QrCodeComponent,
     InboxComponent,   
     NavbarComponent
