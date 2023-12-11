@@ -14,8 +14,9 @@
 }
 
 .dropdown-toggle.show {
-    background-color: rgb(255, 147, 17) !important;
-    /* Change background color when dropdown is open */
+    background-color: rgb(255, 147, 17) !important; 
+    color: white;
+    /* Change colors when dropdown is open */
 }
 
 .dropdown-toggle::after {

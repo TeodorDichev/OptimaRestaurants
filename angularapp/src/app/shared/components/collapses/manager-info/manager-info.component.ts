@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
@@ -10,7 +10,7 @@ import { SharedService } from 'src/app/shared/shared.service';
   styleUrls: ['./manager-info.component.css']
 })
 export class ManagerInfoComponent implements OnInit {
-
+  @Input() managerEmail: string | undefined;
   manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,
@@ -18,7 +18,7 @@ export class ManagerInfoComponent implements OnInit {
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.setManager();
+    this.getManager();
   }
 
   editManagerProfile() {
@@ -26,11 +26,13 @@ export class ManagerInfoComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-  private setManager() {
-    this.managerService.manager$.subscribe({
-      next: (response: any) => {
-        this.manager = response;
-      }
-    })
+  private getManager() {
+    if(this.managerEmail) {
+      this.managerService.getManager(this.managerEmail).subscribe({
+        next: (response: any) => {
+          this.manager = response;
+        }
+      })
+    }
   }
 }

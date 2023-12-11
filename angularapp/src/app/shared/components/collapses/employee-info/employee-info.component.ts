@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
@@ -10,6 +10,7 @@ import { SharedService } from 'src/app/shared/shared.service';
   styleUrls: ['./employee-info.component.css']
 })
 export class EmployeeInfoComponent {
+  @Input() employeeEmail: string | undefined;
   employee: Employee | undefined;
   employeeBirthDate: string | undefined;
   constructor(public bsModalRef: BsModalRef,
@@ -17,7 +18,7 @@ export class EmployeeInfoComponent {
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.setEmployee();
+    this.getEmployee();
     this.employeeBirthDate = this.employee?.birthDate.toString().split('T')[0];
   }
 
@@ -26,11 +27,13 @@ export class EmployeeInfoComponent {
     this.bsModalRef.hide();
   }
 
-  private setEmployee() {
-    this.employeeService.employee$.subscribe({
-      next: (response: any) => {
-        this.employee = response;
-      }
-    })
+  private getEmployee() {
+    if (this.employeeEmail) {
+      this.employeeService.getEmployee(this.employeeEmail).subscribe({
+        next: (response: any) => {
+          this.employee = response;
+        }
+      })
+    }
   }
 }

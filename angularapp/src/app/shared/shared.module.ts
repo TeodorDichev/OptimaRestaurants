@@ -1,26 +1,48 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValidationMessagesComponent } from './components/errors/validation-messages/validation-messages.component';
-import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NotificationComponent } from './components/modals/notification/notification.component';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ConfirmEmailComponent } from './account-pages/confirm-email/confirm-email.component';
-import { SendEmailComponent } from './account-pages/send-email/send-email.component';
+import { IndexComponent } from './account-pages/index/index.component';
+import { LoginComponent } from './account-pages/login/login.component';
+import { RegisterEmployeeComponent } from './account-pages/register-employee/register-employee.component';
+import { RegisterManagerComponent } from './account-pages/register-manager/register-manager.component';
 import { ResetPasswordComponent } from './account-pages/reset-password/reset-password.component';
-import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
-import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
-import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
+import { SendEmailComponent } from './account-pages/send-email/send-email.component';
+import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
+import { InboxComponent } from './components/collapses/inbox/inbox.component';
+import { ManagerInfoComponent } from './components/collapses/manager-info/manager-info.component';
+import { PdfEmployeeComponent } from './components/collapses/pdf-employee/pdf-employee.component';
+import { QrCodeComponent } from './components/collapses/qr-code/qr-code.component';
+import { ValidationMessagesComponent } from './components/errors/validation-messages/validation-messages.component';
+import { StarRatingComponent } from './components/misc/star-rating/star-rating.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
-import { ManagerInfoComponent } from './components/modals/show/manager-info/manager-info.component';
-import { EmployeeInfoComponent } from './components/modals/show/employee-info/employee-info.component';
-import { CvModalComponent } from './components/modals/show/cv-modal/cv-modal.component';
-import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.component';
+import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
+import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
+import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
+import { NotificationComponent } from './components/modals/notification/notification.component';
+import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
+import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee-search/employees-looking-for-job.component';
+import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
+import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
 
 @NgModule({
   declarations: [
     ValidationMessagesComponent,
+    LoginComponent,
+    RegisterManagerComponent,
+    IndexComponent,
+    RegisterEmployeeComponent,
+    ManagerLoggedViewComponent,
+    EmployeeLoggedViewComponent,
+    StarRatingComponent,
+    BrowseAllRestaurantsComponent,
+    RestaurantInfoComponent,
+    EmployeesLookingForJobComponent,
     NotificationComponent,
     ConfirmEmailComponent,
     SendEmailComponent,
@@ -31,8 +53,10 @@ import { QrCodeComponent } from './components/modals/show/qr-code/qr-code.compon
     EditEmployeeComponent,
     ManagerInfoComponent,
     EmployeeInfoComponent,
-    CvModalComponent,
-    QrCodeComponent
+    PdfEmployeeComponent,
+    QrCodeComponent,
+    InboxComponent,   
+    NavbarComponent
   ],
   imports: [
     CommonModule,

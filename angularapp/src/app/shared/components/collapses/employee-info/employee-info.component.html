@@ -1,0 +1,19 @@
+<div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee"> <!--check is for easier code writing, not neccesary-->
+    <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
+  <div class="roboto font-size-20 mx-4">
+    <span class="row my-4">Здравейте, {{employee.firstName}} {{employee.lastName}}!</span>
+    <span class="row my-4">Имейл: {{employee.email}}</span>
+    <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
+    <span class="row my-4">Град: {{employee.city}}</span>
+    <span class="row my-4" *ngIf="!employee.profilePicturePath">
+      Все още нямате профилна снимка.
+    </span>
+    <span class="row m-2" *ngIf="employee.profilePicturePath">
+      <img src="{{employee.profilePicturePath}}">
+    </span>
+  </div>
+  <div class="text-end border-top">
+    <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на данните</button>
+    <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
+  </div>
+</div>

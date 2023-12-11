@@ -35,23 +35,35 @@
                         <i class="fa-solid fa-users-between-lines fa-lg"></i>
                     </div>
                 </li>
-                <li class="nav-item" *ngIf="this.user?.isManager == false">
-                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
-                        aria-current="page" (click)="showCV()">
-                        <i class="fa-solid fa-file-pdf fa-lg"></i>
-                    </div>
+                <li class="dropdown" *ngIf="this.user && this.user?.isManager == false">
+                    <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-file-pdf fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <app-pdf-employee></app-pdf-employee>
+                    </ul>
                 </li>
-                <li class="nav-item" *ngIf="this.user?.isManager == false">
-                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
-                        aria-current="page" (click)="showQR()">
-                        <i class="fa-solid fa-qrcode fa-lg"></i>
-                    </div>
+                <li class="dropdown" *ngIf="this.user && !this.user.isManager">
+                    <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-qrcode fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <app-qr-code></app-qr-code>
+                    </ul>
                 </li>
-                <li class="nav-item" *ngIf="this.user">
-                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
-                        aria-current="page" (click)="infoUser()">
-                        <i class="fa-solid fa-user-pen fa-lg"></i>
-                    </div>
+                <li class="dropdown" *ngIf="this.user">
+                    <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-user-pen fa-lg"></i>
+                    </a>
+                    <ul class="dropdown-menu" *ngIf="!user.isManager">
+                        <app-employee-info [employeeEmail]="user.email"></app-employee-info>
+                    </ul>
+                    <ul class="dropdown-menu" *ngIf="user.isManager">
+                        <app-manager-info [managerEmail]="user.email"></app-manager-info>
+                    </ul>
                 </li>
                 <li class="dropdown" *ngIf="this.user">
                     <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
