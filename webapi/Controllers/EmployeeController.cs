@@ -62,6 +62,7 @@ namespace webapi.Controllers
             if (employeeDto.NewFirstName != null) profile.FirstName = employeeDto.NewFirstName;
             if (employeeDto.NewLastName != null) profile.LastName = employeeDto.NewLastName;
             if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
+            if (employeeDto.NewCity != null) employee.City = employeeDto.NewCity;
             if (employeeDto.ProfilePictureFile != null)
             {
                 if (profile.ProfilePicturePath == null) profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);

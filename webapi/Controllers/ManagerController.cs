@@ -231,7 +231,7 @@ namespace webapi.Controllers
             if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
 
             List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderBy(r => r.SentOn))
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderByDescending(r => r.SentOn))
             {
                 bool? confirmed = null;
                 if (r.ConfirmedOn != null) confirmed = true;
