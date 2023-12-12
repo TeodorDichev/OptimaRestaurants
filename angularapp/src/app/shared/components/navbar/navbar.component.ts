@@ -5,6 +5,8 @@ import { User } from '../../models/account/user';
 import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SearchResult } from '../../models/account/search-result';
 
 @Component({
   selector: 'app-navbar',
@@ -12,16 +14,25 @@ import { EmployeeService } from '../../pages-routing/employee/employee.service';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  searchForm: FormGroup = new FormGroup({});
+  submitted = false;
   user: User | null | undefined;
   fileName: string | undefined;
+  searchResult: SearchResult[] = [];
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
     public employeeService: EmployeeService,
     public sharedService: SharedService,
-    public router: Router) { }
+    public router: Router,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.getUser();
+    this.initializeForm();
+  }
+
+  getUser() {
     this.accountService.user$.subscribe(user => {
       this.user = user;
       if (this.user && user) {
@@ -41,6 +52,23 @@ export class NavbarComponent implements OnInit {
         }
       }
     });
+  }
+
+  initializeForm() {
+    this.searchForm = this.formBuilder.group({
+      searchString: ['', [Validators.required]]
+    })
+  }
+
+  search() {
+    this.submitted = true;
+    if (this.searchForm.valid) {
+      this.accountService.search(this.searchForm.value.searchString).subscribe({
+        next: (response: any) => {
+          this.searchResult = response;
+        }
+      })
+    }
   }
 
   logout() {

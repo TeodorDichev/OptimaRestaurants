@@ -1,0 +1,11 @@
+<div class="roboto font-size-20 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
+    Не е намерен акаунт
+</div>
+<div *ngIf="searchResult">
+    <div *ngFor="let result of searchResult">
+        <img src="{{result.picturePath}}">
+        {{result.fullname}}
+        {{result.email}}
+        {{result.role}}
+    </div>
+</div>

@@ -28,6 +28,7 @@ import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
 import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
+import { SearchResultComponent } from './components/collapses/search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,7 @@ import { EmployeeInfoComponent } from './components/collapses/employee-info/empl
     ManagerInfoComponent,
     QrCodeComponent,
     InboxComponent,   
-    NavbarComponent
+    NavbarComponent, SearchResultComponent
   ],
   imports: [
     CommonModule,

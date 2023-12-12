@@ -72,11 +72,18 @@
                     </ul>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control mx-2" type="search" placeholder="Търси" aria-label="Search">
-                <button class="btn btn-outline-success me-3" type="submit">
-                    <i class="fa fa-search fa-lg"></i>
-                </button>
+            <form [formGroup]="searchForm" (ngSubmit)="search()" autocomplete="off" class="d-flex" role="search">
+                <input class="form-control mx-2" formControlName="searchString" type="search" placeholder="Търси"
+                    aria-label="Search">
+                <li class="dropdown nav-link">
+                    <button class="btn btn-yellow-inverted me-3 dropdown-toggle" type="submit" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false" (click)="search()">
+                        <i class="fa fa-search fa-lg"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <app-search-result [searchResult]="searchResult" *ngIf="submitted"></app-search-result>
+                    </ul>
+                </li>
             </form>
             <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30" aria-current="page"
                 (click)="logout()" *ngIf="this.user">

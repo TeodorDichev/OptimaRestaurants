@@ -45,6 +45,10 @@ export class AccountService {
     );
   }
 
+  search(str: string) {
+    return this.http.get(`${environment.appUrl}/api/account/search/${str}`);
+  }
+
   confirmEmail(model: ConfirmEmail) {
     return this.http.put<User>(`${environment.appUrl}/api/account/confirm-email`, model).pipe(
       map((user: User) => {
