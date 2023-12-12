@@ -96,7 +96,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseStaticFiles(); // to use files out of angularapp
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

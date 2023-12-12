@@ -229,6 +229,7 @@ namespace webapi.Controllers
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
+                    EmployeeCapacity = restaurant.EmployeeCapacity,
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
