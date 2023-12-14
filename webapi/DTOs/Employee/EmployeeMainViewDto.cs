@@ -1,5 +1,4 @@
 ﻿using webapi.DTOs.Restaurant;
-using webapi.Models;
 
 namespace webapi.DTOs.Employee
 {
@@ -10,9 +9,9 @@ namespace webapi.DTOs.Employee
         public required string LastName { get; set; }
         public required string PhoneNumber { get; set; }
         public required string QrCodePath { get; set; }
-        public string? ProfilePicturePath { get; set; }
-        public required DateTime BirthDate { get; set; }
+        public required string BirthDate { get; set; }
         public required string City { get; set; }
+        public string? ProfilePicturePath { get; set; }
         public required bool IsLookingForJob { get; set; }
         public required decimal SpeedAverageRating { get; set; }
         public required decimal AttitudeAverageRating { get; set; }

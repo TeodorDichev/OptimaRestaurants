@@ -1,6 +1,6 @@
 ﻿using ZXing.QrCode;
 
-namespace webapi.Services
+namespace webapi.Services.FileServices
 {
     public class QrCodesService
     {
@@ -12,7 +12,7 @@ namespace webapi.Services
 
         public string GenerateQrCode(string url)
         {
-            Byte[] byteArray;
+            byte[] byteArray;
             string onlinePath;
             var width = 250; // width of the Qr Code
             var height = 250; // height of the Qr Code
@@ -74,9 +74,9 @@ namespace webapi.Services
             try
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty) + "\\" + qrCodeFileUrl.Split('/').Last();
-                if (System.IO.File.Exists(path))
+                if (File.Exists(path))
                 {
-                    System.IO.File.Delete(path);
+                    File.Delete(path);
                     return true;
                 }
                 return false;

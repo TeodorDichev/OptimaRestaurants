@@ -8,7 +8,7 @@ using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
-using webapi.Services;
+using webapi.Services.FileServices;
 
 namespace webapi.Controllers
 {
@@ -242,7 +242,7 @@ namespace webapi.Controllers
                     Id = r.Id.ToString(),
                     RestaurantId = r.Restaurant.Id.ToString(),
                     SenderEmail = r.Sender.Email ?? string.Empty,
-                    SentOn = r.SentOn,
+                    SentOn = r.SentOn.ToString(),
                     Confirmed = confirmed,
                     Text = $"Работи ли {r.Sender.FirstName + " " + r.Sender.LastName} в {r.Restaurant.Name}?"
                 };
@@ -332,6 +332,7 @@ namespace webapi.Controllers
                 Email = email,
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
+                Phone = manager.Profile.PhoneNumber ?? " ",
                 ProfilePicturePath = manager.Profile.ProfilePicturePath,
                 Restaurants = restaurants.IsNullOrEmpty() ? new List<AccountRestaurantDto>() : restaurantsDto
             };

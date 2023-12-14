@@ -9,7 +9,7 @@ using System.Globalization;
 using webapi.Data;
 using webapi.Models;
 
-namespace webapi.Services
+namespace webapi.Services.FileServices
 {
     public class PdfFilesService
     {
@@ -83,7 +83,7 @@ namespace webapi.Services
             var path = "";
             if (employee.Profile.ProfilePicturePath != null) path = Path.Combine(_configuration["Images:Path"] ?? string.Empty) + "\\" + employee.Profile.ProfilePicturePath.Split('/').Last();
             else path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
-            iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(path));
+            Image image = new Image(ImageDataFactory.Create(path));
 
             float maxWidth = 150f; // Set your desired maximum width
             float maxHeight = 150f; // Set your desired maximum height
@@ -115,7 +115,7 @@ namespace webapi.Services
         {
             // Creating the image
             var path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
-            iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(path));
+            Image image = new Image(ImageDataFactory.Create(path));
 
             float maxWidth = 150f; // Set your desired maximum width
             float maxHeight = 150f; // Set your desired maximum height
@@ -151,7 +151,7 @@ namespace webapi.Services
             var path = "";
             if (restaurant.IconPath != null) path = Path.Combine(_configuration["Images:Path"] ?? string.Empty) + "\\" + restaurant.IconPath.Split('/').Last();
             else path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
-            iText.Layout.Element.Image image = new iText.Layout.Element.Image(ImageDataFactory.Create(path));
+            Image image = new Image(ImageDataFactory.Create(path));
             float maxWidth = 150f; // Set your desired maximum width
             float maxHeight = 150f; // Set your desired maximum height
             image.SetMaxWidth(maxWidth).SetMaxHeight(maxHeight);

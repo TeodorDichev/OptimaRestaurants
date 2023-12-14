@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using webapi.Data;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
-using webapi.Services;
+using webapi.Services.FileServices;
 
 namespace webapi.Controllers
 {
@@ -63,6 +64,7 @@ namespace webapi.Controllers
             if (employeeDto.NewLastName != null) profile.LastName = employeeDto.NewLastName;
             if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
             if (employeeDto.NewCity != null) employee.City = employeeDto.NewCity;
+            if (employeeDto.NewBirthDate != null) employee.BirthDate = (DateTime)employeeDto.NewBirthDate;
             if (employeeDto.ProfilePictureFile != null)
             {
                 if (profile.ProfilePicturePath == null) profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
@@ -129,7 +131,7 @@ namespace webapi.Controllers
                     Id = r.Id.ToString(),
                     RestaurantId = r.Restaurant.Id.ToString(),
                     SenderEmail = r.Sender.Email ?? string.Empty,
-                    SentOn = r.SentOn,
+                    SentOn = r.SentOn.ToString(),
                     Confirmed = confirmed,
                     Text = $"Работите ли в ресторантът {r.Restaurant.Name}, собственост на {r.Sender.FirstName + " " + r.Sender.LastName}?"
                 };
@@ -248,7 +250,7 @@ namespace webapi.Controllers
                 QrCodePath = employee.QrCodePath,
                 PhoneNumber = profile.PhoneNumber ?? string.Empty,
                 City = employee.City,
-                BirthDate = employee.BirthDate,
+                BirthDate = employee.BirthDate.ToShortDateString(),
                 AttitudeAverageRating = employee.AttitudeAverageRating ?? 0,
                 CollegialityAverageRating = employee.CollegialityAverageRating ?? 0,
                 SpeedAverageRating = employee.SpeedAverageRating ?? 0,

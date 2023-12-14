@@ -2,8 +2,8 @@
 {
     public class ResponceToRequestDto
     {
-        public string RequestId { get; set; }
-        public string RestaurantId { get; set; }
-        public bool Confirmed { get; set; }
+        public required string RequestId { get; set; }
+        public required string RestaurantId { get; set; }
+        public required bool Confirmed { get; set; }
     }
 }

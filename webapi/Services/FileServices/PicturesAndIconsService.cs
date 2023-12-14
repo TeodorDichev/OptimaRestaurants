@@ -1,4 +1,4 @@
-﻿namespace webapi.Services
+﻿namespace webapi.Services.FileServices
 {
     public class PicturesAndIconsService
     {
@@ -45,9 +45,9 @@
             try
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty) + imageFileUrl.Split('/').Last();
-                if (System.IO.File.Exists(path))
+                if (File.Exists(path))
                 {
-                    System.IO.File.Delete(path);
+                    File.Delete(path);
                     return true;
                 }
                 return false;

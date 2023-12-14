@@ -7,6 +7,8 @@ using webapi.Services;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
+using webapi.Services.FileServices;
+using webapi.Services.ClassServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,10 @@ builder.Services.AddScoped<QrCodesService>();
 builder.Services.AddScoped<PdfFilesService>();
 builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
+
+builder.Services.AddScoped<AccountService>();
+builder.Services.AddScoped<ManagerService>();
+builder.Services.AddScoped<EmployeeService>();
 
 //Defining identity core services
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
