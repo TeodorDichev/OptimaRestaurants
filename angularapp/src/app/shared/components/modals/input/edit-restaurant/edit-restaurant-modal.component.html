@@ -7,25 +7,33 @@
         <div class="form-group pt-3">
           <div class="input-field my-2">
             <span class="fa fa-cutlery chocolate p-2"></span>
-            <input class="col-11" formControlName="name" type="text" placeholder="Име на ресторанта ({{restaurant?.name}})">
+            <input class="col-11" formControlName="name" type="text" placeholder="Ново име на ресторанта ({{restaurant?.name}})">
           </div>
           <div class="input-field my-2">
             <span class="fa fa-map-marker chocolate p-2"></span>
-            <input class="col-11" formControlName="address" type="text" placeholder="Адрес ({{restaurant?.address}})">
+            <input class="col-11" formControlName="address" type="text" placeholder="Нов адрес ({{restaurant?.address}})">
           </div>
           <div class="input-field my-2">
             <span class="fa fa-location-arrow chocolate p-2"></span>
-            <input class="col-11" formControlName="city" type="text" placeholder="Град ({{restaurant?.city}})">
+            <input class="col-11" formControlName="city" type="text" placeholder="Нов град ({{restaurant?.city}})">
           </div>
           <div class="input-field my-2">
             <span class="fa fa-user chocolate p-2"></span>
             <input class="col-11" formControlName="employeeCapacity" type="text"
-              placeholder="Максимален капацитет на работници (not send from backend :/)">
+              placeholder="Нов максимален капацитет на работници ({{restaurant?.employeeCapacity}})">
           </div>
           <div class="input-field my-2">
             <span class="fa fa-picture-o chocolate p-2"></span>
             <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
           </div>
+          <div class="text-center">
+            <button type="button" class="btn btn-danger mt-4" (click)="deleteRestaurant()">
+                Премахване на ресторант
+            </button>
+            <div class="text-danger font-size-15 p-2">
+                Внимание! След тази операция ресторантът не може да бъде върнат!
+            </div>
+        </div>
         </div>
         <div class="form-floating" *ngIf="errorMessages.length > 0">
           <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>

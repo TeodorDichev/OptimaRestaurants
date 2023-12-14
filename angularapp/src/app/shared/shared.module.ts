@@ -22,13 +22,13 @@ import { EditRestaurantModalComponent } from './components/modals/input/edit-res
 import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
 import { NotificationComponent } from './components/modals/notification/notification.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
 import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee-search/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
 import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
 import { SearchResultComponent } from './components/collapses/search-result/search-result.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,8 @@ import { SearchResultComponent } from './components/collapses/search-result/sear
     ManagerInfoComponent,
     QrCodeComponent,
     InboxComponent,   
-    NavbarComponent, SearchResultComponent
+    SearchResultComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +69,12 @@ import { SearchResultComponent } from './components/collapses/search-result/sear
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ValidationMessagesComponent
+    ValidationMessagesComponent,
+    QrCodeComponent,
+    EmployeeInfoComponent,
+    InboxComponent,
+    SearchResultComponent, 
+    ManagerInfoComponent
   ]
 })
 export class SharedModule { }

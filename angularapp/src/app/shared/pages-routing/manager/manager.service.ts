@@ -76,6 +76,11 @@ export class ManagerService {
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);
   }
 
+  deleteRestaurant(restaurantId: string) {
+    
+    return this.http.delete(`${environment.appUrl}/api/manager/delete-restaurant/${restaurantId}`)
+  }
+
   logout() {
     this.userSource.next(null); // to ensure we remove the logged MANAGER {NOT USER} from HERE {NOT LOCAL STORAGE}
     this.accountService.logout();

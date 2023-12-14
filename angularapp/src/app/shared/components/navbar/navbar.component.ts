@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchResult } from '../../models/account/search-result';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'nav-top',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })

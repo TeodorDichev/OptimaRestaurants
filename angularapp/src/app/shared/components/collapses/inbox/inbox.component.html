@@ -9,7 +9,7 @@
         <div *ngIf="request.confirmed == null">
             <div class="row roboto font-size-20"> {{request.text}}
                 <span class="row fst-italic text-muted font-size-15">
-                    {{request.senderEmail}}, {{convertDate(request.sentOn)}}
+                    {{request.senderEmail}}, {{request.sentOn}}
                 </span>
             </div>
             <div class="row my-2">
@@ -30,7 +30,7 @@
         <div class="col-12 m-2 text-muted" *ngIf="request.confirmed != null">
             <div class="row roboto font-size-15"> {{request.text}}
                 <span class="row fst-italic font-size-10">
-                    {{request.senderEmail}}, {{convertDate(request.sentOn)}}
+                    {{request.senderEmail}}, {{request.sentOn}}
                     <span class="row" *ngIf="request.confirmed">Заявката е потвърдена.</span>
                     <span class="row" *ngIf="!request.confirmed">Заявката е отхвърлена.</span>
                 </span>

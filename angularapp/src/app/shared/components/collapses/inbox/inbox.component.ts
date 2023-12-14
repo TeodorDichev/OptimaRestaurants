@@ -49,12 +49,6 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  convertDate(fullDate: Date) {
-    return fullDate.toString().split('T')[0]
-      + ' ' +
-      fullDate.toString().split('T')[1].split('.')[0];
-  }
-
   requestToResponse(confirmed: boolean, currentRequest: Request) {
     if (this.email) {
       this.requestResponse.confirmed = confirmed;
@@ -65,6 +59,7 @@ export class InboxComponent implements OnInit {
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
+          this.getRequests();
         }
       })
     }

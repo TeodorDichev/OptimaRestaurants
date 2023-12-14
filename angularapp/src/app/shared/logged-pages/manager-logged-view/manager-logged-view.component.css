@@ -1,6 +1,6 @@
 img {
-    width: 200px !important;
-    height: 150px !important;
+    width: 300px;
+    aspect-ratio: 3/2;
     border-radius: 50%;
     box-shadow: 4px 2px 5px black;
     background-color: rgb(102, 102, 102);
@@ -8,4 +8,29 @@ img {
  
 .selected {
     background-color: gainsboro;
+}
+
+.display-list {
+    max-height: 60vh;
+    width: 100%;
+    border-radius: 12px;
+}
+
+@media only screen and (min-height: 600px){
+    .display-list {
+        max-height: 70vh;
+    }
+}
+
+/*
+@media only screen and (min-width: 1200px){
+    .display-list {
+        width: 60%;
+    }
+}
+*/
+@media only screen and (min-height: 910px){
+    .display-list {
+        max-height: 80vh;
+    }
 }

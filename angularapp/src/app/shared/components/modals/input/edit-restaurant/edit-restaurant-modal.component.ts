@@ -65,5 +65,17 @@ export class EditRestaurantModalComponent implements OnInit {
       });
     }
   }
+
+  deleteRestaurant() {
+    if (this.restaurant){
+      this.managerService.deleteRestaurant(this.restaurant.id).subscribe({
+        next: (response: any) => {
+          this.managerService.setManager(response);
+          this.sharedService.showNotification(true, "Успешно премахнат ресторант!", "Вашият ресторант беше успешно изтрит.");
+          this.bsModalRef.hide();
+        }
+      })
+    }
+  }
 }
 

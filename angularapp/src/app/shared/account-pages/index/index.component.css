@@ -1,24 +1,32 @@
-.container{
-    width: 100vw;
-}
 .overlay-text {
     font-family: Roboto Slab;
     font-size: 27px !important;
     text-shadow: 2px 2px black;
     text-decoration: none;
-    margin-top: 150px !important;
     color: white;
     text-align: center;
+    margin-top: 12px;
 }
-.btn-outline-light{
+
+.btn-outline-light {
     border-color: transparent;
     background-color: chocolate;
     box-shadow: 3px 1px black;
 }
-.btn-outline-light:hover{
+
+.btn-outline-light:hover {
     background-color: rgb(145, 75, 25);
-    color:white;
+    color: white;
 }
-.custom-background{
+
+.bg {
     background-image: url('../../../../assets/images/index-page-img.png') !important;
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (min-height:557px) {
+    .overlay-text {
+        margin-top: 10%;
+    }
 }

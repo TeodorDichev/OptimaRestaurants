@@ -3,6 +3,6 @@ export interface Request{
     text: string,
     senderEmail: string,
     restaurantId: string,
-    sentOn: Date,
+    sentOn: string,
     confirmed: boolean
 }

@@ -19,7 +19,6 @@ export class EmployeeInfoComponent {
 
   ngOnInit(): void {
     this.getEmployee();
-    this.employeeBirthDate = this.employee?.birthDate.toString().split('T')[0];
   }
 
   editEmployeeProfile() {
@@ -32,6 +31,7 @@ export class EmployeeInfoComponent {
       this.employeeService.getEmployee(this.employeeEmail).subscribe({
         next: (response: any) => {
           this.employee = response;
+          this.employeeBirthDate = this.employee?.birthDate.toString().split('T')[0];
         }
       })
     }
