@@ -20,7 +20,7 @@ namespace webapi.Services.ClassServices
             _context = context;
         }
 
-        public async Task<bool> CheckEmailExistAsync(string email)
+        public async Task<bool> CheckUserExistByEmail(string email)
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
         }
@@ -32,9 +32,9 @@ namespace webapi.Services.ClassServices
             else return false;
         }
 
-        public async Task<ApplicationUser?> GetUserByEmailOrUserName(string email)
+        public async Task<ApplicationUser> GetUserByEmailOrUserName(string email)
         {
-            return await _userManager.FindByNameAsync(email);
+            return await _userManager.FindByNameAsync(email) ?? throw new ArgumentNullException("Потребителят не съществува");
         }
 
         public async Task<ApplicationUser> AddApplicationUser(string firstName, string lastName, string email, string password)

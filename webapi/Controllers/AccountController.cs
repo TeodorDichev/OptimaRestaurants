@@ -3,12 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using webapi.Data;
 using webapi.DTOs.Account;
 using webapi.Models;
 using webapi.Services;
 using webapi.Services.ClassServices;
-using webapi.Services.FileServices;
 
 namespace webapi.Controllers
 {
@@ -28,12 +26,9 @@ namespace webapi.Controllers
         private readonly EmployeeService _employeeService;
 
         public AccountController(JWTService jwtService,
-        SignInManager<ApplicationUser> signInManager,
         UserManager<ApplicationUser> userManager,
         EmailService emailService,
         IConfiguration configuration,
-        OptimaRestaurantContext context,
-        QrCodesService qrCodesService,
         AccountService accountService,
         ManagerService managerService,
         EmployeeService employeeService)
@@ -50,9 +45,9 @@ namespace webapi.Controllers
         [HttpPost("api/account/register-manager")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterManager([FromBody] RegisterManagerDto model)
         {
-            if (await _accountService.CheckEmailExistAsync(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес!");
-
-            var userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
+            ApplicationUser userToAdd;
+            if (await _accountService.CheckUserExistByEmail(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес!");
+            else userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
 
             try
             {
@@ -73,9 +68,9 @@ namespace webapi.Controllers
         [HttpPost("api/account/register-employee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
-            if (await _accountService.CheckEmailExistAsync(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес");
-
-            var userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
+            ApplicationUser userToAdd;
+            if (await _accountService.CheckUserExistByEmail(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес!");
+            else userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
 
             try
             {
@@ -96,8 +91,9 @@ namespace webapi.Controllers
         [HttpPost("api/account/login")]
         public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
         {
-            var user = await _accountService.GetUserByEmailOrUserName(model.UserName);
-            if (user == null) return Unauthorized("Грешен имейл или парола!");
+            ApplicationUser user;
+            if (! await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
+            else user = await _accountService.GetUserByEmailOrUserName(model.UserName);
 
             if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
 
@@ -109,8 +105,9 @@ namespace webapi.Controllers
         [HttpGet("/api/account/refresh-user-token/{email}")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
         {
-            var user = await _accountService.GetUserByEmailOrUserName(email);
-            if (user == null) return BadRequest("Потребителят не съществува!");
+            ApplicationUser user;
+            if (await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Потребителят не съществува!");
+            else user = await _accountService.GetUserByEmailOrUserName(email);
 
             return await CreateApplicationUserDto(user);
         }
@@ -118,8 +115,10 @@ namespace webapi.Controllers
         [HttpPut("api/account/confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
-            var user = await _accountService.GetUserByEmailOrUserName(model.Email);
-            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            ApplicationUser user;
+            if (await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            else user = await _accountService.GetUserByEmailOrUserName(model.Email);
+
             if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
 
             try
@@ -144,8 +143,10 @@ namespace webapi.Controllers
         [HttpPut("api/account/reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
-            var user = await _accountService.GetUserByEmailOrUserName(model.Email);
-            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
+            ApplicationUser user;
+            if (await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            else user = await _accountService.GetUserByEmailOrUserName(model.Email);
+
             if (user.EmailConfirmed == false) return BadRequest("Имейлът ви не е потвърден, моля потвърдете го!");
 
             try
@@ -282,6 +283,5 @@ namespace webapi.Controllers
                 IsManager = isManager
             };
         }
-
     }
 }

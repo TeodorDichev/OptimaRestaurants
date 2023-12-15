@@ -7,6 +7,7 @@ using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
+using webapi.Services.ClassServices;
 using webapi.Services.FileServices;
 
 namespace webapi.Controllers
@@ -19,105 +20,64 @@ namespace webapi.Controllers
     public class EmployeeController : Controller
     {
         private readonly OptimaRestaurantContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly PicturesAndIconsService _picturesAndIconsService;
-        private readonly QrCodesService _qrCodesService;
         private readonly PdfFilesService _pdfFilesService;
-        private readonly IConfiguration _configuration;
+        private readonly AccountService _accountService;
+        private readonly ManagerService _managerService;
+        private readonly EmployeeService _employeeService;
 
         public EmployeeController(OptimaRestaurantContext context,
-            UserManager<ApplicationUser> userManager,
-            PicturesAndIconsService picturesAndIconsService,
-            QrCodesService qrCodesService,
             PdfFilesService pdfFilesService,
-            IConfiguration configuration)
+            AccountService accountService,
+            ManagerService managerService,
+            EmployeeService employeeService)
         {
             _context = context;
-            _userManager = userManager;
-            _picturesAndIconsService = picturesAndIconsService;
-            _qrCodesService = qrCodesService;
-            _configuration = configuration;
             _pdfFilesService = pdfFilesService;
+            _employeeService = employeeService;
+            _managerService = managerService;
+            _accountService = accountService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
+        [HttpGet("api/manager/browse-employees/details/{email}")]
         public async Task<ActionResult<EmployeeMainViewDto>> GetEmployee(string email)
         {
-            if (await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email) == null
-                || await _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
-
-            return GenerateNewEmployeeDto(email);
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return await GenerateNewEmployeeDto(email);
+            else return BadRequest("Потребителят не съществува!");
         }
 
         [HttpPut("api/employee/update-employee/{email}")]
-        public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromForm] UpdateEmployeeDto employeeDto, string email)
+        public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromForm] UpdateEmployeeDto updateDto, string email)
         {
-            var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            if (profile == null) return BadRequest("Потребителят не съществува");
+            Employee employee;
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            var employee = await _context.Employees.FirstOrDefaultAsync(m => m.Profile.Id == profile.Id);
-            if (employee == null) return BadRequest("Потребителят не съществува");
+            _employeeService.UpdateEmployee(employee, updateDto);
+            await _employeeService.SaveChangesAsync();
 
-            if (employee == null || profile == null) return BadRequest("Потребителят не е намерен!");
-
-            if (employeeDto.NewFirstName != null) profile.FirstName = employeeDto.NewFirstName;
-            if (employeeDto.NewLastName != null) profile.LastName = employeeDto.NewLastName;
-            if (employeeDto.NewPhoneNumber != null) profile.PhoneNumber = employeeDto.NewPhoneNumber;
-            if (employeeDto.NewCity != null) employee.City = employeeDto.NewCity;
-            if (employeeDto.NewBirthDate != null) employee.BirthDate = (DateTime)employeeDto.NewBirthDate;
-            if (employeeDto.ProfilePictureFile != null)
-            {
-                if (profile.ProfilePicturePath == null) profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
-                else
-                {
-                    _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
-                    profile.ProfilePicturePath = _picturesAndIconsService.SaveImage(employeeDto.ProfilePictureFile);
-                }
-            }
-            employee.IsLookingForJob = employeeDto.IsLookingForJob;
-
-            _context.Update(employee);
-            await _context.SaveChangesAsync();
-
-            return GenerateNewEmployeeDto(profile.Email ?? string.Empty);
+            return await GenerateNewEmployeeDto(email);
         }
 
         [HttpDelete("api/employee/delete-employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
-            var profile = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
+            Employee employee;
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            if (employee == null || profile == null) return BadRequest("Потребителят не съществува!");
-            var roles = await _userManager.GetRolesAsync(profile);
-
-            foreach (var er in employee.EmployeesRestaurants) _context.EmployeesRestaurants.Remove(er);
-            foreach (var r in _context.Requests.Where(r => r.Sender.Email == email || r.Receiver.Email == email)) _context.Requests.Remove(r);
-
-            if (profile.ProfilePicturePath != null) _picturesAndIconsService.DeleteImage(profile.ProfilePicturePath);
-            if (employee.QrCodePath != null) _qrCodesService.DeleteQrCode(employee.QrCodePath);
-
-            _context.Employees.Remove(employee);
-            await _userManager.RemoveFromRolesAsync(profile, roles);
-            await _userManager.DeleteAsync(profile);
-            await _context.SaveChangesAsync();
-
-            return Ok(new JsonResult(new { title = "Успешно изтриване!", message = "Успешно изтрихте своя акаунт!" }));
-        }
-
-        [HttpGet("api/manager/browse-employees/details/{email}")]
-        public async Task<ActionResult<EmployeeMainViewDto>> GetEmployeeDetails(string email)
-        {
-            if (await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email) == null
-                || await _userManager.FindByEmailAsync(email) == null) return BadRequest("Потребителят не съществува!");
-
-            return GenerateNewEmployeeDto(email);
+            if (await _employeeService.DeleteEmployee(employee))
+            {
+                await _employeeService.SaveChangesAsync();
+                return Ok(new JsonResult(new { title = "Успешно изтриване!", message = "Успешно изтрихте своя акаунт!" }));
+            }
+            else return BadRequest("Неуспешно изтриване!");
         }
 
         [HttpGet("api/employee/get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
-            if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
 
             List<RequestDto> requests = new List<RequestDto>();
             foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderBy(x => x.SentOn))
@@ -179,7 +139,7 @@ namespace webapi.Controllers
             }
             else
             {
-                request.RejectedOn = DateTime.UtcNow;
+                request.RejectedOn = DateTime.Now;
                 await _context.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно отхвърлена заявка!", message = $"Заявката на {manager.Profile.FirstName} е отхвърлена!" }));
             }
@@ -188,12 +148,11 @@ namespace webapi.Controllers
         [HttpGet("api/employee/download-qrcode/{email}")]
         public async Task<IActionResult> DownloadQrCode(string email)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
-            if (employee == null) return BadRequest("Потребителят не съществува!");
+            Employee employee;
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            string qrCodeName = employee.QrCodePath.Split("/").Last();
-            string qrCodePath = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty, qrCodeName);
-
+            string qrCodePath = _employeeService.GetEmployeeQrCodePath(employee);
             if (System.IO.File.Exists(qrCodePath))
             {
                 return PhysicalFile(qrCodePath, "image/png", $"{employee.Profile.FirstName}_qrcode.png");
@@ -207,18 +166,16 @@ namespace webapi.Controllers
         [HttpGet("api/employee/download-cv/{email}")]
         public async Task<IActionResult> DownloadCV(string email)
         {
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == email);
-            if (employee == null) return BadRequest("Потребителят не съществува!");
+            Employee employee;
+            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
 
             return File(_pdfFilesService.GenerateCv(employee), "application/pdf", $"{employee.Profile.FirstName}_cv.pdf");
         }
 
-        private EmployeeMainViewDto GenerateNewEmployeeDto(string email)
+        private async Task<EmployeeMainViewDto> GenerateNewEmployeeDto(string email)
         {
-            var employee = _context.Employees.FirstOrDefault(e => e.Profile.Email == email);
-            var profile = _context.Users.FirstOrDefault(u => u.Email == email);
-
-            if (employee == null || profile == null) throw new ArgumentNullException("Потребителят не съществува!");
+            var employee = await _employeeService.GetEmployeeByEmail(email);
 
             ICollection<AccountRestaurantDto> restaurants = new List<AccountRestaurantDto>();
 
@@ -244,11 +201,11 @@ namespace webapi.Controllers
             var employeeMainViewDto = new EmployeeMainViewDto
             {
                 Email = email,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                ProfilePicturePath = profile.ProfilePicturePath,
+                FirstName = employee.Profile.FirstName,
+                LastName = employee.Profile.LastName,
+                ProfilePicturePath = employee.Profile.ProfilePicturePath,
                 QrCodePath = employee.QrCodePath,
-                PhoneNumber = profile.PhoneNumber ?? string.Empty,
+                PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
                 City = employee.City,
                 BirthDate = employee.BirthDate.ToShortDateString(),
                 AttitudeAverageRating = employee.AttitudeAverageRating ?? 0,
