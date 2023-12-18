@@ -4,6 +4,7 @@ using webapi.Data;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
+using webapi.Services.ClassServices;
 
 namespace webapi.Controllers
 {
@@ -14,198 +15,71 @@ namespace webapi.Controllers
     /// </summary>
     public class RestaurantController : Controller
     {
+        private readonly RestaurantService _restaurantService;
         private readonly OptimaRestaurantContext _context;
-        public RestaurantController(OptimaRestaurantContext context)
+        public RestaurantController(RestaurantService restaurantService, 
+            OptimaRestaurantContext context)
         {
+            _restaurantService = restaurantService;
             _context = context;
         }
 
         [HttpGet("api/restaurants/get-all-restaurants")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants()
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetAllRestaurants();
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/get-local-restaurants/{cityName}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName)
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetCityRestaurants(cityName);
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/get-rating-restaurants/{rating}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating)
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRatingRestaurants(rating);
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/get-cuisine-restaurants")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants()
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("CuisineAverageRating");
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/get-atmosphere-restaurants")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants()
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("AtmosphereAverageRating");
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/get-employees-restaurants")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants()
         {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            if (_context.Restaurants == null) return BadRequest("Няма ресторанти!");
-
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
-            return restaurantsDto;
+            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("EmployeesAverageRating");
+            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
+            else return restaurantsDto;
         }
 
         [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]
         public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurantDetails(string restaurantId)
         {
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == restaurantId);
-            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+            Restaurant restaurant;
+            if (await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
-            var manager = restaurant.Manager;
-            string managerFullName = "Ресторантът няма мениджър!";
-            string managerEmail = string.Empty;
-            if (manager != null) 
-            { 
-                managerFullName = manager.Profile.FirstName + " " + manager.Profile.LastName;
-                managerEmail = manager.Profile.Email ?? string.Empty;
-            }
-
-            var topEmployee = restaurant.EmployeesRestaurants.Select(er => er.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
-            string topEmployeeFullName = "Ресторантът няма работници!";
-            string topEmployeeEmail = string.Empty;
-            decimal topEmployeeRating = 0;
-            if (topEmployee != null)
-            { 
-                topEmployeeFullName = topEmployee.Profile.FirstName + " " + topEmployee.Profile.LastName; 
-                topEmployeeRating = topEmployee.EmployeeAverageRating ?? 0;
-                topEmployeeEmail = topEmployee.Profile.Email ?? string.Empty;
-            }
-
-            var restaurantDto = new RestaurantDetailsDto
-            {
-                Address = restaurant.Address,
-                AtmosphereAverageRating = restaurant.AtmosphereAverageRating ?? 0,
-                RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
-                CuisineAverageRating = restaurant.CuisineAverageRating ?? 0,
-                EmployeesAverageRating = restaurant.EmployeesAverageRating ?? 0,
-                RatingsCount = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant).Count(),
-                City = restaurant.City,
-                EmployeeCapacity = restaurant.EmployeeCapacity,
-                IconPath = restaurant.IconPath,
-                IsWorking = restaurant.IsWorking,
-                Name = restaurant.Name,
-                Id = restaurant.Id.ToString(),
-                ManagerFullName = managerFullName,
-                TopEmployeeFullName = topEmployeeFullName,
-                TopEmployeeRating = topEmployeeRating,
-                TopEmployeeEmail = topEmployeeEmail,
-                ManagerEmail = managerEmail
-            };
-
-            return restaurantDto;
+            return _restaurantService.GetRestaurantDetails(restaurant);
         }
 
         [HttpPost("api/restaurants/send-working-request")]

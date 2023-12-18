@@ -22,14 +22,17 @@ namespace webapi.Controllers
         private readonly OptimaRestaurantContext _context;
         private readonly PdfFilesService _pdfFilesService;
         private readonly EmployeeService _employeeService;
+        private readonly RestaurantService _restaurantService;
 
         public EmployeeController(OptimaRestaurantContext context,
             PdfFilesService pdfFilesService,
-            EmployeeService employeeService)
+            EmployeeService employeeService,
+            RestaurantService restaurantService)
         {
             _context = context;
             _pdfFilesService = pdfFilesService;
             _employeeService = employeeService;
+            _restaurantService = restaurantService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -170,27 +173,6 @@ namespace webapi.Controllers
         {
             var employee = await _employeeService.GetEmployeeByEmail(email);
 
-            ICollection<AccountRestaurantDto> restaurants = new List<AccountRestaurantDto>();
-
-            foreach (var restaurant in employee.EmployeesRestaurants
-                .Where(er => !er.EndedOn.HasValue)
-                .Select(er => er.Restaurant))
-            {
-                restaurants.Add(new AccountRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    EmployeeCapacity = restaurant.EmployeeCapacity,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
-                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
-                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IconPath = restaurant?.IconPath
-                });
-            }
-
             var employeeMainViewDto = new EmployeeMainViewDto
             {
                 Email = email,
@@ -206,7 +188,7 @@ namespace webapi.Controllers
                 SpeedAverageRating = employee.SpeedAverageRating ?? 0,
                 PunctualityAverageRating = employee.PunctualityAverageRating ?? 0,
                 EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
-                Restaurants = restaurants,
+                Restaurants = _restaurantService.GetRestaurantsOfEmployee(employee),
                 IsLookingForJob = employee.IsLookingForJob,
             };
 

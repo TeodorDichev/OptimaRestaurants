@@ -24,19 +24,16 @@ namespace webapi.Services.ClassServices
         {
             return await _userManager.Users.AnyAsync(x => x.Email == email.ToLower());
         }
-
         public async Task<bool> CheckPasswordAsync(ApplicationUser user, string password)
         {
             var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
             if (result.Succeeded) return true;
             else return false;
         }
-
         public async Task<ApplicationUser> GetUserByEmailOrUserName(string email)
         {
             return await _userManager.FindByNameAsync(email) ?? throw new ArgumentNullException("Потребителят не съществува");
         }
-
         public async Task<ApplicationUser> AddApplicationUser(string firstName, string lastName, string email, string password)
         {
             var userToAdd = new ApplicationUser
@@ -51,7 +48,6 @@ namespace webapi.Services.ClassServices
             if (result.Succeeded) return userToAdd;
             else throw new ArgumentException(string.Join('\n', result.Errors));
         }
-
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

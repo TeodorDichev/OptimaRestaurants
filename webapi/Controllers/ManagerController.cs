@@ -119,25 +119,7 @@ namespace webapi.Controllers
         [HttpGet("api/manager/browse-employees/looking-for-job")]
         public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob()
         {
-            List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
-
-            foreach (var employee in _employeeService.GetEmployeesLookingForJob())
-            {
-                employeesDto.Add(new BrowseEmployeeDto
-                {
-                    Email = employee.Profile.Email ?? string.Empty,
-                    FirstName = employee.Profile.FirstName ?? string.Empty,
-                    LastName = employee.Profile.LastName ?? string.Empty,
-                    PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
-                    ProfilePicturePath = employee.Profile.ProfilePicturePath ?? string.Empty,
-                    EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
-                    IsLookingForJob = employee.IsLookingForJob,
-                    City = employee.City,
-                    RestaurantsCount = employee.EmployeesRestaurants.Where(er => er.EndedOn == null).Count(),
-                });
-            }
-
-            return employeesDto;
+            return _employeeService.GetEmployeesLookingForJob();
         }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
@@ -259,26 +241,6 @@ namespace webapi.Controllers
         {
             Manager manager = await _managerService.GetManagerByEmail(email);
 
-            List<Restaurant> restaurants = _restaurantService.GetRestaurantsOfManager(manager);
-            ICollection<AccountRestaurantDto> restaurantsDto = new List<AccountRestaurantDto>();
-
-            foreach (var restaurant in manager.Restaurants)
-            {
-                restaurantsDto.Add(new AccountRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    EmployeeCapacity = restaurant.EmployeeCapacity,
-                    AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
-                    CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
-                    EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IconPath = restaurant?.IconPath,
-                });
-            }
-
             var managerMainViewDto = new ManagerMainViewDto
             {
                 Email = email,
@@ -286,8 +248,8 @@ namespace webapi.Controllers
                 LastName = manager.Profile.LastName,
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
                 ProfilePicturePath = manager.Profile.ProfilePicturePath,
-                Restaurants = restaurants.IsNullOrEmpty() ? new List<AccountRestaurantDto>() : restaurantsDto
-            };
+                Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
+        };
 
             return managerMainViewDto;
         }

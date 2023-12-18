@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using webapi.Services.FileServices;
 using webapi.Services.ClassServices;
+using webapi.Services.ModelServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +22,6 @@ builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"));
 });
 
-//to be able to inject JWTServices class inside our controllers
 builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<QrCodesService>();
@@ -29,6 +29,8 @@ builder.Services.AddScoped<PdfFilesService>();
 builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
 
+builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<RequestService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<ManagerService>();
 builder.Services.AddScoped<EmployeeService>();
