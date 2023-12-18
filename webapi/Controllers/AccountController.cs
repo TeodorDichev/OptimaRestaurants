@@ -106,7 +106,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
         {
             ApplicationUser user;
-            if (await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Потребителят не съществува!");
+            if (!await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Потребителят не съществува!");
             else user = await _accountService.GetUserByEmailOrUserName(email);
 
             return await CreateApplicationUserDto(user);
@@ -116,7 +116,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             ApplicationUser user;
-            if (await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (! await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
             else user = await _accountService.GetUserByEmailOrUserName(model.Email);
 
             if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
@@ -144,7 +144,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
         {
             ApplicationUser user;
-            if (await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (!await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
             else user = await _accountService.GetUserByEmailOrUserName(model.Email);
 
             if (user.EmailConfirmed == false) return BadRequest("Имейлът ви не е потвърден, моля потвърдете го!");

@@ -21,21 +21,15 @@ namespace webapi.Controllers
     {
         private readonly OptimaRestaurantContext _context;
         private readonly PdfFilesService _pdfFilesService;
-        private readonly AccountService _accountService;
-        private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;
 
         public EmployeeController(OptimaRestaurantContext context,
             PdfFilesService pdfFilesService,
-            AccountService accountService,
-            ManagerService managerService,
             EmployeeService employeeService)
         {
             _context = context;
             _pdfFilesService = pdfFilesService;
             _employeeService = employeeService;
-            _managerService = managerService;
-            _accountService = accountService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -50,7 +44,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromForm] UpdateEmployeeDto updateDto, string email)
         {
             Employee employee;
-            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (! await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
             _employeeService.UpdateEmployee(employee, updateDto);
@@ -63,7 +57,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
             Employee employee;
-            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (! await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
             if (await _employeeService.DeleteEmployee(employee))
@@ -77,7 +71,7 @@ namespace webapi.Controllers
         [HttpGet("api/employee/get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
-            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (! await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
 
             List<RequestDto> requests = new List<RequestDto>();
             foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderBy(x => x.SentOn))
@@ -149,7 +143,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> DownloadQrCode(string email)
         {
             Employee employee;
-            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (! await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
             string qrCodePath = _employeeService.GetEmployeeQrCodePath(employee);
@@ -167,12 +161,11 @@ namespace webapi.Controllers
         public async Task<IActionResult> DownloadCV(string email)
         {
             Employee employee;
-            if (await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (! await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
             return File(_pdfFilesService.GenerateCv(employee), "application/pdf", $"{employee.Profile.FirstName}_cv.pdf");
         }
-
         private async Task<EmployeeMainViewDto> GenerateNewEmployeeDto(string email)
         {
             var employee = await _employeeService.GetEmployeeByEmail(email);

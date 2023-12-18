@@ -32,6 +32,7 @@ builder.Services.AddScoped<PicturesAndIconsService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<ManagerService>();
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<RestaurantService>();
 
 //Defining identity core services
 builder.Services.AddIdentityCore<ApplicationUser>(options =>

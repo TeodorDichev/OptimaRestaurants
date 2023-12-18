@@ -30,7 +30,10 @@ namespace webapi.Services.ClassServices
             _qrCodesService = qrCodesService;
             _pictureService = pictureService;
         }
-
+        public List<Employee> GetEmployeesLookingForJob()
+        {
+            return _context.Employees.Where(e => e.IsLookingForJob).ToList();
+        }
         public string GetEmployeeQrCodePath(Employee employee)
         {
             string qrCodeName = employee.QrCodePath.Split("/").Last();
