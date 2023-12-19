@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -311,6 +310,15 @@ namespace webapi.Services.ClassServices
         public List<Employee> GetEmployeesOfRestaurant(Restaurant restaurant)
         {
             return restaurant.EmployeesRestaurants.Select(e => e.Employee).ToList();
+        }
+        public bool IsRestaurantAtMaxCapacity(Restaurant restaurant)
+        {
+            return restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
+                .Where(er => er.Restaurant == restaurant).Count();
+        }
+        public bool HasRestaurantAManager(Restaurant restaurant)
+        {
+            return restaurant.Manager == null;
         }
         public async Task SaveChangesAsync()
         {
