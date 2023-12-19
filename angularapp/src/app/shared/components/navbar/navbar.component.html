@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-transparent">
     <div class="container-fluid">
-        <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-choco ms-xl-5 text-wrap" (click)="homePage()">
+        <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-choco ms-xl-5 text-wrap"
+            (click)="homePage()">
             Оптима Ресторанти
         </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItemsCollapse"
@@ -72,20 +73,17 @@
                     </ul>
                 </li>
             </ul>
-            <form [formGroup]="searchForm" (ngSubmit)="search()" autocomplete="off" class="d-flex" role="search">
-                <input class="form-control mx-2" formControlName="searchString" type="search" placeholder="Търси"
-                    aria-label="Search">
+            <form [formGroup]="searchForm" (ngSubmit)="search()" autocomplete="off" class="d-flex mx-xl-2" role="search">
                 <li class="dropdown nav-link">
-                    <button class="btn btn-yellow-inverted me-3 dropdown-toggle" type="submit" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false" (click)="search()">
-                        <i class="fa fa-search fa-lg"></i>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <app-search-result [searchResult]="searchResult" *ngIf="submitted"></app-search-result>
+                    <input class="form-control me-2" formControlName="searchString" type="search"
+                        placeholder="Търси потребител" aria-label="Search">
+                        <div #searchToggle data-bs-toggle="dropdown" hidden></div>
+                    <ul class="dropdown-menu"> 
+                        <app-search-result [searchResult]="searchResult"></app-search-result>
                     </ul>
                 </li>
             </form>
-            <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30" aria-current="page"
+            <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
                 (click)="logout()" *ngIf="this.user">
                 <i class="fa fa-sign-out fa-lg"></i>
             </div>
