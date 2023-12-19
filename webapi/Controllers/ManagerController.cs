@@ -1,36 +1,29 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using webapi.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 using webapi.Services.ClassServices;
-using webapi.Services.FileServices;
+using webapi.Services.ModelServices;
 
 namespace webapi.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly OptimaRestaurantContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;
         private readonly RestaurantService _restaurantService;
+        private readonly RequestService _requestService;
 
-        public ManagerController(OptimaRestaurantContext context,
-                UserManager<ApplicationUser> userManager,
-                EmployeeService employeeService,
-                ManagerService managerService, 
+        public ManagerController(EmployeeService employeeService,
+                ManagerService managerService,
+                RequestService requestService,
                 RestaurantService restaurantService)
         {
-            _context = context;
-            _userManager = userManager;
             _managerService = managerService;
             _restaurantService = restaurantService;
+            _requestService = requestService;
             _employeeService = employeeService;
         }
 
@@ -45,7 +38,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> UpdateManager([FromForm] UpdateManagerDto managerDto, string email)
         {
             Manager manager;
-            if (! await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else manager = await _managerService.GetManagerByEmail(email);
 
             _managerService.UpdateManager(manager, managerDto);
@@ -58,7 +51,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> DeleteManager(string email)
         {
             Manager manager;
-            if (! await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else manager = await _managerService.GetManagerByEmail(email);
 
             if (await _managerService.DeleteManager(manager))
@@ -73,7 +66,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> AddNewRestaurant([FromForm] NewRestaurantDto newRestaurant, string email)
         {
             Manager manager;
-            if (! await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else manager = await _managerService.GetManagerByEmail(email);
 
             await _restaurantService.AddRestaurant(newRestaurant, manager);
@@ -145,7 +138,7 @@ namespace webapi.Controllers
 
             return employees;
         }
-        
+
         [HttpPut("api/manager/fire/{employeeEmail}/{restaurantId}")]
         public async Task<ActionResult<List<EmployeeDto>>> FireAnEmployee(string employeeEmail, string restaurantId)
         {
@@ -165,74 +158,64 @@ namespace webapi.Controllers
         [HttpGet("api/manager/get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
-            if (await _userManager.FindByEmailAsync(email) == null) { return BadRequest("Потребителят не съществува!"); }
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
 
-            List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderByDescending(r => r.SentOn))
-            {
-                bool? confirmed = null;
-                if (r.ConfirmedOn != null) confirmed = true;
-                if (r.RejectedOn != null) confirmed = false;
+            return _requestService.GetManagerRequests(email);
+        }
 
-                var request = new RequestDto
-                {
-                    Id = r.Id.ToString(),
-                    RestaurantId = r.Restaurant.Id.ToString(),
-                    SenderEmail = r.Sender.Email ?? string.Empty,
-                    SentOn = r.SentOn.ToString(),
-                    Confirmed = confirmed,
-                    Text = $"Работи ли {r.Sender.FirstName + " " + r.Sender.LastName} в {r.Restaurant.Name}?"
-                };
+        [HttpPost("api/manager/send-working-request")]
+        public async Task<IActionResult> SendWorkingRequest([FromBody] NewEmployeeRequestDto requestDto)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(requestDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(requestDto.EmployeeEmail);
 
-                requests.Add(request);
-            }
+            Restaurant restaurant;
+            if (await _restaurantService.CheckRestaurantExistById(requestDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(requestDto.RestaurantId);
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+            if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
+            if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");
 
-            return Ok(requests);
+            if (await _requestService.IsRequestAlreadySent(restaurant.Manager.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
+            if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Потребителят вече работи в този ресторант!");
+
+            await _requestService.AddRequest(employee, restaurant);
+            await _restaurantService.SaveChangesAsync();
+
+            return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));
         }
 
         [HttpPost("api/manager/respond-to-request")]
         public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
         {
-            var request = _context.Requests.FirstOrDefault(r => r.Id.ToString() == requestDto.RequestId);
-            if (request == null) return BadRequest("Заявката не съществува!");
+            Request request;
+            if (!await _requestService.CheckRequestExistById(requestDto.RequestId)) return BadRequest("Заявката не съществува");
+            else request = await _requestService.GetRequestById(requestDto.RequestId);
             if (request.ConfirmedOn != null || request.RejectedOn != null) return BadRequest("Заявката вече е отговорена!");
 
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(request.Sender.Email ?? string.Empty)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(request.Sender.Email ?? string.Empty);
 
-            var managerProfile = request.Receiver;
-            var manager = await _context.Managers.FirstOrDefaultAsync(m => m.Profile.Email == managerProfile.Email);
-            if (managerProfile == null) return BadRequest("Потребителят не съществува!");
+            Manager manager;
+            if (!await _managerService.CheckManagerExistByEmail(request.Receiver.Email ?? string.Empty)) return BadRequest("Потребителят изпратил заявката не съществува!");
+            else manager = await _managerService.GetManagerByEmail(request.Receiver.Email ?? string.Empty);
 
-            var employeeProfile = request.Sender;
-            var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Profile.Email == employeeProfile.Email);
-            if (employeeProfile == null || employee == null) return BadRequest("Потребителят изпратил заявката не съществува!");
-
-            var restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id.ToString() == requestDto.RestaurantId);
-            if (restaurant == null) return BadRequest("Ресторантът не съществува!");
+            Restaurant restaurant;
+            if (await _restaurantService.CheckRestaurantExistById(request.Restaurant.Id.ToString())) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(request.Restaurant.Id.ToString());
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+            if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници");
 
-            if (restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
-                .Where(er => er.Restaurant.Id.ToString() == requestDto.RestaurantId).Count())
-                    return BadRequest("Ресторантът не наема повече работници!");
-
-            if (requestDto.Confirmed)
+            if (await _requestService.RespondToRequest(employee, restaurant, request, requestDto.Confirmed))
             {
-                request.ConfirmedOn = DateTime.UtcNow;
-                EmployeeRestaurant er = new EmployeeRestaurant
-                {
-                    Employee = employee,
-                    Restaurant = restaurant,
-                    StartedOn = DateTime.UtcNow,
-                };
-                employee.EmployeesRestaurants.Add(er);
-                restaurant.EmployeesRestaurants.Add(er);
-                await _context.EmployeesRestaurants.AddAsync(er);
-                await _context.SaveChangesAsync();
+                await _requestService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно потвърдена заявка!", message = $"{employee.Profile.FirstName} вече работи за вас!" }));
             }
             else
             {
-                request.RejectedOn = DateTime.UtcNow;
-                await _context.SaveChangesAsync();
+                await _requestService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно отхвърлена заявка!", message = $"Заявката на {employee.Profile.FirstName} е отхвърлена!" }));
             }
         }
@@ -249,7 +232,7 @@ namespace webapi.Controllers
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
                 ProfilePicturePath = manager.Profile.ProfilePicturePath,
                 Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
-        };
+            };
 
             return managerMainViewDto;
         }
