@@ -1,3 +1,4 @@
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -63,7 +64,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    TooltipModule
   ],
   exports: [
     RouterModule,
