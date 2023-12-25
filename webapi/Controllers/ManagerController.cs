@@ -96,7 +96,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> DeleteRestaurant(string restaurantId)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             string managerEmail;
@@ -119,7 +119,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<List<EmployeeDto>>> GetRestaurantEmployees(string restaurantId)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             List<EmployeeDto> employees = new List<EmployeeDto>();
@@ -143,7 +143,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<List<EmployeeDto>>> FireAnEmployee(string employeeEmail, string restaurantId)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             Employee employee;
@@ -158,7 +158,7 @@ namespace webapi.Controllers
         [HttpGet("api/manager/get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
-            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
 
             return _requestService.GetManagerRequests(email);
         }
@@ -203,7 +203,7 @@ namespace webapi.Controllers
             else manager = await _managerService.GetManagerByEmail(request.Receiver.Email ?? string.Empty);
 
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(request.Restaurant.Id.ToString())) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(request.Restaurant.Id.ToString())) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(request.Restaurant.Id.ToString());
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници");
