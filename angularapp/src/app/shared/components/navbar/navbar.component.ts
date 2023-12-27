@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
 import { User } from '../../models/account/user';
@@ -19,7 +19,6 @@ export class NavbarComponent implements OnInit {
   user: User | null | undefined;
   fileName: string | undefined;
   searchResult: SearchResult[] = [];
-  @ViewChild('searchToggle', {static : false}) searchToggle: ElementRef | undefined;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
@@ -59,18 +58,16 @@ export class NavbarComponent implements OnInit {
     this.searchForm = this.formBuilder.group({
       searchString: ['', [Validators.required]]
     })
-
     this.searchForm.get('searchString')?.valueChanges.subscribe(
       value => {
-      this.search();
-        this.searchToggle?.nativeElement.click();
-    });
+        this.search(value);
+      });
   }
 
-  search() {
+  search(value: string) {
     this.submitted = true;
-    if (this.searchForm.valid) {
-      this.accountService.search(this.searchForm.value.searchString).subscribe({
+    if (this.searchForm && value.length > 0) {
+      this.accountService.search(value).subscribe({
         next: (response: any) => {
           this.searchResult = response;
         }

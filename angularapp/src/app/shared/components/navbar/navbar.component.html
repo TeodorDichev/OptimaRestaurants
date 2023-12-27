@@ -73,12 +73,11 @@
                     </ul>
                 </li>
             </ul>
-            <form [formGroup]="searchForm" (ngSubmit)="search()" autocomplete="off" class="d-flex mx-xl-2" role="search">
+            <form [formGroup]="searchForm" autocomplete="off" class="d-flex mx-xl-2" role="search">
                 <li class="dropdown nav-link">
                     <input class="form-control me-2" formControlName="searchString" type="search"
                         placeholder="Търси потребител" aria-label="Search">
-                        <div #searchToggle data-bs-toggle="dropdown" hidden></div>
-                    <ul class="dropdown-menu"> 
+                    <ul class="dropdown-menu show" *ngIf="searchForm.valid"> 
                         <app-search-result [searchResult]="searchResult"></app-search-result>
                     </ul>
                 </li>
