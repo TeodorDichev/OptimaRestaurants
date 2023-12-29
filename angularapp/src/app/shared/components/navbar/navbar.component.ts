@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
 import { User } from '../../models/account/user';
@@ -19,6 +19,7 @@ export class NavbarComponent implements OnInit {
   user: User | null | undefined;
   fileName: string | undefined;
   searchResult: SearchResult[] = [];
+  @ViewChild('dropdown') dropdown: ElementRef | undefined;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
@@ -32,7 +33,7 @@ export class NavbarComponent implements OnInit {
     this.initializeForm();
   }
 
-  getUser() {
+  getUser() { 
     this.accountService.user$.subscribe(user => {
       this.user = user;
       if (this.user && user) {
@@ -52,6 +53,13 @@ export class NavbarComponent implements OnInit {
         }
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClick(event: Event): void {
+    if (!this.dropdown?.nativeElement.contains(event.target)) {
+      this.searchForm.controls['searchString'].setValue('');
+    }
   }
 
   initializeForm() {

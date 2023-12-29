@@ -1,0 +1,20 @@
+img {
+    height: 30px;
+    width: 30px;
+    border-radius: 25px;
+    box-shadow: 2px 1px 2px black;
+}
+
+.search-body {
+    min-width: 200px;
+}
+
+.search-result {
+    border-radius: 12px;
+    box-shadow: 2px 1px 2px rgb(179, 179, 179);
+    padding: 10px;
+}
+
+.search-result:hover {
+    background-color: gainsboro;
+}

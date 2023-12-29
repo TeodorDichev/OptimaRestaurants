@@ -15,7 +15,7 @@ import { ResetPassword } from '../../models/account/reset-password';
   providedIn: 'root'
 })
 export class AccountService {
-  private userSource = new ReplaySubject<User | null>(1); 
+  private userSource = new ReplaySubject<User | null>(1);
   user$ = this.userSource.asObservable();  // observable, meaning we can subscribe to it at any time
 
   constructor(private http: HttpClient,
@@ -62,11 +62,11 @@ export class AccountService {
     );;
   }
 
-  resendEmailConfirmationLink(email: string){
+  resendEmailConfirmationLink(email: string) {
     return this.http.post(`${environment.appUrl}/api/account/resend-email-confirmation-link/${email}`, {});
   }
 
-  forgotUsernameOrPassword(email: string){
+  forgotUsernameOrPassword(email: string) {
     return this.http.post(`${environment.appUrl}/api/account/forgot-username-or-password/${email}`, {});
   }
 
@@ -79,8 +79,8 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setUser(user);
-          if (user.isManager){
-          this.router.navigateByUrl('/manager');
+          if (user.isManager) {
+            this.router.navigateByUrl('/manager');
           }
           else {
             this.router.navigateByUrl('/employee');
@@ -92,7 +92,7 @@ export class AccountService {
     );
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem(environment.userKey);
     this.userSource.next(null);
     this.router.navigateByUrl('/');
@@ -116,14 +116,14 @@ export class AccountService {
     }
   }
 
-  refreshUser(jwt: string | null, email: string | null){
-    if (jwt === null || email === null){
+  refreshUser(jwt: string | null, email: string | null) {
+    if (jwt === null || email === null) {
       this.userSource.next(null);
       return of(undefined);
-    } 
+    }
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + jwt);
-    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token/${email}`, {headers}).pipe(
+    return this.http.get<User>(`${environment.appUrl}/api/account/refresh-user-token/${email}`, { headers }).pipe(
       take(1),
       map((user: User) => {
         if (user) {
@@ -132,7 +132,7 @@ export class AccountService {
       })
     );
   }
-   setUser(user: User) {
+  setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user); // we store the user in the local storage in browser and in the angular app - to tell whether the user is logged in and keep him logged after refreshing page
   }

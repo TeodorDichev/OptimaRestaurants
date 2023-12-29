@@ -1,3 +1,4 @@
+import { SharedService } from 'src/app/shared/shared.service';
 import { Component, Input } from '@angular/core';
 import { SearchResult } from 'src/app/shared/models/account/search-result';
 
@@ -8,4 +9,10 @@ import { SearchResult } from 'src/app/shared/models/account/search-result';
 })
 export class SearchResultComponent {
   @Input() searchResult: SearchResult[] | undefined;
+
+  constructor(private sharedService: SharedService) {}
+
+  openInfoModal(result: SearchResult) {
+    this.sharedService.openUserInfoModal(result.email, result.role);
+  }
 }

@@ -1,11 +1,17 @@
-<div class="roboto font-size-20 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
-    Не е намерен акаунт
-</div>
-<div *ngIf="searchResult">
-    <div *ngFor="let result of searchResult">
-        <!-- <img src="{{result.picturePath}}"> -->
-        {{result.fullname}}
-        {{result.email}}
-        {{result.role}}
+<div class="search-body">
+    <div class="roboto font-size-20 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
+        Не е намерен акаунт
+    </div>
+    <div *ngIf="searchResult">
+        <div class="px-1" *ngFor="let result of searchResult">
+            <div class="search-result border-top border-bottom mb-1 py-2" (click)="openInfoModal(result)">
+                <div class="roboto font-size-20 chocolate ms-1">
+                    <img src="{{result.picturePath}}"> 
+                    {{result.fullname}}
+                </div>
+                <div class="roboto font-size-15">{{result.email}}</div>
+                <div class="roboto font-size-15 text-muted fst-italic text-end">{{result.role}}</div>
+            </div>
+        </div>
     </div>
 </div>

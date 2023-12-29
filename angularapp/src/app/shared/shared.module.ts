@@ -30,6 +30,7 @@ import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaura
 import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
 import { SearchResultComponent } from './components/collapses/search-result/search-result.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     QrCodeComponent,
     InboxComponent,   
     SearchResultComponent,
-    NavbarComponent
+    NavbarComponent,
+    UserInfoComponent
   ],
   imports: [
     CommonModule,

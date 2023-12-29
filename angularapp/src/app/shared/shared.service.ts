@@ -1,3 +1,4 @@
+import { User } from 'src/app/shared/models/account/user';
 import { Injectable } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
@@ -7,6 +8,7 @@ import { NewRestaurantInputModalComponent } from './components/modals/input/new-
 import { NotificationComponent } from './components/modals/notification/notification.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { Restaurant } from './models/restaurant/restaurant';
+import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +58,16 @@ export class SharedService {
 
   openEditEmployeeModal() {
     this.bsModalRef = this.modalService.show(EditEmployeeComponent);
+  }
+
+  openUserInfoModal(email: string, role: string) {
+    const userData: ModalOptions = {
+      initialState: {
+        email,
+        role
+      }
+    }
+    this.bsModalRef = this.modalService.show(UserInfoComponent, Object.assign(userData, { class: 'modal-xl' }));
   }
 
 }
