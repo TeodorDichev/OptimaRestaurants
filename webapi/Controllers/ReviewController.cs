@@ -85,7 +85,7 @@ namespace webapi.Controllers
             else
                 return BadRequest("Неуспешно обновени данни!");
         }
-        [HttpPost("api/manage/review-employee")]
+        [HttpPost("api/manager/review-employee")]
         public async Task<IActionResult> SubmitManagerReview([FromBody] ManagerReviewDto model)
         {
             Restaurant restaurant;

@@ -16,6 +16,7 @@
         public string? IconPath { get; set; }
         public string? ManagerFullName { get; set; }
         public string? ManagerEmail { get; set; }
+        public string? ManagerPhoneNumber { get; set; }
         public string? TopEmployeeFullName { get; set; }
         public string? TopEmployeeEmail { get; set; }
         public decimal? TopEmployeeRating { get; set; }

@@ -150,10 +150,12 @@ namespace webapi.Services.ClassServices
             var manager = restaurant.Manager;
             string managerFullName = "Ресторантът няма мениджър!";
             string managerEmail = string.Empty;
+            string managerPhone = string.Empty;
             if (manager != null)
             {
                 managerFullName = manager.Profile.FirstName + " " + manager.Profile.LastName;
                 managerEmail = manager.Profile.Email ?? string.Empty;
+                managerPhone = manager.Profile.PhoneNumber ?? string.Empty;
             }
 
             var topEmployee = restaurant.EmployeesRestaurants.Select(er => er.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
@@ -182,6 +184,7 @@ namespace webapi.Services.ClassServices
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),
                 ManagerFullName = managerFullName,
+                ManagerPhoneNumber = managerPhone,
                 TopEmployeeFullName = topEmployeeFullName,
                 TopEmployeeRating = topEmployeeRating,
                 TopEmployeeEmail = topEmployeeEmail,
