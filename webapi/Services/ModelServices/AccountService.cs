@@ -30,6 +30,14 @@ namespace webapi.Services.ClassServices
             if (result.Succeeded) return true;
             else return false;
         }
+        public async Task<List<ApplicationUser>> GetUsersWithMatchingData(string input)
+        {
+            return await _userManager.Users
+                .Where(u =>
+                    EF.Functions.Like(u.Email, $"{input}%") ||
+                    EF.Functions.Like(u.FirstName, $"{input}%") ||
+                    EF.Functions.Like(u.LastName, $"{input}%")).ToListAsync();
+        }
         public async Task<ApplicationUser> GetUserByEmailOrUserName(string email)
         {
             return await _userManager.FindByNameAsync(email) ?? throw new ArgumentNullException("Потребителят не съществува");

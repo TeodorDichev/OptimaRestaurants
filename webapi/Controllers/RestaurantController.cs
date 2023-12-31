@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using webapi.Data;
+using webapi.DTOs.Account;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -82,6 +86,27 @@ namespace webapi.Controllers
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             return _restaurantService.GetRestaurantDetails(restaurant);
+        }
+
+        [HttpGet("api/restaurants/search/{str}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> SearchRestaurant(string input)
+        {
+            List<Restaurant> foundRestaurants = await _restaurantService.GetRestaurantsWithMatchingNames(input);
+            List<BrowseRestaurantDto> restaurantDtos = new List<BrowseRestaurantDto>();
+
+            foreach (var res in foundRestaurants)
+                restaurantDtos.Add(new BrowseRestaurantDto()
+                {
+                    Id = res.Id.ToString(),
+                    Name = res.Name,
+                    IconPath = res.IconPath,
+                    Address = res.Address,
+                    IsWorking = res.IsWorking,
+                    City = res.City,
+                    RestaurantAverageRating = res.RestaurantAverageRating ?? 0,
+                });
+
+            return restaurantDtos;
         }
 
         /* Auth guard should allow that only to logged users */

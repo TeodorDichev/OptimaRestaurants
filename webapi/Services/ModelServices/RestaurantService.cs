@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -193,6 +194,10 @@ namespace webapi.Services.ClassServices
 
             return restaurantDto;
 
+        }
+        public async Task<List<Restaurant>> GetRestaurantsWithMatchingNames(string input)
+        {
+            return await _context.Restaurants.Where(r => EF.Functions.Like(r.Name, $"{input}%")).ToListAsync();
         }
         public bool DeleteRestaurant(Restaurant restaurant)
         {

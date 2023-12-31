@@ -214,17 +214,12 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/account/search/{str}")]
-        public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string str)
+        public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string input)
         {
-            List<ApplicationUser> usersWithMatchingData = await _userManager.Users
-                .Where(u =>
-                    EF.Functions.Like(u.Email, $"{str}%") ||
-                    EF.Functions.Like(u.FirstName, $"{str}%") ||
-                    EF.Functions.Like(u.LastName, $"{str}%")).ToListAsync();
-
+            List<ApplicationUser> foundUsers = await _accountService.GetUsersWithMatchingData(input);
             List<SearchedAccountDto> accounts = new List<SearchedAccountDto>();
 
-            foreach (var user in usersWithMatchingData)
+            foreach (var user in foundUsers)
                 accounts.Add(new SearchedAccountDto()
                 {
                     Fullname = user.FirstName + " " + user.LastName,
