@@ -11,7 +11,7 @@
                     <div class="panel-body pb-3 px-4">
                         <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()" autocomplete="off">
                             <div class="form-group">
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-5">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="firstName" type="text" placeholder="Име"
                                         [class.is-invalid]="submitted && registerForm.get('firstName')?.errors">
@@ -24,7 +24,7 @@
                                     *ngIf="submitted && registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
                                     Името трябва да е между 2 и 30 символа!
                                 </span>
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-5">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="lastName" type="text" placeholder="Фамилия"
                                         [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
@@ -37,7 +37,7 @@
                                     *ngIf="submitted && registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
                                     Фамилията трябва да е между 2 и 30 символа!
                                 </span>
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-12">
                                     <span class="fa fa-map-pin p-2"></span>
                                     <input formControlName="city" type="text" placeholder="Град"
                                         [class.is-invalid]="submitted && registerForm.get('city')?.errors">
@@ -46,7 +46,7 @@
                                     *ngIf="submitted && registerForm.get('city')?.hasError('required') || submitted && registerForm.get('city')?.hasError('minlength')">
                                     Градът се състои от поне 2 символа!
                                 </span>
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-12">
                                     <span class="fa fa-calendar p-2"></span>
                                     <div class="text-muted me-3">Дата на раждане:</div>
                                     <input class="custom-date-input" formControlName="birthDate" type="date"
@@ -56,7 +56,7 @@
                                     *ngIf="submitted && registerForm.get('birthDate')?.hasError('required')">
                                     Полето е задължително!
                                 </span>
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-12">
                                     <span class="fa fa-envelope p-2"></span>
                                     <input formControlName="email" type="text" placeholder="Имейл"
                                         [class.is-invalid]="submitted && registerForm.get('email')?.errors">
@@ -69,7 +69,7 @@
                                     *ngIf="submitted && registerForm.get('email')?.hasError('pattern')">
                                     Невалиден имейл адрес!
                                 </span>
-                                <div class="input-field mt-3">
+                                <div class="input-field mt-3 col-12">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="password" [type]="type" placeholder="Парола"
                                         [class.is-invalid]="submitted && registerForm.get('password')?.errors">
@@ -90,8 +90,7 @@
                             <div class="text-center m-3 text-muted">
                                 <a id="forget" routerLink="/account/register-manager">Смяна към мениджър</a>
                             </div>
-                            <button type="submit"
-                                class="btn btn-chocolate mt-2 w-100">Създаване на
+                            <button type="submit" class="btn btn-chocolate mt-2 w-100">Създаване на
                                 акаунт</button>
                             <div class="text-center pt-4 text-muted">Вече имате акаунт?
                                 <a id="forget" routerLink="/account/login">Влезте</a>
