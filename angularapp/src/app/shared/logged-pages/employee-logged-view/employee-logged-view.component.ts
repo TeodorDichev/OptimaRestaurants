@@ -4,6 +4,7 @@ import { Employee } from '../../models/employee/employee';
 import { Restaurant } from '../../models/restaurant/restaurant';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { SharedService } from '../../shared.service';
 
 @Component({
   selector: 'app-employee-logged-view',
@@ -16,7 +17,8 @@ export class EmployeeLoggedViewComponent implements OnInit {
   employee: Employee | undefined;
 
   constructor(private employeeService: EmployeeService,
-    private accountService: AccountService) { }
+    private accountService: AccountService,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.setUser();
@@ -29,6 +31,10 @@ export class EmployeeLoggedViewComponent implements OnInit {
       });
     }
    
+  }
+
+  openRestaurantInfo(restaurant: Restaurant) {
+    this.sharedService.openRestaurantDetailsModal(restaurant, true);
   }
 
   missingIcon(restaurant: Restaurant) {

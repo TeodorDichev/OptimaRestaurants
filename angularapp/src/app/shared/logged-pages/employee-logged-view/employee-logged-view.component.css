@@ -1,11 +1,10 @@
 img {
-    width: 200px !important;
-    height: 150px !important;
-    border-radius: 50%;
-    box-shadow: 4px 2px 5px black;
+    aspect-ratio: 3/2;
+    width: 100% !important;
     background-color: rgb(102, 102, 102);
+    clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
 }
- 
-.selected {
+
+.restaurant:hover {
     background-color: gainsboro;
 }

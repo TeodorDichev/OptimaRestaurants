@@ -12,6 +12,7 @@ export interface Restaurant {
     restaurantAverageRating: number,
     managerFullName: string,
     managerEmail: string,
+    managerPhoneNumber: string,
     topEmployeeFullName: string,
     topEmployeeEmail: string,
     topEmployeeRating: string

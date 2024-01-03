@@ -14,6 +14,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class RestaurantInfoComponent implements OnInit {
   @Input() restaurant: Restaurant | undefined;
+  @Input() forEmployeeInfo: boolean | undefined;
   user: User | undefined;
   employeeRequest: EmployeeRequest = {
     restaurantId: '',

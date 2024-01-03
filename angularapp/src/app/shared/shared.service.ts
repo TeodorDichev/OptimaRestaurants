@@ -1,24 +1,30 @@
-import { User } from 'src/app/shared/models/account/user';
 import { Injectable } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
 import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
 import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
 import { NotificationComponent } from './components/modals/notification/notification.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
-import { Restaurant } from './models/restaurant/restaurant';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
+import { Restaurant } from './models/restaurant/restaurant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedService {
 
-  bsModalRef?: BsModalRef;
-  constructor(private modalService: BsModalService) {
+  private newNotificationsSubject = new BehaviorSubject<boolean>(false);
+  newNotifications$: Observable<boolean> = this.newNotificationsSubject.asObservable();
 
+  bsModalRef?: BsModalRef;
+  constructor(private modalService: BsModalService) { }
+
+  updateNotifications(value: boolean) {
+    this.newNotificationsSubject.next(value);
   }
+  
   showNotification(isSuccess: boolean, title: string, message: string) {
     const initialState: ModalOptions = {
       initialState: {
@@ -34,10 +40,11 @@ export class SharedService {
     this.bsModalRef = this.modalService.show(NewRestaurantInputModalComponent);
   }
 
-  openRestaurantDetailsModal(restaurant: Restaurant) {
+  openRestaurantDetailsModal(restaurant: Restaurant, forEmployeeInfo?: boolean) {
     const rest: ModalOptions = {
       initialState: {
-        restaurant
+        restaurant,
+        forEmployeeInfo
       }
     }
     this.bsModalRef = this.modalService.show(RestaurantInfoComponent, Object.assign(rest, { class: 'modal-xl' }));

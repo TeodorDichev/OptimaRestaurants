@@ -1,3 +1,4 @@
+import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
 import { Component, Input } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';

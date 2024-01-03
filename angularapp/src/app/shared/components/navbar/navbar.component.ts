@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit {
   fileName: string | undefined;
   searchResult: SearchResult[] = [];
   @ViewChild('dropdown') dropdown: ElementRef | undefined;
+  newNotifications: boolean | undefined;
 
   constructor(public accountService: AccountService,
     public managerService: ManagerService,
@@ -30,10 +31,11 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.setNewNotificationStatus();
     this.initializeForm();
   }
 
-  getUser() { 
+  getUser() {
     this.accountService.user$.subscribe(user => {
       this.user = user;
       if (this.user && user) {
@@ -52,6 +54,12 @@ export class NavbarComponent implements OnInit {
           })
         }
       }
+    });
+  }
+
+  setNewNotificationStatus() {
+    this.sharedService.newNotifications$.subscribe(value => {
+      this.newNotifications = value;
     });
   }
 

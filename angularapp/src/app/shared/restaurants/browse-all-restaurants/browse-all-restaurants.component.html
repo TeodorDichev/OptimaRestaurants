@@ -5,12 +5,11 @@
         Всички регистрирани ресторанти
     </div>
     <div class="roboto max-width text-start" *ngFor="let restaurant of allRestaurants">
-        <div class="row max-width border-top py-3" (click)="selectedRestaurant(restaurant)"
-            [ngClass]="{'selected': restaurant === currentRestaurant}">
-            <div class="col-2 img-logo text-center mx-2 my-auto">
+        <div class="row restaurant max-width border-top border-bottom my-3" (click)="getRestaurantDetails(restaurant.id)">
+            <div class="col-3 img-logo">
                 <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
             </div>
-            <div class="col-3 px-4 ms-5 my-auto">
+            <div class="col-3 my-auto">
                 <span class="row fw-bold font-size-25">{{restaurant.name}}</span>
                 <span class="row fst-italic font-size-20">{{restaurant.address}},</span>
                 <span class="row fst-italic font-size-20">{{restaurant.city}}</span>
@@ -29,10 +28,6 @@
                 <span class="row"><app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating></span>
                 <span class="row"><app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating></span>
             </div>
-            <button *ngIf="restaurant === currentRestaurant" class="col-2 btn btn-yellow roboto font-size-15 my-auto"
-                (click)="getRestaurantDetails(currentRestaurant.id)">
-                Информация
-            </button>
         </div>
     </div>
 </div>
