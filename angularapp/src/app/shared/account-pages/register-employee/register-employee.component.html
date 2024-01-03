@@ -2,7 +2,7 @@
     <nav-top></nav-top>
     <div class="container">
         <div class="row">
-            <div class="col-lg-6 col-md-7">
+            <div class="col-lg-6 col-md-7 scrollable-vert ">
                 <div class="panel border bg-white mt-5">
                     <div class="panel-heading">
                         <div class="pt-3 mt-3 roboto-with-shadow font-size-30 chocolate">Създаване на акаунт</div>
@@ -10,89 +10,78 @@
                     </div>
                     <div class="panel-body pb-3 px-4">
                         <form [formGroup]="registerForm" (ngSubmit)="registerEmployee()" autocomplete="off">
-                            <div class="form-group">
-                                <div class="input-field mt-3 col-5">
+                            <div class="">
+                                <div class="input-field mt-2 input-field-sm">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="firstName" type="text" placeholder="Име"
                                         [class.is-invalid]="submitted && registerForm.get('firstName')?.errors">
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('firstName')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
-                                    Името трябва да е между 2 и 30 символа!
-                                </span>
-                                <div class="input-field mt-3 col-5">
+                                <div class="input-field mt-3 input-field-sm">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="lastName" type="text" placeholder="Фамилия"
                                         [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('lastName')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
-                                    Фамилията трябва да е между 2 и 30 символа!
-                                </span>
-                                <div class="input-field mt-3 col-12">
+                                <div class="input-field mt-3">
                                     <span class="fa fa-map-pin p-2"></span>
                                     <input formControlName="city" type="text" placeholder="Град"
                                         [class.is-invalid]="submitted && registerForm.get('city')?.errors">
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('city')?.hasError('required') || submitted && registerForm.get('city')?.hasError('minlength')">
-                                    Градът се състои от поне 2 символа!
-                                </span>
-                                <div class="input-field mt-3 col-12">
+                                <div class="input-field mt-3">
                                     <span class="fa fa-calendar p-2"></span>
                                     <div class="text-muted me-3">Дата на раждане:</div>
                                     <input class="custom-date-input" formControlName="birthDate" type="date"
                                         [class.is-invalid]="submitted && registerForm.get('birthDate')?.errors">
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('birthDate')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <div class="input-field mt-3 col-12">
+                                <div class="input-field mt-3">
                                     <span class="fa fa-envelope p-2"></span>
                                     <input formControlName="email" type="text" placeholder="Имейл"
                                         [class.is-invalid]="submitted && registerForm.get('email')?.errors">
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('email')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('email')?.hasError('pattern')">
-                                    Невалиден имейл адрес!
-                                </span>
-                                <div class="input-field mt-3 col-12">
+                                <div class="input-field mt-3">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="password" [type]="type" placeholder="Парола"
                                         [class.is-invalid]="submitted && registerForm.get('password')?.errors">
                                     <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
                                 </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('password')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <span class="text-danger"
-                                    *ngIf="submitted && registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maxlength')">
-                                    Паролата трябва да е между 6 и 30 символа!
-                                </span>
+                                <div class="m-3" *ngIf="submitted">
+                                    <span class="text-danger row" *ngIf="registerForm.get('firstName')?.hasError('required')
+                                    || registerForm.get('lastName')?.hasError('required')
+                                    || registerForm.get('email')?.hasError('required')
+                                    || registerForm.get('password')?.hasError('required')
+                                    || registerForm.get('birthDate')?.hasError('required')">
+                                        Всички полета са задължителни!
+                                    </span>
+                                    <span class="text-danger row"
+                                        *ngIf="registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')">
+                                        Името трябва да е между 2 и 30 символа!
+                                    </span>
+                                    <span class="text-danger row"
+                                        *ngIf="registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
+                                        Фамилията трябва да е между 2 и 30 символа!
+                                    </span>
+                                    <span class="text-danger row"
+                                        *ngIf="registerForm.get('city')?.hasError('minlength')">
+                                        Градът трябва да е с повече от 2 символа!
+                                    </span>
+                                    <span class="text-danger row"
+                                        *ngIf="registerForm.get('email')?.hasError('pattern')">
+                                        Невалиден имейл адрес!
+                                    </span>
+                                    <span class="text-danger row"
+                                        *ngIf="registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maxlength')">
+                                        Паролата трябва да е между 6 и 30 символа!
+                                    </span>
+                                </div>
                             </div>
                             <div class="form-floating" *ngIf="errorMessages.length > 0">
                                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
                             </div>
-                            <div class="text-center m-3 text-muted">
+                            <div class="text-center text-muted m-3">
                                 <a id="forget" routerLink="/account/register-manager">Смяна към мениджър</a>
                             </div>
-                            <button type="submit" class="btn btn-chocolate mt-2 w-100">Създаване на
+                            <button type="submit" class="btn btn-chocolate w-100">Създаване на
                                 акаунт</button>
-                            <div class="text-center pt-4 text-muted">Вече имате акаунт?
+                            <div class="text-center pt-3 text-muted">Вече имате акаунт?
                                 <a id="forget" routerLink="/account/login">Влезте</a>
                             </div>
                         </form>

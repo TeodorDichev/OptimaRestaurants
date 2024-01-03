@@ -12,8 +12,15 @@
     margin-bottom: 10px;
 }
 
+.input-field-sm {
+    width: 45%;
+}
+
+.input-field-sm:first-child {
+    margin-right: 10%;
+}
+
 #forget {
-    margin-left: auto;
     text-decoration: none;
     cursor: pointer;
     color: chocolate;
@@ -23,18 +30,9 @@ a:hover {
     text-decoration: none;
 }
 
-.btn {
-    margin-top: 20px;
-    border-radius: 15px;
-}
-
 .panel {
     box-shadow: 20px, 20px, 80px rgb(218, 218, 218);
     border-radius: 12px;
-}
-
-.one-line {
-    display: grid;
 }
 
 input[type='text'],
