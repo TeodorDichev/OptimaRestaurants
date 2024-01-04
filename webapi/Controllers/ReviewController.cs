@@ -65,7 +65,6 @@ namespace webapi.Controllers
             };
             return reviewDto;
         }
-
         [HttpPost("api/review-employee")]
         public async Task<IActionResult> SubmitCustomerReview([FromBody] CustomerReviewDto model)
         {
@@ -96,8 +95,8 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(model.EmployeeEmail)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
 
-
-            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null) return BadRequest("Потребителят не работи за вас!");
+            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null) 
+                return BadRequest("Потребителят не работи за вас!");
 
             await _reviewService.AddManagerReview(restaurant, employee, model);
             await _reviewService.SaveChangesAsync();
@@ -106,6 +105,15 @@ namespace webapi.Controllers
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
             else
                 return BadRequest("Неуспешно обновени данни!");
+        }
+        [HttpGet("api/get-reviews-history/{email}")]
+        public async Task<ActionResult<List<OldReviewDto>>> GetEmployeeReviewsHistory(string email)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+
+            return _reviewService.GetEmployeeReviewsHistory(employee);
         }
     }
 }

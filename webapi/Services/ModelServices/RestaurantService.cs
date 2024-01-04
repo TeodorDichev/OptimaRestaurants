@@ -286,7 +286,10 @@ namespace webapi.Services.ClassServices
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    IconPath = restaurant?.IconPath
+                    IconPath = restaurant?.IconPath,
+                    ManagerEmail = restaurant?.Manager?.Profile?.Email ?? "Ресторантът няма мениджър",
+                    ManagerPhone = restaurant?.Manager?.Profile?.PhoneNumber ?? "Ресторантът няма мениджър",
+                    ManagerName = restaurant?.Manager?.Profile?.FirstName + " " + restaurant?.Manager?.Profile.LastName ?? "Ресторантът няма мениджър",
                 });
             }
 
@@ -310,6 +313,9 @@ namespace webapi.Services.ClassServices
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     IconPath = restaurant?.IconPath,
+                    ManagerEmail = restaurant?.Manager?.Profile?.Email ?? "Ресторантът няма мениджър",
+                    ManagerPhone = restaurant?.Manager?.Profile?.PhoneNumber ?? "Ресторантът няма мениджър",
+                    ManagerName = restaurant?.Manager?.Profile?.FirstName + " " + restaurant?.Manager?.Profile.LastName ?? "Ресторантът няма мениджър",
                 });
             }
 

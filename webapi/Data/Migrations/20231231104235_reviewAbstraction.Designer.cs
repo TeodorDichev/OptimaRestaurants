@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using webapi.Data;
 
@@ -11,9 +12,11 @@ using webapi.Data;
 namespace webapi.Migrations
 {
     [DbContext(typeof(OptimaRestaurantContext))]
-    partial class OptimaRestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20231231104235_reviewAbstraction")]
+    partial class reviewAbstraction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,49 +240,6 @@ namespace webapi.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("webapi.Models.CustomerReview", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("AtmosphereRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.Property<decimal?>("AttitudeRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("CuisineRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("SpeedRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("CustomerReviews");
-                });
-
             modelBuilder.Entity("webapi.Models.Employee", b =>
                 {
                     b.Property<Guid>("Id")
@@ -374,41 +334,6 @@ namespace webapi.Migrations
                     b.HasIndex("ProfileId");
 
                     b.ToTable("Managers");
-                });
-
-            modelBuilder.Entity("webapi.Models.ManagerReview", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("CollegialityRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("PunctualityRating")
-                        .HasPrecision(2, 2)
-                        .HasColumnType("decimal(2,2)");
-
-                    b.Property<Guid>("RestaurantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.ToTable("ManagerReviews");
                 });
 
             modelBuilder.Entity("webapi.Models.Request", b =>
@@ -600,25 +525,6 @@ namespace webapi.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("webapi.Models.CustomerReview", b =>
-                {
-                    b.HasOne("webapi.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("webapi.Models.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Restaurant");
-                });
-
             modelBuilder.Entity("webapi.Models.Employee", b =>
                 {
                     b.HasOne("webapi.Models.ApplicationUser", "Profile")
@@ -654,25 +560,6 @@ namespace webapi.Migrations
                         .HasForeignKey("ProfileId");
 
                     b.Navigation("Profile");
-                });
-
-            modelBuilder.Entity("webapi.Models.ManagerReview", b =>
-                {
-                    b.HasOne("webapi.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("webapi.Models.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("webapi.Models.Request", b =>

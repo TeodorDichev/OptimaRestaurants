@@ -47,6 +47,42 @@ namespace webapi.Services.ClassServices
 
             return review;
         }
+        public List<OldReviewDto> GetEmployeeReviewsHistory(Employee employee)
+        {
+            List<OldReviewDto> reviews = new List<OldReviewDto>();
+
+            foreach(var cr in _context.CustomerReviews.Where(cr => cr.Employee == employee).ToList())
+            {
+                reviews.Add(new OldReviewDto
+                {
+                    RestaurantName = cr.Restaurant.Name,
+                    RestaurantCity = cr.Restaurant.City,
+                    ReviewType = "CustomerReview",
+                    ReviewDate = cr.DateTime.ToShortDateString(),
+                    Comment = cr.Comment,
+                    AtmosphereRating = cr.AtmosphereRating,
+                    AttitudeRating = cr.AttitudeRating,
+                    SpeedRating = cr.SpeedRating,
+                    CuisineRating = cr.CuisineRating,
+                });
+            }
+
+            foreach(var mr in _context.ManagerReviews.Where(mr => mr.Employee == employee).ToList())
+            {
+                reviews.Add(new OldReviewDto
+                {
+                    RestaurantName = mr.Restaurant.Name,
+                    RestaurantCity = mr.Restaurant.City,
+                    ReviewType = "ManagerReview",
+                    ReviewDate = mr.DateTime.ToShortDateString(),
+                    Comment = mr.Comment,
+                    AtmosphereRating = mr.CollegialityRating,
+                    AttitudeRating = mr.PunctualityRating,
+                });
+            }
+
+            return reviews.OrderBy(r => Convert.ToDateTime(r.ReviewDate)).ToList();
+        }
         public bool UpdateStatistics(Employee employee, Restaurant restaurant)
         {
             try

@@ -12,5 +12,8 @@
         public required decimal AtmosphereAverageRating { get; set; }
         public required decimal EmployeesAverageRating { get; set; }
         public required decimal RestaurantAverageRating { get; set; }
+        public required string ManagerEmail { get; set; }
+        public required string ManagerName { get; set; }
+        public required string ManagerPhone { get; set; }
     }
 }
