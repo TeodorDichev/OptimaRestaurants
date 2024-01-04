@@ -49,9 +49,6 @@ export class ManagerLoggedViewComponent implements OnInit {
       this.managerService.getRestaurantEmployees(this.currentRestaurant.id).subscribe(
         (response: any) => {
           this.employees = response;
-        },
-        (error) => {
-          console.log(error.error);
         }
       );
     }

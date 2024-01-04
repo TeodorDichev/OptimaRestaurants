@@ -1,4 +1,3 @@
-import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
 import { Component, Input } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';
@@ -13,7 +12,6 @@ import { SharedService } from 'src/app/shared/shared.service';
 export class EmployeeInfoComponent {
   @Input() employeeEmail: string | undefined;
   employee: Employee | undefined;
-  employeeBirthDate: string | undefined;
   constructor(public bsModalRef: BsModalRef,
     private employeeService: EmployeeService,
     private sharedService: SharedService) { }
@@ -29,10 +27,9 @@ export class EmployeeInfoComponent {
 
   private getEmployee() {
     if (this.employeeEmail) {
-      this.employeeService.getEmployee(this.employeeEmail).subscribe({
+      this.employeeService.employee$.subscribe({
         next: (response: any) => {
           this.employee = response;
-          this.employeeBirthDate = this.employee?.birthDate.toString().split('T')[0];
         }
       })
     }

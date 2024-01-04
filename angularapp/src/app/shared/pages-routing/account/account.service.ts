@@ -46,7 +46,7 @@ export class AccountService {
   }
 
   search(str: string) {
-    return this.http.get(`${environment.appUrl}/api/account/search/${str}`);
+    return this.http.get(`${environment.appUrl}/api/account/search/${str}`, {});
   }
 
   confirmEmail(model: ConfirmEmail) {
@@ -54,7 +54,6 @@ export class AccountService {
       map((user: User) => {
         if (user) {
           this.setUser(user);
-          console.log(this.user$);
           return user;
         }
         return null;

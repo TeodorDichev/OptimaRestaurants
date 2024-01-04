@@ -9,30 +9,27 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
   styleUrls: ['./qr-code.component.css']
 })
 export class QrCodeComponent implements OnInit {
-  @Input() employeeEmail: string | undefined;
   message: string | undefined;
   employee: Employee | undefined;
 
   constructor(private employeeService: EmployeeService,
-    public bsModalRef: BsModalRef) {}
+    public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
     this.getEmployee();
   }
 
   getEmployee() {
-    if (this.employeeEmail){
-      this.employeeService.getEmployee(this.employeeEmail).subscribe({
-        next: (response: any) => {
-          this.employee = response;
-        }
-      })
-    } 
+    this.employeeService.employee$.subscribe({
+      next: (response: any) => {
+        this.employee = response;
+      }
+    })
   }
 
   downloadQRCode() {
-    if (this.employeeEmail){
-      this.employeeService.getQRCode(this.employeeEmail).subscribe({
+    if (this.employee) {
+      this.employeeService.getQRCode(this.employee.email).subscribe({
         next: (response: Blob) => {
           const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
           const a = document.createElement('a');// Create an anchor element and trigger a click to start the download

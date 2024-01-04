@@ -28,7 +28,7 @@ export class ManagerInfoComponent implements OnInit {
 
   private getManager() {
     if(this.managerEmail) {
-      this.managerService.getManager(this.managerEmail).subscribe({
+      this.managerService.manager$.subscribe({
         next: (response: any) => {
           this.manager = response;
         }

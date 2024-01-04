@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { AccountRoutingModule } from './account-routing.module';
 import { SharedModule } from '../../shared.module';
 
-
-
 @NgModule({
   declarations: [],
   imports: [

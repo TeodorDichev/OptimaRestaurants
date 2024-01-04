@@ -1,5 +1,6 @@
-<div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee"> <!--check is for easier code writing, not neccesary-->
-    <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
+<div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee">
+  <!--check is for easier code writing, not neccesary-->
+  <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
   <div class="roboto font-size-20 mx-4">
     <div class="row my-2">
       <span class="fw-bold font-size-20">Здравейте,
@@ -8,11 +9,32 @@
         !
       </span>
     </div>
-    <span class="row my-4">Имейл: {{employee.email}}</span>
-    <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
-    <span class="row my-4">Град: {{employee.city}}</span>
-    <span class="row my-4">Телефонен номер: {{employee.phoneNumber}}</span>
-    <span class="row my-4" *ngIf="!employee.profilePicturePath">
+    <div class="row my-2 font-size-20">
+      <span class="fw-bold">Имейл:
+        <span class="fw-normal fst-italic">{{employee.email}}</span>
+      </span>
+    </div>
+    <div class="row my-2 font-size-20">
+      <span class="fw-bold">Дата на раждане:
+        <span class="fw-normal fst-italic">{{employee.birthDate}}</span>
+      </span>
+    </div>
+    <div class="row my-2 font-size-20">
+      <span class="fw-bold">Град:
+        <span class="fw-normal fst-italic">{{employee.city}}</span>
+      </span>
+    </div>
+    <div class="row my-2 font-size-20">
+      <span class="fw-bold">Телефон:
+        <span class="fw-normal fst-italic">{{employee.phoneNumber}}</span>
+      </span>
+    </div>
+    <div class="row my-2 font-size-20">
+      <span class="fst-italic">
+        Вие <span *ngIf="!employee.isLookingForJob">не</span> си търсите работа.
+      </span>
+    </div>
+    <span class="row my-2" *ngIf="!employee.profilePicturePath">
       Все още нямате профилна снимка.
     </span>
     <span class="row m-2" *ngIf="employee.profilePicturePath">
@@ -20,7 +42,8 @@
     </span>
   </div>
   <div class="text-end border-top">
-    <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на данните</button>
+    <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на
+      данните</button>
     <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
   </div>
 </div>

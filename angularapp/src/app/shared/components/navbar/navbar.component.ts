@@ -38,22 +38,20 @@ export class NavbarComponent implements OnInit {
   getUser() {
     this.accountService.user$.subscribe(user => {
       this.user = user;
-      if (this.user && user) {
-        if (this.user.isManager) {
-          this.managerService.getManager(this.user.email).subscribe({
+        if (this.user?.isManager) {
+          this.managerService.manager$.subscribe({
             next: (response: any) => {
               this.managerService.setManager(response);
             }
           })
         }
-        else {
-          this.employeeService.getEmployee(this.user.email).subscribe({
+        else if (!!this.user?.isManager) {
+          this.employeeService.employee$.subscribe({
             next: (response: any) => {
               this.employeeService.setEmployee(response);
             }
           })
         }
-      }
     });
   }
 

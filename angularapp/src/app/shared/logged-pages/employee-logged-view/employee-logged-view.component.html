@@ -7,7 +7,7 @@
             </div>
             <div class="scrollable-vert max-height-70vh">
                 <div *ngFor="let restaurant of this.employee?.restaurants;">
-                    <div class="row restaurant border-bottom border-top" (click)="openRestaurantInfo(restaurant)">
+                    <div class="row mb-3 restaurant border-bottom border-top" (click)="openRestaurantInfo(restaurant)">
                         <div class="col-5 my-auto">
                             <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                         </div>

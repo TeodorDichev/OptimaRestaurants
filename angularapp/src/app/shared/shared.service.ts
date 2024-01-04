@@ -17,8 +17,8 @@ export class SharedService {
 
   private newNotificationsSubject = new BehaviorSubject<boolean>(false);
   newNotifications$: Observable<boolean> = this.newNotificationsSubject.asObservable();
-
   bsModalRef?: BsModalRef;
+
   constructor(private modalService: BsModalService) { }
 
   updateNotifications(value: boolean) {

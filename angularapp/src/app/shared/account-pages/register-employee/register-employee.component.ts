@@ -3,6 +3,7 @@ import { AccountService } from '../../pages-routing/account/account.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
 
 @Component({
   selector: 'app-register-employee',
@@ -16,6 +17,7 @@ export class RegisterEmployeeComponent implements OnInit{
 
   constructor(private accountService: AccountService, 
     private sharedService: SharedService,
+    private employeeService: EmployeeService,
     private router: Router,
     private formBuilder: FormBuilder) {}
 
@@ -39,6 +41,11 @@ export class RegisterEmployeeComponent implements OnInit{
     this.accountService.registerEmployee(this.registerForm.value).subscribe({
       next: (response: any) => {
         this.accountService.setUser(response);
+        this.employeeService.getEmployee(response.email).subscribe({
+          next: (resp: any) => {
+            this.employeeService.setEmployee(resp);
+          }
+        })
         this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
         this.router.navigateByUrl('/employee');
       },

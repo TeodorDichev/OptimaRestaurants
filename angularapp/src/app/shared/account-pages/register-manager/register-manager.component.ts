@@ -3,6 +3,7 @@ import { AccountService } from '../../pages-routing/account/account.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
 
 @Component({
   selector: 'app-register-manager',
@@ -16,6 +17,7 @@ export class RegisterManagerComponent implements OnInit {
 
   constructor(private accountService: AccountService,
     private sharedService: SharedService,
+    private managerService: ManagerService,
     private router: Router,
     private formBuilder: FormBuilder) { }
 
@@ -38,6 +40,11 @@ export class RegisterManagerComponent implements OnInit {
       this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
+          this.managerService.getManager(response.email).subscribe({
+            next: (resp: any) => {
+              this.managerService.setManager(resp);
+            }
+          })
           this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
           this.router.navigateByUrl('/manager');
         },

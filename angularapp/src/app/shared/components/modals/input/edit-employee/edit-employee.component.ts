@@ -25,7 +25,7 @@ export class EditEmployeeComponent {
     private accountService: AccountService) { }
 
   ngOnInit(): void {
-    this.setEmployee();
+    this.getEmployee();
     this.initializeForm();
   }
 
@@ -90,7 +90,7 @@ export class EditEmployeeComponent {
     }
   }
 
-  private setEmployee() {
+  private getEmployee() {
     this.employeeService.employee$.subscribe({
       next: (response: any) => {
         this.employee = response;

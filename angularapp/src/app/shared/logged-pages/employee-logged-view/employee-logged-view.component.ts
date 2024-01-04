@@ -21,16 +21,8 @@ export class EmployeeLoggedViewComponent implements OnInit {
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.setUser();
-    if (this.user) {
-      this.employeeService.getEmployee(this.user.email).subscribe({
-        next: (response: any) => {
-          this.employeeService.setEmployee(response);
-          this.setEmployee();
-        }
-      });
-    }
-   
+    this.getUser();
+    this.getEmployee();
   }
 
   openRestaurantInfo(restaurant: Restaurant) {
@@ -41,7 +33,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
     restaurant.iconPath = 'assets/images/logo-bw-with-bg.png'; 
   }
 
-  private setUser() {
+  private getUser() {
     this.accountService.user$.subscribe(user => {
       if (user) {
         this.user = user;
@@ -49,7 +41,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
     });
   }
 
-  private setEmployee() {
+  private getEmployee() {
     this.employeeService.employee$.subscribe(employee => {
       if (employee) {
         this.employee = employee;
