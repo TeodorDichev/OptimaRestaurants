@@ -7,43 +7,43 @@
   <div class="modal-body text-center roboto font-size-20 m-2">
     <img src="{{restaurant.iconPath}}">
     <div class="row">
-      <span class="col-6 fw-bold my-4">Адрес: 
+      <span class="col-6 fw-bold mt-4 mb-2">Адрес: 
         <span class="fst-italic fw-normal chocolate">{{restaurant.address}}</span>
       </span>
-      <span class="col-6 fw-bold my-4">Капацитет на работници: 
+      <span class="col-6 fw-bold mt-4 mb-2">Капацитет на работници: 
         <span class="fst-italic fw-normal chocolate">{{restaurant.employeeCapacity}}</span>
       </span>
     </div>
     <div class="row">
-      <span class="col-6 fw-bold my-4">Град: 
+      <span class="col-6 fw-bold my-2">Град: 
         <span class="fst-italic fw-normal chocolate">{{restaurant.city}}</span>
       </span>
-      <span class="col-6 fw-bold my-4" *ngIf="restaurant.isWorking">Работещ: 
+      <span class="col-6 fw-bold my-2" *ngIf="restaurant.isWorking">Работещ: 
         <span class="fst-italic fw-normal chocolate">Да</span>
       </span>
-      <span class="col-6 fw-bold my-4" *ngIf="!restaurant.isWorking">Работещ: 
+      <span class="col-6 fw-bold my-2" *ngIf="!restaurant.isWorking">Работещ: 
         <span class="fst-italic fw-normal chocolate">Не</span>
       </span>
     </div>
     <div class="row">
-      <span class="col-6 fw-bold my-4">Рейтинг на атмосферата
+      <span class="col-6 fw-bold my-2">Рейтинг на атмосферата
         <div class="row">
           <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
         </div>
       </span>     
-      <span class="col-6 fw-bold my-4">Рейтинг на работниците
+      <span class="col-6 fw-bold my-2">Рейтинг на работниците
         <div class="row">
           <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
         </div>
       </span>
     </div>
     <div class="row">
-      <span class="col-6 fw-bold my-4">Рейтинг на храната
+      <span class="col-6 fw-bold my-2">Рейтинг на храната
         <div class="row">
           <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
         </div>
       </span>  
-      <span class="col-6 fw-bold my-4">Рейтинг на ресторанта
+      <span class="col-6 fw-bold my-2">Рейтинг на ресторанта
         <div class="row">
           <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
         </div>
@@ -60,7 +60,10 @@
     <div class="font-size-20 fw-bold text-start my-4 mx-3">Имейл: 
       <span class="fst-italic fw-normal chocolate">{{restaurant.managerEmail}}</span>
     </div>
-    <div *ngIf="user?.isManager == false">
+    <div class="font-size-20 fw-bold text-start my-4 mx-3">Телефон: 
+      <span class="fst-italic fw-normal chocolate">{{restaurant.managerPhoneNumber}}</span>
+    </div>
+    <div *ngIf="user?.isManager == false && !this.forEmployeeInfo">
       <div class="btn btn-chocolate roboto font-size-20" (click)="sendWorkingRequest()">
         Изпращане на заявка за работа в <span class="fst-italic">{{restaurant.name}}</span>
       </div>

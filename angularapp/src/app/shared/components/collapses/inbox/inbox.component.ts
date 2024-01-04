@@ -20,6 +20,7 @@ export class InboxComponent implements OnInit {
     restaurantId: '',
     requestId: ''
   };
+  newNotifications: boolean = false;
 
   constructor(public bsModalRef: BsModalRef,
     private managerService: ManagerService,
@@ -36,6 +37,14 @@ export class InboxComponent implements OnInit {
         this.managerService.getRequests(this.email).subscribe({
           next: (response: any) => {
             this.requests = response;
+            
+            const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
+            if (hasUnconfirmedRequest) {
+              this.newNotifications = true;
+            } else {
+              this.newNotifications = false;
+            } 
+            this.sharedService.updateNotifications(this.newNotifications);
           }
         })
       }
@@ -43,6 +52,14 @@ export class InboxComponent implements OnInit {
         this.employeeService.getRequests(this.email).subscribe({
           next: (response: any) => {
             this.requests = response;
+
+            const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
+            if (hasUnconfirmedRequest) {
+              this.newNotifications = true;
+            } else {
+              this.newNotifications = false;
+            }
+            this.sharedService.updateNotifications(this.newNotifications);
           }
         })
       }

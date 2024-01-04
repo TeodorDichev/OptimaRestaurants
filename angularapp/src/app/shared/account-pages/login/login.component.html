@@ -10,7 +10,7 @@
                     <div class="panel-body p-3">
                         <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
                             <div class="form-group pt-3">
-                                <div class="input-field my-2">
+                                <div class="input-field col-12 my-2">
                                     <span class="fa fa-user p-2"></span>
                                     <input formControlName="userName" type="text" placeholder="Имейл"
                                         [class.is-invalid]="submitted && loginForm.get('userName')?.errors">
@@ -19,7 +19,7 @@
                                     *ngIf="submitted && loginForm.get('userName')?.hasError('required')">
                                     Полето е задължително!
                                 </span>
-                                <div class="input-field my-2">
+                                <div class="input-field col-12 my-2">
                                     <span class="fa fa-lock p-2"></span>
                                     <input formControlName="password" [type]="type" placeholder="Парола"
                                         [class.is-invalid]="submitted && loginForm.get('password')?.errors">

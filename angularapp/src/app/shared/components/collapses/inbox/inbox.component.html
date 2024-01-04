@@ -2,7 +2,7 @@
     <div class="roboto fw-bold m-3 font-size-40 chocolate">
         Съобщения
     </div>
-    <div class="roboto fst-italic font-size-15 mx-2 mb-2" *ngIf="requests.length == 0">
+    <div class="roboto border-top pt-2 fst-italic font-size-20 mx-2 mb-2" *ngIf="!newNotifications">
         Нямате нови съобщения
     </div>
     <div class="row col-12 ms-1 border-top border-bottom" *ngFor="let request of requests">

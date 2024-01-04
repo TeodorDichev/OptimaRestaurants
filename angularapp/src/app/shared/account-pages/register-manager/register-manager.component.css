@@ -13,7 +13,6 @@
 }
 
 #forget {
-    margin-left: auto;
     text-decoration: none;
     cursor: pointer;
     color: chocolate;
@@ -21,11 +20,6 @@
 
 a:hover {
     text-decoration: none;
-}
-
-.btn {
-    margin-top: 20px;
-    border-radius: 15px;
 }
 
 .panel {

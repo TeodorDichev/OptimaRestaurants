@@ -1,7 +1,13 @@
 <div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee"> <!--check is for easier code writing, not neccesary-->
     <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
   <div class="roboto font-size-20 mx-4">
-    <span class="row my-4">Здравейте, {{employee.firstName}} {{employee.lastName}}!</span>
+    <div class="row my-2">
+      <span class="fw-bold font-size-20">Здравейте,
+        <span class="fst-italic chocolate">{{employee.firstName}} {{employee.lastName}}
+        </span>
+        !
+      </span>
+    </div>
     <span class="row my-4">Имейл: {{employee.email}}</span>
     <span class="row my-4">Дата на раждане: {{employeeBirthDate}}</span>
     <span class="row my-4">Град: {{employee.city}}</span>
