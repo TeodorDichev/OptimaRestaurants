@@ -32,6 +32,7 @@ namespace webapi.Services.ClassServices
         }
         public async Task<List<ApplicationUser>> GetUsersWithMatchingData(string input)
         {
+            if (string.IsNullOrEmpty(input)) return new List<ApplicationUser>();
             return await _userManager.Users
                 .Where(u =>
                     EF.Functions.Like(u.Email, $"{input}%") ||

@@ -213,7 +213,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/account/search/{str}")]
+        [HttpGet("api/account/search/{input}")]
         public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string input)
         {
             List<ApplicationUser> foundUsers = await _accountService.GetUsersWithMatchingData(input);
