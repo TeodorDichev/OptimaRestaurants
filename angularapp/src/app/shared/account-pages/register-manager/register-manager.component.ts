@@ -42,6 +42,7 @@ export class RegisterManagerComponent implements OnInit {
           this.accountService.setUser(response);
           this.managerService.getManager(response.email).subscribe({
             next: (resp: any) => {
+              console.log(resp);
               this.managerService.setManager(resp);
             }
           })

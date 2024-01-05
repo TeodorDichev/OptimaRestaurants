@@ -5,6 +5,8 @@ import { Request } from 'src/app/shared/models/requests/request';
 import { RequestResponse } from 'src/app/shared/models/requests/requestResponse';
 import { SharedService } from 'src/app/shared/shared.service';
 import { EmployeeService } from '../../../pages-routing/employee/employee.service';
+import { User } from 'src/app/shared/models/account/user';
+import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 
 @Component({
   selector: 'app-inbox',
@@ -12,8 +14,7 @@ import { EmployeeService } from '../../../pages-routing/employee/employee.servic
   styleUrls: ['./inbox.component.css']
 })
 export class InboxComponent implements OnInit {
-  @Input() email: string | undefined;
-  @Input() isManager: boolean | undefined;
+  user: User | undefined;
   requests: Request[] = [];
   requestResponse: RequestResponse = {
     confirmed: false,
@@ -25,16 +26,17 @@ export class InboxComponent implements OnInit {
   constructor(public bsModalRef: BsModalRef,
     private managerService: ManagerService,
     private employeeService: EmployeeService,
+    private accountService: AccountService,
     private sharedService: SharedService) { }
 
   ngOnInit() {
+    this.getUser();
     this.getRequests();
   }
 
   getRequests() {
-    if (this.email) {
-      if (this.isManager) {
-        this.managerService.getRequests(this.email).subscribe({
+      if (this.user?.isManager) {
+        this.managerService.getRequests(this.user.email).subscribe({
           next: (response: any) => {
             this.requests = response;
             
@@ -48,12 +50,15 @@ export class InboxComponent implements OnInit {
           }
         })
       }
-      else {
-        this.employeeService.getRequests(this.email).subscribe({
+      else if (!!this.user?.isManager) {   
+        this.employeeService.getRequests(this.user.email).subscribe({
           next: (response: any) => {
             this.requests = response;
 
-            const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
+            const hasUnconfirmedRequest = response.some(
+              (item: { confirmed: boolean; }) => 
+              item.confirmed === null);
+              
             if (hasUnconfirmedRequest) {
               this.newNotifications = true;
             } else {
@@ -63,11 +68,10 @@ export class InboxComponent implements OnInit {
           }
         })
       }
-    }
   }
 
   requestToResponse(confirmed: boolean, currentRequest: Request) {
-    if (this.email) {
+    if (this.user?.email) {
       this.requestResponse.confirmed = confirmed;
       this.requestResponse.requestId = currentRequest.id;
       this.requestResponse.restaurantId = currentRequest.restaurantId;
@@ -80,5 +84,13 @@ export class InboxComponent implements OnInit {
         }
       })
     }
+  }
+
+  getUser() {
+    this.accountService.user$.subscribe({
+      next: (response: any) => {
+        this.user = response;
+      }
+    })
   }
 }

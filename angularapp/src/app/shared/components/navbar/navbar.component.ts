@@ -36,22 +36,10 @@ export class NavbarComponent implements OnInit {
   }
 
   getUser() {
-    this.accountService.user$.subscribe(user => {
-      this.user = user;
-        if (this.user?.isManager) {
-          this.managerService.manager$.subscribe({
-            next: (response: any) => {
-              this.managerService.setManager(response);
-            }
-          })
-        }
-        else if (!!this.user?.isManager) {
-          this.employeeService.employee$.subscribe({
-            next: (response: any) => {
-              this.employeeService.setEmployee(response);
-            }
-          })
-        }
+    this.accountService.user$.subscribe({
+      next: (response: any) => {
+        this.user = response;
+      }
     });
   }
 
@@ -116,9 +104,13 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/manager/employees-looking-for-job');
   }
 
-  contact() { }
+  contact() {
+    this.router.navigateByUrl('/contact');
+   }
 
-  help() { }
+  help() {
+    this.router.navigateByUrl('/about');
+   }
 
   allRestaurants() {
     this.router.navigateByUrl('/restaurants');

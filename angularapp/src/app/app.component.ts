@@ -1,33 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from './shared/pages-routing/account/account.service';
+import { EmployeeService } from './shared/pages-routing/employee/employee.service';
+import { ManagerService } from './shared/pages-routing/manager/manager.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
-  
-  constructor(private accountService: AccountService){
+export class AppComponent implements OnInit {
 
-  }
-  
+  constructor(private accountService: AccountService,
+    private employeeService: EmployeeService,
+    private managerService: ManagerService) { }
+
   ngOnInit(): void {
     this.refreshUser();
   }
 
-  private refreshUser(){
+  private refreshUser() {
     const jwt = this.accountService.getJWT();
     const email = this.accountService.getEmail();
-    if(jwt){
-        this.accountService.refreshUser(jwt, email).subscribe({
-          next: _ => {},
-          error: _ => {
-            console.log(_);
-            this.accountService.logout();
-          }
-        })
-    } else{
+    const isManager = this.accountService.getIsManager();
+    if (jwt && email && isManager) {
+      this.accountService.refreshUser(jwt, email).subscribe({
+        next: _ => {
+          if (isManager)
+            this.managerService.refreshManager(email);
+          if (!isManager)
+            this.employeeService.refreshEmployee(email);
+        },
+        error: _ => {
+          console.log(_);
+          this.accountService.logout();
+        }
+      })
+    } else {
       this.accountService.refreshUser(null, null).subscribe();
     }
   }

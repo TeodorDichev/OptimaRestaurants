@@ -63,6 +63,14 @@ export class EmployeeService {
     this.accountService.logout();
   }
 
+  refreshEmployee(email: string) {
+    this.getEmployee(email).subscribe({
+      next: (response: any) => {
+        this.setEmployee(response);
+      }
+    })
+  }
+
   setEmployee(employee: Employee) {
     this.userSource.next(employee);
   }

@@ -1,3 +1,4 @@
+import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { Injectable } from '@angular/core';
 import { RegisterEmployee } from '../../models/account/register-employee';
 import { environment } from 'src/environments/environment.development';
@@ -96,6 +97,7 @@ export class AccountService {
     this.userSource.next(null);
     this.router.navigateByUrl('/');
   }
+
   getJWT() {
     const key = localStorage.getItem(environment.userKey);
     if (key) {
@@ -105,11 +107,22 @@ export class AccountService {
       return null;
     }
   }
+
   getEmail() {
     const key = localStorage.getItem(environment.userKey);
     if (key) {
       const user: User = JSON.parse(key);
       return user.email.toString();
+    } else {
+      return null;
+    }
+  }
+
+  getIsManager() {
+    const key = localStorage.getItem(environment.userKey);
+    if (key) {
+      const user: User = JSON.parse(key);
+      return user.isManager;
     } else {
       return null;
     }
@@ -131,6 +144,7 @@ export class AccountService {
       })
     );
   }
+
   setUser(user: User) {
     localStorage.setItem(environment.userKey, JSON.stringify(user));
     this.userSource.next(user); // we store the user in the local storage in browser and in the angular app - to tell whether the user is logged in and keep him logged after refreshing page

@@ -4,6 +4,8 @@ import { AccountService } from '../../pages-routing/account/account.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { User } from '../../models/account/user';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { EmployeeService } from '../../pages-routing/employee/employee.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +18,8 @@ export class LoginComponent implements OnInit {
   errorMessages: string[] = [];
 
   constructor(private accountService: AccountService,
+    private managerService: ManagerService,
+    private employeeService: EmployeeService,
     private router: Router,
     private formBuilder: FormBuilder) {
     this.accountService.user$.pipe(take(1)).subscribe({
@@ -44,6 +48,21 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
+          this.accountService.setUser(response);
+          if (!response.isManager) {
+            this.employeeService.getEmployee(response.email).subscribe({
+              next: (resp: any) => {
+                this.employeeService.setEmployee(resp);
+              }
+            })
+          }
+          else if (response.isManager) {
+            this.managerService.getManager(response.email).subscribe({
+              next: (resp: any) => {
+                this.managerService.setManager(resp);
+              }
+            })
+          }
         },
         error: error => {
           if (error.error.errors) {

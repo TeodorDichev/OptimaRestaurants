@@ -25,15 +25,8 @@ export class ManagerLoggedViewComponent implements OnInit {
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.setUser();
-    if (this.user) {
-      this.managerService.getManager(this.user.email).subscribe({
-        next: (response: any) => {
-          this.managerService.setManager(response);
-          this.setManager();
-        }
-      });
-    }
+    this.getUser();
+    this.getManager();
   }
 
   addNewRestaurant() {
@@ -60,21 +53,21 @@ export class ManagerLoggedViewComponent implements OnInit {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png'; 
+    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
   }
 
-  private setUser() {
-    this.accountService.user$.subscribe(user => {
-      if (user) {
+  private getUser() {
+    this.accountService.user$.subscribe({
+      next: (user: any) => {
         this.user = user;
       }
-    });
+    })
   }
-  private setManager() {
-    this.managerService.manager$.subscribe(manager => {
-      if (manager) {
+  private getManager() {
+    this.managerService.manager$.subscribe({
+      next: (manager: any) => {
         this.manager = manager;
-        if (this.manager.restaurants) {
+        if (this.manager?.restaurants) {
           this.selectedRestaurant(this.manager.restaurants[0]);
           this.getCurrrentRestaurantEmployees();
         }
