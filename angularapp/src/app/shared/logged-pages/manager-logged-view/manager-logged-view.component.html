@@ -11,10 +11,10 @@
         </div>
         <div class="scrollable-vert display-list">
             <div *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="row border-bottom border-top my-3" (click)="selectedRestaurant(restaurant)"
+                <div class="row border-bottom border-top mb-3" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
                     <div class="col-6">
-                        <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                        <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                     </div>
                     <div class="col-5 roboto font-size-20 my-auto">
                         <div class="fw-bold fst-italic font-size-30 chocolate">{{restaurant.name}}</div>
@@ -51,22 +51,19 @@
         <div class="roboto row my-4">
             <span class="roboto text-center fw-bold font-size-30">Служители в {{currentRestaurant?.name}}</span>
         </div>
-        <div class="scrollable-vert max-height-80vh">
-            <div *ngFor="let employees of this.employees;">
-                <div class="row border-bottom border-top py-3">
-                    <div class="col-5 text-center my-auto">
-                        <img src="{{employees.profilePicturePath}}">
+        <div class="scrollable-vert display-list">
+            <div *ngFor="let employee of this.employees;">
+                <div class="row border-bottom employee border-top py-3" (click)="getEmployeeInfo(employee)">
+                    <div class="col-3 text-center my-auto">
+                        <img class="emp-img" src="{{employee.profilePicturePath}}">
                     </div>
-                    <div class="col-4 my-auto">
-                        <span class="row roboto text-start fw-bold font-size-25">{{employees.firstName}}
-                            {{employees.lastName}}</span>
-                        <span class="row roboto text-start fst-italic font-size-20">{{employees.email}},</span>
+                    <div class="col-7 my-auto">
+                        <span class="row roboto text-start fw-bold font-size-25">{{employee.firstName}}
+                            {{employee.lastName}}</span>
+                        <span class="roboto text-start fst-italic font-size-20">{{employee.email}}, </span>
                         <span
-                            class="row roboto text-start fst-italic font-size-20">{{employees.employeeAverageRating}}</span>
+                            class="roboto text-start fst-italic font-size-20">{{employee.employeeAverageRating}}</span>
                     </div>
-                    <button class="col-3 btn btn-chocolate roboto font-size-15 my-auto">
-                        Уволни(?)/Информация(?)
-                    </button>
                 </div>
             </div>
         </div>

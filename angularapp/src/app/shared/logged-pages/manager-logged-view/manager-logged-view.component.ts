@@ -47,6 +47,10 @@ export class ManagerLoggedViewComponent implements OnInit {
     }
   }
 
+  getEmployeeInfo(employee: Employee) {
+    this.sharedService.openUserInfoModal(employee.email, 'Employee')
+  }
+
   selectedRestaurant(selectedRestaurant: Restaurant) {
     this.currentRestaurant = selectedRestaurant;
     this.getCurrrentRestaurantEmployees();
@@ -63,6 +67,7 @@ export class ManagerLoggedViewComponent implements OnInit {
       }
     })
   }
+
   private getManager() {
     this.managerService.manager$.subscribe({
       next: (manager: any) => {
