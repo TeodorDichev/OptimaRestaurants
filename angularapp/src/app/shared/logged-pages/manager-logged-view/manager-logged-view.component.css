@@ -4,7 +4,11 @@ img {
     background-color: rgb(102, 102, 102);
     clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
 }
- 
+
+.outer {
+    display: flex;
+}
+
 .selected {
     background-color: gainsboro;
 }
@@ -12,8 +16,9 @@ img {
 .display-list {
     max-height: 60vh;
     width: 100%;
-    border-radius: 12px;
+    border-radius: 4px;
 }
+
 
 @media only screen and (min-height: 600px){
     .display-list {
@@ -21,15 +26,20 @@ img {
     }
 }
 
-/*
-@media only screen and (min-width: 1200px){
-    .display-list {
-        width: 60%;
-    }
-}
-*/
+/*when screen is more than 1238px, make lists on top of each other*/
+
+
 @media only screen and (min-height: 910px){
     .display-list {
         max-height: 80vh;
     }
+}
+
+
+.restaurants {
+    width: 64%;
+}
+
+.employees {
+    width: 34%;
 }

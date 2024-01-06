@@ -22,13 +22,14 @@ export class AppComponent implements OnInit {
     const jwt = this.accountService.getJWT();
     const email = this.accountService.getEmail();
     const isManager = this.accountService.getIsManager();
-    if (jwt && email && isManager) {
+    if (jwt && email) {
       this.accountService.refreshUser(jwt, email).subscribe({
         next: _ => {
           if (isManager)
             this.managerService.refreshManager(email);
-          if (!isManager)
+          else if (!isManager) {
             this.employeeService.refreshEmployee(email);
+          }
         },
         error: _ => {
           console.log(_);

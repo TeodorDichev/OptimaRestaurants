@@ -1,47 +1,53 @@
 <nav-top></nav-top>
-<div class="row max-width">
-    <div class="mx-3 col-8">
-        <div class="roboto row my-4">
-            <span class="roboto text-center fw-bold font-size-30">Вашите ресторанти, {{manager?.firstName}}</span>
+<div class="outer">
+    <div class="mx-1 restaurants">
+        <div class="roboto text-center my-4">
+            <span class="fw-bold font-size-30">
+                Вашите ресторанти, {{manager?.firstName}}
+                <div class="btn btn-yellow-inverted" (click)="addNewRestaurant()">
+                    <i class="fa-solid fa-plus-circle fa-xl"></i>
+                </div>
+            </span>
         </div>
         <div class="scrollable-vert display-list">
             <div *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="row border-bottom border-top ps-3 py-3" (click)="selectedRestaurant(restaurant)"
+                <div class="row border-bottom border-top my-3" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
-                    <div class="col-6 text-center mx-2 my-auto">
-                        <span class="row roboto ms-2 fw-bold font-size-25">{{restaurant.name}}</span>
-                        <img class="m-1" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-                        <span class="row roboto ms-3 fst-italic font-size-20">Адрес: {{restaurant.address}},</span>
-                        <span class="row roboto ms-3 fst-italic font-size-20">Град: {{restaurant.city}}</span>
+                    <div class="col-6">
+                        <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                     </div>
-                    <div class="col-4 m-auto">
-                        <span class="row roboto fw-bold font-size-20">Категория/Оценка</span>
-                        <span class="row roboto text-start font-size-20">
-                            Ястия <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
-                        </span>
-                        <span class="row roboto text-start font-size-20">
-                            Атмосфера <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
-                        </span>
-                        <span class="row roboto text-start font-size-20">
-                            Работници <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
-                        </span>
-                        <span class="row roboto text-start font-size-20">
-                            Ресторант <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
-                        </span>
+                    <div class="col-5 roboto font-size-20 my-auto">
+                        <div class="fw-bold fst-italic font-size-30 chocolate">{{restaurant.name}}</div>
+                        <div class="fst-italic my-2">Адрес: {{restaurant.address}},</div>
+                        <div class="fst-italic my-2">Град: {{restaurant.city}}</div>
+                        <div class="fw-bold">Категория / Оценка</div>
+                        <div class="text-start fst-italic">
+                            <div class="my-1">
+                                Ястия / <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
+                            </div>
+                            <div class="my-1">
+                                Атмосфера / <app-star-rating
+                                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
+                            </div>
+                            <div class="my-1">
+                                Работници / <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
+                            </div>
+                            <div class="my-1">
+                                Ресторант / <app-star-rating
+                                    [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                        </div>             
                     </div>
-                    <button *ngIf="restaurant === currentRestaurant"
-                        class="col-4 btn btn-chocolate roboto font-size-15 my-0 mx-auto" (click)="editRestaurant()">
-                        Редактиране
-                    </button>
+                    <div class="col-1 text-end pt-1 pe-3" *ngIf="restaurant == currentRestaurant">
+                        <div class="btn btn-yellow-inverted" (click)="editRestaurant()">
+                            <i class="fa-solid fa-pencil fa-xl"></i>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="m-5">
-                <button class="btn btn-chocolate roboto font-size-20" (click)="addNewRestaurant()">
-                    Добавяне на ресторант</button>
             </div>
         </div>
     </div>
-    <div class="mx-3 col-3">
+    <div class="mx-1 employees">
         <div class="roboto row my-4">
             <span class="roboto text-center fw-bold font-size-30">Служители в {{currentRestaurant?.name}}</span>
         </div>

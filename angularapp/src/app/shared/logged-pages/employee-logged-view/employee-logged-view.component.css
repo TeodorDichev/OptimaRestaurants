@@ -4,7 +4,42 @@ img {
     background-color: rgb(102, 102, 102);
     clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
 }
+ 
+.outer {
+    display: flex;
+}
 
 .restaurant:hover {
     background-color: gainsboro;
+}
+
+.display-list {
+    max-height: 60vh;
+    width: 100%;
+    border-radius: 4px;
+}
+
+
+@media only screen and (min-height: 600px){
+    .display-list {
+        max-height: 70vh;
+    }
+}
+
+/*when screen is more than 1238px, make lists on top of each other*/
+
+
+@media only screen and (min-height: 910px){
+    .display-list {
+        max-height: 80vh;
+    }
+}
+
+
+.restaurants {
+    width: 60%;
+}
+
+.info-employee {
+    width: 38%;
 }
