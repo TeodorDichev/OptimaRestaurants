@@ -69,7 +69,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> SubmitCustomerReview([FromBody] CustomerReviewDto model)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(model.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(model.RestaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
 
             Employee employee;
@@ -88,7 +88,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> SubmitManagerReview([FromBody] ManagerReviewDto model)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(model.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(model.RestaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
 
             Employee employee;

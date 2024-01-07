@@ -95,7 +95,7 @@ namespace webapi.Controllers
             else manager = await _managerService.GetManagerByEmail(request.Sender.Email ?? string.Empty);
 
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(request.Restaurant.Id.ToString())) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(request.Restaurant.Id.ToString())) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(request.Restaurant.Id.ToString());
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 

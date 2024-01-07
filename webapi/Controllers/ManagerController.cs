@@ -79,7 +79,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ManagerMainViewDto>> UpdateRestaurant([FromForm] UpdateRestaurantDto restaurantDto, string restaurantId)
         {
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             string managerEmail;
@@ -171,7 +171,7 @@ namespace webapi.Controllers
             else employee = await _employeeService.GetEmployeeByEmail(requestDto.EmployeeEmail);
 
             Restaurant restaurant;
-            if (await _restaurantService.CheckRestaurantExistById(requestDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(requestDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(requestDto.RestaurantId);
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
