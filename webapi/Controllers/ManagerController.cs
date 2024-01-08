@@ -9,6 +9,13 @@ using webapi.Services.ModelServices;
 
 namespace webapi.Controllers
 {
+    /// <summary>
+    /// ManagerController manages managers:
+    /// CRUD operations for their profiles,
+    /// CRUD operations for their restaurants,
+    /// Allows them to interact with their employees through requests,
+    /// </summary>
+
     public class ManagerController : Controller
     {
         private readonly ManagerService _managerService;

@@ -38,6 +38,7 @@ namespace webapi.Services.ClassServices
                 Profile = userProfile,
                 City = city.ToUpper().First() + city.Substring(1).ToLower(),
                 BirthDate = birthDate,
+                TotalReviewsCount = 0,
                 QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review/{userProfile.Email}{_jwtService.GenerateQrToken(userProfile.Email)}")
             };
             await _context.Employees.AddAsync(employee);
@@ -110,6 +111,7 @@ namespace webapi.Services.ClassServices
                     EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
                     IsLookingForJob = employee.IsLookingForJob,
                     City = employee.City,
+                    TotalReviewsCount = employee.TotalReviewsCount,
                     RestaurantsCount = employee.EmployeesRestaurants.Where(er => er.EndedOn == null).Count(),
                 });
             }

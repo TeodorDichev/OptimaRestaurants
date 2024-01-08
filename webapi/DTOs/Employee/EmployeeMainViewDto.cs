@@ -13,6 +13,7 @@ namespace webapi.DTOs.Employee
         public required string City { get; set; }
         public string? ProfilePicturePath { get; set; }
         public required bool IsLookingForJob { get; set; }
+        public required int TotalReviewsCount { get; set; }
         public required decimal SpeedAverageRating { get; set; }
         public required decimal AttitudeAverageRating { get; set; }
         public required decimal PunctualityAverageRating { get; set; }

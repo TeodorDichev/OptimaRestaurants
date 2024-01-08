@@ -4,6 +4,10 @@ using webapi.DTOs.Account;
 
 namespace webapi.Services
 {
+    /// <summary>
+    /// The service enables email sending by using the MailJet API
+    /// </summary>
+
     public class EmailService
     {
         private readonly IConfiguration _configuration;

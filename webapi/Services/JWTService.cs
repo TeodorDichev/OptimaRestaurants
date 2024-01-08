@@ -6,6 +6,10 @@ using webapi.Models;
 
 namespace webapi.Services
 {
+    /// <summary>
+    /// The service creates and validates JWT tokens
+    /// </summary>
+
     public class JWTService
     {
         private readonly IConfiguration _configuration;
@@ -58,7 +62,6 @@ namespace webapi.Services
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Issuer"],
                 claims,
-                //expires: DateTime.UtcNow.AddMinutes(15), // Set the token expiry time
                 signingCredentials: creds
             );
 
@@ -73,7 +76,9 @@ namespace webapi.Services
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var tokenHandler = new JwtSecurityTokenHandler();
+#pragma warning disable CS8604 // Possible null reference argument.
                 var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+#pragma warning restore CS8604 // Possible null reference argument.
 
                 tokenHandler.ValidateToken(decodedToken, new TokenValidationParameters
                 {

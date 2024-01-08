@@ -5,19 +5,20 @@ using webapi.Models;
 
 namespace webapi.Services
 {
+    /// <summary>
+    /// The service seeds the roles in the Database
+    /// </summary>
+
     public class ContextSeedService
     {
         private readonly OptimaRestaurantContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public ContextSeedService(
             OptimaRestaurantContext context,
-            UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             _context = context;
-            _userManager = userManager;
             _roleManager = roleManager;
         }
 

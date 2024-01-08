@@ -2,6 +2,11 @@
 
 namespace webapi.Services.FileServices
 {
+    /// <summary>
+    /// The service creates QR codes for employees using the ZXing package
+    /// Which are unique for every employee
+    /// </summary>
+
     public class QrCodesService
     {
         private readonly IConfiguration _configuration;
@@ -10,13 +15,17 @@ namespace webapi.Services.FileServices
             _configuration = configuration;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
             string onlinePath;
-            var width = 250; // width of the Qr Code
-            var height = 250; // height of the Qr Code
+
+            /* Configuring QR code dimensions */
+            var width = 250;
+            var height = 250;
             var margin = 0;
+
             var qrCodeWriter = new ZXing.BarcodeWriterPixelData
             {
                 Format = ZXing.BarcodeFormat.QR_CODE,
@@ -29,16 +38,19 @@ namespace webapi.Services.FileServices
             };
             var pixelData = qrCodeWriter.Write(url);
 
-            // creating a bitmap from the raw pixel data; if only black and white colors are used it makes no difference
-            // that the pixel data ist BGRA oriented and the bitmap is initialized with RGB
+            /* creating a bitmap from the raw pixel data; if only black and white colors are used it makes
+             * no difference that the pixel data ist BGRA oriented and the bitmap is initialized with RGB */
+
             using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
             {
                 using (var ms = new MemoryStream())
                 {
-                    var bitmapData = bitmap.LockBits(new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                    var bitmapData = bitmap.LockBits(
+                        new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), 
+                        System.Drawing.Imaging.ImageLockMode.WriteOnly, 
+                        System.Drawing.Imaging.PixelFormat.Format32bppRgb);
                     try
                     {
-                        // we assume that the row stride of the bitmap is aligned to 4 byte multiplied by the width of the image
                         System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
                     }
                     finally
@@ -59,7 +71,7 @@ namespace webapi.Services.FileServices
 
                     bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
 
-                    // save to stream as PNG
+                    /* save to stream as PNG */
                     bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     byteArray = ms.ToArray();
                 }
@@ -70,7 +82,6 @@ namespace webapi.Services.FileServices
 
         public bool DeleteQrCode(string qrCodeFileUrl)
         {
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty) + "\\" + qrCodeFileUrl.Split('/').Last();
@@ -85,8 +96,6 @@ namespace webapi.Services.FileServices
             {
                 return false;
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
-
     }
 }

@@ -11,8 +11,8 @@ using webapi.Services.ClassServices;
 namespace webapi.Controllers
 {
     /// <summary>
-    /// Manages all tasks related to the accounts of a manager and an employee
-    /// Edit account: picture, name, email, password
+    /// AccountController manages all accounts:
+    /// Registration, accounts' password and email, searching accounts
     /// </summary>
 
     public class AccountController : Controller

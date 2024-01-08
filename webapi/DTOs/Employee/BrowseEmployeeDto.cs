@@ -12,6 +12,7 @@ namespace webapi.DTOs.Employee
         public required string City { get; set; }
         public required bool IsLookingForJob { get; set; }
         public required decimal EmployeeAverageRating { get; set; }
+        public required int TotalReviewsCount { get; set; }
         public required int RestaurantsCount { get; set; }
     }
 }

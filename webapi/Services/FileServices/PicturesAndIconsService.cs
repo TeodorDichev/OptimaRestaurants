@@ -1,5 +1,8 @@
 ﻿namespace webapi.Services.FileServices
 {
+    /// <summary>
+    /// The service takes care of all pictures related to restaurant and users
+    /// </summary>
     public class PicturesAndIconsService
     {
 

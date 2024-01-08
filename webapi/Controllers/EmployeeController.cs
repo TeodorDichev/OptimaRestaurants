@@ -9,9 +9,9 @@ using webapi.Services.ModelServices;
 namespace webapi.Controllers
 {
     /// <summary>
-    /// This class manages all employee related functions
-    /// Edit - city, birthdate
-    /// Add/Delete a request to a manager's restaurant
+    /// EmployeeController manages employees:
+    /// CRUD operations for their profiles,
+    /// Their requests, qr codes, cvs
     /// </summary>
     public class EmployeeController : Controller
     {
@@ -151,6 +151,7 @@ namespace webapi.Controllers
                 QrCodePath = employee.QrCodePath,
                 PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
                 City = employee.City,
+                TotalReviewsCount = employee.TotalReviewsCount,
                 BirthDate = employee.BirthDate.ToShortDateString(),
                 AttitudeAverageRating = employee.AttitudeAverageRating ?? 0,
                 CollegialityAverageRating = employee.CollegialityAverageRating ?? 0,

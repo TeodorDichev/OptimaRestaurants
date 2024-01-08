@@ -23,6 +23,12 @@ public class OptimaRestaurantContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(builder);
     }
+
+    /// <summary>
+    /// Pre-loads table so as to allow easier coding
+    /// Enables directly calling virtual properties of entities
+    /// Without having to use '.Include()' first
+    /// </summary>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseLazyLoadingProxies();

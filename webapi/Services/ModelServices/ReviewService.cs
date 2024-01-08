@@ -15,6 +15,9 @@ namespace webapi.Services.ClassServices
 
         public async Task<CustomerReview> AddCustomerReview(Restaurant restaurant, Employee employee, CustomerReviewDto model)
         {
+            employee.TotalReviewsCount++;
+            restaurant.TotalReviewsCount++;
+            
             CustomerReview review = new CustomerReview()
             {
                 Employee = employee,
@@ -33,6 +36,8 @@ namespace webapi.Services.ClassServices
         }
         public async Task<ManagerReview> AddManagerReview(Restaurant restaurant, Employee employee, ManagerReviewDto model)
         {
+            employee.TotalReviewsCount++;
+
             ManagerReview review = new ManagerReview()
             {
                 Employee = employee,

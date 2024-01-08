@@ -10,7 +10,8 @@ namespace webapi.Models
         public required string Name { get; set; }
         public required string Address { get; set; }
         public required string City { get; set; }
-        public int EmployeeCapacity { get; set; }
+        public int? EmployeeCapacity { get; set; }
+        public required int TotalReviewsCount { get; set; }
         public bool IsWorking { get; set; }
         public string? IconPath { get; set; }
 

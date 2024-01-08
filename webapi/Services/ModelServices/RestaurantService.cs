@@ -38,7 +38,8 @@ namespace webapi.Services.ClassServices
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                    TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
                 });
@@ -58,7 +59,8 @@ namespace webapi.Services.ClassServices
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                    TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
                 });
@@ -78,7 +80,8 @@ namespace webapi.Services.ClassServices
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? -1,
+                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                    TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
                 });
@@ -102,6 +105,7 @@ namespace webapi.Services.ClassServices
                             Address = restaurant.Address,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                            TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
                         });
@@ -118,6 +122,7 @@ namespace webapi.Services.ClassServices
                             Address = restaurant.Address,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                            TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
                         });
@@ -134,6 +139,7 @@ namespace webapi.Services.ClassServices
                             Address = restaurant.Address,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                            TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
                         });
@@ -177,9 +183,9 @@ namespace webapi.Services.ClassServices
                 RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
                 CuisineAverageRating = restaurant.CuisineAverageRating ?? 0,
                 EmployeesAverageRating = restaurant.EmployeesAverageRating ?? 0,
-                RatingsCount = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant).Count(),
+                TotalReviewsCount = restaurant.TotalReviewsCount,
                 City = restaurant.City,
-                EmployeeCapacity = restaurant.EmployeeCapacity,
+                EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
                 IconPath = restaurant.IconPath,
                 IsWorking = restaurant.IsWorking,
                 Name = restaurant.Name,
@@ -223,6 +229,7 @@ namespace webapi.Services.ClassServices
                 City = model.City,
                 IsWorking = true,
                 EmployeeCapacity = model.EmployeeCapacity,
+                TotalReviewsCount = 0,
                 Manager = manager
             };
 
@@ -281,7 +288,8 @@ namespace webapi.Services.ClassServices
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    EmployeeCapacity = restaurant.EmployeeCapacity,
+                    TotalReviewsCount = restaurant.TotalReviewsCount,
+                    EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,
@@ -307,7 +315,8 @@ namespace webapi.Services.ClassServices
                     Name = restaurant.Name,
                     Address = restaurant.Address,
                     City = restaurant.City,
-                    EmployeeCapacity = restaurant.EmployeeCapacity,
+                    TotalReviewsCount = restaurant.TotalReviewsCount,
+                    EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
                     AtmosphereAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     CuisineAverageRating = restaurant?.CuisineAverageRating ?? 0,
                     EmployeesAverageRating = restaurant?.EmployeesAverageRating ?? 0,

@@ -7,6 +7,11 @@ using webapi.Services.ClassServices;
 
 namespace webapi.Controllers
 {
+    /// <summary>
+    /// ReviewController manages reviews:
+    /// Submitting customer and manager reviews,
+    /// Retrieving employee review history
+    /// </summary>
     public class ReviewController : Controller
     {
         private readonly JWTService _jwtService;
@@ -51,6 +56,7 @@ namespace webapi.Controllers
                     Address = restaurant.Address,
                     City = restaurant.City,
                     IsWorking = restaurant.IsWorking,
+                    TotalReviewsCount = restaurant.TotalReviewsCount,
                     RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
                     IconPath = restaurant?.IconPath
                 });
@@ -106,6 +112,12 @@ namespace webapi.Controllers
             else
                 return BadRequest("Неуспешно обновени данни!");
         }
+
+        /// <summary>
+        /// GetEmployeeReviewsHistory is here because the review 
+        /// history of employee should be accessible from multiple 
+        /// location including all types of users
+        /// </summary>
         [HttpGet("api/get-reviews-history/{email}")]
         public async Task<ActionResult<List<OldReviewDto>>> GetEmployeeReviewsHistory(string email)
         {

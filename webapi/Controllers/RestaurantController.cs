@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using webapi.Data;
-using webapi.DTOs.Account;
+﻿using Microsoft.AspNetCore.Mvc;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -12,9 +8,10 @@ using webapi.Services.ModelServices;
 namespace webapi.Controllers
 {
     /// <summary>
-    /// Adds/Deletes/Edit a restaurant - pass a managers id
-    /// assigns a employee to a restaurant - pass a managers id and an employee id
-    /// Get restaurants by different elements
+    /// RestaurantController manages restaurants:
+    /// Implements numerous queries for restaurants
+    /// Searching restaurants and allows
+    /// Logged users (as employees) to send working requests
     /// </summary>
     public class RestaurantController : Controller
     {
@@ -82,7 +79,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurantDetails(string restaurantId)
         {
             Restaurant restaurant;
-            if (! await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
 
             return _restaurantService.GetRestaurantDetails(restaurant);
@@ -103,13 +100,17 @@ namespace webapi.Controllers
                     Address = res.Address,
                     IsWorking = res.IsWorking,
                     City = res.City,
+                    TotalReviewsCount = res.TotalReviewsCount,
                     RestaurantAverageRating = res.RestaurantAverageRating ?? 0,
                 });
 
             return restaurantDtos;
         }
 
-        /* Auth guard should allow that only to logged users */
+        /// <summary>
+        /// This method allows employees to send requests to work in a restaurant
+        /// Authentication guard in angularapp only lets employees to use this method
+        /// </summary>
         [HttpPost("api/restaurants/send-working-request")]
         public async Task<IActionResult> SendWorkingRequest([FromBody] NewEmployeeRequestDto requestDto)
         {

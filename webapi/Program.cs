@@ -36,17 +36,17 @@ builder.Services.AddScoped<ManagerService>();
 builder.Services.AddScoped<EmployeeService>();
 builder.Services.AddScoped<RestaurantService>();
 
-//Defining identity core services
+/* Defining identity core services */
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
-    //password configuration
+    /* password configuration */
     options.Password.RequiredLength = 6;
     options.Password.RequireDigit = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
 
-    //for email configuration
+    /* email configuration */
     options.SignIn.RequireConfirmedEmail = true;
     options.User.RequireUniqueEmail = true;
 })
@@ -56,7 +56,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     .AddSignInManager<SignInManager<ApplicationUser>>()
     .AddDefaultTokenProviders();
 
-//be able to authenticate users using JWT
+/* JWT authentication settings */
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -92,7 +92,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+/* HTTP request pipeline configuration and CORS policies */
 app.UseCors(opt =>
 {
     opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
@@ -109,6 +109,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+/* Seeding roles to the database */
 using (var scope = app.Services.CreateScope())
 {
     try

@@ -8,11 +8,11 @@
         public required string City { get; set; }
         public required int EmployeeCapacity { get; set; }
         public required bool IsWorking { get; set; }
+        public required int TotalReviewsCount { get; set; }
         public required decimal CuisineAverageRating { get; set; }
         public required decimal AtmosphereAverageRating { get; set; }
         public required decimal EmployeesAverageRating { get; set; }
         public required decimal RestaurantAverageRating { get; set; }
-        public required int RatingsCount { get; set; }
         public string? IconPath { get; set; }
         public string? ManagerFullName { get; set; }
         public string? ManagerEmail { get; set; }
