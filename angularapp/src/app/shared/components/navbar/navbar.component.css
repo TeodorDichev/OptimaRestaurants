@@ -26,3 +26,7 @@
 .dropdown-toggle::after {
     display: none;
 }
+
+.navbar {
+    display: flex;
+}

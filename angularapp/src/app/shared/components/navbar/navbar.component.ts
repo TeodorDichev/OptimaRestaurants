@@ -6,7 +6,9 @@ import { Router } from '@angular/router';
 import { SharedService } from '../../shared.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SearchResult } from '../../models/account/search-result';
+import { SearchResultAccount } from '../../models/account/search-result-account';
+import { RestaurantsService } from '../../pages-routing/restaurants/restaurants.service';
+import { SearchResultRestaurant } from '../../models/restaurant/search-result-restaurant';
 
 @Component({
   selector: 'nav-top',
@@ -18,15 +20,19 @@ export class NavbarComponent implements OnInit {
   submitted = false;
   user: User | null | undefined;
   fileName: string | undefined;
-  searchResult: SearchResult[] = [];
+  searchResultAccount: SearchResultAccount[] = [];
+  searchResultRestaurant: SearchResultRestaurant[] = [];
   @ViewChild('dropdown') dropdown: ElementRef | undefined;
   newNotifications: boolean | undefined;
+  searchForAccounts: boolean = true;
+  searchingFor: string = 'потребител';
 
-  constructor(public accountService: AccountService,
-    public managerService: ManagerService,
-    public employeeService: EmployeeService,
-    public sharedService: SharedService,
-    public router: Router,
+  constructor(private accountService: AccountService,
+    private managerService: ManagerService,
+    private employeeService: EmployeeService,
+    private sharedService: SharedService,
+    private restaurantService: RestaurantsService,
+    private router: Router,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -58,22 +64,41 @@ export class NavbarComponent implements OnInit {
 
   initializeForm() {
     this.searchForm = this.formBuilder.group({
-      searchString: ['', [Validators.required]]
+      searchString: ['', [Validators.required]],
+      searchForAccounts: []
     })
     this.searchForm.get('searchString')?.valueChanges.subscribe(
       value => {
-        this.search(value);
+        this.search(value, this.searchForAccounts);
       });
   }
 
-  search(value: string) {
+  search(value: string, forAccounts: boolean) {
     this.submitted = true;
     if (this.searchForm && value.length > 0) {
-      this.accountService.search(value).subscribe({
-        next: (response: any) => {
-          this.searchResult = response;
-        }
-      })
+      if (forAccounts) {
+        this.accountService.search(value).subscribe({
+          next: (response: any) => {
+            this.searchResultAccount = response;
+          }
+        })
+      }
+      else {
+        this.restaurantService.search(value).subscribe({
+          next: (response: any) => {
+            this.searchResultRestaurant = response;
+          }
+        })
+      }
+    }
+  }
+
+  changeSearchText() {
+    if (!this.searchForAccounts) {
+      this.searchingFor = 'потребител';
+    }
+    else {
+      this.searchingFor = 'ресторант';
     }
   }
 
@@ -106,11 +131,11 @@ export class NavbarComponent implements OnInit {
 
   contact() {
     this.router.navigateByUrl('/contact');
-   }
+  }
 
   help() {
     this.router.navigateByUrl('/about');
-   }
+  }
 
   allRestaurants() {
     this.router.navigateByUrl('/restaurants');

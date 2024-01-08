@@ -28,7 +28,7 @@ import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
 import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
-import { SearchResultComponent } from './components/collapses/search-result/search-result.component';
+import { SearchResultAccountComponent } from './components/collapses/search-result/account/search-result-account.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 
@@ -57,7 +57,7 @@ import { UserInfoComponent } from './components/modals/show/user-info/user-info.
     ManagerInfoComponent,
     QrCodeComponent,
     InboxComponent,   
-    SearchResultComponent,
+    SearchResultAccountComponent,
     NavbarComponent,
     UserInfoComponent
   ],
@@ -77,7 +77,7 @@ import { UserInfoComponent } from './components/modals/show/user-info/user-info.
     QrCodeComponent,
     EmployeeInfoComponent,
     InboxComponent,
-    SearchResultComponent, 
+    SearchResultAccountComponent, 
     ManagerInfoComponent
   ]
 })

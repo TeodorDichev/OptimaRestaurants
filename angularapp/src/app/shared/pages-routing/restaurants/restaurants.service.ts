@@ -21,4 +21,8 @@ export class RestaurantsService {
   sendWorkingRequest(employeeRequest: EmployeeRequest) {
     return this.http.post(`${environment.appUrl}/api/restaurants/send-working-request`, employeeRequest);
   }
+
+  search(str: string) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/search/${str}`);
+  }
 }

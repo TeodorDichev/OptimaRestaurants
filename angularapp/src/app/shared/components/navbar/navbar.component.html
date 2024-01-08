@@ -68,8 +68,9 @@
                 <li class="dropdown" *ngIf="this.user">
                     <a class="nav-link dropdown-toggle btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false" tooltip="Съобщения">
-                            <i class="fa-solid fa-envelope fa-lg"></i>
-                            <i class="fa-solid fa-exclamation fa-xs ms-1" style="color:Tomato;" *ngIf="newNotifications"></i>
+                        <i class="fa-solid fa-envelope fa-lg"></i>
+                        <i class="fa-solid fa-exclamation fa-xs ms-1" style="color:Tomato;"
+                            *ngIf="newNotifications"></i>
                     </a>
                     <ul class="dropdown-menu">
                         <app-inbox></app-inbox>
@@ -77,11 +78,16 @@
                 </li>
             </ul>
             <form [formGroup]="searchForm" autocomplete="off" class="d-flex mx-xl-2" role="search" #dropdown>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input chocolatе" type="checkbox" tooltip="Смяна потребител/ресторант"
+                        formControlName="searchForAccounts" [(ngModel)]="searchForAccounts" (click)="changeSearchText()">
+                </div>
                 <li class="dropdown nav-link">
-                    <input class="form-control me-2" formControlName="searchString" type="search"
-                        placeholder="Търси потребител" aria-label="Search">
+                    <input class="form-control" formControlName="searchString" type="search"
+                        placeholder="Търси {{searchingFor}}" aria-label="Search">
                     <ul class="dropdown-menu show" *ngIf="searchForm.valid">
-                        <app-search-result [searchResult]="searchResult"></app-search-result>
+                        <app-search-result-account [searchResult]="searchResultAccount" *ngIf="searchForAccounts"></app-search-result-account>
+                        <div *ngIf="!searchForAccounts">implement restaurant search</div>
                     </ul>
                 </li>
             </form>
