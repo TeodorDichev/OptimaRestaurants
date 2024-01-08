@@ -87,7 +87,7 @@
                         placeholder="Търси {{searchingFor}}" aria-label="Search">
                     <ul class="dropdown-menu show" *ngIf="searchForm.valid">
                         <app-search-result-account [searchResult]="searchResultAccount" *ngIf="searchForAccounts"></app-search-result-account>
-                        <div *ngIf="!searchForAccounts">implement restaurant search</div>
+                        <app-search-result-restaurant [searchResult]="searchResultRestaurant" *ngIf="!searchForAccounts"></app-search-result-restaurant>
                     </ul>
                 </li>
             </form>
