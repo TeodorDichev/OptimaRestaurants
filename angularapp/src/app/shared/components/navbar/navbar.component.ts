@@ -19,7 +19,7 @@ export class NavbarComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({});
   submitted = false;
   user: User | null | undefined;
-  fileName: string | undefined;
+  
   searchResultAccount: SearchResultAccount[] = [];
   searchResultRestaurant: SearchResultRestaurant[] = [];
   @ViewChild('dropdown') dropdown: ElementRef | undefined;
@@ -141,29 +141,5 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/restaurants');
   }
 
-  downloadPDF() {
-    if (this.user?.email) {
-      this.employeeService.employee$.subscribe({
-        next: (response: any) => {
-          this.fileName = response.firstName;
-        }
-      })
-      this.employeeService.getPDFFile(this.user.email).subscribe({
-        next: (response: Blob) => {
-          const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
-          const a = document.createElement('a');// Create an anchor element and trigger a click to start the download
-          a.href = blobUrl;
-          a.download = this.fileName + '_cv.pdf';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a); // Cleanup: Remove the anchor and revoke the Blob URL
-          window.URL.revokeObjectURL(blobUrl);
-        },
-        error: (error: any) => {
-          this.sharedService.showNotification(false, 'Грешка при сваляне', error.message);
-          console.log(error);
-        }
-      });
-    }
-  }
+  
 }

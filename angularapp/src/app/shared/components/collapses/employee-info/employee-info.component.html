@@ -38,6 +38,16 @@
     <span class="my-2" *ngIf="!employee.profilePicturePath">
       Все още нямате профилна снимка.
     </span>
+    <div class="my-2 font-size-20">
+      <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
+        (click)="downloadPDF()">
+        <i class="fa-solid fa-file-pdf fa-lg"></i>
+      </div>
+      <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
+      (click)="openQRCodeModal()">
+        <i class="fa-solid fa-qrcode fa-lg"></i>
+      </div>
+    </div>
   </div>
   <div class="text-end border-top sticky-bottom">
     <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на

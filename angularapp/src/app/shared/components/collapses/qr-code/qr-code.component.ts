@@ -2,6 +2,7 @@ import { Employee } from 'src/app/shared/models/employee/employee';
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-qr-code',
@@ -13,6 +14,7 @@ export class QrCodeComponent implements OnInit {
   employee: Employee | undefined;
 
   constructor(private employeeService: EmployeeService,
+    private sharedService: SharedService,
     public bsModalRef: BsModalRef) { }
 
   ngOnInit() {
@@ -38,7 +40,9 @@ export class QrCodeComponent implements OnInit {
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a); // Cleanup: Remove the anchor and revoke the Blob URL
-          window.URL.revokeObjectURL(blobUrl);
+          window.URL.revokeObjectURL(blobUrl);       
+          this.sharedService.showNotification(true, 'Успешно сваляне.', 'Вашето CV беше свалено успешно!');
+          this.bsModalRef.hide();
         },
         error: (error: any) => {
           console.error('Error downloading PDF:', error);

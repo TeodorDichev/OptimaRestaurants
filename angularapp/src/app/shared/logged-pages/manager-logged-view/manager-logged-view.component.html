@@ -36,7 +36,11 @@
                                 Ресторант / <app-star-rating
                                     [rating]="restaurant.restaurantAverageRating"></app-star-rating>
                             </div>
-                        </div>             
+                        </div>         
+                        <div class="fw-bold">Работещ: 
+                            <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                            <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                        </div>    
                     </div>
                     <div class="col-1 text-end pt-1 pe-3" *ngIf="restaurant == currentRestaurant">
                         <div class="btn btn-yellow-inverted" (click)="editRestaurant()">

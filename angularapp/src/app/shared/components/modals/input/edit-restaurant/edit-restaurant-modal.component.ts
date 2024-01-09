@@ -32,7 +32,8 @@ export class EditRestaurantModalComponent implements OnInit {
       address: ['', []],
       city: ['', []],
       employeeCapacity: ['', []],
-      iconFile: ['', []]
+      iconFile: ['', []],
+      isWorking: ['', []]
     })
   }
   

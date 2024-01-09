@@ -71,6 +71,7 @@ export class ManagerService {
     formData.append('address', model.address);
     formData.append('city', model.city);
     formData.append('employeeCapacity', model.employeeCapacity.toString());
+    formData.append('isWorking', model.isWorking.toString());
     formData.append('iconFile', model.iconFile);
 
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);

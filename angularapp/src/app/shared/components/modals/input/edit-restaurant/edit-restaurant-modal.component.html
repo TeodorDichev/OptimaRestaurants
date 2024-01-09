@@ -26,6 +26,12 @@
             <span class="fa fa-picture-o chocolate p-2"></span>
             <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
           </div>
+          <div class="input-field my-2 form-check form-switch" *ngIf="restaurant">
+            <span class="fa fa-user chocolate p-2"></span>
+            <span class="col-5 text-start text-muted">Ресторанта работи</span>
+            <input class="form-check-input chocolate" type="checkbox" formControlName="isWorking"
+                [(ngModel)]="restaurant.isWorking">
+        </div>
           <div class="text-center">
             <button type="button" class="btn btn-danger mt-4" (click)="deleteRestaurant()">
                 Премахване на ресторант

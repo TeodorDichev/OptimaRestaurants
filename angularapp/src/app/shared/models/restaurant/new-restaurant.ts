@@ -3,5 +3,6 @@ export interface NewRestaurant{
     address: string,
     city: string,   
     employeeCapacity: number,
-    iconFile: File
+    iconFile: File,
+    isWorking: boolean
 }

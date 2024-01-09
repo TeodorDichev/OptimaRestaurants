@@ -9,6 +9,7 @@ import { NotificationComponent } from './components/modals/notification/notifica
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { Restaurant } from './models/restaurant/restaurant';
+import { QrCodeComponent } from './components/collapses/qr-code/qr-code.component';
 
 @Injectable({
   providedIn: 'root'
@@ -77,4 +78,7 @@ export class SharedService {
     this.bsModalRef = this.modalService.show(UserInfoComponent, Object.assign(userData, { class: 'modal-xl' }));
   }
 
+  openQRCodeModal() {
+    this.bsModalRef = this.modalService.show(QrCodeComponent);
+  }
 }

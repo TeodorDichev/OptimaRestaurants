@@ -55,6 +55,10 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.currentRestaurant = selectedRestaurant;
     this.getCurrrentRestaurantEmployees();
   }
+ 
+  sh(restaurant: Restaurant) {
+    console.log(restaurant.isWorking);
+  }
 
   missingIcon(restaurant: Restaurant) {
     restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
