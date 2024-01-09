@@ -5,10 +5,10 @@
     <div class="font-size-20 text-danger fst-italic m-3" *ngIf="!employee?.qrCodePath"> 
         {{message}} 
     </div>
-    <img class="col-12" src="{{employee?.qrCodePath}}" *ngIf="employee?.qrCodePath">
-    <a class="download-qr fst-italic fw-bold m-3 font-size-20 chocolate" (click)="downloadQRCode()">
+    <img class="col-10 text-center" src="{{employee?.qrCodePath}}" *ngIf="employee?.qrCodePath">
+    <div class="download-qr fst-italic fw-bold mb-4 font-size-20 chocolate" (click)="downloadQRCode()">
         Свалете вашия код
-    </a>
+    </div>
     <div class="text-end border-top">
         <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
     </div>

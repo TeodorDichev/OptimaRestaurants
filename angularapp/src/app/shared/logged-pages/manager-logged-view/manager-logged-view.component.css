@@ -12,8 +12,8 @@
     box-shadow: 2px 1px 2px black;
 }
 
-.employee:hover {
-    background-color: gainsboro;
+.item-hover:hover {
+    background-color: rgba(220, 220, 220, 0.623);
 }
 
 .outer {

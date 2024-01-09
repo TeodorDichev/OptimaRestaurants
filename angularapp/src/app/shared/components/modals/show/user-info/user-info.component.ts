@@ -12,6 +12,7 @@ import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.ser
 export class UserInfoComponent implements OnInit {
   @Input() email: string | undefined;
   @Input() role: string | undefined;
+  @Input() isEmployeeFireable: boolean | undefined;
   
   employee: Employee | undefined;
   manager: Manager | undefined;

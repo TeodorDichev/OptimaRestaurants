@@ -18,7 +18,7 @@
 }
 
 .dropdown-toggle.show {
-    background-color: rgb(255, 147, 17) !important; 
+    background-color: rgb(255, 147, 17) !important;
     color: white;
     /* Change colors when dropdown is open */
 }
@@ -29,4 +29,13 @@
 
 .navbar {
     display: flex;
+}
+
+input[type=checkbox] {
+    background-color: rgb(183, 241, 252) !important;
+}
+
+input[type=checkbox]:checked {
+    background-color: chocolate !important;
+    border-color: chocolate;
 }

@@ -1,7 +1,18 @@
 <div *ngIf="employee">
-    mading it shat ap (employee profile btw)
+    <div class="modal-header">
+        <div class="modal-title roboto fw-bold font-size-40">Работник - 
+          <span class="fst-italic chocolate">{{employee.firstName}} {{employee.lastName}}</span>
+        </div>
+      </div>
+      <div class="modal-body roboto font-size-20 m-2">
+        
+      </div>
 </div>
 
 <div *ngIf="manager">
-    mading it shat ap (manager profile btw)
+    <div class="modal-header">
+        <div class="modal-title roboto fw-bold font-size-40">Работник - 
+          <span class="fst-italic chocolate">{{manager.firstName}} {{manager.lastName}}</span>
+        </div>
+      </div>
 </div>

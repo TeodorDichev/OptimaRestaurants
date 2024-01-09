@@ -30,6 +30,12 @@
                         <i class="fa fa-phone fa-lg"></i>
                     </div>
                 </li>
+                <li class="nav-item" *ngIf="this.user">
+                    <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
+                        aria-current="page" (click)="schedule()" tooltip="График">
+                        <i class="fa-regular fa-calendar fa-lg"></i>
+                    </div>
+                </li>
                 <li class="nav-item" *ngIf="this.user?.isManager">
                     <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2"
                         aria-current="page" (click)="employeeSearch()" tooltip="Работници, търсещи работа">

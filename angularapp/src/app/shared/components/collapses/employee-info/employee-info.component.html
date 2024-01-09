@@ -1,5 +1,4 @@
 <div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee">
-  <!--check is for easier code writing, not neccesary-->
   <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
   <div class="roboto font-size-20 mx-4">
     <div class="my-2">
@@ -38,13 +37,13 @@
     <span class="my-2" *ngIf="!employee.profilePicturePath">
       Все още нямате профилна снимка.
     </span>
-    <div class="my-2 font-size-20">
+    <div class="my-2 text-center font-size-20">
       <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-        (click)="downloadPDF()">
+        (click)="downloadPDF()" tooltip="Сваляне на CV">
         <i class="fa-solid fa-file-pdf fa-lg"></i>
       </div>
       <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-      (click)="openQRCodeModal()">
+      (click)="openQRCodeModal()"  tooltip="Вашият QR код">
         <i class="fa-solid fa-qrcode fa-lg"></i>
       </div>
     </div>

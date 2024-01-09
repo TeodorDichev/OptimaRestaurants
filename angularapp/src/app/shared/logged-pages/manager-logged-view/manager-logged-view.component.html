@@ -11,7 +11,7 @@
         </div>
         <div class="scrollable-vert display-list">
             <div *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="row border-bottom border-top mb-3" (click)="selectedRestaurant(restaurant)"
+                <div class="row item-hover border-bottom border-top mb-3" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
                     <div class="col-6">
                         <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
@@ -57,7 +57,7 @@
         </div>
         <div class="scrollable-vert display-list">
             <div *ngFor="let employee of this.employees;">
-                <div class="row border-bottom employee border-top py-3" (click)="getEmployeeInfo(employee)">
+                <div class="row border-bottom item-hover border-top py-3" (click)="getEmployeeInfo(employee)">
                     <div class="col-3 text-center my-auto">
                         <img class="emp-img" src="{{employee.profilePicturePath}}">
                     </div>

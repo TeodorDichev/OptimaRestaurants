@@ -141,5 +141,7 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/restaurants');
   }
 
-  
+  schedule() {
+    
+  }
 }
