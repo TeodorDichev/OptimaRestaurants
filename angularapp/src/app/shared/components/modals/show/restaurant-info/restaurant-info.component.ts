@@ -1,3 +1,4 @@
+import { timeout, timer } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { User } from 'src/app/shared/models/account/user';
@@ -31,24 +32,32 @@ export class RestaurantInfoComponent implements OnInit {
     private sharedService: SharedService) { }
 
   ngOnInit() {
-    this.getRestaurant();
     this.getUserInfo();
+    this.getRestaurant();
   }
 
   close() {
     this.bsModalRef.hide();
   }
 
-  getUserInfo() {
-    this.accountService.user$.subscribe({
+  getRestaurant() {
+    this.restaurantsService.getRestaurantDetails(this.restaurantId).subscribe({
       next: (response: any) => {
-        this.user = response;
-        if(!this.user?.isManager){
+        this.restaurant = response;
+        if (!!!this.user?.isManager) {
           this.checkIfEmployeeWorksInRestaurant();
         }
         else {
           this.checkIfManagerOwnsRestaurant();
         }
+      }
+    })
+  }
+
+  getUserInfo() {
+    this.accountService.user$.subscribe({
+      next: (response: any) => {
+        this.user = response;
       }
     })
   }
@@ -62,18 +71,9 @@ export class RestaurantInfoComponent implements OnInit {
   }
 
   checkIfManagerOwnsRestaurant() {
-    if (this.user?.email == this.restaurant?.managerEmail){
+    if (this.user?.email == this.restaurant?.managerEmail) {
       this.managerOwnsRestaurant = true;
-      
     }
-  }
-
-  getRestaurant() {
-    this.restaurantsService.getRestaurantDetails(this.restaurantId).subscribe({
-      next: (response: any) => {
-        this.restaurant = response;
-      }
-    })
   }
 
   sendWorkingRequest() {
