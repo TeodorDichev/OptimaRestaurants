@@ -26,7 +26,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   }
 
   openRestaurantInfo(restaurant: Restaurant) {
-    this.sharedService.openRestaurantDetailsModal(restaurant, true);
+    this.sharedService.openRestaurantDetailsModal(restaurant.id);
   }
 
   missingIcon(restaurant: Restaurant) {

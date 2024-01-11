@@ -41,11 +41,10 @@ export class SharedService {
     this.bsModalRef = this.modalService.show(NewRestaurantInputModalComponent);
   }
 
-  openRestaurantDetailsModal(restaurant: Restaurant, forEmployeeInfo?: boolean) {
+  openRestaurantDetailsModal(restaurantId: string) {
     const rest: ModalOptions = {
       initialState: {
-        restaurant,
-        forEmployeeInfo
+        restaurantId
       }
     }
     this.bsModalRef = this.modalService.show(RestaurantInfoComponent, Object.assign(rest, { class: 'modal-xl' }));

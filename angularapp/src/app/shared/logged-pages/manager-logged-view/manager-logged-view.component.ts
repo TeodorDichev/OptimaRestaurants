@@ -55,9 +55,11 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.currentRestaurant = selectedRestaurant;
     this.getCurrrentRestaurantEmployees();
   }
- 
-  sh(restaurant: Restaurant) {
-    console.log(restaurant.isWorking);
+
+  infoRestaurant() {
+    if (this.currentRestaurant){
+      this.sharedService.openRestaurantDetailsModal(this.currentRestaurant.id);
+    }
   }
 
   missingIcon(restaurant: Restaurant) {

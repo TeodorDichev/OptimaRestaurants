@@ -30,11 +30,7 @@ export class BrowseAllRestaurantsComponent implements OnInit {
   }
 
   getRestaurantDetails(restaurantId: string) {
-    this.restaurantsService.getRestaurantDetails(restaurantId).subscribe({
-      next: (response: any) => {
-        this.sharedService.openRestaurantDetailsModal(response)
-      }
-    })
+    this.sharedService.openRestaurantDetailsModal(restaurantId);
   }
 
   selectedRestaurant(selectedRestaurant: Restaurant) {

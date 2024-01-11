@@ -43,7 +43,10 @@
                         </div>    
                     </div>
                     <div class="col-1 text-end pt-1 pe-3" *ngIf="restaurant == currentRestaurant">
-                        <div class="btn btn-yellow-inverted" (click)="editRestaurant()">
+                        <div class="btn btn-yellow-inverted w-100 mb-2" (click)="infoRestaurant()">
+                            <i class="fa-solid fa-info fa-xl"></i>
+                        </div>
+                        <div class="btn btn-yellow-inverted w-100" (click)="editRestaurant()">
                             <i class="fa-solid fa-pencil fa-xl"></i>
                         </div>
                     </div>
