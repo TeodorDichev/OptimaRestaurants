@@ -51,13 +51,24 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.sharedService.openUserInfoModal(employee.email, 'Employee')
   }
 
+  fireEmployee(employeeEmail: string, restaurantId: string | undefined) {
+    if (restaurantId) {
+      this.managerService.fireEmployee(employeeEmail, restaurantId).subscribe({
+        next: (response: any) => {
+          this.sharedService.showNotification(true, 'Успешно уволнихте служител!', 'Вече той не работи за вас.')
+          this.employees = response;
+        }
+      })  
+    }
+  }
+
   selectedRestaurant(selectedRestaurant: Restaurant) {
     this.currentRestaurant = selectedRestaurant;
     this.getCurrrentRestaurantEmployees();
   }
 
   infoRestaurant() {
-    if (this.currentRestaurant){
+    if (this.currentRestaurant) {
       this.sharedService.openRestaurantDetailsModal(this.currentRestaurant.id);
     }
   }

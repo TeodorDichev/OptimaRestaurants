@@ -28,6 +28,10 @@ export class ManagerService {
     return this.http.delete(`${environment.appUrl}/api/manager/delete-manager/${email}`);
   }
 
+  fireEmployee(employeeEmail: string, restaurantId: string) {
+    return this.http.put(`${environment.appUrl}/api/manager/fire/${employeeEmail}/${restaurantId}`, {});
+  }
+
   addNewRestaurant(model: NewRestaurant, email: string) {
     const formData: FormData = new FormData();
 

@@ -60,17 +60,22 @@
         </div>
         <div class="scrollable-vert display-list">
             <div *ngFor="let employee of this.employees;">
-                <div class="row border-bottom item-hover border-top py-3" (click)="getEmployeeInfo(employee)">
+                <div class="border-bottom item-hover border-top py-3 d-flex">
                     <div class="col-3 text-center my-auto">
                         <img class="emp-img" src="{{employee.profilePicturePath}}">
                     </div>
                     <div class="col-7 my-auto">
-                        <span class="row roboto text-start fw-bold font-size-25">{{employee.firstName}}
-                            {{employee.lastName}}</span>
-                        <span class="roboto text-start fst-italic font-size-20">{{employee.email}}, </span>
-                        <span
-                            class="roboto text-start fst-italic font-size-20">{{employee.employeeAverageRating}}</span>
-                    </div>
+                        <span class="roboto text-start fw-bold font-size-25">{{employee.firstName}} {{employee.lastName}} </span>
+                        <span class="roboto text-start fst-italic font-size-20">{{employee.email}}</span>
+                    </div> 
+                    <div class="col-2">
+                        <div class="btn btn-yellow-inverted w-75 mb-2" (click)="getEmployeeInfo(employee)">
+                            <i class="fa-solid fa-info fa-xl"></i>
+                        </div>
+                        <div class="btn btn-yellow-inverted w-75" (click)="fireEmployee(employee.email, currentRestaurant?.id)">
+                            <i class="fa-solid fa-gun fa-xl"></i>
+                        </div>    
+                    </div>        
                 </div>
             </div>
         </div>
