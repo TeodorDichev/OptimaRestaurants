@@ -20,5 +20,6 @@
         public string? TopEmployeeFullName { get; set; }
         public string? TopEmployeeEmail { get; set; }
         public decimal? TopEmployeeRating { get; set; }
+        public string? TopEmployeePicturePath { get; set; }
     }
 }

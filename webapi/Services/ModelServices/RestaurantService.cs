@@ -32,6 +32,8 @@ namespace webapi.Services.ClassServices
 
             foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
+                var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                 restaurantsDto.Add(new BrowseRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
@@ -42,6 +44,10 @@ namespace webapi.Services.ClassServices
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
+                    TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                    TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                    TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                    TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                 });
             }
 
@@ -53,6 +59,8 @@ namespace webapi.Services.ClassServices
 
             foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
+                var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                 restaurantsDto.Add(new BrowseRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
@@ -63,6 +71,10 @@ namespace webapi.Services.ClassServices
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
+                    TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                    TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                    TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                    TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                 });
             }
 
@@ -74,6 +86,8 @@ namespace webapi.Services.ClassServices
 
             foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
+                var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                 restaurantsDto.Add(new BrowseRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
@@ -84,6 +98,10 @@ namespace webapi.Services.ClassServices
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                     IsWorking = restaurant?.IsWorking ?? false,
                     IconPath = restaurant?.IconPath,
+                    TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                    TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                    TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                    TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                 });
             }
 
@@ -98,6 +116,8 @@ namespace webapi.Services.ClassServices
                 case "CuisineAverageRating":
                     foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
+                        var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                         restaurantsDto.Add(new BrowseRestaurantDto
                         {
                             Id = restaurant.Id.ToString(),
@@ -108,6 +128,10 @@ namespace webapi.Services.ClassServices
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
+                            TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                            TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                            TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                            TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
                     }
                     break;
@@ -115,6 +139,8 @@ namespace webapi.Services.ClassServices
                 case "AtmosphereAverageRating":
                     foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
+                        var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                         restaurantsDto.Add(new BrowseRestaurantDto
                         {
                             Id = restaurant.Id.ToString(),
@@ -125,6 +151,10 @@ namespace webapi.Services.ClassServices
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
+                            TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                            TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                            TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                            TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
                     }
                     break;
@@ -132,6 +162,8 @@ namespace webapi.Services.ClassServices
                 case "EmployeesAverageRating":
                     foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
+                        var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
                         restaurantsDto.Add(new BrowseRestaurantDto
                         {
                             Id = restaurant.Id.ToString(),
@@ -142,6 +174,10 @@ namespace webapi.Services.ClassServices
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
                             IsWorking = restaurant?.IsWorking ?? false,
                             IconPath = restaurant?.IconPath,
+                            TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                            TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                            TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                            TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
                     }
                     break;
@@ -155,26 +191,8 @@ namespace webapi.Services.ClassServices
         public RestaurantDetailsDto GetRestaurantDetails(Restaurant restaurant)
         {
             var manager = restaurant.Manager;
-            string managerFullName = "Ресторантът няма мениджър!";
-            string managerEmail = string.Empty;
-            string managerPhone = string.Empty;
-            if (manager != null)
-            {
-                managerFullName = manager.Profile.FirstName + " " + manager.Profile.LastName;
-                managerEmail = manager.Profile.Email ?? string.Empty;
-                managerPhone = manager.Profile.PhoneNumber ?? string.Empty;
-            }
 
-            var topEmployee = restaurant.EmployeesRestaurants.Select(er => er.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
-            string topEmployeeFullName = "Ресторантът няма работници!";
-            string topEmployeeEmail = string.Empty;
-            decimal topEmployeeRating = 0;
-            if (topEmployee != null)
-            {
-                topEmployeeFullName = topEmployee.Profile.FirstName + " " + topEmployee.Profile.LastName;
-                topEmployeeRating = topEmployee.EmployeeAverageRating ?? 0;
-                topEmployeeEmail = topEmployee.Profile.Email ?? string.Empty;
-            }
+            var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
             var restaurantDto = new RestaurantDetailsDto
             {
@@ -190,12 +208,13 @@ namespace webapi.Services.ClassServices
                 IsWorking = restaurant.IsWorking,
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),
-                ManagerFullName = managerFullName,
-                ManagerPhoneNumber = managerPhone,
-                TopEmployeeFullName = topEmployeeFullName,
-                TopEmployeeRating = topEmployeeRating,
-                TopEmployeeEmail = topEmployeeEmail,
-                ManagerEmail = managerEmail
+                ManagerFullName = manager?.Profile.FirstName + " " + manager?.Profile.LastName,
+                ManagerPhoneNumber = manager?.Profile.Email ?? string.Empty,
+                ManagerEmail = manager?.Profile.Email ?? string.Empty,
+                TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
             };
 
             return restaurantDto;
@@ -331,6 +350,10 @@ namespace webapi.Services.ClassServices
             }
 
             return restaurantsDto;
+        }
+        public Employee? GetTopEmployeeOfRestaurant(Restaurant restaurant)
+        {
+            return restaurant.EmployeesRestaurants.Where(er => er.EndedOn == null).Select(e => e.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
         }
         public List<Employee> GetEmployeesOfRestaurant(Restaurant restaurant)
         {

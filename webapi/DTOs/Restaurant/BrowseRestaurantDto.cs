@@ -10,5 +10,10 @@
         public required decimal RestaurantAverageRating { get; set; }
         public required int TotalReviewsCount { get; set; }
         public string? IconPath { get; set; }
+        public string? TopEmployeeFullName { get; set; }
+        public string? TopEmployeeEmail { get; set; }
+        public decimal? TopEmployeeRating { get; set; }
+        public string? TopEmployeePicturePath { get; set; }
+
     }
 }
