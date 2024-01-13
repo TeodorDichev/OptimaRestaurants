@@ -18,7 +18,7 @@
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Images:Path"] ?? string.Empty);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"] ?? string.Empty);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
@@ -47,7 +47,7 @@
 #pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCode:Path"] ?? string.Empty) + imageFileUrl.Split('/').Last();
+                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"] ?? string.Empty) + imageFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);

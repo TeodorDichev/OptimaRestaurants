@@ -83,9 +83,9 @@ namespace webapi.Services.FileServices
         private Table GenerateTableWithPersonalInfo(Employee employee, PdfFont font)
         {
             /* Creating the image */
-            var path = "";
-            if (employee.Profile.ProfilePicturePath != null) path = Path.Combine(_configuration["Images:Path"] ?? string.Empty) + "\\" + employee.Profile.ProfilePicturePath.Split('/').Last();
-            else path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
+            string path = "";
+            if (employee.Profile.ProfilePicturePath != null) path = Path.Combine(_configuration["Pictures:Path"] ?? string.Empty) + "\\" + employee.Profile.ProfilePicturePath.Split('/').Last();
+            else path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
             Image image = new Image(ImageDataFactory.Create(path));
 
             float maxWidth = 150f;
@@ -114,7 +114,7 @@ namespace webapi.Services.FileServices
         private Table GenerateTableWithStatistics(Employee employee, PdfFont font)
         {
             /* Creating the image */
-            var path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
+            string path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
             Image image = new Image(ImageDataFactory.Create(path));
 
             float maxWidth = 150f;
@@ -144,8 +144,8 @@ namespace webapi.Services.FileServices
 
             /* Creating the image */
             var path = "";
-            if (restaurant.IconPath != null) path = Path.Combine(_configuration["Images:Path"] ?? string.Empty) + "\\" + restaurant.IconPath.Split('/').Last();
-            else path = "D:\\Repos\\OptimaRestaurant\\angularapp\\src\\assets\\images\\logo-bw-with-bg.png";
+            if (restaurant.IconPath != null) path = Path.Combine(_configuration["Pictures:Path"] ?? string.Empty) + "\\" + restaurant.IconPath.Split('/').Last();
+            else path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
             Image image = new Image(ImageDataFactory.Create(path));
 
             float maxWidth = 150f;
