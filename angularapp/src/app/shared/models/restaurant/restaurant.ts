@@ -15,6 +15,7 @@ export interface Restaurant {
     managerPhoneNumber: string,
     topEmployeeFullName: string,
     topEmployeeEmail: string,
-    topEmployeeRating: string,
+    topEmployeeRating: number,
+    topEmployeePicturePath: string,
     totalReviewsCount: number
 }

@@ -65,6 +65,9 @@
         <span class="fst-italic fw-normal chocolate">{{restaurant.managerPhoneNumber}}</span>
       </div>
     </div>
+    <div *ngIf="!restaurant.managerEmail">
+      <span class="fst-italic fw-normal chocolate">Този ресторант няма мениджър.</span>
+    </div>
     <div *ngIf="user?.isManager == false && !employeeWorksInRestaurant">
       <div class="btn btn-chocolate roboto font-size-20" (click)="sendWorkingRequest()">
         Изпращане на заявка за работа в <span class="fst-italic">{{restaurant.name}}</span>

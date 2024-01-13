@@ -1,10 +1,18 @@
-img {
+.rest-img {
     aspect-ratio: 3/2;
     width: 100% !important;
     background-color: rgb(102, 102, 102);
     clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
 }
 
+.empl-img {
+    aspect-ratio: 1/1;
+    width: 100% !important;
+    border-color: gainsboro;
+    border-radius: 20px;
+}
+
 .restaurant:hover {
     background-color: gainsboro;
 }
+
