@@ -5,7 +5,7 @@
     </div>
   </div>
   <div class="modal-body text-center roboto font-size-20 m-2">
-    <img src="{{restaurant.iconPath}}">
+    <img class="rest-img" src="{{restaurant.iconPath}}">
     <div class="row">
       <span class="col-6 fw-bold mt-4 mb-2">Адрес:
         <span class="fst-italic fw-normal chocolate">{{restaurant.address}}</span>
@@ -72,6 +72,18 @@
       <div class="btn btn-chocolate roboto font-size-20" (click)="sendWorkingRequest()">
         Изпращане на заявка за работа в <span class="fst-italic">{{restaurant.name}}</span>
       </div>
+    </div>
+  </div>
+  <div class="modal-body text-center my-auto font-size-20 border-top" *ngIf="restaurant.topEmployeeEmail">
+    <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
+    <div class="fw-bold">Най-добър работник:
+      <span class="fw-normal">{{restaurant.topEmployeeFullName}}</span>
+    </div>
+    <div class="fw-bold">Неговият имейл:
+      <span class="fw-normal">{{restaurant.topEmployeeEmail}}</span>
+    </div>
+    <div class="fw-bold">Неговият рейтинг:
+      <app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating>
     </div>
   </div>
   <div class="modal-footer">

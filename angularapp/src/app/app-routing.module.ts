@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'account', canActivate:[LoggedAuthorizationGuard], loadChildren:() => import('./shared/pages-routing/account/account.module').then(module => module.AccountModule)},
   {path: 'manager', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages-routing/manager/manager.module').then(module => module.ManagerModule) },
   {path: 'employee', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages-routing/employee/employee.module').then(module => module.EmployeeModule) },
+  {path: 'review', loadChildren:() => import('./shared/pages-routing/review/reviews.module').then(module => module.ReviewsModule) },
   {path: 'restaurants', loadChildren:() => import('./shared/pages-routing/restaurants/restaurants.module').then(module => module.RestaurantsModule) },
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
