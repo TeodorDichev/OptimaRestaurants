@@ -19,7 +19,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"), 
+        x => x.UseDateOnlyTimeOnly());
 });
 
 builder.Services.AddScoped<JWTService>();
@@ -34,6 +35,7 @@ builder.Services.AddScoped<RequestService>();
 builder.Services.AddScoped<AccountService>();
 builder.Services.AddScoped<ManagerService>();
 builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<ScheduleService>();
 builder.Services.AddScoped<RestaurantService>();
 
 /* Defining identity core services */

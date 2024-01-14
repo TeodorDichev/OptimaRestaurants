@@ -20,7 +20,7 @@ namespace webapi.Services.ModelServices
                 Sender = sender.Profile,
                 Receiver = restaurant.Manager.Profile,
                 Restaurant = restaurant,
-                SentOn = DateTime.UtcNow,
+                SentOn = DateTime.Now,
             };
 
             await _context.Requests.AddAsync(request);

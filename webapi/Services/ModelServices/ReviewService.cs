@@ -22,7 +22,7 @@ namespace webapi.Services.ClassServices
             {
                 Employee = employee,
                 Restaurant = restaurant,
-                DateTime = DateTime.UtcNow,
+                DateTime = DateTime.Now,
                 Comment = model.Comment,
                 SpeedRating = model.SpeedRating,
                 AttitudeRating = model.AttitudeRating,
@@ -42,7 +42,7 @@ namespace webapi.Services.ClassServices
             {
                 Employee = employee,
                 Restaurant = restaurant,
-                DateTime = DateTime.UtcNow,
+                DateTime = DateTime.Now,
                 Comment = model.Comment,
                 CollegialityRating = model.CollegialityRating,
                 PunctualityRating = model.PunctualityRating,

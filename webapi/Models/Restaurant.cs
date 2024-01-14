@@ -7,8 +7,11 @@ namespace webapi.Models
     {
         [Key]
         public Guid Id { get; set; }
+        [MaxLength(50)]
         public required string Name { get; set; }
+        [MaxLength(50)]
         public required string Address { get; set; }
+        [MaxLength(50)]
         public required string City { get; set; }
         public int? EmployeeCapacity { get; set; }
         public required int TotalReviewsCount { get; set; }

@@ -124,7 +124,7 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
 
-            if (await _requestService.IsRequestAlreadySent(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този ресторант!");
+            if (await _requestService.IsRequestAlreadySent(employee.Profile, restaurant)) return BadRequest("Вашата заявка не е отговорена или скоро е била отхвърлена! Моля опитайте пак по-късно!");
             if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Вие работите в този ресторант!");
 
             if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");

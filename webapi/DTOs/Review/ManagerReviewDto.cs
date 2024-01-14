@@ -7,7 +7,7 @@ namespace webapi.DTOs.Review
         public required string RestaurantId { get; set; }
         public required string EmployeeEmail { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(300)]
         public string? Comment { get; set; }
         public decimal? PunctualityRating { get; set; }
         public decimal? CollegialityRating { get; set; }

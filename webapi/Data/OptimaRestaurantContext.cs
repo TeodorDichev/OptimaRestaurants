@@ -16,8 +16,7 @@ public class OptimaRestaurantContext : IdentityDbContext<ApplicationUser>
     public DbSet<EmployeeRestaurant> EmployeesRestaurants { get; set; }
     public DbSet<CustomerReview> CustomerReviews { get; set; }
     public DbSet<ManagerReview> ManagerReviews { get; set; }
-    public DbSet<ShiftType> ShiftTypes { get; set; }
-    public DbSet<Shift> Shifts { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

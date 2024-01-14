@@ -30,7 +30,7 @@ namespace webapi.Services.ClassServices
             _qrCodesService = qrCodesService;
             _pictureService = pictureService;
         }
-        public async Task<Employee> AddEmployee(ApplicationUser userProfile, string city, DateTime birthDate)
+        public async Task<Employee> AddEmployee(ApplicationUser userProfile, string city, DateOnly birthDate)
         {
             await _userManager.AddToRoleAsync(userProfile, Role.Employee.ToString());
             Employee employee = new Employee
@@ -51,7 +51,7 @@ namespace webapi.Services.ClassServices
             if (updateDto.NewLastName != null) employee.Profile.LastName = updateDto.NewLastName;
             if (updateDto.NewPhoneNumber != null) employee.Profile.PhoneNumber = updateDto.NewPhoneNumber;
             if (updateDto.NewCity != null) employee.City = updateDto.NewCity;
-            if (updateDto.NewBirthDate != null) employee.BirthDate = (DateTime)updateDto.NewBirthDate;
+            if (updateDto.NewBirthDate != null) employee.BirthDate = (DateOnly)updateDto.NewBirthDate;
             if (updateDto.ProfilePictureFile != null)
             {
                 if (employee.Profile.ProfilePicturePath == null) employee.Profile.ProfilePicturePath = _pictureService.SaveImage(updateDto.ProfilePictureFile);

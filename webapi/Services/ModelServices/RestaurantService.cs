@@ -282,7 +282,7 @@ namespace webapi.Services.ClassServices
             {
                 foreach (var er in restaurant.EmployeesRestaurants.Where(er => er.Employee.Profile.Email == employee.Profile.Email))
                 {
-                    er.EndedOn = DateTime.UtcNow;
+                    er.EndedOn = DateTime.Now;
                     _context.EmployeesRestaurants.Update(er);
                 }
 
