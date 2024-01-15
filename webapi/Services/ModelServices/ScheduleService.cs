@@ -22,7 +22,7 @@ namespace webapi.Services.ModelServices
         }
 
         /* Possible issue: not adding to the specific employee */
-        public async Task<Schedule> AddDayToSchedule(AddScheduleDto model)
+        public async Task<Schedule> AddAssignmentToSchedule(ScheduleDetailsDto model)
         {
             Schedule schedule = new Schedule
             {
@@ -37,27 +37,107 @@ namespace webapi.Services.ModelServices
             };
 
             await _context.Schedules.AddAsync(schedule);
-            await SaveChangesAsync();
 
             return schedule;
         }
-        public async Task<List<Schedule>> GetWorkDaysOfEmployee(Employee employee)
+        public async Task<Schedule> EditScheduleAssignment(Schedule schedule, ScheduleDetailsDto model)
         {
-            return await _context.Schedules.Where(s => s.Employee == employee && s.IsWorkDay).ToListAsync();
+            schedule.Day = model.Day;
+            schedule.Employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
+            schedule.Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
+            schedule.From = model.From;
+            schedule.To = model.To;
+            schedule.Reason = model.Reason;
+            schedule.FullDay = (model.To == null || model.From == null);
+            schedule.IsWorkDay = model.IsWorkDay;
+
+            _context.Schedules.Update(schedule);
+
+            return schedule;
         }
-        public async Task<List<Schedule>> GetLeaveDaysOfEmployee(Employee employee)
+        public async Task<bool> DoesScheduleExistsById(string scheduleId)
         {
-            return await _context.Schedules.Where(s => s.Employee == employee && !s.IsWorkDay).ToListAsync();
+            return await _context.Schedules.AnyAsync(a => a.Id.ToString() == scheduleId);
         }
-        public async Task<List<Schedule>> GetAssignedDaysOfEmployee(Employee employee)
+        public async Task<ScheduleDetailsDto> GetAssignmentDetails(string scheduleId)
         {
-            return await _context.Schedules.Where(s => s.Employee == employee).ToListAsync();
+            Schedule schedule = await GetEmployeeAssignment(scheduleId);
+
+            ScheduleDetailsDto assignment = new ScheduleDetailsDto
+            {
+                ScheduleId = schedule.Id.ToString(),
+                Day = schedule.Day,
+                EmployeeEmail = schedule.Employee.Profile.Email ?? string.Empty,
+                RestaurantId = schedule.Restaurant.Id.ToString(),
+                Reason = schedule.Reason,
+                From = schedule.From,
+                To = schedule.To,
+                FullDay = schedule.FullDay,
+                IsWorkDay = schedule.IsWorkDay
+            };
+
+            return assignment;
         }
+        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployee(Employee employee)
+        {
+            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+
+            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee).ToListAsync())
+            {
+                schedule.Add(new ScheduleBrowseDto
+                {
+                    ScheduleId = assignment.Id.ToString(),
+                    Day = assignment.Day,
+                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
+                    RestaurantId = assignment.Restaurant.Id.ToString(),
+                    IsWorkDay = assignment.IsWorkDay
+                });
+            }
+
+            return schedule;
+        }
+        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployeeInRestaurant(Employee employee, Restaurant restaurant)
+        {
+            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+
+            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Restaurant == restaurant).ToListAsync())
+            {
+                schedule.Add(new ScheduleBrowseDto
+                {
+                    ScheduleId = assignment.Id.ToString(),
+                    Day = assignment.Day,
+                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
+                    RestaurantId = assignment.Restaurant.Id.ToString(),
+                    IsWorkDay = assignment.IsWorkDay
+                });
+            }
+
+            return schedule;
+        }
+        public async Task<List<ScheduleBrowseDto>> GetDailyEmployeeSchedule(Employee employee, DateOnly day)
+        {
+            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+
+            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Day == day).ToListAsync())
+            {
+                schedule.Add(new ScheduleBrowseDto
+                {
+                    ScheduleId = assignment.Id.ToString(),
+                    Day = assignment.Day,
+                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
+                    RestaurantId = assignment.Restaurant.Id.ToString(),
+                    IsWorkDay = assignment.IsWorkDay
+                });
+            }
+
+            return schedule;
+        }
+
         /* Possible issue: OrderBy => OrderByAscending */
         public async Task<bool> IsEmployeeFreeToWork(Employee employee, DateOnly day, TimeOnly? from, TimeOnly? to)
         {
             /* Gets both worked and leave days of employee */
-            List<Schedule> assignedDays = await GetAssignedDaysOfEmployee(employee);
+            List<Schedule> assignedDays = await GetEmployeeSchedule(employee);
 
             /* Gets the schedule of the employee on this day */
             /* The employee has multiple assignments on this day (8-11 + 12-15 + 20-23) */
@@ -102,6 +182,13 @@ namespace webapi.Services.ModelServices
         {
             await _context.SaveChangesAsync();
         }
-
+        private async Task<List<Schedule>> GetEmployeeSchedule(Employee employee)
+        {
+            return await _context.Schedules.Where(s => s.Employee == employee).ToListAsync();
+        }
+        private async Task<Schedule> GetEmployeeAssignment(string scheduleId)
+        {
+            return await _context.Schedules.FirstAsync(s => s.Id.ToString() == scheduleId);
+        }
     }
 }

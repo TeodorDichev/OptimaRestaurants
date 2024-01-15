@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Tsp;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
+using webapi.DTOs.Schedule;
 using webapi.Models;
 using webapi.Services.ClassServices;
 using webapi.Services.FileServices;
@@ -11,7 +13,7 @@ namespace webapi.Controllers
     /// <summary>
     /// EmployeeController manages employees:
     /// CRUD operations for their profiles,
-    /// Their requests, qr codes, cvs
+    /// Their schedules, requests, qr codes, cvs
     /// </summary>
     public class EmployeeController : Controller
     {
@@ -20,18 +22,20 @@ namespace webapi.Controllers
         private readonly ManagerService _managerService;
         private readonly RequestService _requestService;
         private readonly RestaurantService _restaurantService;
-
+        private readonly ScheduleService _scheduleService;
         public EmployeeController(PdfFilesService pdfFilesService,
             EmployeeService employeeService,
             RequestService requestService,
             ManagerService managerService,
-            RestaurantService restaurantService)
+            RestaurantService restaurantService,
+            ScheduleService scheduleService)
         {
             _pdfFilesService = pdfFilesService;
             _employeeService = employeeService;
             _restaurantService = restaurantService;
             _requestService = requestService;
             _managerService = managerService;
+            _scheduleService = scheduleService;
         }
 
         [HttpGet("api/employee/get-employee/{email}")]
@@ -109,6 +113,68 @@ namespace webapi.Controllers
                 await _requestService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно отхвърлена заявка!", message = $"Заявката на {manager.Profile.FirstName} е отхвърлена!" }));
             }
+        }
+
+        [HttpGet("api/employee/get-schedule-details/{scheduleId}")]
+        public async Task<ActionResult<ScheduleDetailsDto>> GetAssignmentDetails(string scheduleId)
+        {
+            if (!await _scheduleService.DoesScheduleExistsById(scheduleId)) return BadRequest("Тази задача от графика не съществува");
+            else return await _scheduleService.GetAssignmentDetails(scheduleId);
+        }
+
+        [HttpGet("api/employee/get-restaurant-schedule/{email}/{restaurantId}")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetEmployeeRestaurantSchedule(string email, string restaurantId)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+
+            Restaurant restaurant;
+            if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
+
+            return await _scheduleService.GetAssignedDaysOfEmployeeInRestaurant(employee, restaurant);
+        }
+
+        [HttpGet("api/employee/get-full-schedule/{email}")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetEmployeeFullSchedule(string email)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+
+            return await _scheduleService.GetAssignedDaysOfEmployee(employee);
+        }
+
+        [HttpGet("api/employee/get-day-schedule/{email}/{day}")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetDaySchedule(string email, DateOnly day)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+
+            return await _scheduleService.GetDailyEmployeeSchedule(employee, day);
+        }
+
+        [HttpPost("api/employee/schedule/add-assignment")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> AddAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(scheduleDto.EmployeeEmail);
+
+            Restaurant restaurant;
+            if (!await _restaurantService.CheckRestaurantExistById(scheduleDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(scheduleDto.RestaurantId);
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+
+            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            {
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.SaveChangesAsync();
+                return await GetDaySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
+            }
+            else return BadRequest("Вече имате запазен друг ангажимент!");
         }
 
         [HttpGet("api/employee/download-qrcode/{email}")]
