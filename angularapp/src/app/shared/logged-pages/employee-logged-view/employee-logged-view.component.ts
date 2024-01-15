@@ -5,6 +5,7 @@ import { Restaurant } from '../../models/restaurant/restaurant';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
 import { SharedService } from '../../shared.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employee-logged-view',
@@ -34,7 +35,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   }
 
   private getUser() {
-    this.accountService.user$.subscribe(user => {
+    this.accountService.user$.pipe(take(1)).subscribe(user => {
       if (user) {
         this.user = user;
       }
@@ -42,7 +43,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   }
 
   private getEmployee() {
-    this.employeeService.employee$.subscribe(employee => {
+    this.employeeService.employee$.pipe(take(1)).subscribe(employee => {
       if (employee) {
         this.employee = employee;
       }

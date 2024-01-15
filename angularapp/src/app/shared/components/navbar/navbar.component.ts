@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SearchResultAccount } from '../../models/account/search-result-account';
 import { RestaurantsService } from '../../pages-routing/restaurants/restaurants.service';
 import { SearchResultRestaurant } from '../../models/restaurant/search-result-restaurant';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'nav-top',
@@ -42,7 +43,7 @@ export class NavbarComponent implements OnInit {
   }
 
   getUser() {
-    this.accountService.user$.subscribe({
+    this.accountService.user$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.user = response;
       }
@@ -77,14 +78,14 @@ export class NavbarComponent implements OnInit {
     this.submitted = true;
     if (this.searchForm && value.length > 0) {
       if (forAccounts) {
-        this.accountService.search(value).subscribe({
+        this.accountService.search(value).pipe(take(1)).subscribe({
           next: (response: any) => {
             this.searchResultAccount = response;
           }
         })
       }
       else {
-        this.restaurantService.search(value).subscribe({
+        this.restaurantService.search(value).pipe(take(1)).subscribe({
           next: (response: any) => {
             this.searchResultRestaurant = response;
           }

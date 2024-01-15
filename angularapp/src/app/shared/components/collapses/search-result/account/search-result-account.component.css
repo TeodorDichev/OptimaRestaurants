@@ -18,4 +18,5 @@ img {
 
 .search-result:hover {
     background-color: gainsboro;
+    cursor: pointer;
 }

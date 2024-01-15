@@ -46,6 +46,7 @@ export class InboxComponent implements OnInit {
             } else {
               this.newNotifications = false;
             } 
+
             this.sharedService.updateNotifications(this.newNotifications);
           }
         })
@@ -64,6 +65,7 @@ export class InboxComponent implements OnInit {
             } else {
               this.newNotifications = false;
             }
+            
             this.sharedService.updateNotifications(this.newNotifications);
           }
         })

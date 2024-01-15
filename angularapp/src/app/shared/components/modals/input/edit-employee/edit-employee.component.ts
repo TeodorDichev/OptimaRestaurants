@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
@@ -55,7 +56,7 @@ export class EditEmployeeComponent {
     this.errorMessages = [];
 
     if (this.editEmployeeForm.valid && this.email) {
-      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).subscribe({
+      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -74,7 +75,7 @@ export class EditEmployeeComponent {
 
   deleteEmployeeAccount() {
     if (this.email) {
-      this.employeeService.deleteEmployeeAccount(this.email).subscribe({
+      this.employeeService.deleteEmployeeAccount(this.email).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -91,7 +92,7 @@ export class EditEmployeeComponent {
   }
 
   private getEmployee() {
-    this.employeeService.employee$.subscribe({
+    this.employeeService.employee$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.employee = response;
       }

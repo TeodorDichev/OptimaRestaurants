@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-transparent">
+<nav class="navbar navbar-expand-lg bg-body-tertiary navbar-transparent sticky-top">
     <div class="container-fluid">
         <div class="navbar-brand pacifico font-size-40 btn btn-outline-dark btn-yellow-inverted ms-xl-5 text-wrap"
             (click)="homePage()" tooltip="Начална страница">
@@ -66,14 +66,14 @@
                     </ul>
                 </li>
             </ul>
-            <form [formGroup]="searchForm" autocomplete="off" class="d-flex mx-xl-2" role="search" #dropdown>
+            <form [formGroup]="searchForm" autocomplete="off" class="d-flex mx-xl-2" role="search">
                 <div class="form-check form-switch mt-2">
                     <input class="form-check-input chocolatе" type="checkbox" tooltip="Смяна потребител/ресторант"
                         formControlName="searchForAccounts" [(ngModel)]="searchForAccounts" (click)="changeSearchText()">
                 </div>
                 <li class="dropdown nav-link">
                     <input class="form-control" formControlName="searchString" type="search"
-                        placeholder="Търси {{searchingFor}}" aria-label="Search">
+                        placeholder="Търси {{searchingFor}}" aria-label="Search" #dropdown>
                     <ul class="dropdown-menu show" *ngIf="searchForm.valid">
                         <app-search-result-account [searchResult]="searchResultAccount" *ngIf="searchForAccounts"></app-search-result-account>
                         <app-search-result-restaurant [searchResult]="searchResultRestaurant" *ngIf="!searchForAccounts"></app-search-result-restaurant>

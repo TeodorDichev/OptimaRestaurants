@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AccountService } from '../../pages-routing/account/account.service';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
-import { User } from '../../models/account/user';
-import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { AccountService } from '../../pages-routing/account/account.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
 
 @Component({
   selector: 'app-login',
@@ -21,15 +19,7 @@ export class LoginComponent implements OnInit {
     private managerService: ManagerService,
     private employeeService: EmployeeService,
     private router: Router,
-    private formBuilder: FormBuilder) {
-    this.accountService.user$.pipe(take(1)).subscribe({
-      next: (user: User | null) => {
-        if (user) {
-          this.router.navigateByUrl('/');
-        }
-      }
-    });
-  }
+    private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.initializeForm();

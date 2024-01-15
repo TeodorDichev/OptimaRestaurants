@@ -7,6 +7,7 @@ import { UpdateManager } from 'src/app/shared/models/manager/update-manager';
 import { ReplaySubject } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { RequestResponse } from '../../models/requests/requestResponse';
+import { EmployeeRequest } from '../../models/requests/employeeRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -44,8 +45,12 @@ export class ManagerService {
     return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, formData);
   }
 
-  getRequests(email: string) {  
+  getRequests(email: string) {
     return this.http.get(`${environment.appUrl}/api/manager/get-all-requests/${email}`);
+  }
+
+  employeeWorkingRequest(employeeRequest: EmployeeRequest) {
+    return this.http.post(`${environment.appUrl}/api/manager/send-working-request`, employeeRequest);
   }
 
   getEmployeesLookingForJob() {
@@ -85,7 +90,7 @@ export class ManagerService {
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);
   }
 
-  deleteRestaurant(restaurantId: string) { 
+  deleteRestaurant(restaurantId: string) {
     return this.http.delete(`${environment.appUrl}/api/manager/delete-restaurant/${restaurantId}`)
   }
 

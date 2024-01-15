@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Restaurant } from 'src/app/shared/models/restaurant/restaurant';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -50,7 +51,7 @@ export class EditRestaurantModalComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
     if (this.editRestaurantForm.valid && this.restaurant) {
-      this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).subscribe({
+      this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, "Успешно обновен ресторант!", "Вашият ресторант беше успешно обновен.");
@@ -69,11 +70,11 @@ export class EditRestaurantModalComponent implements OnInit {
 
   deleteRestaurant() {
     if (this.restaurant){
-      this.managerService.deleteRestaurant(this.restaurant.id).subscribe({
+      this.managerService.deleteRestaurant(this.restaurant.id).pipe(take(1)).subscribe({
         next: (response: any) => {
-          this.managerService.setManager(response);
           this.sharedService.showNotification(true, "Успешно премахнат ресторант!", "Вашият ресторант беше успешно изтрит.");
           this.bsModalRef.hide();
+          this.managerService.setManager(response);
         }
       })
     }

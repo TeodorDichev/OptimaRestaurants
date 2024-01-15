@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -51,7 +52,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.newRestaurantForm.valid && this.email) {
-      this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
+      this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно създаден ресторант!', 'Вашият ресторант беше създаден успешно!');

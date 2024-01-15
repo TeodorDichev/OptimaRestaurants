@@ -74,7 +74,7 @@ export class SharedService {
         role
       }
     }
-    this.bsModalRef = this.modalService.show(UserInfoComponent, Object.assign(userData, { class: 'modal-xl' }));
+    this.bsModalRef = this.modalService.show(UserInfoComponent, Object.assign(userData, { class: 'modal-lg' }));
   }
 
   openQRCodeModal() {

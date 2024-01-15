@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -28,7 +29,7 @@ export class EmployeeInfoComponent {
 
   private getEmployee() {
     if (this.employeeEmail) {
-      this.employeeService.employee$.subscribe({
+      this.employeeService.employee$.pipe(take(1)).subscribe({
         next: (response: any) => {
           this.employee = response;
         }
@@ -38,7 +39,7 @@ export class EmployeeInfoComponent {
 
   downloadPDF() {
     if (this.employeeEmail) {
-      this.employeeService.employee$.subscribe({
+      this.employeeService.employee$.pipe(take(1)).subscribe({
         next: (response: any) => {
           this.fileName = response.firstName;
         }

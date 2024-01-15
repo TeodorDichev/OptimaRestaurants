@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-register-employee',
@@ -38,10 +39,10 @@ export class RegisterEmployeeComponent implements OnInit{
     this.errorMessages = [];
 
     if(this.registerForm.valid){
-    this.accountService.registerEmployee(this.registerForm.value).subscribe({
+    this.accountService.registerEmployee(this.registerForm.value).pipe(take(1)).subscribe({
       next: (response: any) => {
         this.accountService.setUser(response);
-        this.employeeService.getEmployee(response.email).subscribe({
+        this.employeeService.getEmployee(response.email).pipe(take(1)).subscribe({
           next: (resp: any) => {
             this.employeeService.setEmployee(resp);
           }

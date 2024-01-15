@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -28,7 +29,7 @@ export class ManagerInfoComponent implements OnInit {
 
   private getManager() {
     if(this.managerEmail) {
-      this.managerService.manager$.subscribe({
+      this.managerService.manager$.pipe(take(1)).subscribe({  
         next: (response: any) => {
           this.manager = response;
         }

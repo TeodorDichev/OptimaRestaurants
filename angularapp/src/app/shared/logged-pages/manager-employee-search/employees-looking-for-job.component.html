@@ -1,17 +1,39 @@
 <nav-top></nav-top>
-<div class="font-size-30 text-center roboto chocolate fw-bold my-4">
+<div class="font-size-30 text-center roboto fw-bold my-4">
     Всички работници, търсещи работа
 </div>
 <div class="roboto max-width text-start d-flex" *ngFor="let employee of employeesLookingForJob">
-    <div class="row w-100 employee max-width border-top border-bottom my-3">
-        <div class="col-2 p-3">
-            <img class="empl-img" src="{{employee.profilePicturePath}}">
+    <div class="row w-100 employee max-width border-top border-bottom my-1 roboto"
+        (click)="getEmployeeInfo(employee.email)">
+        <div class="col-2 p-3 text-center">
+            <img class="empl-img" src="{{employee.profilePicturePath}}" *ngIf="employee.profilePicturePath">
         </div>
-        <div class="col-3">
-            <span>{{employee.firstName}} {{employee.lastName}}</span>
+        <div class="col-3 font-size-30 my-auto ms-2">
+            <div class="fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
+            <div class="font-size-20 ms-2">
+                <div>Имейл: <span class="fst-italic chocolate">{{employee.email}}</span></div>
+                <div>Град: <span class="fst-italic chocolate">{{employee.city}}</span></div>
+                <div class="fw-bold">
+                    Средно / <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
+                </div>
+            </div>
         </div>
-        <div class="col-3">
-            
+        <div class="col-3 font-size-20 fst-italic my-auto">
+            <div class="font-size-30 fw-bold">
+                Рейтинг в категории:
+            </div>
+            <div class="my-1">
+                Бързина / <app-star-rating [rating]="employee.speedAverageRating"></app-star-rating>
+            </div>
+            <div class="my-1">
+                Поведение / <app-star-rating [rating]="employee.attitudeAverageRating"></app-star-rating>
+            </div>
+            <div class="my-1">
+                Закъснения / <app-star-rating [rating]="employee.punctualityAverageRating"></app-star-rating>
+            </div>
+            <div class="my-1">
+                Колегиалност / <app-star-rating [rating]="employee.collegialityAverageRating"></app-star-rating>
+            </div>
         </div>
     </div>
 </div>

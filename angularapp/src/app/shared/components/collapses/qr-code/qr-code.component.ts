@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-qr-code',
@@ -22,7 +23,7 @@ export class QrCodeComponent implements OnInit {
   }
 
   getEmployee() {
-    this.employeeService.employee$.subscribe({
+    this.employeeService.employee$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.employee = response;
       }
@@ -31,7 +32,7 @@ export class QrCodeComponent implements OnInit {
 
   downloadQRCode() {
     if (this.employee) {
-      this.employeeService.getQRCode(this.employee.email).subscribe({
+      this.employeeService.getQRCode(this.employee.email).pipe(take(1)).subscribe({
         next: (response: Blob) => {
           const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
           const a = document.createElement('a');// Create an anchor element and trigger a click to start the download

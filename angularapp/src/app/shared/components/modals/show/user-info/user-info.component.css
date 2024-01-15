@@ -5,3 +5,12 @@ img {
     box-shadow: 4px 2px 3px black;
     background-color: rgb(102, 102, 102);
 }
+
+.select-rest:hover {
+    background-color: rgba(220, 220, 220, 0.623);
+    cursor: pointer;
+}
+
+.rest-list {
+    max-height: 160px !important;
+}

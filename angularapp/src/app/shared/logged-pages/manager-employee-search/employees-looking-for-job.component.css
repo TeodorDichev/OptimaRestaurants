@@ -1,10 +1,11 @@
 .employee:hover {
     background-color: gainsboro;
+    cursor: pointer;
 }
 
 .empl-img {
     aspect-ratio: 1/1;
-    width: 100% !important;
+    width: 80% !important;
     border-color: gainsboro;
     border-radius: 20px;
 }

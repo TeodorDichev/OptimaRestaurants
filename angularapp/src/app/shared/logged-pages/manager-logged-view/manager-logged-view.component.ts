@@ -6,6 +6,7 @@ import { Manager } from 'src/app/shared/models/manager/manager';
 import { SharedService } from '../../shared.service';
 import { Restaurant } from '../../models/restaurant/restaurant';
 import { Employee } from '../../models/employee/employee';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -78,7 +79,7 @@ export class ManagerLoggedViewComponent implements OnInit {
   }
 
   private getUser() {
-    this.accountService.user$.subscribe({
+    this.accountService.user$.pipe(take(1)).subscribe({
       next: (user: any) => {
         this.user = user;
       }

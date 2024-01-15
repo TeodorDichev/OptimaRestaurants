@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-register-manager',
@@ -37,12 +38,11 @@ export class RegisterManagerComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.registerForm.valid) {
-      this.accountService.registerManager(this.registerForm.value).subscribe({
+      this.accountService.registerManager(this.registerForm.value).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          this.managerService.getManager(response.email).subscribe({
+          this.managerService.getManager(response.email).pipe(take(1)).subscribe({
             next: (resp: any) => {
-              console.log(resp);
               this.managerService.setManager(resp);
             }
           })

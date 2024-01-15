@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
@@ -52,7 +53,7 @@ export class EditManagerComponent {
     this.errorMessages = [];
     
     if (this.editManagerForm.valid && this.email) {
-      this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
+      this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -71,7 +72,7 @@ export class EditManagerComponent {
 
   deleteManagerAccount() {
     if (this.email) {
-      this.managerService.deleteManagerAccount(this.email).subscribe({
+      this.managerService.deleteManagerAccount(this.email).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -88,7 +89,7 @@ export class EditManagerComponent {
   }
 
   private setManager() {
-    this.managerService.manager$.subscribe({
+    this.managerService.manager$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.manager = response;
       }

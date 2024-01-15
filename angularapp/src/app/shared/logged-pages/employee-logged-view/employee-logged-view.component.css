@@ -11,6 +11,7 @@ img {
 
 .restaurant:hover {
     background-color: gainsboro;
+    cursor: pointer;
 }
 
 .display-list {

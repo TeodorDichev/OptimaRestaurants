@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee/employee';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
 import { SharedService } from '../../shared.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employees-looking-for-job',
@@ -19,10 +20,14 @@ export class EmployeesLookingForJobComponent implements OnInit {
   }
 
   getEmployeesLookingForJob() {
-    this.managerService.getEmployeesLookingForJob().subscribe({
+    this.managerService.getEmployeesLookingForJob().pipe(take(1)).subscribe({
       next: (response: any) => {
         this.employeesLookingForJob = response;
       }
     });
+  }
+
+  getEmployeeInfo(employeeEmail: string) {
+    this.sharedService.openUserInfoModal(employeeEmail, 'Employee');
   }
 }

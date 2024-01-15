@@ -1,4 +1,4 @@
-import { timeout, timer } from 'rxjs';
+import { take, timeout, timer } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { User } from 'src/app/shared/models/account/user';
@@ -41,7 +41,7 @@ export class RestaurantInfoComponent implements OnInit {
   }
 
   getRestaurant() {
-    this.restaurantsService.getRestaurantDetails(this.restaurantId).subscribe({
+    this.restaurantsService.getRestaurantDetails(this.restaurantId).pipe(take(1)).subscribe({
       next: (response: any) => {
         this.restaurant = response;
         if (!!!this.user?.isManager) {
@@ -55,7 +55,7 @@ export class RestaurantInfoComponent implements OnInit {
   }
 
   getUserInfo() {
-    this.accountService.user$.subscribe({
+    this.accountService.user$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.user = response;
       }
@@ -63,7 +63,7 @@ export class RestaurantInfoComponent implements OnInit {
   }
 
   checkIfEmployeeWorksInRestaurant() {
-    this.employeeService.employee$.subscribe({
+    this.employeeService.employee$.pipe(take(1)).subscribe({
       next: (response: any) => {
         this.employeeWorksInRestaurant = response.restaurants.some((item: { id: string; }) => item.id === this.restaurantId);
       }
@@ -80,7 +80,7 @@ export class RestaurantInfoComponent implements OnInit {
     if (this.restaurant && this.user) {
       this.employeeRequest.restaurantId = this.restaurant.id;
       this.employeeRequest.employeeEmail = this.user.email;
-      this.restaurantsService.sendWorkingRequest(this.employeeRequest).subscribe({
+      this.restaurantsService.sendWorkingRequest(this.employeeRequest).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
