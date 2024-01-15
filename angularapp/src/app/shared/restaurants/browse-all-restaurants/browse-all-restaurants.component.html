@@ -20,7 +20,7 @@
             </div>
             <div class="col-2 my-auto font-size-20">
                 <div class="fw-bold">Категория / Оценка</div>
-                <div class="ms-2 text-start fst-italic">
+                <div class="ms-2 text-start fst-italic"> 
                     <div class="my-1">
                         Ястия / <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
                     </div>
@@ -35,11 +35,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-2 my-auto font-size-20">
-                <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}" *ngIf="restaurant.topEmployeeEmail">
+            <div class="col-2 my-auto font-size-20" *ngIf="restaurant.topEmployeePicturePath">
+                <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
             </div>
             <div class="col-2 my-auto font-size-20" *ngIf="restaurant.topEmployeeEmail">
-                <div class="fw-bold">Най-добър работник:
+                <div class="fw-bold">Най-добър работник: 
                     <span class="fw-normal">{{restaurant.topEmployeeFullName}}</span>
                 </div>
                 <div class="fw-bold">Неговият имейл:

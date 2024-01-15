@@ -32,6 +32,7 @@ import { SearchResultAccountComponent } from './components/collapses/search-resu
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { SearchResultRestaurantComponent } from './components/collapses/search-result/restaurant/search-result-restaurant.component';
+import { ReviewsComponent } from './restaurants/reviews/reviews.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { SearchResultRestaurantComponent } from './components/collapses/search-r
     SearchResultAccountComponent,
     NavbarComponent,
     UserInfoComponent,
-    SearchResultRestaurantComponent
+    SearchResultRestaurantComponent,
+    ReviewsComponent
   ],
   imports: [
     CommonModule,
