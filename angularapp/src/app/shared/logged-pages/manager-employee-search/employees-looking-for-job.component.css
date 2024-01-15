@@ -1,0 +1,10 @@
+.employee:hover {
+    background-color: gainsboro;
+}
+
+.empl-img {
+    aspect-ratio: 1/1;
+    width: 100% !important;
+    border-color: gainsboro;
+    border-radius: 20px;
+}

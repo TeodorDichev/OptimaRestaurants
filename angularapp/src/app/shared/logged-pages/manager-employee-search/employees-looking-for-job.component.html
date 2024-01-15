@@ -2,3 +2,16 @@
 <div class="font-size-30 text-center roboto chocolate fw-bold my-4">
     Всички работници, търсещи работа
 </div>
+<div class="roboto max-width text-start d-flex" *ngFor="let employee of employeesLookingForJob">
+    <div class="row w-100 employee max-width border-top border-bottom my-3">
+        <div class="col-2 p-3">
+            <img class="empl-img" src="{{employee.profilePicturePath}}">
+        </div>
+        <div class="col-3">
+            <span>{{employee.firstName}} {{employee.lastName}}</span>
+        </div>
+        <div class="col-3">
+            
+        </div>
+    </div>
+</div>

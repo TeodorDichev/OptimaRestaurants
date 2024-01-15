@@ -48,6 +48,10 @@ export class ManagerService {
     return this.http.get(`${environment.appUrl}/api/manager/get-all-requests/${email}`);
   }
 
+  getEmployeesLookingForJob() {
+    return this.http.get(`${environment.appUrl}/api/manager/browse-employees/looking-for-job`);
+  }
+
   respondToRequest(requestResponse: RequestResponse) {
     return this.http.post(`${environment.appUrl}/api/manager/respond-to-request`, requestResponse);
   }
