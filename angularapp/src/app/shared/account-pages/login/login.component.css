@@ -1,11 +1,21 @@
-.outer {
-    height: 100%;
-    width: 100%;
-    background-image: url('../../../../assets/images/login.png');
+::ng-deep app-login {
+    background-image: url('../../../../assets/images/login.png') !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .custom-date-input {
     border: transparent;
+}
+
+.content-screen {
+    align-items: center;
+    gap: 16px;
+    align-self: center;
+    padding: 24px;
 }
 
 .panel-heading {
@@ -13,27 +23,11 @@
     margin-bottom: 10px;
 }
 
-#forget {
-    min-width: 100px;
-    margin-left: auto;
+a {
     text-decoration: none;
-    cursor: pointer;
-    color: chocolate;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-.btn {
-    margin-top: 20px;
-    border-radius: 15px;
 }
 
 .panel {
-    margin-top: 20vh;
-    min-height: 30vh;
-    box-shadow: 20px, 20px, 80px rgb(218, 218, 218);
     border-radius: 12px;
 }
 

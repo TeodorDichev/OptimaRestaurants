@@ -1,53 +1,41 @@
-<div class="outer">
-    <nav-top></nav-top>
-    <div class="container">
-        <div class="row d-flex justify-content-center">
-            <div class="col-lg-5 col-md-7">
-                <div class="panel border bg-white">
-                    <div class="panel-heading">
-                        <div class="roboto-with-shadow font-size-30 chocolate pt-3 font-weight-bold">Влизане в профил</div>
-                    </div>
-                    <div class="panel-body p-3">
-                        <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
-                            <div class="form-group pt-3">
-                                <div class="input-field col-12 my-2">
-                                    <span class="fa fa-user p-2"></span>
-                                    <input formControlName="userName" type="text" placeholder="Имейл"
-                                        [class.is-invalid]="submitted && loginForm.get('userName')?.errors">
-                                </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && loginForm.get('userName')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                                <div class="input-field col-12 my-2">
-                                    <span class="fa fa-lock p-2"></span>
-                                    <input formControlName="password" [type]="type" placeholder="Парола"
-                                        [class.is-invalid]="submitted && loginForm.get('password')?.errors">
-                                    <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
-                                </div>
-                                <span class="text-danger"
-                                    *ngIf="submitted && loginForm.get('password')?.hasError('required')">
-                                    Полето е задължително!
-                                </span>
-                            </div>
-                            <div class="form-floating" *ngIf="errorMessages.length > 0">
-                                <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
-                                <a class="btn btn-link" (click)="resendEmailConfirmaitonLink()"
-                                *ngIf="errorMessages[0].includes('Моля потвърдете имейл адреса си.')">
-                                Не сте получили имейл за потвърждаване? Натиснете тук.
-                                </a>
-                            </div>
-                            <div class="form-inline fr mt-4">
-                                <a id="forget" class="font-weight-bold" routerLink="/account/send-email/forgot-username-or-password">Забравена парола или имейл?</a>
-                            </div>
-                            <button type="submit" class="btn btn-chocolate mt-4 w-100">Влез</button>
-                            <div class="text-center pt-4 text-muted">Нямате акаунт?
-                                <a id="forget" routerLink="/account/register-employee">Създайте профил</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<nav-top></nav-top>
+<div class="content align-items-center justify-content-center">
+    <form class="panel content-screen bg-white" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
+        <div class="panel-heading">
+            <div class="h1 theme-main fw-bold">Влизане в профил</div>
         </div>
-    </div>
+        <div class="input-field">
+            <span class="fa fa-user p-2"></span>
+            <input formControlName="userName" type="text" placeholder="Имейл"
+                [class.is-invalid]="submitted && loginForm.get('userName')?.errors">
+        </div>
+        <span class="text-danger" *ngIf="submitted && loginForm.get('userName')?.hasError('required')">
+            Полето е задължително!
+        </span>
+        <div class="input-field">
+            <span class="fa fa-lock p-2"></span>
+            <input formControlName="password" [type]="type" placeholder="Парола"
+                [class.is-invalid]="submitted && loginForm.get('password')?.errors">
+            <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
+        </div>
+        <span class="text-danger" *ngIf="submitted && loginForm.get('password')?.hasError('required')">
+            Полето е задължително!
+        </span>
+        <div class="form-floating" *ngIf="errorMessages.length > 0">
+            <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+            <a class="theme-main" (click)="resendEmailConfirmaitonLink()"
+                *ngIf="errorMessages[0].includes('Моля потвърдете имейл адреса си.')">
+                Не сте получили имейл за потвърждаване? Натиснете тук.
+            </a>
+        </div>
+        <div class="form-inline">
+            <a class="font-weight-bold theme-main"
+                routerLink="/account/send-email/forgot-username-or-password">Забравена парола или
+                имейл?</a>
+        </div>
+        <button type="submit" class="btn btn-chocolate w-100">Влез</button>
+        <div class="text-center text-muted">Нямате акаунт?
+            <a class="theme-main" routerLink="/account/register-employee">Създайте профил</a>
+        </div>
+    </form>
 </div>
