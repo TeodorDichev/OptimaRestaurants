@@ -29,6 +29,7 @@ namespace webapi.Services.ModelServices
                 Day = model.Day,
                 Employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail),
                 Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId),
+                AssignedOn = DateTime.Now,
                 From = model.From,
                 To = model.To,
                 Reason = model.Reason,
@@ -40,8 +41,10 @@ namespace webapi.Services.ModelServices
 
             return schedule;
         }
-        public async Task<Schedule> EditScheduleAssignment(Schedule schedule, ScheduleDetailsDto model)
+        public async Task<Schedule> EditScheduleAssignment(ScheduleDetailsDto model)
         {
+            Schedule schedule = await GetEmployeeAssignment(model.ScheduleId);
+            
             schedule.Day = model.Day;
             schedule.Employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
             schedule.Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
@@ -78,11 +81,11 @@ namespace webapi.Services.ModelServices
 
             return assignment;
         }
-        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployee(Employee employee)
+        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployee(Employee employee, int month)
         {
             List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
 
-            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee).ToListAsync())
+            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Day.Month == month).ToListAsync())
             {
                 schedule.Add(new ScheduleBrowseDto
                 {
@@ -96,11 +99,11 @@ namespace webapi.Services.ModelServices
 
             return schedule;
         }
-        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployeeInRestaurant(Employee employee, Restaurant restaurant)
+        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployeeInRestaurant(Employee employee, Restaurant restaurant, int month)
         {
             List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
 
-            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Restaurant == restaurant).ToListAsync())
+            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Restaurant == restaurant && s.Day.Month == month).ToListAsync())
             {
                 schedule.Add(new ScheduleBrowseDto
                 {
@@ -177,6 +180,22 @@ namespace webapi.Services.ModelServices
             if (schedule.From > from) return true;
 
             return false;
+        }
+        public async Task<bool> IsAssignmentForWork(string scheduleId)
+        {
+            return await _context.Schedules.AnyAsync(a => a.IsWorkDay && a.Id.ToString() == scheduleId);
+        }
+        public async Task<bool> DeleteAssignment(string scheduleId)
+        {
+            try
+            {
+                _context.Schedules.Remove(await GetEmployeeAssignment(scheduleId));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public async Task SaveChangesAsync()
         {

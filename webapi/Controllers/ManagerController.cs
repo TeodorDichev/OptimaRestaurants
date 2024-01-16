@@ -187,7 +187,7 @@ namespace webapi.Controllers
             if (await _requestService.IsRequestAlreadySent(restaurant.Manager.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
             if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Потребителят вече работи в този ресторант!");
 
-            await _requestService.AddRequest(employee, restaurant);
+            await _requestService.AddRequest(employee, restaurant, false);
             await _restaurantService.SaveChangesAsync();
 
             return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));

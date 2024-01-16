@@ -13,16 +13,31 @@ namespace webapi.Services.ModelServices
         {
             _context = context;
         }
-        public async Task<Request> AddRequest(Employee sender, Restaurant restaurant)
+        public async Task<Request> AddRequest(Employee employee, Restaurant restaurant, bool isFromEmployee)
         {
-            Request request = new Request
-            {
-                Sender = sender.Profile,
-                Receiver = restaurant.Manager.Profile,
-                Restaurant = restaurant,
-                SentOn = DateTime.Now,
-            };
+            Request request;
 
+            if (isFromEmployee)
+            {
+                request = new Request
+                {
+                    Sender = employee.Profile,
+                    Receiver = restaurant.Manager.Profile,
+                    Restaurant = restaurant,
+                    SentOn = DateTime.Now,
+                };
+            }
+            else
+            {
+                request = new Request
+                {
+                    Sender = restaurant.Manager.Profile,
+                    Receiver = employee.Profile,
+                    Restaurant = restaurant,
+                    SentOn = DateTime.Now,
+                };
+
+            }
             await _context.Requests.AddAsync(request);
             return request;
         }

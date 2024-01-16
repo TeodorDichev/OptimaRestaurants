@@ -9,6 +9,7 @@ namespace webapi.Models
         public virtual required Employee Employee { get; set; }
         public virtual required Restaurant Restaurant { get; set; }
         public required DateOnly Day { get; set; }
+        public required DateTime AssignedOn { get; set; } = DateTime.Now;
         public TimeOnly? From { get; set; }
         public TimeOnly? To { get; set; }
         public bool IsWorkDay { get; set; }

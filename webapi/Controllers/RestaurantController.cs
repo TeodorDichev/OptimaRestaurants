@@ -129,7 +129,7 @@ namespace webapi.Controllers
 
             if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");
 
-            await _requestService.AddRequest(employee, restaurant);
+            await _requestService.AddRequest(employee, restaurant, true);
             await _restaurantService.SaveChangesAsync();
 
             return Ok(new JsonResult(new { title = "Успешно изпратена заявка!", message = $"Вашата заявка беше изпратена!" }));
