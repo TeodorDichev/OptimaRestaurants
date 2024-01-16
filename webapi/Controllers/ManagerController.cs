@@ -3,6 +3,7 @@ using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
+using webapi.DTOs.Schedule;
 using webapi.Models;
 using webapi.Services.ClassServices;
 using webapi.Services.ModelServices;
@@ -22,16 +23,19 @@ namespace webapi.Controllers
         private readonly EmployeeService _employeeService;
         private readonly RestaurantService _restaurantService;
         private readonly RequestService _requestService;
+        private readonly ScheduleService _scheduleService;
 
         public ManagerController(EmployeeService employeeService,
                 ManagerService managerService,
                 RequestService requestService,
-                RestaurantService restaurantService)
+                RestaurantService restaurantService,
+                ScheduleService scheduleService)
         {
             _managerService = managerService;
             _restaurantService = restaurantService;
             _requestService = requestService;
             _employeeService = employeeService;
+            _scheduleService = scheduleService;
         }
 
         [HttpGet("api/manager/get-manager/{email}")]
@@ -184,7 +188,7 @@ namespace webapi.Controllers
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
             if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");
 
-            if (await _requestService.IsRequestAlreadySent(restaurant.Manager.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
+            if (await _requestService.IsRequestAlreadySent(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
             if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Потребителят вече работи в този ресторант!");
 
             await _requestService.AddRequest(employee, restaurant, false);
@@ -225,6 +229,79 @@ namespace webapi.Controllers
                 await _requestService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно отхвърлена заявка!", message = $"Заявката на {employee.Profile.FirstName} е отхвърлена!" }));
             }
+        }
+
+        [HttpPost("api/manager/schedule/add-assignment")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> AddAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(scheduleDto.EmployeeEmail);
+
+            Restaurant restaurant;
+            if (!await _restaurantService.CheckRestaurantExistById(scheduleDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(scheduleDto.RestaurantId);
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+
+            /* Manager can add both working and leisure days */
+
+            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            {
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.SaveChangesAsync();
+                /* TO DO */
+                return Ok();
+            }
+            else return BadRequest("Вече имате запазен друг ангажимент!");
+        }
+
+        [HttpPut("api/manager/schedule/edit-assignment")]
+        public async Task<ActionResult<List<ScheduleBrowseDto>>> EditAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        {
+            if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
+            if (!await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
+
+            /* Deleting the old assignment temporarily */
+            if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
+            await _scheduleService.SaveChangesAsync();
+
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(scheduleDto.EmployeeEmail);
+
+            Restaurant restaurant;
+            if (!await _restaurantService.CheckRestaurantExistById(scheduleDto.RestaurantId)) return BadRequest("Ресторантът не съществува!");
+            else restaurant = await _restaurantService.GetRestaurantById(scheduleDto.RestaurantId);
+            if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
+
+            /* Checking if it can fit in the schedule */
+            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            {
+                await _scheduleService.EditScheduleAssignment(scheduleDto);
+                await _scheduleService.SaveChangesAsync();
+                /* TO DO */
+                return Ok();
+            }
+            else
+            {
+                /* Adding the old assignment back because the updated one did not fit */
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.SaveChangesAsync();
+                return BadRequest("Вече съществува запазен друг ангажимент и не можете да промените графика!");
+            }
+        }
+
+        [HttpDelete("api/manager/schedule/delete-assignment/{scheduleId}")]
+        public async Task<IActionResult> DeleteAssignment(string scheduleId)
+        {
+            if (!await _scheduleService.DoesScheduleExistsById(scheduleId)) return BadRequest("Тази задача от графика не съществува");
+            if (!await _scheduleService.IsAssignmentForWork(scheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
+            if (await _scheduleService.DeleteAssignment(scheduleId))
+            {
+                await _scheduleService.SaveChangesAsync();
+                return Ok(new JsonResult(new { title = "Успешно изтрита задача!", message = "Успешно изтрихте задачата от графика!" }));
+            }
+            return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
         }
 
         private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email)
