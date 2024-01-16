@@ -43,7 +43,7 @@ export class EmployeeLoggedViewComponent implements OnInit {
   }
 
   private getEmployee() {
-    this.employeeService.employee$.pipe(take(1)).subscribe(employee => {
+    this.employeeService.employee$.subscribe(employee => {
       if (employee) {
         this.employee = employee;
       }

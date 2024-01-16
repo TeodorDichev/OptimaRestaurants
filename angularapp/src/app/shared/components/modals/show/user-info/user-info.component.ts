@@ -86,13 +86,16 @@ export class UserInfoComponent implements OnInit {
   }
 
   sendWorkingRequest(restaurantId: string) {
-    if (this.email){
+    if (this.email) {
       this.workingRequest.employeeEmail = this.email;
       this.workingRequest.restaurantId = restaurantId;
       this.managerService.employeeWorkingRequest(this.workingRequest).pipe(take(1)).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
+        },
+        error: error => {
+          this.sharedService.showNotification(false, 'Неуспешно изпращане на заявка!', error.error);
         }
       })
     }
