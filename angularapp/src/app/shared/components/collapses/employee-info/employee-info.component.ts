@@ -29,7 +29,7 @@ export class EmployeeInfoComponent {
 
   private getEmployee() {
     if (this.employeeEmail) {
-      this.employeeService.employee$.pipe(take(1)).subscribe({
+      this.employeeService.employee$.subscribe({
         next: (response: any) => {
           this.employee = response;
         }

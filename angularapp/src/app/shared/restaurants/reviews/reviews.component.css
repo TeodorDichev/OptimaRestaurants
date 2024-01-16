@@ -1,0 +1,7 @@
+.outer {
+    display: flex;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+    background-color: lightblue;
+}

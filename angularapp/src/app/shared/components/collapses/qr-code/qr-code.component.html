@@ -6,7 +6,7 @@
         {{message}} 
     </div>
     <img class="col-10 text-center" src="{{employee?.qrCodePath}}" *ngIf="employee?.qrCodePath">
-    <div class="download-qr fst-italic fw-bold mb-4 font-size-20 chocolate" (click)="downloadQRCode()">
+    <div class="download-qr fst-italic text-decoration-underline fw-bold mb-4 font-size-20 chocolate" (click)="downloadQRCode()">
         Свалете вашия код
     </div>
     <div class="text-end border-top">

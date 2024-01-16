@@ -54,7 +54,6 @@ export class InboxComponent implements OnInit {
     else if (this.user?.isManager == false) {
       this.employeeService.getRequests(this.user.email).subscribe({
         next: (response: any) => {
-          console.log(response);
           this.requests = response;
 
           const hasUnconfirmedRequest = response.some(
@@ -94,11 +93,13 @@ export class InboxComponent implements OnInit {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.bsModalRef.hide();
             this.getRequests();
-            this.employeeService.employee$.subscribe({
-              next: (response: any) => {
-                this.employeeService.setEmployee(response);
-              }
-            })
+            if (this.user?.email){
+              this.employeeService.getEmployee(this.user?.email).subscribe({
+                next: (response: any) => {
+                  this.employeeService.setEmployee(response);
+                }
+              })
+            }
           }
         })
       }

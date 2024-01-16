@@ -37,12 +37,12 @@ export class QrCodeComponent implements OnInit {
           const blobUrl = window.URL.createObjectURL(response);  // Create a Blob object URL for the downloaded file       
           const a = document.createElement('a');// Create an anchor element and trigger a click to start the download
           a.href = blobUrl;
-          a.download = this.employee?.firstName + '_cv.pdf';
+          a.download = this.employee?.firstName + '_qr.png';
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a); // Cleanup: Remove the anchor and revoke the Blob URL
           window.URL.revokeObjectURL(blobUrl);       
-          this.sharedService.showNotification(true, 'Успешно сваляне.', 'Вашето CV беше свалено успешно!');
+          this.sharedService.showNotification(true, 'Успешно сваляне.', 'Вашият QR код беше свален успешно!');
           this.bsModalRef.hide();
         },
         error: (error: any) => {

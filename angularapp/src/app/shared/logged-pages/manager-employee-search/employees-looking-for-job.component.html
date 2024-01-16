@@ -2,9 +2,8 @@
 <div class="font-size-30 text-center roboto fw-bold my-4">
     Всички работници, търсещи работа
 </div>
-<div class="roboto max-width text-start d-flex" *ngFor="let employee of employeesLookingForJob">
-    <div class="row w-100 employee max-width border-top border-bottom my-1 roboto"
-        (click)="getEmployeeInfo(employee.email)">
+<div class="roboto text-start d-flex" *ngFor="let employee of employeesLookingForJob">
+    <div class="d-flex w-100 employee border-top border-bottom my-1 roboto" (click)="getEmployeeInfo(employee.email)">
         <div class="col-2 p-3 text-center">
             <img class="empl-img" src="{{employee.profilePicturePath}}" *ngIf="employee.profilePicturePath">
         </div>
