@@ -116,15 +116,9 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/employee/get-schedule-details/{scheduleId}")]
-        public async Task<ActionResult<ScheduleDetailsDto>> GetAssignmentDetails(string scheduleId)
-        {
-            if (!await _scheduleService.DoesScheduleExistsById(scheduleId)) return BadRequest("Тази задача от графика не съществува");
-            else return await _scheduleService.GetAssignmentDetails(scheduleId);
-        }
 
         [HttpGet("api/employee/get-restaurant-schedule/{email}/{restaurantId}/{month}")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetEmployeeRestaurantSchedule(string email, string restaurantId, int month)
+        public async Task<ActionResult<List<EmployeeFullScheduleDto>>> GetEmployeeRestaurantSchedule(string email, string restaurantId, int month)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
@@ -138,7 +132,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/employee/get-full-schedule/{email}/{month}")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetEmployeeFullSchedule(string email, int month)
+        public async Task<ActionResult<List<EmployeeFullScheduleDto>>> GetEmployeeFullSchedule(string email, int month)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
@@ -148,7 +142,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/employee/get-day-schedule/{email}/{day}")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> GetDaySchedule(string email, DateOnly day)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateOnly day)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
@@ -165,7 +159,7 @@ namespace webapi.Controllers
         /// <returns> The schedule for the day </returns>
 
         [HttpPost("api/employee/schedule/add-assignment")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> AddAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
         {
             if (scheduleDto.Day.AddDays(-7) < DateOnly.FromDateTime(DateTime.Now)) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
             
@@ -185,13 +179,13 @@ namespace webapi.Controllers
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
-                return await GetDaySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
+                return await GetDailySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
             }
             else return BadRequest("Вече имате запазен друг ангажимент!");
         }
 
         [HttpPut("api/employee/schedule/edit-assignment")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> EditAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте графика за работен ден! Моля свържете се с мениджъра Ви!");
@@ -214,7 +208,7 @@ namespace webapi.Controllers
             {
                 await _scheduleService.EditScheduleAssignment(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
-                return await GetDaySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
+                return await GetDailySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
             }
             else 
             { 

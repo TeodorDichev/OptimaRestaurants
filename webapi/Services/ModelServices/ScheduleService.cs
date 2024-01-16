@@ -22,7 +22,7 @@ namespace webapi.Services.ModelServices
         }
 
         /* Possible issue: not adding to the specific employee */
-        public async Task<Schedule> AddAssignmentToSchedule(ScheduleDetailsDto model)
+        public async Task<Schedule> AddAssignmentToSchedule(ScheduleDto model)
         {
             Schedule schedule = new Schedule
             {
@@ -41,7 +41,7 @@ namespace webapi.Services.ModelServices
 
             return schedule;
         }
-        public async Task<Schedule> EditScheduleAssignment(ScheduleDetailsDto model)
+        public async Task<Schedule> EditScheduleAssignment(ScheduleDto model)
         {
             Schedule schedule = await GetEmployeeAssignment(model.ScheduleId);
             
@@ -62,74 +62,52 @@ namespace webapi.Services.ModelServices
         {
             return await _context.Schedules.AnyAsync(a => a.Id.ToString() == scheduleId);
         }
-        public async Task<ScheduleDetailsDto> GetAssignmentDetails(string scheduleId)
+        public async Task<List<EmployeeFullScheduleDto>> GetAssignedDaysOfEmployee(Employee employee, int month)
         {
-            Schedule schedule = await GetEmployeeAssignment(scheduleId);
-
-            ScheduleDetailsDto assignment = new ScheduleDetailsDto
-            {
-                ScheduleId = schedule.Id.ToString(),
-                Day = schedule.Day,
-                EmployeeEmail = schedule.Employee.Profile.Email ?? string.Empty,
-                RestaurantId = schedule.Restaurant.Id.ToString(),
-                Reason = schedule.Reason,
-                From = schedule.From,
-                To = schedule.To,
-                FullDay = schedule.FullDay,
-                IsWorkDay = schedule.IsWorkDay
-            };
-
-            return assignment;
-        }
-        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployee(Employee employee, int month)
-        {
-            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+            List<EmployeeFullScheduleDto> schedule = new List<EmployeeFullScheduleDto>();
 
             foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Day.Month == month).ToListAsync())
             {
-                schedule.Add(new ScheduleBrowseDto
+                schedule.Add(new EmployeeFullScheduleDto
                 {
                     ScheduleId = assignment.Id.ToString(),
                     Day = assignment.Day,
-                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
-                    RestaurantId = assignment.Restaurant.Id.ToString(),
                     IsWorkDay = assignment.IsWorkDay
                 });
             }
 
             return schedule;
         }
-        public async Task<List<ScheduleBrowseDto>> GetAssignedDaysOfEmployeeInRestaurant(Employee employee, Restaurant restaurant, int month)
+        public async Task<List<EmployeeFullScheduleDto>> GetAssignedDaysOfEmployeeInRestaurant(Employee employee, Restaurant restaurant, int month)
         {
-            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+            List<EmployeeFullScheduleDto> schedule = new List<EmployeeFullScheduleDto>();
 
             foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Restaurant == restaurant && s.Day.Month == month).ToListAsync())
             {
-                schedule.Add(new ScheduleBrowseDto
+                schedule.Add(new EmployeeFullScheduleDto
                 {
                     ScheduleId = assignment.Id.ToString(),
                     Day = assignment.Day,
-                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
-                    RestaurantId = assignment.Restaurant.Id.ToString(),
                     IsWorkDay = assignment.IsWorkDay
                 });
             }
 
             return schedule;
         }
-        public async Task<List<ScheduleBrowseDto>> GetDailyEmployeeSchedule(Employee employee, DateOnly day)
+        public async Task<List<EmployeeDailyScheduleDto>> GetDailyEmployeeSchedule(Employee employee, DateOnly day)
         {
-            List<ScheduleBrowseDto> schedule = new List<ScheduleBrowseDto>();
+            List<EmployeeDailyScheduleDto> schedule = new List<EmployeeDailyScheduleDto>();
 
             foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Day == day).ToListAsync())
             {
-                schedule.Add(new ScheduleBrowseDto
+                schedule.Add(new EmployeeDailyScheduleDto
                 {
                     ScheduleId = assignment.Id.ToString(),
-                    Day = assignment.Day,
-                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
-                    RestaurantId = assignment.Restaurant.Id.ToString(),
-                    IsWorkDay = assignment.IsWorkDay
+                    IsWorkDay = assignment.IsWorkDay,
+                    From = assignment.From,
+                    To = assignment.To,
+                    RestaurantName = assignment.Restaurant.Name,
+                    IsFullDay = assignment.FullDay
                 });
             }
 

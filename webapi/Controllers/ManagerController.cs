@@ -232,7 +232,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/manager/schedule/add-assignment")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> AddAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        public async Task<ActionResult<List<ScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
@@ -256,7 +256,7 @@ namespace webapi.Controllers
         }
 
         [HttpPut("api/manager/schedule/edit-assignment")]
-        public async Task<ActionResult<List<ScheduleBrowseDto>>> EditAssignment([FromBody] ScheduleDetailsDto scheduleDto)
+        public async Task<ActionResult<List<ScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (!await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
@@ -302,6 +302,34 @@ namespace webapi.Controllers
                 return Ok(new JsonResult(new { title = "Успешно изтрита задача!", message = "Успешно изтрихте задачата от графика!" }));
             }
             return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
+        }
+
+        [HttpGet("api/manager/schedule/get-free-employee/{restaurantId}/{day}")]
+        public async Task<ActionResult<List<EmployeeDto>>> GetFreeEmployees(string restaurantId, DateOnly day)
+        {
+            /* TO DO */
+            return Ok();
+        }
+
+        [HttpGet("api/manager/schedule/get-full-schedule/{restaurantId}/{month}")]
+        public async Task<ActionResult<List<ManagerFullScheduleDto>>> GetFullSchedule(string restaurantId, int month)
+        {
+            /* TO DO */
+            return Ok();
+        }
+
+        [HttpGet("api/manager/schedule/get-not-working-employees/{restaurantId/{day}}")]
+        public async Task<ActionResult<List<EmployeeDto>>> GetNotWorkingEmployees(string restaurantId, DateOnly day)
+        {
+            /* TO DO */
+            return Ok();
+        }
+
+        [HttpGet("api/manager/schedule/get-daily-schedule/{restaurantId/{day}}")]
+        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailySchedule(string restaurantId, DateOnly day)
+        {
+            /* TO DO */
+            return Ok();
         }
 
         private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email)

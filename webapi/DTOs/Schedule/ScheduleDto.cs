@@ -1,6 +1,6 @@
 ﻿namespace webapi.DTOs.Schedule
 {
-    public class ScheduleDetailsDto
+    public class ScheduleDto
     {
         public required string ScheduleId { get; set; }
         public required string EmployeeEmail { get; set; }
