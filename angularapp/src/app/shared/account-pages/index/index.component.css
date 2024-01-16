@@ -1,32 +1,19 @@
-.overlay-text {
-    font-family: Roboto Slab;
-    font-size: 27px !important;
-    text-shadow: 2px 2px black;
-    text-decoration: none;
-    color: white;
-    text-align: center;
-    margin-top: 12px;
-}
-
-.btn-outline-light {
-    border-color: transparent;
-    background-color: chocolate;
-    box-shadow: 3px 1px black;
-}
-
-.btn-outline-light:hover {
-    background-color: rgb(145, 75, 25);
-    color: white;
-}
-
-.bg {
+::ng-deep app-index {
     background-image: url('../../../../assets/images/index-page-img.png') !important;
-    width: 100%;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
-@media only screen and (min-height:557px) {
-    .overlay-text {
-        margin-top: 10%;
-    }
+.overlay-text {
+    text-shadow: 2px 2px black;
+    color: white;
+}
+
+.content-screen-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 }

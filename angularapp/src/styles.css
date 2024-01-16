@@ -1,18 +1,75 @@
-body {
+html,
+body,
+app-root {
+    display: flex !important;
     width: 100vw;
     height: 100vh;
+    flex-direction: column;
+    align-items: flex-start;
+    font-family: 'Roboto Slab';
+    padding: 0px;
+    margin: 0px;
+    border: 0;
 }
 
-.pacifico-with-shadow {
-    font-family: Pacifico;
-    text-shadow: 2px 2px black;
-    text-align: center;
+.button {
+    display: flex;
+    background-color: transparent;
+    padding: 12px;
+    border-radius: 8px;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
-.roboto-with-shadow {
-    font-family: Roboto Slab;
-    text-shadow: 1px 1px black;
-    text-align: center;
+.content {
+    display: flex;
+    padding: 48px 12px 48px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1 0 0;
+    align-self: stretch;
+    overflow: scroll;
+}
+
+/* 
+    Currently, content-screen hugs elements inside
+    To make it fill space on main axis, use flex: 1 0 0;
+    Use it inside the component needed, as well as the other comments here
+*/
+.content-screen {
+    display: flex;
+    padding: 8px 24px;
+    flex-direction: column;
+    /* Whether the components inside are build from left to right (row), or top to bottom (column)*/
+    align-items: flex-start;
+    /* How to align (second axis) inside items, start center end */
+    gap: 12px;
+    /* Gap between items, depending on flex-direction */
+    align-self: stretch;
+    justify-content: center;
+    /* How to align (main axis) inside items, start center end */
+}
+
+.screen-left {
+    display: flex;
+    padding: 8px 0px;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.screen-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .roboto {
@@ -23,36 +80,12 @@ body {
     font-family: Pacifico;
 }
 
-.font-size-15 {
-    font-size: 15px !important;
-}
-
-.font-size-18 {
-    font-size: 18px !important;
-}
-
-.font-size-20 {
-    font-size: 20px !important;
-}
-
-.font-size-25 {
-    font-size: 25px !important;
-}
-
-.font-size-30 {
-    font-size: 30px !important;
-}
-
-.font-size-40 {
-    font-size: 40px !important;
-}
-
 .scrollable-vert {
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.chocolate {
+.theme-main {
     color: chocolate !important;
 }
 
@@ -66,41 +99,16 @@ body {
     background-color: rgb(138, 69, 20);
 }
 
-.btn-yellow-inverted {
+.btn-inverted {
     border-color: transparent !important;
     text-shadow: 1px 1px black;
     color: rgb(252, 154, 43);
 }
 
-.btn-yellow-inverted:hover {
+.btn-inverted:hover {
     border-color: transparent !important;
     color: rgba(255, 255, 255, 0.9);
     background-color: rgb(252, 154, 43);
-}
-
-.btn-yellow {
-    border-color: transparent !important;
-    text-shadow: 1px 1px black;
-    color: rgba(255, 255, 255, 0.9);
-    background-color: rgb(252, 154, 43);
-}
-
-.btn-yellow:hover {
-    border-color: transparent !important;
-    background-color: rgba(255, 255, 255, 0.9);
-    color: rgb(252, 154, 43);
-}
-
-.max-height-70vh {
-    max-height: 70vh !important;
-}
-
-.max-height-80vh {
-    max-height: 80vh !important;
-}
-
-.max-height-90vh {
-    max-height: 90vh !important;
 }
 
 .input-field {
@@ -114,14 +122,11 @@ body {
     width: 100%;
 }
 
-nav-top {
-    width: 100% !important;
-}
-
-/* remove the scrollbar */
+/*#region Scrollbar*/
 html,
 body,
 div {
+    /*Firefox remove scrollbar*/
     scrollbar-width: none;
 }
 
@@ -166,3 +171,5 @@ div {
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
+
+/*#endregion Scrollbar*/

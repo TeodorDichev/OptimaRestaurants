@@ -1,3 +1,23 @@
+::ng-deep nav-top {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+}
+
+::ng-deep .navbar {
+    display: flex;
+    align-items: center;
+    padding: 0px 8px 0px 8px;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.collapse-body {
+    justify-content: flex-end;
+    gap: 12px;
+}
+
 .navbar-transparent {
     background-color: rgba(255, 255, 255, 0.6) !important;
 }
@@ -9,10 +29,6 @@
 
 .dropdown-toggle::after {
     display: none;
-}
-
-.navbar {
-    display: flex;
 }
 
 input[type=checkbox] {
