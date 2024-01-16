@@ -318,14 +318,14 @@ namespace webapi.Controllers
             return Ok();
         }
 
-        [HttpGet("api/manager/schedule/get-not-working-employees/{restaurantId/{day}}")]
+        [HttpGet("api/manager/schedule/get-not-working-employees/{restaurantId}/{day}")]
         public async Task<ActionResult<List<EmployeeDto>>> GetNotWorkingEmployees(string restaurantId, DateOnly day)
         {
             /* TO DO */
             return Ok();
         }
 
-        [HttpGet("api/manager/schedule/get-daily-schedule/{restaurantId/{day}}")]
+        [HttpGet("api/manager/schedule/get-daily-schedule/{restaurantId}/{day}")]
         public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailySchedule(string restaurantId, DateOnly day)
         {
             /* TO DO */
