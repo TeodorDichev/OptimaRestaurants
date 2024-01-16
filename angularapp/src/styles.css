@@ -3,22 +3,6 @@ body {
     height: 100vh;
 }
 
-.max-width {
-    max-width: 100% !important;
-}
-
-.min-height {
-    min-height: 100% !important;
-}
-
-.max-height {
-    max-height: 100% !important;
-}
-
-.min-width {
-    min-width: 100% !important;
-}
-
 .pacifico-with-shadow {
     font-family: Pacifico;
     text-shadow: 2px 2px black;

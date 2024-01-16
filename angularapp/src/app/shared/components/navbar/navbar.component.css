@@ -1,26 +1,10 @@
-.btn-choco {
-    border-color: transparent !important;
-    text-shadow: 1px 1px black;
-    color: chocolate;
-}
-
-.btn-choco:hover {
-    border-color: transparent !important;
-    background-color: lightgray;
-}
-
 .navbar-transparent {
     background-color: rgba(255, 255, 255, 0.6) !important;
-}
-
-.navbar-brand {
-    padding-left: 0px;
 }
 
 .dropdown-toggle.show {
     background-color: rgb(255, 147, 17) !important;
     color: white;
-    /* Change colors when dropdown is open */
 }
 
 .dropdown-toggle::after {
