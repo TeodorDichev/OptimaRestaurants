@@ -35,57 +35,75 @@ export class InboxComponent implements OnInit {
   }
 
   getRequests() {
-      if (this.user?.isManager) {
-        this.managerService.getRequests(this.user.email).subscribe({
-          next: (response: any) => {
-            this.requests = response;
-            
-            const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
-            if (hasUnconfirmedRequest) {
-              this.newNotifications = true;
-            } else {
-              this.newNotifications = false;
-            } 
+    if (this.user?.isManager) {
+      this.managerService.getRequests(this.user.email).subscribe({
+        next: (response: any) => {
+          this.requests = response;
 
-            this.sharedService.updateNotifications(this.newNotifications);
+          const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
+          if (hasUnconfirmedRequest) {
+            this.newNotifications = true;
+          } else {
+            this.newNotifications = false;
           }
-        })
-      }
-      else if (!!this.user?.isManager) {   
-        this.employeeService.getRequests(this.user.email).subscribe({
-          next: (response: any) => {
-            this.requests = response;
 
-            const hasUnconfirmedRequest = response.some(
-              (item: { confirmed: boolean; }) => 
+          this.sharedService.updateNotifications(this.newNotifications);
+        }
+      })
+    }
+    else if (this.user?.isManager == false) {
+      this.employeeService.getRequests(this.user.email).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          this.requests = response;
+
+          const hasUnconfirmedRequest = response.some(
+            (item: { confirmed: boolean; }) =>
               item.confirmed === null);
-              
-            if (hasUnconfirmedRequest) {
-              this.newNotifications = true;
-            } else {
-              this.newNotifications = false;
-            }
-            
-            this.sharedService.updateNotifications(this.newNotifications);
+
+          if (hasUnconfirmedRequest) {
+            this.newNotifications = true;
+          } else {
+            this.newNotifications = false;
           }
-        })
-      }
+
+          this.sharedService.updateNotifications(this.newNotifications);
+        }
+      })
+    }
   }
 
-  requestToResponse(confirmed: boolean, currentRequest: Request) {
+  respondToRequest(confirmed: boolean, currentRequest: Request) {
     if (this.user?.email) {
       this.requestResponse.confirmed = confirmed;
       this.requestResponse.requestId = currentRequest.id;
       this.requestResponse.restaurantId = currentRequest.restaurantId;
 
-      this.managerService.respondToRequest(this.requestResponse).subscribe({
-        next: (response: any) => {
-          this.sharedService.showNotification(true, response.value.title, response.value.message);
-          this.bsModalRef.hide();
-          this.getRequests();
-        }
-      })
+      if (this.user.isManager) {
+        this.managerService.respondToRequest(this.requestResponse).subscribe({
+          next: (response: any) => {
+            this.sharedService.showNotification(true, response.value.title, response.value.message);
+            this.bsModalRef.hide();
+            this.getRequests();
+          }
+        })
+      }
+      else {
+        this.employeeService.respondToRequest(this.requestResponse).subscribe({
+          next: (response: any) => {
+            this.sharedService.showNotification(true, response.value.title, response.value.message);
+            this.bsModalRef.hide();
+            this.getRequests();
+            this.employeeService.employee$.subscribe({
+              next: (response: any) => {
+                this.employeeService.setEmployee(response);
+              }
+            })
+          }
+        })
+      }
     }
+
   }
 
   getUser() {
