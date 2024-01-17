@@ -1,12 +1,20 @@
-img {
+.rest-img {
+    max-width: 300px;
     aspect-ratio: 3/2;
     width: 100% !important;
-    background-color: rgb(102, 102, 102);
-    clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
 }
- 
-.outer {
+
+.restaurant {
     display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    gap: 30px;
+    border-radius: 8px;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 50px;
 }
 
 .restaurant:hover {
@@ -14,33 +22,15 @@ img {
     cursor: pointer;
 }
 
-.display-list {
-    max-height: 60vh;
-    width: 100%;
-    border-radius: 4px;
+::ng-deep app-employee-logged-view {
+    background-color: rgb(255, 240, 213);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
-
-@media only screen and (min-height: 600px){
-    .display-list {
-        max-height: 70vh;
-    }
-}
-
-/*when screen is more than 1238px, make lists on top of each other*/
-
-
-@media only screen and (min-height: 910px){
-    .display-list {
-        max-height: 80vh;
-    }
-}
-
-
-.restaurants {
-    width: 60%;
-}
-
-.info-employee {
-    width: 38%;
+.content-screen {
+    justify-content: flex-start;
 }

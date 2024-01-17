@@ -147,6 +147,7 @@ app-root {
     cursor: pointer;
     border: 1px solid #ddd;
     color: chocolate;
+    width: 100%;
 }
 
 input[type='text'],

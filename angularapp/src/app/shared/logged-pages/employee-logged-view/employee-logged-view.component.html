@@ -1,45 +1,26 @@
 <nav-top></nav-top>
-<div class="outer roboto">
-    <div class="mx-1 restaurants">
-        <div class="text-center my-4">
-            <span class="fw-bold font-size-30">
-                Ресторантите, в които работите</span>
-        </div>
-        <div class="scrollable-vert display-list">
-            <div *ngFor="let restaurant of this.employee?.restaurants;">
-                <div class="row mb-3 restaurant border-bottom border-top" (click)="openRestaurantInfo(restaurant)">
-                    <div class="col-6">
-                        <img src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-                    </div>
-                    <div class="col-5 font-size-20 my-auto">
-                        <div class="fw-bold fst-italic font-size-30 chocolate">{{restaurant.name}}</div>
-                        <div class="ms-2">
-                            <div>Адрес: {{restaurant.address}},</div>
-                            <div class="mb-1">Град: {{restaurant.city}}</div>
-                        </div>        
-                        <div class="fw-bold">Категория / Оценка</div>
-                        <div class="text-start fst-italic ms-2">
-                            <div class="my-1">
-                                Ястия / <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Атмосфера / <app-star-rating
-                                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Работници / <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Ресторант / <app-star-rating
-                                    [rating]="restaurant.restaurantAverageRating"></app-star-rating>
-                            </div>
-                        </div> 
+<div class="content flex-direction-row">
+    <div class="content-screen content-screen-fill-row">
+        <div class="text-muted fst-italic h5">
+            Ресторантите, в които работите</div>
+        <div>
+            <div class="scrollable-vert" *ngFor="let restaurant of this.employee?.restaurants;">
+                <div class="restaurant" (click)="openRestaurantInfo(restaurant)">
+                    <div>
+                        <img class="rest-img" src="{{restaurant.iconPath}}">
+                    </div>                   
+                    <div class="rest-info">
+                        <div class="h2 fw-bold">{{restaurant.name}}</div>
+                        <div class="h6 text-muted">{{restaurant.address}}, гр. {{restaurant.city}}</div>
                     </div>
                 </div>
             </div>
+            <div *ngIf="this.employee?.restaurants?.length == 0">
+                Все още не работите за никой ресторант. Разгледайте всички с бутона в навигационното меню.
+            </div>
         </div>
     </div>
-    <div class="mx-1 info-employee">
+    <div class="content-screen content-screen-fill-row">
         <div class="text-center my-4">
             <span class="fw-bold font-size-30">Вашите оценки, {{employee?.firstName}}</span>
         </div>
@@ -72,3 +53,4 @@
             </div>
         </div>
     </div>
+</div>
