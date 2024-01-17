@@ -1,3 +1,5 @@
+/*#region content-screens*/
+
 html,
 body,
 app-root {
@@ -12,18 +14,6 @@ app-root {
     border: 0;
 }
 
-.button {
-    display: flex;
-    background-color: transparent;
-    padding: 12px;
-    border-radius: 8px;
-    align-items: center;
-    gap: 10px;
-    margin: 10px;
-    cursor: pointer;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-}
-
 .content {
     display: flex;
     padding: 48px 12px 48px 12px;
@@ -32,7 +22,7 @@ app-root {
     gap: 12px;
     flex: 1 0 0;
     align-self: stretch;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 /* 
@@ -49,13 +39,13 @@ app-root {
     /* How to align (second axis) inside items, start center end */
     gap: 12px;
     /* Gap between items, depending on flex-direction */
-    align-self: stretch;
     justify-content: center;
     /* How to align (main axis) inside items, start center end */
 }
 
 .screen-left {
     display: flex;
+    flex-direction: column;
     padding: 8px 0px;
     align-items: center;
     gap: 10px;
@@ -65,6 +55,7 @@ app-root {
 
 .screen-right {
     display: flex;
+    flex-direction: column;
     justify-content: flex-end;
     align-items: center;
     gap: 15px;
@@ -72,6 +63,43 @@ app-root {
     align-self: stretch;
 }
 
+.flex-direction-row {
+    flex-direction: row;
+}
+
+.flex-direction-col {
+    flex-direction: column;
+}
+
+.content-screen-fill-row {
+    align-self: stretch;
+}
+
+.content-screen-fill-col {
+    flex: 1 0 0;
+}
+
+.content-screen-fill {
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+/*#endregion content-screens*/
+
+/*#region Styles*/
+
+.button {
+    display: flex;
+    background-color: transparent;
+    padding: 12px 8px;
+    border-radius: 8px;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition-timing-function: linear;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
 .roboto {
     font-family: Roboto Slab;
 }
@@ -119,8 +147,71 @@ app-root {
     cursor: pointer;
     border: 1px solid #ddd;
     color: chocolate;
-    width: 100%;
 }
+
+input[type='text'],
+input[type='password'] {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+    background-color: transparent;
+}
+
+/*#endregion Styles*/
+
+/*#region Animations*/
+
+
+.slide-in-blurred-left {
+	-webkit-animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+	        animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+}
+/*#region Keyframes*/
+@-webkit-keyframes slide-in-blurred-left {
+    0% {
+      -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+              transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+      -webkit-transform-origin: 100% 50%;
+              transform-origin: 100% 50%;
+      -webkit-filter: blur(40px);
+              filter: blur(40px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateX(0) scaleY(1) scaleX(1);
+              transform: translateX(0) scaleY(1) scaleX(1);
+      -webkit-transform-origin: 50% 50%;
+              transform-origin: 50% 50%;
+      -webkit-filter: blur(0);
+              filter: blur(0);
+      opacity: 1;
+    }
+  }
+  @keyframes slide-in-blurred-left {
+    0% {
+      -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+              transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+      -webkit-transform-origin: 100% 50%;
+              transform-origin: 100% 50%;
+      -webkit-filter: blur(40px);
+              filter: blur(40px);
+      opacity: 0;
+    }
+    100% {
+      -webkit-transform: translateX(0) scaleY(1) scaleX(1);
+              transform: translateX(0) scaleY(1) scaleX(1);
+      -webkit-transform-origin: 50% 50%;
+              transform-origin: 50% 50%;
+      -webkit-filter: blur(0);
+              filter: blur(0);
+      opacity: 1;
+    }
+  }
+
+  /*#endregion Keyframes*/
+
+/*#endregion Animations*/
 
 /*#region Scrollbar*/
 html,

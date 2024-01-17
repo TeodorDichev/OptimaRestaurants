@@ -17,3 +17,7 @@
     align-items: center;
     justify-content: flex-start;
 }
+
+.content-screen {
+    background: linear-gradient(90deg, rgb(114, 57, 18) 0%, rgba(9,9,121,0) 50%);
+}

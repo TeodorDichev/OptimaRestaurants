@@ -1,47 +1,45 @@
-.outer {
-    height: 100vh;
-    background-image: url('../../../../assets/images/manager-signup-img.png');
+::ng-deep app-register-manager {
+    background-image: url('../../../../assets/images/manager-signup-img.png') !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .custom-date-input {
     border: transparent;
 }
 
-.panel-heading {
-    text-align: center;
-    margin-bottom: 10px;
+.screen-left {
+    border-radius: 10% 40% / 40% 10%;
+    padding: 40px 40px; 
+    background-color: rgba(255, 255, 255, 0.9);
+    justify-content: center;
+    gap: 14px;
 }
 
-#forget {
+.form-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    align-self: stretch;
+    gap: 14px;
+}
+
+.content {
+    padding-left: 0px;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    align-items: center;
+}
+
+a {
     text-decoration: none;
-    cursor: pointer;
-    color: chocolate;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-.panel {
-    box-shadow: 20px, 20px, 80px rgb(218, 218, 218);
-    border-radius: 12px;
-}
-
-input[type='text'],
-input[type='password'] {
-    border: none;
-    outline: none;
-    box-shadow: none;
-    width: 100%;
 }
 
 .fa-eye-slash.btn {
     border: none;
     outline: none;
     box-shadow: none;
-}
-
-.h3 {
-    color: rgb(248, 168, 110);
-    font-family: Pacifico;
 }

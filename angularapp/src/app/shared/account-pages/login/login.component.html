@@ -1,9 +1,7 @@
 <nav-top></nav-top>
 <div class="content align-items-center justify-content-center">
-    <form class="panel content-screen bg-white" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
-        <div class="panel-heading">
-            <div class="h1 theme-main fw-bold">Влизане в профил</div>
-        </div>
+    <form class="content-screen slide-in-blurred-left" [formGroup]="loginForm" (ngSubmit)="login()">
+        <div class="h1 theme-main fw-bold">Влизане в профил</div>
         <div class="input-field">
             <span class="fa fa-user p-2"></span>
             <input formControlName="userName" type="text" placeholder="Имейл"

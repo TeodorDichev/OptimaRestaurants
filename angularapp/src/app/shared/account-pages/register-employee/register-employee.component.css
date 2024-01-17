@@ -1,46 +1,47 @@
-.outer {
-    height: 100vh;
-    background-image: url('../../../../assets/images/employee-signup-img.png');
+::ng-deep app-register-employee {
+    background-image: url('../../../../assets/images/employee-signup-img.png') !important;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
 }
 
 .custom-date-input {
     border: transparent;
 }
 
-.panel-heading {
-    text-align: center;
-    margin-bottom: 10px;
+.screen-left {
+    border-radius: 10% 40% / 40% 10%;
+    padding: 40px 40px; 
+    background-color: rgba(255, 255, 255, 0.9);
+    justify-content: center;
+    gap: 14px;
 }
 
-.input-field-sm {
-    width: 45%;
+.form-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    align-self: stretch;
+    gap: 14px;
 }
 
-.input-field-sm:first-child {
-    margin-right: 10%;
+.content {
+    padding-left: 0px;
+    justify-content: center;
+    padding: 10px 10px 10px 10px;
+    align-items: center;
 }
 
-#forget {
+a {
     text-decoration: none;
-    cursor: pointer;
-    color: chocolate;
 }
 
-a:hover {
-    text-decoration: none;
-}
-
-.panel {
-    box-shadow: 20px, 20px, 80px rgb(218, 218, 218);
-    border-radius: 12px;
-}
-
-input[type='text'],
-input[type='password'] {
-    border: none;
-    outline: none;
-    box-shadow: none;
-    width: 100%;
+.date-input {
+    background-color: transparent;
+    margin-left: 3%;
+    border-color: transparent;
 }
 
 .fa-eye-slash.btn {
