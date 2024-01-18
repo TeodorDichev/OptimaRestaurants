@@ -14,7 +14,5 @@ namespace webapi.Models
         public TimeOnly? To { get; set; }
         public bool IsWorkDay { get; set; }
         public bool FullDay { get; set; }
-        [MaxLength(300)]
-        public string? Reason { get; set; }
     }
 }

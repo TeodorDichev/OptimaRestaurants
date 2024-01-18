@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using webapi.Data;
+using webapi.DTOs.Employee;
 using webapi.DTOs.Schedule;
 using webapi.Models;
 using webapi.Services.ClassServices;
@@ -32,7 +34,6 @@ namespace webapi.Services.ModelServices
                 AssignedOn = DateTime.Now,
                 From = model.From,
                 To = model.To,
-                Reason = model.Reason,
                 FullDay = (model.To == null || model.From == null),
                 IsWorkDay = model.IsWorkDay
             };
@@ -50,7 +51,6 @@ namespace webapi.Services.ModelServices
             schedule.Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
             schedule.From = model.From;
             schedule.To = model.To;
-            schedule.Reason = model.Reason;
             schedule.FullDay = (model.To == null || model.From == null);
             schedule.IsWorkDay = model.IsWorkDay;
 
@@ -94,11 +94,11 @@ namespace webapi.Services.ModelServices
 
             return schedule;
         }
-        public async Task<List<EmployeeDailyScheduleDto>> GetDailyEmployeeSchedule(Employee employee, DateOnly day)
+        public List<EmployeeDailyScheduleDto> GetEmployeeDailySchedule(Employee employee, DateOnly day)
         {
             List<EmployeeDailyScheduleDto> schedule = new List<EmployeeDailyScheduleDto>();
 
-            foreach (var assignment in await _context.Schedules.Where(s => s.Employee == employee && s.Day == day).ToListAsync())
+            foreach (var assignment in _context.Schedules.Where(s => s.Employee == employee && s.Day == day))
             {
                 schedule.Add(new EmployeeDailyScheduleDto
                 {
@@ -112,6 +112,75 @@ namespace webapi.Services.ModelServices
             }
 
             return schedule;
+        }
+        public async Task<List<FreeEmployeeDto>> GetFreeEmployees(Restaurant restaurant, DateOnly day)
+        {
+            List<Employee> employees = restaurant.EmployeesRestaurants.Where(er => er.EndedOn == null).Select(er => er.Employee).ToList();
+            List<FreeEmployeeDto> freeEmployees = new List<FreeEmployeeDto>();
+
+            foreach (var employee in employees)
+            {
+                /* If this employee has a full day work/leisure assignment for this day in any restaurant then it cannot work on this day */
+                if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.FullDay && a.Day == day)) employees.Remove(employee);
+
+                /* for this day the employee has no assignments */
+                if (!await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Day == day))
+                {
+                    freeEmployees.Add(new FreeEmployeeDto
+                    {
+                        EmployeeEmail = employee.Profile.Email ?? string.Empty,
+                        EmployeeName = employee.Profile.FirstName + " " + employee.Profile.LastName,
+                        RestaurantName = restaurant.Name,
+                        /* From and To are null => no assignments */
+                    });
+                }
+
+                /* For this day the employee has some assignments */
+                freeEmployees.Add(new FreeEmployeeDto
+                {
+                    EmployeeEmail = employee.Profile.Email ?? string.Empty,
+                    EmployeeName = employee.Profile.FirstName + " " + employee.Profile.LastName,
+                    RestaurantName = restaurant.Name,
+                    From = _context.Schedules.Where(a => a.Employee == employee && a.Day == day).OrderBy(a => a.From).Select(a => a.From).First(),
+                    To = _context.Schedules.Where(a => a.Employee == employee && a.Day == day).OrderByDescending(a => a.To).Select(a => a.To).First(),
+                });
+            };
+
+            return freeEmployees;
+        }
+        public async Task<List<ManagerFullScheduleDto>> GetManagerFullSchedule(Restaurant restaurant, int month)
+        {
+            List <ManagerFullScheduleDto> fullSchedule = new List<ManagerFullScheduleDto>();
+            foreach (var assignment in _context.Schedules.Where(a => a.Day.Month == month && a.Restaurant == restaurant && a.IsWorkDay))
+            {
+                fullSchedule.Add(new ManagerFullScheduleDto
+                {
+                    ScheduleId = assignment.Id.ToString(),
+                    Day = assignment.Day,
+                    PeopleAssignedToWork = await _context.Schedules.Where(a => a.Day == assignment.Day && a.Restaurant == restaurant && a.IsWorkDay).CountAsync(),
+                });
+            }
+            return fullSchedule;
+        }
+        public List<ManagerDailyScheduleDto> GetManagerDailySchedule(Restaurant restaurant, DateOnly day)
+        {
+            List <ManagerDailyScheduleDto> dailySchedule = new List<ManagerDailyScheduleDto>();
+
+            foreach (var assignment in _context.Schedules.Where(a => a.Day == day && a.Restaurant == restaurant))
+            {
+                dailySchedule.Add(new ManagerDailyScheduleDto
+                {
+                    ScheduleId = assignment.Id.ToString(),
+                    EmployeeEmail = assignment.Employee.Profile.Email ?? string.Empty,
+                    EmployeeName = assignment.Employee.Profile.FirstName + " " + assignment.Employee.Profile.LastName,
+                    RestaurantName = restaurant.Name,
+                    IsFullDay = assignment.FullDay,
+                    IsWorkDay = assignment.IsWorkDay,
+                    To = assignment.To,
+                    From = assignment.From,
+                });
+            }
+            return dailySchedule;
         }
 
         /* Possible issue: OrderBy => OrderByAscending */

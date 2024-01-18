@@ -10,6 +10,5 @@
         public TimeOnly? To { get; set; }
         public bool IsWorkDay { get; set; }
         public bool FullDay { get; set; }
-        public string? Reason { get; set; }
     }
 }

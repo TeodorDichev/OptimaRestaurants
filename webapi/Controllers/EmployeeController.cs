@@ -148,11 +148,11 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            return await _scheduleService.GetDailyEmployeeSchedule(employee, day);
+            return _scheduleService.GetEmployeeDailySchedule(employee, day);
         }
 
         /// <summary>
-        /// Cannot be added when employee is not all restaurants
+        /// Cannot be added when employee is on all restaurants
         /// Employee can only add/edit/delete non-working assignments with minimum one week notice
         /// </summary>
         /// <param name="scheduleDto"> Adding an assignment to their schedule </param>
