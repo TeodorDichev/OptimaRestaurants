@@ -1,27 +1,3 @@
-.rest-img {
-    max-width: 300px;
-    aspect-ratio: 3/2;
-    width: 100% !important;
-    object-fit: cover;
-    border-radius: 8px 0px 0px 8px;
-}
-
-.restaurant {
-    display: flex;
-    flex-direction: row;
-    align-self: stretch;
-    gap: 30px;
-    border-radius: 8px;
-    align-items: center;
-    border: 1px solid rgba(128, 128, 128, 0.336);
-    padding-right: 50px;
-}
-
-.restaurant:hover {
-    background-color: gainsboro;
-    cursor: pointer;
-}
-
 ::ng-deep app-employee-logged-view {
     background-color: rgb(255, 240, 213);
     display: flex;
@@ -31,6 +7,71 @@
     align-self: stretch;
 }
 
+.rest-img {
+    max-width: 300px;
+    aspect-ratio: 3/2;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
+}
+
+.screen-left {
+    align-items: flex-start;
+}
+
+.screen-right {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.rest-list {
+    gap: 12px;
+    overflow: scroll;
+}
+
+.list-items {
+    display: flex;
+    align-self: stretch;
+}
+
+.restaurant {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 30px;
+    border-radius: 8px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 20px;
+}
+
+.restaurant:hover {
+    background-color: rgba(241, 241, 241, 0.8);
+    cursor: pointer;
+}
+
+.ratings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px 0px;
+}
+
 .content-screen {
     justify-content: flex-start;
 }
+
+.content {
+    padding-bottom: 0px;
+    padding-left: 0px;
+    overflow: auto;
+}
+
+/* @media only screen and (max-width: 1050px) {
+    .content {
+        flex-direction: column;
+        overflow: auto;
+    }
+}  */

@@ -15,11 +15,11 @@
 
 .collapse-body {
     justify-content: flex-end;
-    gap: 12px;
+    gap: 4px;
 }
 
 .navbar-transparent {
-    background-color: rgba(255, 255, 255, 0.6) !important;
+    background-color: rgba(255, 255, 255, 0.4) !important;
 }
 
 .dropdown-toggle.show {
