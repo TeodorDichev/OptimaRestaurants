@@ -1,19 +1,62 @@
+::ng-deep app-browse-all-restaurants {
+    background-color: rgb(255, 231, 185);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
 .rest-img {
+    max-width: 300px;
     aspect-ratio: 3/2;
     width: 100% !important;
-    background-color: rgb(102, 102, 102);
-    clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
 }
 
 .empl-img {
+    max-width: 150px;
     aspect-ratio: 1/1;
-    width: 80% !important;
-    border-color: gainsboro;
-    border-radius: 20px;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.rest-list {
+    gap: 12px;
+    overflow: scroll;
+}
+
+.list-items {
+    display: flex;
+    align-self: stretch;
+}
+
+.restaurant {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 20px;
+    border-radius: 8px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 20px;
 }
 
 .restaurant:hover {
-    background-color: gainsboro;
+    background-color: rgba(241, 241, 241, 0.8);
     cursor: pointer;
 }
 
+.content-screen {
+    justify-content: flex-start;
+    padding-right: 0px;
+}
+
+.content {
+    padding-bottom: 0px;
+    padding-left: 0px;
+}

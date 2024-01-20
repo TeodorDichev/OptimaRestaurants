@@ -130,9 +130,6 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/manager/employees-looking-for-job');
   }
 
-  contact() {
-    this.router.navigateByUrl('/contact');
-  }
 
   help() {
     this.router.navigateByUrl('/about');

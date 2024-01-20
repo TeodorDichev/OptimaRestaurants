@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'employee', canActivate:[AuthorizationGuard], loadChildren:() => import('./shared/pages-routing/employee/employee.module').then(module => module.EmployeeModule) },
   {path: 'review', loadChildren:() => import('./shared/pages-routing/review/reviews.module').then(module => module.ReviewsModule) },
   {path: 'restaurants', loadChildren:() => import('./shared/pages-routing/restaurants/restaurants.module').then(module => module.RestaurantsModule) },
+  {path: 'about', loadChildren:() => import('./shared/pages-routing/about/about.module').then(module => module.AboutModule) },
   {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];
 

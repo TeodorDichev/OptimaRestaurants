@@ -7,7 +7,7 @@
                 <i class="fa-solid fa-plus-circle fa-xl"></i>
             </div>
         </div>
-        <div class="screen-left rest-list">
+        <div class="screen-left rest-emp-list">
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
                 <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
@@ -44,7 +44,7 @@
         <div class="text-muted fst-italic h4">
             Служители в {{currentRestaurant?.name}}
         </div>
-        <div class="screen-right rest-list">
+        <div class="screen-right rest-emp-list">
             <div class="list-items" *ngFor="let employee of this.employees;">
                 <div class="restaurant-employee">
                     <img class="emp-img" src="{{employee.profilePicturePath}}">

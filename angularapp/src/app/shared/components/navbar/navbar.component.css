@@ -7,7 +7,7 @@
 ::ng-deep .navbar {
     display: flex;
     align-items: center;
-    padding: 0px 8px 0px 8px;
+    padding: 6px 16px;
     gap: 10px;
     flex: 1 0 0;
     align-self: stretch;
@@ -15,7 +15,7 @@
 
 .collapse-body {
     justify-content: flex-end;
-    gap: 4px;
+    gap: 8px;
 }
 
 .navbar-transparent {

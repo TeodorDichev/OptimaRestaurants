@@ -23,7 +23,7 @@
     border-radius: 8px 0px 0px 8px;
 }
 
-.rest-list {
+.rest-emp-list {
     gap: 12px;
     overflow: scroll;
 }
@@ -63,6 +63,7 @@
 .restaurant-employee:hover {
     background-color: rgba(241, 241, 241, 0.8);
 }
+
 .content-screen {
     justify-content: flex-start;
     padding-right: 0px;

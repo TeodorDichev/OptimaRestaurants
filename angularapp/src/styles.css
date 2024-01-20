@@ -89,17 +89,21 @@ app-root {
 /*#region Styles*/
 
 .button {
-    display: flex;
     background-color: transparent;
     padding: 12px 8px;
     border-radius: 8px;
     align-items: center;
-    gap: 10px;
-    margin: 10px;
     cursor: pointer;
+    margin: 0px;
     transition-timing-function: linear;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    transition: all .2s ease-in-out;
 }
+
+.button:hover {
+    transform: scale(1.075, 1.05);
+}
+
 .roboto {
     font-family: Roboto Slab;
 }
