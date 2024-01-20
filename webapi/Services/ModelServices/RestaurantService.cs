@@ -26,11 +26,15 @@ namespace webapi.Services.ClassServices
         {
             return await _context.Restaurants.AnyAsync(r => r.Id.ToString() == id);
         }
-        public async Task<List<BrowseRestaurantDto>> GetAllRestaurants()
+        public async Task<int> GetAllRestaurantsCount()
+        {
+            return await _context.Restaurants.CountAsync();
+        }
+        public async Task<List<BrowseRestaurantDto>> GetAllRestaurants(int lastPageIndex)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
-            foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex-1)*20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
                 var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -53,11 +57,11 @@ namespace webapi.Services.ClassServices
 
             return restaurantsDto;
         }
-        public async Task<List<BrowseRestaurantDto>> GetCityRestaurants(string cityName)
+        public async Task<List<BrowseRestaurantDto>> GetCityRestaurants(int lastPageIndex, string cityName)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
                 var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -80,11 +84,11 @@ namespace webapi.Services.ClassServices
 
             return restaurantsDto;
         }
-        public async Task<List<BrowseRestaurantDto>> GetRatingRestaurants(decimal rating)
+        public async Task<List<BrowseRestaurantDto>> GetRatingRestaurants(int lastPageIndex, decimal rating)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
             {
                 var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -107,14 +111,14 @@ namespace webapi.Services.ClassServices
 
             return restaurantsDto;
         }
-        public async Task<List<BrowseRestaurantDto>> GetRestaurantsByCertainRating(string ratingType)
+        public async Task<List<BrowseRestaurantDto>> GetRestaurantsByCertainRating(int lastPageIndex, string ratingType)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
             switch (ratingType)
             {
                 case "CuisineAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -137,7 +141,7 @@ namespace webapi.Services.ClassServices
                     break;
 
                 case "AtmosphereAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -160,7 +164,7 @@ namespace webapi.Services.ClassServices
                     break;
 
                 case "EmployeesAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 

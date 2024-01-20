@@ -27,52 +27,45 @@ namespace webapi.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("api/restaurants/get-all-restaurants")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants()
+        [HttpGet("api/restaurants/get-all-restaurants-count")]
+        public async Task<ActionResult<int>> GetAllRestaurantsCount()
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetAllRestaurants();
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetAllRestaurantsCount();
+        }
+        [HttpGet("api/restaurants/get-all-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants(int lastRestaurantIndex)
+        {
+            return await _restaurantService.GetAllRestaurants(lastRestaurantIndex);
         }
 
-        [HttpGet("api/restaurants/get-local-restaurants/{cityName}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName)
+        [HttpGet("api/restaurants/get-local-restaurants/{cityName}/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName, int lastRestaurantIndex)
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetCityRestaurants(cityName);
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetCityRestaurants(lastRestaurantIndex, cityName);
         }
 
-        [HttpGet("api/restaurants/get-rating-restaurants/{rating}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating)
+        [HttpGet("api/restaurants/get-rating-restaurants/{rating}/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating, int lastRestaurantIndex)
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRatingRestaurants(rating);
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetRatingRestaurants(lastRestaurantIndex, rating); ;
         }
 
-        [HttpGet("api/restaurants/get-cuisine-restaurants")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants()
+        [HttpGet("api/restaurants/get-cuisine-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("CuisineAverageRating");
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating"); ;
         }
 
-        [HttpGet("api/restaurants/get-atmosphere-restaurants")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants()
+        [HttpGet("api/restaurants/get-atmosphere-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants(int lastRestaurantIndex)
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("AtmosphereAverageRating");
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "AtmosphereAverageRating");
         }
 
-        [HttpGet("api/restaurants/get-employees-restaurants")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants()
+        [HttpGet("api/restaurants/get-employees-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
         {
-            List<BrowseRestaurantDto> restaurantsDto = await _restaurantService.GetRestaurantsByCertainRating("EmployeesAverageRating");
-            if (restaurantsDto.Count == 0) return BadRequest("Няма ресторанти!");
-            else return restaurantsDto;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating"); ;
         }
 
         [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]
