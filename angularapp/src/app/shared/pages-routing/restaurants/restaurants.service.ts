@@ -10,8 +10,18 @@ export class RestaurantsService {
 
   constructor(private http: HttpClient) { }
 
-  getAllRestaurants() {
-    return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants`);
+  getAllRestaurantsCount() {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants-count`);
+  }
+
+  /*
+  add filter buttons in every restaurant-list instance ->
+   by city, by rating avg, by rating user chooses (dropdown from 3 elements quis, empl, atmos)
+   there is a method for all of the elements
+   */
+
+  getAllRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants/${lastPageIndex}`);
   }
 
   getRestaurantDetails(restaurantId: string) {
