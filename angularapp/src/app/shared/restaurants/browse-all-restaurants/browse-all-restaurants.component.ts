@@ -21,7 +21,7 @@ export class BrowseAllRestaurantsComponent implements OnInit {
   }
 
   getAllRestaurants() {
-    this.restaurantsService.getAllRestaurants().subscribe({
+    this.restaurantsService.getAllRestaurants(1).subscribe({
       next: (response: any) => {
         this.allRestaurants = response;
         this.currentRestaurant = this.allRestaurants[0];

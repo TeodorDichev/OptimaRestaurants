@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using webapi.Services.FileServices;
 using webapi.Services.ClassServices;
 using webapi.Services.ModelServices;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"), 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"),
         x => x.UseDateOnlyTimeOnly());
 });
 
@@ -91,6 +92,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
         return new BadRequestObjectResult(toReturn);
     };
 });
+ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 var app = builder.Build();
 
