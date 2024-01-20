@@ -52,11 +52,28 @@ namespace webapi.Services.ModelServices
         public List<RequestDto> GetManagerRequests(string email)
         {
             List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderByDescending(r => r.SentOn))
+
+            /* adding all unanswered requests */
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email && (r.ConfirmedOn == null && r.RejectedOn == null)).OrderByDescending(r => r.SentOn))
             {
-                bool? confirmed = null;
+                var request = new RequestDto
+                {
+                    Id = r.Id.ToString(),
+                    RestaurantId = r.Restaurant.Id.ToString(),
+                    SenderEmail = r.Sender.Email ?? string.Empty,
+                    SentOn = r.SentOn.ToString(),
+                    Confirmed = null,
+                    Text = $"Работи ли {r.Sender.FirstName + " " + r.Sender.LastName} в {r.Restaurant.Name}?"
+                };
+
+                requests.Add(request);
+            }
+
+            /* adding the most recent 10 answered requests (limited due to scaling issues) */
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email && (r.ConfirmedOn != null || r.RejectedOn != null)).OrderByDescending(r => r.SentOn))
+            {
+                bool confirmed = false;
                 if (r.ConfirmedOn != null) confirmed = true;
-                if (r.RejectedOn != null) confirmed = false;
 
                 var request = new RequestDto
                 {
@@ -76,11 +93,28 @@ namespace webapi.Services.ModelServices
         public List<RequestDto> GetEmployeeRequests(string email)
         {
             List<RequestDto> requests = new List<RequestDto>();
-            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email).OrderBy(x => x.SentOn))
+
+            /* adding all unanswered requests */
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email && (r.ConfirmedOn == null && r.RejectedOn == null)).OrderByDescending(r => r.SentOn))
             {
-                bool? confirmed = null;
+                var request = new RequestDto
+                {
+                    Id = r.Id.ToString(),
+                    RestaurantId = r.Restaurant.Id.ToString(),
+                    SenderEmail = r.Sender.Email ?? string.Empty,
+                    SentOn = r.SentOn.ToString(),
+                    Confirmed = null,
+                    Text = $"Работите ли в ресторантът {r.Restaurant.Name}, собственост на {r.Sender.FirstName + " " + r.Sender.LastName}?"
+                };
+
+                requests.Add(request);
+            }
+
+            /* adding the most recent 10 answered requests (limited due to scaling issues) */
+            foreach (var r in _context.Requests.Where(r => r.Receiver.Email == email && (r.ConfirmedOn != null || r.RejectedOn != null)).OrderByDescending(r => r.SentOn))
+            {
+                bool confirmed = false;
                 if (r.ConfirmedOn != null) confirmed = true;
-                if (r.RejectedOn != null) confirmed = false;
 
                 var request = new RequestDto
                 {
@@ -94,6 +128,7 @@ namespace webapi.Services.ModelServices
 
                 requests.Add(request);
             }
+
 
             return requests;
         }
