@@ -1,57 +1,85 @@
+::ng-deep app-manager-logged-view {
+    background-color: rgb(255, 231, 185);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
 .rest-img {
+    max-width: 300px;
     aspect-ratio: 3/2;
     width: 100% !important;
-    background-color: rgb(102, 102, 102);
-    clip-path: polygon(0% 0%, 100% 0, 85% 50%, 100% 100%, 0% 100%);
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
 }
 
 .emp-img {
+    max-width: 120px;
     aspect-ratio: 1/1;
-    width: 100px;
-    border-radius: 10px;
-    box-shadow: 2px 1px 2px black;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
 }
 
-.item-hover:hover {
-    background-color: rgba(220, 220, 220, 0.623);
+.rest-emp-list {
+    gap: 12px;
+    overflow: scroll;
+}
+
+.list-items {
+    display: flex;
+    align-self: stretch;
+}
+
+.restaurant-employee {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 20px;
+    border-radius: 8px;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 20px;
+}
+
+.buttons-info-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.screen-left {
+    align-items: flex-start;
+}
+
+.cursor-pointer {
     cursor: pointer;
 }
 
-.outer {
-    display: flex;
+.restaurant-employee:hover {
+    background-color: rgba(241, 241, 241, 0.8);
+}
+
+.content-screen {
+    justify-content: flex-start;
+    padding-right: 0px;
+}
+
+.content {
+    padding-bottom: 0px;
+    padding-left: 0px;
+    overflow: auto;
 }
 
 .selected {
-    background-color: gainsboro;
+    background-color: rgba(241, 241, 241, 0.8);
 }
 
-.display-list {
-    max-height: 60vh;
-    width: 100%;
-    border-radius: 4px;
-}
-
-
-@media only screen and (min-height: 600px){
-    .display-list {
-        max-height: 70vh;
-    }
-}
-
-/*when screen is more than 1238px, make lists on top of each other*/
-
-
-@media only screen and (min-height: 910px){
-    .display-list {
-        max-height: 80vh;
-    }
-}
-
-
-.restaurants {
-    width: 68%;
-}
-
-.employees {
-    width: 30%;
+.screen-right {
+    justify-content: flex-start;
+    align-items: flex-start;
 }

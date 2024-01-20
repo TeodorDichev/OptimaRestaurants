@@ -1,52 +1,38 @@
 <nav-top></nav-top>
-<div class="outer">
-    <div class="mx-1 restaurants">
-        <div class="roboto text-center my-4">
-            <span class="fw-bold font-size-30">
-                Вашите ресторанти, {{manager?.firstName}}
-                <div class="btn btn-yellow-inverted" (click)="addNewRestaurant()">
-                    <i class="fa-solid fa-plus-circle fa-xl"></i>
-                </div>
-            </span>
+<div class="content flex-direction-row">
+    <div class="content-screen content-screen-fill">
+        <div class="text-muted fst-italic h4">
+            Вашите ресторанти, {{manager?.firstName}}
+            <div class="btn btn-inverted" (click)="addNewRestaurant()">
+                <i class="fa-solid fa-plus-circle fa-xl"></i>
+            </div>
         </div>
-        <div class="scrollable-vert display-list">
-            <div *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="row item-hover border-bottom border-top mb-3" (click)="selectedRestaurant(restaurant)"
+        <div class="screen-left rest-emp-list">
+            <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
+                <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
-                    <div class="col-6">
+                    <div>
                         <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                     </div>
-                    <div class="col-5 roboto font-size-20 my-auto">
-                        <div class="fw-bold fst-italic font-size-30 chocolate">{{restaurant.name}}</div>
-                        <div class="fst-italic my-2 ms-2">Адрес: {{restaurant.address}},</div>
-                        <div class="fst-italic my-2 ms-2">Град: {{restaurant.city}}</div>
-                        <div class="fw-bold">Категория / Оценка</div>
-                        <div class="ms-2 text-start fst-italic">
-                            <div class="my-1">
-                                Ястия / <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Атмосфера / <app-star-rating
-                                    [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Работници / <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
-                            </div>
-                            <div class="my-1">
-                                Ресторант / <app-star-rating
-                                    [rating]="restaurant.restaurantAverageRating"></app-star-rating>
-                            </div>
-                        </div>         
-                        <div class="fw-bold">Работещ: 
+                    <div>
+                        <div class="h2 fw-bold">{{restaurant.name}}</div>
+                        <div class="h6 text-muted">{{restaurant.address}}</div>
+                        <div class="h6 text-muted">{{restaurant.city}}</div>
+                    </div>
+                    <div>
+                        <div class="h5 fw-bold">Средна оценка:
+                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                        </div>
+                        <div class="fw-bold">Работещ:
                             <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
                             <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
-                        </div>    
+                        </div>
                     </div>
-                    <div class="col-1 text-end pt-1 pe-3" *ngIf="restaurant == currentRestaurant">
-                        <div class="btn btn-yellow-inverted w-100 mb-2" (click)="infoRestaurant()">
+                    <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
+                        <div class="btn btn-inverted" (click)="infoRestaurant()">
                             <i class="fa-solid fa-info fa-xl"></i>
                         </div>
-                        <div class="btn btn-yellow-inverted w-100" (click)="editRestaurant()">
+                        <div class="btn btn-inverted" (click)="editRestaurant()">
                             <i class="fa-solid fa-pencil fa-xl"></i>
                         </div>
                     </div>
@@ -54,28 +40,26 @@
             </div>
         </div>
     </div>
-    <div class="mx-1 employees">
-        <div class="roboto row my-4">
-            <span class="roboto text-center fw-bold font-size-30">Служители в {{currentRestaurant?.name}}</span>
+    <div class="content-screen content-screen-fill-row">
+        <div class="text-muted fst-italic h4">
+            Служители в {{currentRestaurant?.name}}
         </div>
-        <div class="scrollable-vert display-list">
-            <div *ngFor="let employee of this.employees;">
-                <div class="border-bottom item-hover border-top py-3 d-flex">
-                    <div class="col-3 text-center my-auto">
-                        <img class="emp-img" src="{{employee.profilePicturePath}}">
+        <div class="screen-right rest-emp-list">
+            <div class="list-items" *ngFor="let employee of this.employees;">
+                <div class="restaurant-employee">
+                    <img class="emp-img" src="{{employee.profilePicturePath}}">
+                    <div>
+                        <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
+                        <div>{{employee.email}}</div>
                     </div>
-                    <div class="col-7 my-auto">
-                        <span class="roboto text-wrap text-start fw-bold font-size-25">{{employee.firstName}} {{employee.lastName}} </span>
-                        <span class="roboto text-wrap text-start fst-italic font-size-20">{{employee.email}}</span>
-                    </div> 
-                    <div class="col-2">
-                        <div class="btn btn-yellow-inverted w-75 mb-2" (click)="getEmployeeInfo(employee)">
+                    <div class="buttons-info-edit">
+                        <div class="btn btn-inverted" (click)="getEmployeeInfo(employee)">
                             <i class="fa-solid fa-info fa-xl"></i>
                         </div>
-                        <div class="btn btn-yellow-inverted w-75" (click)="fireEmployee(employee.email, currentRestaurant?.id)">
+                        <div class="btn btn-inverted" (click)="fireEmployee(employee.email, currentRestaurant?.id)">
                             <i class="fa-solid fa-user-large-slash fa-xl"></i>
-                        </div>    
-                    </div>        
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

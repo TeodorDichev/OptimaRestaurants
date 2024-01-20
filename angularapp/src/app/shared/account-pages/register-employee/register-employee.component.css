@@ -7,6 +7,14 @@
     align-self: stretch;
 }
 
+.input-sm {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start;
+    gap: 12px;
+    justify-content: center;
+}
+
 .custom-date-input {
     border: transparent;
 }
@@ -40,7 +48,6 @@ a {
 
 .date-input {
     background-color: transparent;
-    margin-left: 3%;
     border-color: transparent;
 }
 

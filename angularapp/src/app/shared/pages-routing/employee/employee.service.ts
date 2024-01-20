@@ -67,6 +67,9 @@ export class EmployeeService {
     this.getEmployee(email).subscribe({
       next: (response: any) => {
         this.setEmployee(response);
+      },
+      error: error => {
+        console.error(error);
       }
     })
   }

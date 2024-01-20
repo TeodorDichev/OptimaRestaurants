@@ -1,19 +1,21 @@
 <nav-top></nav-top>
 <div class="content">
-    <div class="content-screen scrollable-vert slide-in-blurred-left">
+    <div class="content-screen slide-in-blurred-left">
         <div class="screen-left">
             <div class="theme-main h1">Нов акаунт</div>
             <div class="pacifico theme-main h3">Работник</div>
             <form class="form-screen" [formGroup]="registerForm" (ngSubmit)="registerEmployee()" autocomplete="off">
-                <div class="input-field">
-                    <span class="fa fa-user p-2"></span>
-                    <input formControlName="firstName" type="text" placeholder="Име"
-                        [class.is-invalid]="submitted && registerForm.get('firstName')?.errors">
-                </div>
-                <div class="input-field">
-                    <span class="fa fa-user p-2"></span>
-                    <input formControlName="lastName" type="text" placeholder="Фамилия"
-                        [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
+                <div class="input-sm">
+                    <div class="input-field">
+                        <span class="fa fa-user p-2"></span>
+                        <input formControlName="firstName" type="text" placeholder="Име"
+                            [class.is-invalid]="submitted && registerForm.get('firstName')?.errors">
+                    </div>
+                    <div class="input-field">
+                        <span class="fa fa-user p-2"></span>
+                        <input formControlName="lastName" type="text" placeholder="Фамилия"
+                            [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
+                    </div>
                 </div>
                 <div class="input-field">
                     <span class="fa fa-map-pin p-2"></span>
@@ -22,19 +24,22 @@
                 </div>
                 <div class="input-field">
                     <span class="fa fa-calendar p-2"></span>
+                    <span class="text-muted">Дата на раждане:</span>
                     <input class="date-input" formControlName="birthDate" type="date"
                         [class.is-invalid]="submitted && registerForm.get('birthDate')?.errors">
                 </div>
-                <div class="input-field">
-                    <span class="fa fa-envelope p-2"></span>
-                    <input formControlName="email" type="text" placeholder="Имейл"
-                        [class.is-invalid]="submitted && registerForm.get('email')?.errors">
-                </div>
-                <div class="input-field">
-                    <span class="fa fa-lock p-2"></span>
-                    <input formControlName="password" [type]="type" placeholder="Парола"
-                        [class.is-invalid]="submitted && registerForm.get('password')?.errors">
-                    <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
+                <div class="input-sm">
+                    <div class="input-field">
+                        <span class="fa fa-envelope p-2"></span>
+                        <input formControlName="email" type="text" placeholder="Имейл"
+                            [class.is-invalid]="submitted && registerForm.get('email')?.errors">
+                    </div>
+                    <div class="input-field">
+                        <span class="fa fa-lock p-2"></span>
+                        <input formControlName="password" [type]="type" placeholder="Парола"
+                            [class.is-invalid]="submitted && registerForm.get('password')?.errors">
+                        <span (click)="hideShowPass()" class="fa {{eyeIcon}}"></span>
+                    </div>
                 </div>
                 <div *ngIf="submitted">
                     <div class="text-danger" *ngIf="registerForm.get('firstName')?.hasError('required')
@@ -68,9 +73,9 @@
                 </div>
                 <button type="submit" class="btn btn-chocolate">Създаване на
                     акаунт</button>
-                    <div class="text-center">Вече имате акаунт?
-                        <a class="theme-main" routerLink="/account/login">Влезте</a>
-                    </div>
+                <div class="text-center">Вече имате акаунт?
+                    <a class="theme-main" routerLink="/account/login">Влезте</a>
+                </div>
             </form>
         </div>
     </div>

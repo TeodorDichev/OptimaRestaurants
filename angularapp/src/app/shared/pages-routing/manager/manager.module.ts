@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { ManagerRoutingModule } from './manager-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 
-
-
 @NgModule({
   declarations: [],
   imports: [

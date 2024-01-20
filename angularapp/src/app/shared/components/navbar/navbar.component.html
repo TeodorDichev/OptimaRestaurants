@@ -7,28 +7,23 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse collapse-body" id="navbarItemsCollapse">
-
-        <div class="btn btn-inverted" (click)="help()" tooltip="Как работи?">
-            <i class="fa-solid fa-question fa-2x"></i>
+        <div class="button btn-inverted" (click)="help()" tooltip="Как работи?">
+            <i class="fa-solid fa-question fa-xl"></i>
         </div>
-        <div class="btn btn-inverted" (click)="allRestaurants()" tooltip="Всички ресторанти">
-            <i class="fa-solid fa-store fa-2x"></i>
+        <div class="button btn-inverted" (click)="allRestaurants()" tooltip="Всички ресторанти">
+            <i class="fa-solid fa-store fa-xl"></i>
         </div>
-        <div class="btn btn-inverted" (click)="contact()" tooltip="Контакти">
-            <i class="fa fa-phone fa-2x"></i>
+        <div class="button btn-inverted" (click)="schedule()" tooltip="График" *ngIf="this.user">
+            <i class="fa-regular fa-calendar fa-xl"></i>
         </div>
-        <div class="btn btn-inverted" (click)="schedule()" tooltip="График" *ngIf="this.user">
-            <i class="fa-regular fa-calendar fa-2x"></i>
-        </div>
-        <div class="btn btn-inverted" (click)="employeeSearch()" tooltip="Работници, търсещи работа"
+        <div class="button btn-inverted" (click)="employeeSearch()" tooltip="Работници, търсещи работа"
             *ngIf="this.user?.isManager">
-            <i class="fa-solid fa-users-between-lines fa-2x"></i>
+            <i class="fa-solid fa-users-between-lines fa-xl"></i>
         </div>
-
         <div class="dropdown" *ngIf="this.user">
-            <button class="dropdown-toggle btn btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
+            <button class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
                 tooltip="Профил">
-                <i class="fa fa-user-pen fa-2x"></i>
+                <i class="fa fa-user-pen fa-xl"></i>
             </button>
             <div class="dropdown-menu">
                 <app-employee-info [employeeEmail]="user.email" *ngIf="!this.user.isManager"></app-employee-info>
@@ -37,12 +32,10 @@
         </div>
 
         <div class="dropdown" *ngIf="this.user">
-            <button class="dropdown-toggle btn btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
+            <button class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
                 tooltip="Съобщения">
-                <div class="d-flex">
-                    <i class="fa-solid fa-envelope fa-2x"></i>
-                    <i class="fa-solid fa-exclamation ms-1" style="color:Tomato;" *ngIf="newNotifications"></i>
-                </div>
+                <i class="fa-solid fa-envelope fa-xl"></i>
+                <i class="fa-solid fa-exclamation fa-xl ms-1" style="color:Tomato;" *ngIf="newNotifications"></i>
             </button>
             <ul class="dropdown-menu">
                 <app-inbox></app-inbox>
@@ -58,14 +51,16 @@
                 <input class="form-control" formControlName="searchString" type="search"
                     placeholder="Търси {{searchingFor}}" aria-label="Search">
                 <ul class="dropdown-menu show" *ngIf="searchForm.valid">
-                    <app-search-result-account [searchResult]="searchResultAccount" *ngIf="searchForAccounts"></app-search-result-account>
-                    <app-search-result-restaurant [searchResult]="searchResultRestaurant" *ngIf="!searchForAccounts"></app-search-result-restaurant>
+                    <app-search-result-account [searchResult]="searchResultAccount"
+                        *ngIf="searchForAccounts"></app-search-result-account>
+                    <app-search-result-restaurant [searchResult]="searchResultRestaurant"
+                        *ngIf="!searchForAccounts"></app-search-result-restaurant>
                 </ul>
-            </li> 
+            </li>
         </form>
 
-        <div class="btn btn-inverted" (click)="logout()" tooltip="Излизане от акаунт" *ngIf="this.user">
-            <i class="fa fa-sign-out fa-2x"></i>
+        <div class="button btn-inverted" (click)="logout()" tooltip="Излизане от акаунт" *ngIf="this.user">
+            <i class="fa fa-sign-out fa-xl"></i>
         </div>
     </div>
 </nav>

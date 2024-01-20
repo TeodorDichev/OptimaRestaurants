@@ -1,52 +1,37 @@
-<div class="scrollable-vert max-height">
-    <nav-top></nav-top>
-    <div class="font-size-30 text-center roboto chocolate fw-bold my-4">
-        Всички регистрирани ресторанти
-    </div>
-    <div class="roboto max-width text-start d-flex" *ngFor="let restaurant of allRestaurants">
-        <div class="row w-100 restaurant max-width border-top border-bottom my-3"
-            (click)="getRestaurantDetails(restaurant.id)">
-            <div class="col-3 img-logo">
-                <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-            </div>
-            <div class="col-2 my-auto font-size-20">
-                <div class="fw-bold fst-italic font-size-30 chocolate">{{restaurant.name}}</div>
-                <div class="fst-italic my-2 ms-2">Адрес: {{restaurant.address}},</div>
-                <div class="fst-italic my-2 ms-2">Град: {{restaurant.city}}</div>
-                <div class="fw-bold ms-2">Работещ:
-                    <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
-                    <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
-                </div>
-            </div>
-            <div class="col-2 my-auto font-size-20">
-                <div class="fw-bold">Категория / Оценка</div>
-                <div class="ms-2 text-start fst-italic"> 
-                    <div class="my-1">
-                        Ястия / <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
-                    </div>
-                    <div class="my-1">
-                        Атмосфера / <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
-                    </div>
-                    <div class="my-1">
-                        Работници / <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
-                    </div>
-                    <div class="my-1">
-                        Ресторант / <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
-                    </div>
-                </div>
-            </div>
-            <div class="col-2 my-auto text-end font-size-20" *ngIf="restaurant.topEmployeePicturePath">
-                <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
-            </div>
-            <div class="col-2 my-auto font-size-20" *ngIf="restaurant.topEmployeeEmail">
-                <div class="fw-bold">Най-добър работник: 
-                    <span class="fw-normal">{{restaurant.topEmployeeFullName}}</span>
-                </div>
-                <div class="fw-bold">Неговият имейл:
-                    <span class="fw-normal">{{restaurant.topEmployeeEmail}}</span>
-                </div>
-                <div class="fw-bold">Неговият рейтинг:
-                    <div><app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating></div>
-                </div>
-            </div>
+<nav-top></nav-top>
+<div class="content">
+    <div class="content-screen content-screen-fill">
+        <div class="text-muted fst-italic h4">
+            Всички регистрирани ресторанти
         </div>
+        <div class="rest-list screen-left">
+            <div class="list-items" *ngFor="let restaurant of allRestaurants">
+                <div class="restaurant" (click)="getRestaurantDetails(restaurant.id)">
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div>
+                        <div class="h2 fw-bold">{{restaurant.name}}</div>
+                        <div class="h6 text-muted">{{restaurant.address}}</div>
+                        <div class="h6 text-muted">{{restaurant.city}}</div>
+                    </div>
+                    <div>
+                        <div class="h5 fw-bold">Средна оценка:
+                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                        </div>
+                        <div class="fw-bold">Работещ:
+                            <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                            <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                        </div>
+                    </div>
+                    <div *ngIf="restaurant.topEmployeeEmail">
+                        <div class="fw-bold">Най-добър работник:
+                            <div class="fw-normal">{{restaurant.topEmployeeFullName}}</div>
+                        </div>
+                        <div class="fw-bold">Неговият рейтинг:
+                            <div><app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>       
+    </div>
+</div>
