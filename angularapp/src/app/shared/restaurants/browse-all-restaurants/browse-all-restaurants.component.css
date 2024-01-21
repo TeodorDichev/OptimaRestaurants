@@ -85,3 +85,11 @@
 .selected {
     background-color: white;
 }
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: stretch;
+    gap: 12px;
+}

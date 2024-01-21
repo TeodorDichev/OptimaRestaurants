@@ -19,6 +19,21 @@
                 ({{this.currentPage * 20 - 19}}-{{this.currentPage * 20}})
             </div>
         </div>
+        <div class="filters">
+            <i class="fa-solid fa-filter"></i>
+            <button class="button" tooltip="Филтър по град">
+                <i class="fa-solid fa-map-location-dot fa-xl"></i>
+            </button>
+            <button class="button" tooltip="Филтър по рейтинг">
+                <i class="fa-solid fa-arrow-up-right-dots"></i>
+            </button>
+            <button class="button" tooltip="Най-добрите ресторанти по избрана категория"> <!--the dropdown-->
+                <i class="fa-solid fa-arrow-down-wide-short"></i>
+            </button>
+            <button class="button" tooltip="Изчистване на филтри">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+            </button>
+        </div>
         <div class="rest-list screen-left">
             <div class="list-items" *ngFor="let restaurant of allRestaurants">
                 <div class="restaurant" (click)="getRestaurantDetails(restaurant.id)">
