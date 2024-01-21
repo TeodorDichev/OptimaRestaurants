@@ -44,32 +44,26 @@ namespace webapi.Controllers
             return await _restaurantService.GetCityRestaurants(lastRestaurantIndex, cityName);
         }
 
-        [HttpGet("api/restaurants/get-rating-restaurants/{rating}/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating, int lastRestaurantIndex)
-        {
-            return await _restaurantService.GetRatingRestaurants(lastRestaurantIndex, rating);
-        }
-
         [HttpGet("api/restaurants/get-cuisine-restaurants/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
+        public async Task<ActionResult<Tuple<List<BrowseRestaurantDto>, int>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating");
         }
 
         [HttpGet("api/restaurants/get-atmosphere-restaurants/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants(int lastRestaurantIndex)
+        public async Task<ActionResult<Tuple<List<BrowseRestaurantDto>, int>>> GetBestAtmosphereRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "AtmosphereAverageRating");
         }
 
         [HttpGet("api/restaurants/get-employees-restaurants/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
+        public async Task<ActionResult<Tuple<List<BrowseRestaurantDto>, int>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating");
         }
 
         [HttpGet("api/restaurants/get-best-restaurants/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestRestaurants(int lastRestaurantIndex)
+        public async Task<ActionResult<Tuple<List<BrowseRestaurantDto>, int>>> GetBestRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "RestaurantAverageRating");
         }

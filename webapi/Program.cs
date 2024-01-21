@@ -49,7 +49,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
     options.Password.RequireNonAlphanumeric = false;
 
     /* email configuration */
-    options.SignIn.RequireConfirmedEmail = true;
+    options.SignIn.RequireConfirmedEmail = false;
     options.User.RequireUniqueEmail = true;
 })
     .AddRoles<IdentityRole>()
