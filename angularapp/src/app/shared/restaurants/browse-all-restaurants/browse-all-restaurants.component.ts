@@ -11,33 +11,66 @@ import { SharedService } from '../../shared.service';
 export class BrowseAllRestaurantsComponent implements OnInit {
 
   allRestaurants: Restaurant[] = [];
-  currentRestaurant: Restaurant | undefined;
+  totalRestaurantCount: number = 0;
+
+  currentPage: number = 1;
+  totalPages: number = 1;
 
   constructor(private sharedService: SharedService,
     private restaurantsService: RestaurantsService) { }
 
   ngOnInit(): void {
+    this.getRestaurantsCount();
     this.getAllRestaurants();
   }
 
   getAllRestaurants() {
-    this.restaurantsService.getAllRestaurants().subscribe({
+    this.restaurantsService.getAllRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.allRestaurants = response;
-        this.currentRestaurant = this.allRestaurants[0];
       }
-    });;
+    });
+  }
+
+  getRestaurantsCount() {
+    this.restaurantsService.getAllRestaurantsCount().subscribe({
+      next: (response: any) => {
+        this.totalPages = Math.round(response / 20) + response % 20;
+        this.totalRestaurantCount = response;
+      }
+    })
   }
 
   getRestaurantDetails(restaurantId: string) {
     this.sharedService.openRestaurantDetailsModal(restaurantId);
   }
 
-  selectedRestaurant(selectedRestaurant: Restaurant) {
-    this.currentRestaurant = selectedRestaurant;
-  }
-
   missingIcon(restaurant: Restaurant) {
     restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
+  }
+
+  previousPage() {
+    if (this.currentPage != 1) {
+      this.currentPage -= 1;
+      this.restaurantsService.getAllRestaurants(this.currentPage).subscribe({
+        next: (response: any) => {
+          this.allRestaurants = response;
+        }
+      })
+    }
+  }
+
+  getPageRestaurants(pageNumber: number) {
+    if (this.currentPage != pageNumber) {
+      this.currentPage = pageNumber;
+      this.getAllRestaurants();  
+    }
+  }
+
+  nextPage() { 
+    if (this.currentPage < this.totalPages) {
+      this.currentPage += 1;
+      this.getAllRestaurants();
+    }
   }
 }

@@ -1,12 +1,14 @@
 <nav-top></nav-top>
 <div class="content flex-direction-row">
     <div class="content-screen content-screen-fill">
-        <div class="text-muted fst-italic h4">
-            Вашите ресторанти, {{manager?.firstName}}
-            <div class="btn btn-inverted" (click)="addNewRestaurant()">
-                <i class="fa-solid fa-plus-circle fa-xl"></i>
+        <div class="header-text-button">
+            <div class="h4 text-muted fst-italic m-0">
+                Вашите ресторанти, {{manager?.firstName}}
             </div>
-        </div>
+            <button class="button btn-inverted" (click)="addNewRestaurant()">
+                <i class="fa-solid fa-plus-circle fa-xl"></i>
+            </button>
+        </div>      
         <div class="screen-left rest-emp-list">
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
                 <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
@@ -29,12 +31,12 @@
                         </div>
                     </div>
                     <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
-                        <div class="btn btn-inverted" (click)="infoRestaurant()">
+                        <button class="button btn-inverted" (click)="infoRestaurant()">
                             <i class="fa-solid fa-info fa-xl"></i>
-                        </div>
-                        <div class="btn btn-inverted" (click)="editRestaurant()">
+                        </button>
+                        <button class="button btn-inverted" (click)="editRestaurant()">
                             <i class="fa-solid fa-pencil fa-xl"></i>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -53,12 +55,13 @@
                         <div>{{employee.email}}</div>
                     </div>
                     <div class="buttons-info-edit">
-                        <div class="btn btn-inverted" (click)="getEmployeeInfo(employee)">
+                        <button class="button btn-inverted" (click)="getEmployeeInfo(employee)">
                             <i class="fa-solid fa-info fa-xl"></i>
-                        </div>
-                        <div class="btn btn-inverted" (click)="fireEmployee(employee.email, currentRestaurant?.id)">
+                        </button>
+                        <button class="button btn-inverted"
+                            (click)="fireEmployee(employee.email, currentRestaurant?.id)">
                             <i class="fa-solid fa-user-large-slash fa-xl"></i>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

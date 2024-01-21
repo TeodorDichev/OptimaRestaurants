@@ -83,3 +83,16 @@
     justify-content: flex-start;
     align-items: flex-start;
 }
+
+.button {
+    padding: 8px 12px;
+}
+
+.header-text-button {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    align-items: center;
+    align-self: stretch;
+}
+

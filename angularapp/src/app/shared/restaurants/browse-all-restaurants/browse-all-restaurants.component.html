@@ -2,7 +2,22 @@
 <div class="content">
     <div class="content-screen content-screen-fill">
         <div class="text-muted fst-italic h4">
-            Всички регистрирани ресторанти
+            Всички регистрирани ресторанти (Общ брой: {{totalRestaurantCount}})
+        </div>
+        <div class="pages">
+            <button class="button button-page" (click)="previousPage()" tooltip="Предишни 20">
+                <i class="fa-solid fa-angles-left"></i>
+            </button>
+            <div *ngFor="let page of [].constructor(totalPages); let i = index;">
+                <button class="button button-page" [ngClass]="{'selected': i + 1 === currentPage}"
+                    (click)="getPageRestaurants(i + 1)">{{i + 1}}</button>
+            </div>
+            <button class="button button-page" (click)="nextPage()" tooltip="Следващи 20">
+                <i class="fa-solid fa-angles-right"></i>
+            </button>
+            <div class="text-muted fst-italic">
+                ({{this.currentPage * 20 - 19}}-{{this.currentPage * 20}})
+            </div>
         </div>
         <div class="rest-list screen-left">
             <div class="list-items" *ngFor="let restaurant of allRestaurants">
@@ -32,6 +47,6 @@
                     </div>
                 </div>
             </div>
-        </div>       
+        </div>
     </div>
 </div>

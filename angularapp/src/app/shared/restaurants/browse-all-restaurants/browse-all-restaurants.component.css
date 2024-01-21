@@ -38,9 +38,9 @@
     flex-direction: row;
     align-self: stretch;
     flex: 1 0 0;
-    gap: 20px;
+    gap: 12%;
     border-radius: 8px;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     border: 1px solid rgba(128, 128, 128, 0.336);
     padding-right: 20px;
@@ -59,4 +59,29 @@
 .content {
     padding-bottom: 0px;
     padding-left: 0px;
+}
+
+.pages {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+}
+
+.button-page {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.377);
+    border: 1px solid rgba(128, 128, 128, 0.336);
+}
+
+.button-page:hover {
+    background-color: white;
+    transition: all .2s ease-in-out;
+}
+
+.selected {
+    background-color: white;
 }
