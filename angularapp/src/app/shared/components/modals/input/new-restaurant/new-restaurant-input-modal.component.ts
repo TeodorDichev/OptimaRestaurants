@@ -30,10 +30,10 @@ export class NewRestaurantInputModalComponent implements OnInit {
 
   initializeForm() {
     this.newRestaurantForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      city: ['', [Validators.required]],
-      employeeCapacity: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      city: ['', [Validators.required, Validators.minLength(2)]],
+      employeeCapacity: ['', [Validators.required, Validators.pattern('^\d+$')]],
       iconFile: ['', []]
     })
   }
@@ -52,7 +52,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.newRestaurantForm.valid && this.email) {
-      this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).pipe(take(1)).subscribe({
+      this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно създаден ресторант!', 'Вашият ресторант беше създаден успешно!');

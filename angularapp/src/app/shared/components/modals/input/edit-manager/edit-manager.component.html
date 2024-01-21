@@ -24,6 +24,16 @@
                     <span class="fa fa-picture-o chocolate p-2"></span>
                     <input class="col-11" (change)="onFileSelected($event)" type="file" accept="image/*">
                 </div>
+                <div *ngIf="submitted">
+                    <div class="text-danger"
+                        *ngIf="editManagerForm.get('newFirstName')?.hasError('minlength') || editManagerForm.get('newFirstName')?.hasError('maxlength')
+                            || editManagerForm.get('newLastName')?.hasError('minlength') || editManagerForm.get('newLastName')?.hasError('maxlength')">
+                        Името и фамилията трябва да са между 2 и 50 символа!
+                    </div>
+                    <div class="text-danger" *ngIf="editManagerForm.get('newPhoneNumber')?.hasError('pattern')">
+                        Невалиден телефонен номер!
+                    </div>
+                </div>
                 <div class="text-center">
                     <button type="button" class="btn btn-danger mt-4" (click)="deleteManagerAccount()">
                         Изтриване на акаунт

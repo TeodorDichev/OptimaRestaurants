@@ -40,6 +40,19 @@
                     <input class="form-check-input chocolate" type="checkbox" formControlName="isLookingForJob"
                         [(ngModel)]="employee.isLookingForJob">
                 </div>
+                <div *ngIf="submitted">
+                    <div class="text-danger"
+                        *ngIf="editEmployeeForm.get('newFirstName')?.hasError('minlength') || editEmployeeForm.get('newFirstName')?.hasError('maxlength')
+                            || editEmployeeForm.get('newLastName')?.hasError('minlength') || editEmployeeForm.get('newLastName')?.hasError('maxlength')">
+                        Името и фамилията трябва да са между 2 и 50 символа!
+                    </div>
+                    <div class="text-danger" *ngIf="editEmployeeForm.get('newCity')?.hasError('minlength')">
+                        Градът се състои от поне 2 символа!
+                    </div>
+                    <div class="text-danger" *ngIf="editEmployeeForm.get('newPhoneNumber')?.hasError('pattern')">
+                        Невалиден телефонен номер!
+                    </div>
+                </div>
                 <div class="text-center">
                     <button type="button" class="btn btn-danger mt-4" (click)="deleteEmployeeAccount()">
                         Изтриване на акаунт

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
@@ -32,12 +32,12 @@ export class EditEmployeeComponent {
 
   initializeForm() {
     this.editEmployeeForm = this.formBuilder.group({
-      newFirstName: ['', []],
-      newLastName: ['', []],
-      newPhoneNumber: ['', []],
+      newFirstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newLastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newPhoneNumber: ['', [Validators.pattern('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')]],
       profilePictureFile: ['', []],
       newBirthDate: ['', []],
-      newCity: ['', []],
+      newCity: ['', [Validators.minLength(2)]],
       isLookingForJob: ['', []]
     })
   }

@@ -37,14 +37,14 @@
                     <div class="text-danger"
                         *ngIf="registerForm.get('firstName')?.hasError('minlength') || registerForm.get('firstName')?.hasError('maxlength')
                             || registerForm.get('lastName')?.hasError('minlength') || registerForm.get('lastName')?.hasError('maxlength')">
-                        Името и фамилията трябва да са между 2 и 30 символа!
+                        Името и фамилията трябва да са между 2 и 50 символа!
                     </div>
                     <div class="text-danger" *ngIf="registerForm.get('email')?.hasError('pattern')">
                         Невалиден имейл адрес!
                     </div>
                     <div class="text-danger"
                         *ngIf="registerForm.get('password')?.hasError('minlength') || registerForm.get('password')?.hasError('maxlength')">
-                        Паролата трябва да е между 6 и 30 символа!
+                        Паролата трябва да е между 6 и 50 символа!
                     </div>
                 </div>
                 <div *ngIf="errorMessages.length > 0">

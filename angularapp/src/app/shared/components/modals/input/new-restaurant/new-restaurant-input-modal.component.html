@@ -10,37 +10,44 @@
           <input class="col-11" formControlName="name" type="text" placeholder="Име на ресторанта"
             [class.is-invalid]="submitted && newRestaurantForm.get('name')?.errors">
         </div>
-        <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('name')?.hasError('required')">
-          Полето е задължително!
-        </span>
         <div class="input-field my-2">
           <span class="fa fa-map-marker chocolate p-2"></span>
           <input class="col-11" formControlName="address" type="text" placeholder="Адрес"
             [class.is-invalid]="submitted && newRestaurantForm.get('address')?.errors">
         </div>
-        <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('address')?.hasError('required')">
-          Полето е задължително!
-        </span>
         <div class="input-field my-2">
           <span class="fa fa-location-arrow chocolate p-2"></span>
           <input class="col-11" formControlName="city" type="text" placeholder="Град"
             [class.is-invalid]="submitted && newRestaurantForm.get('city')?.errors">
         </div>
-        <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('city')?.hasError('required')">
-          Полето е задължително!
-        </span>
         <div class="input-field my-2">
           <span class="fa fa-user chocolate p-2"></span>
           <input class="col-11" formControlName="employeeCapacity" type="text"
             placeholder="Максимален капацитет на работници"
             [class.is-invalid]="submitted && newRestaurantForm.get('employeeCapacity')?.errors">
         </div>
-        <span class="text-danger" *ngIf="submitted && newRestaurantForm.get('employeeCapacity')?.hasError('required')">
-          Полето е задължително!
-        </span>
         <div class="input-field my-2">
           <span class="fa fa-picture-o chocolate p-2"></span>
           <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <div *ngIf="submitted">
+          <div class="text-danger" *ngIf="newRestaurantForm.get('name')?.hasError('required')
+              || newRestaurantForm.get('address')?.hasError('required')
+              || newRestaurantForm.get('city')?.hasError('required')
+              || newRestaurantForm.get('employeeCapacity')?.hasError('required')">
+            Всички полета са задължителни!
+          </div>
+          <div class="text-danger"
+            *ngIf="newRestaurantForm.get('name')?.hasError('minlength') || newRestaurantForm.get('name')?.hasError('maxlength')
+                  || newRestaurantForm.get('address')?.hasError('minlength') || newRestaurantForm.get('address')?.hasError('maxlength')">
+            Името и адресът трябва да са между 2 и 50 символа!
+          </div>
+          <div class="text-danger" *ngIf="newRestaurantForm.get('employeeCapacity')?.hasError('pattern')">
+            Невалиден капацитет на работници!
+          </div>
+          <div class="text-danger" *ngIf="newRestaurantForm.get('city')?.hasError('minlength')">
+            Градът се състои от поне 2 символа!
+          </div>
         </div>
       </div>
       <div class="form-floating" *ngIf="errorMessages.length > 0">

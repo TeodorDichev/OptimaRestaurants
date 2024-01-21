@@ -27,10 +27,10 @@ export class RegisterManagerComponent implements OnInit {
   }
   initializeForm() {
     this.registerForm = this.formBuilder.group({
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(30)]],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.pattern('^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$')]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
+      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(50)]]
     })
   }
   registerManager() {
@@ -38,10 +38,10 @@ export class RegisterManagerComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.registerForm.valid) {
-      this.accountService.registerManager(this.registerForm.value).pipe(take(1)).subscribe({
+      this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          this.managerService.getManager(response.email).pipe(take(1)).subscribe({
+          this.managerService.getManager(response.email).subscribe({
             next: (resp: any) => {
               this.managerService.setManager(resp);
             }

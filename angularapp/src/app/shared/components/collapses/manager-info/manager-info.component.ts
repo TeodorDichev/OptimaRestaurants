@@ -29,7 +29,7 @@ export class ManagerInfoComponent implements OnInit {
 
   private getManager() {
     if(this.managerEmail) {
-      this.managerService.manager$.pipe(take(1)).subscribe({  
+      this.managerService.manager$.subscribe({  
         next: (response: any) => {
           this.manager = response;
         }

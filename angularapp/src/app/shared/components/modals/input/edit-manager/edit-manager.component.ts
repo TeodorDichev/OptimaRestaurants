@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
@@ -32,9 +32,9 @@ export class EditManagerComponent {
 
   initializeForm() {
     this.editManagerForm = this.formBuilder.group({
-      newFirstName: ['', []],
-      newLastName: ['', []],
-      newPhoneNumber: ['', []],
+      newFirstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newLastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newPhoneNumber: ['', [Validators.pattern('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')]],
       profilePictureFile: ['', []]
     })
   }
@@ -53,7 +53,7 @@ export class EditManagerComponent {
     this.errorMessages = [];
     
     if (this.editManagerForm.valid && this.email) {
-      this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).pipe(take(1)).subscribe({
+      this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
