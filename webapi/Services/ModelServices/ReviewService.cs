@@ -56,7 +56,7 @@ namespace webapi.Services.ClassServices
         {
             List<OldReviewDto> reviews = new List<OldReviewDto>();
 
-            foreach(var cr in _context.CustomerReviews.Where(cr => cr.Employee == employee).ToList())
+            foreach(var cr in _context.CustomerReviews.Take(10).Where(cr => cr.Employee == employee).ToList())
             {
                 reviews.Add(new OldReviewDto
                 {
@@ -72,7 +72,7 @@ namespace webapi.Services.ClassServices
                 });
             }
 
-            foreach(var mr in _context.ManagerReviews.Where(mr => mr.Employee == employee).ToList())
+            foreach(var mr in _context.ManagerReviews.Take(10).Where(mr => mr.Employee == employee).ToList())
             {
                 reviews.Add(new OldReviewDto
                 {
