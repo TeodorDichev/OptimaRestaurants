@@ -186,6 +186,29 @@ namespace webapi.Services.ClassServices
                     }
                     break;
 
+                case "RestaurantAverageRating":
+                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.RestaurantAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    {
+                        var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
+                        restaurantsDto.Add(new BrowseRestaurantDto
+                        {
+                            Id = restaurant.Id.ToString(),
+                            Name = restaurant.Name,
+                            Address = restaurant.Address,
+                            City = restaurant.City,
+                            RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                            TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
+                            IsWorking = restaurant?.IsWorking ?? false,
+                            IconPath = restaurant?.IconPath,
+                            TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                            TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                            TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                            TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
+                        });
+                    }
+                    break;
+
                 default:
                     break;
             }

@@ -14,34 +14,32 @@ export class RestaurantsService {
     return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants-count`);
   }
 
-  /*
-  add filter buttons in every restaurant-list instance ->
-   by city, by rating avg, by rating user chooses (dropdown from 3 elements quis, empl, atmos)
-   there is a method for all of the elements
-   */
-
   getAllRestaurants(lastPageIndex: number) {
     return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants/${lastPageIndex}`);
   }
 
   getAllRestaurantsInACity(lastPageIndex: number, cityName: string) {
-    return this.http.get(`${environment.appUrl}api/restaurants/get-local-restaurants/${cityName}/${lastPageIndex}`);
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-local-restaurants/${cityName}/${lastPageIndex}`);
   }
   
   getAllRestaurantsAboveRating(lastPageIndex: number, rating: number) {
-    return this.http.get(`${environment.appUrl}api/restaurants/get-rating-restaurants/${rating}/${lastPageIndex}`);
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-rating-restaurants/${rating}/${lastPageIndex}`);
   }
 
   getBestCuisineRestaurants(lastPageIndex: number) {
-    return this.http.get(`${environment.appUrl}api/restaurants/get-cuisine-restaurants/${lastPageIndex}`);
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-cuisine-restaurants/${lastPageIndex}`);
   }
 
   getBestAtmosphereRestaurants(lastPageIndex: number) {
-    return this.http.get(`${environment.appUrl}api/restaurants/get-atmosphere-restaurants/${lastPageIndex}`);
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-atmosphere-restaurants/${lastPageIndex}`);
   }
 
   getBestEmployeesRestaurants(lastPageIndex: number) {
-    return this.http.get(`${environment.appUrl}api/restaurants/get-employees-restaurants/${lastPageIndex}`);
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-employees-restaurants/${lastPageIndex}`);
+  }
+
+  getBestRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-best-restaurants/${lastPageIndex}`);
   }
 
   getRestaurantDetails(restaurantId: string) {

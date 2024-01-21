@@ -146,7 +146,7 @@ app-root {
 .input-field {
     border-radius: 5px;
     padding: 5px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     cursor: pointer;
     border: 1px solid #ddd;

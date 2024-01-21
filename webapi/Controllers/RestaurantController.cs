@@ -47,13 +47,13 @@ namespace webapi.Controllers
         [HttpGet("api/restaurants/get-rating-restaurants/{rating}/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating, int lastRestaurantIndex)
         {
-            return await _restaurantService.GetRatingRestaurants(lastRestaurantIndex, rating); ;
+            return await _restaurantService.GetRatingRestaurants(lastRestaurantIndex, rating);
         }
 
         [HttpGet("api/restaurants/get-cuisine-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
         {
-            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating"); ;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating");
         }
 
         [HttpGet("api/restaurants/get-atmosphere-restaurants/{lastRestaurantIndex}")]
@@ -65,7 +65,13 @@ namespace webapi.Controllers
         [HttpGet("api/restaurants/get-employees-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
         {
-            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating"); ;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating");
+        }
+
+        [HttpGet("api/restaurants/get-best-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestRestaurants(int lastRestaurantIndex)
+        {
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "RestaurantAverageRating");
         }
 
         [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]

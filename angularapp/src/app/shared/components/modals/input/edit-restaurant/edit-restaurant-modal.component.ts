@@ -32,7 +32,7 @@ export class EditRestaurantModalComponent implements OnInit {
       name: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       address: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       city: ['', [ Validators.minLength(2)]],
-      employeeCapacity: ['', [Validators.pattern('^\d+$')]],
+      employeeCapacity: ['', [Validators.pattern('[0-9]+')]],
       iconFile: ['', []],
       isWorking: ['', []]
     })

@@ -93,3 +93,11 @@
     align-self: stretch;
     gap: 12px;
 }
+
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 248, 236);
+    gap: 6px;
+    padding: 6px 8px;
+}

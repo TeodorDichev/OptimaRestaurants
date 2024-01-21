@@ -10,7 +10,7 @@
             </button>
             <div *ngFor="let page of [].constructor(totalPages); let i = index;">
                 <button class="button button-page" [ngClass]="{'selected': i + 1 === currentPage}"
-                    (click)="getPageRestaurants(i + 1)">{{i + 1}}</button>
+                    (click)="currentPageRest(i + 1)">{{i + 1}}</button>
             </div>
             <button class="button button-page" (click)="nextPage()" tooltip="Следващи 20">
                 <i class="fa-solid fa-angles-right"></i>
@@ -20,17 +20,55 @@
             </div>
         </div>
         <div class="filters">
-            <i class="fa-solid fa-filter"></i>
-            <button class="button" tooltip="Филтър по град">
-                <i class="fa-solid fa-map-location-dot fa-xl"></i>
-            </button>
-            <button class="button" tooltip="Филтър по рейтинг">
-                <i class="fa-solid fa-arrow-up-right-dots"></i>
-            </button>
-            <button class="button" tooltip="Най-добрите ресторанти по избрана категория"> <!--the dropdown-->
-                <i class="fa-solid fa-arrow-down-wide-short"></i>
-            </button>
-            <button class="button" tooltip="Изчистване на филтри">
+            <div tooltip="Филтър по град">
+                <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-map-location-dot fa-xl"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <form class="input-field" [formGroup]="filterInputForm" (ngSubmit)="getRestaurantsByCity()">
+                        <input type="text" formControlName="filter" placeholder="Въведете град">
+                        <button type="submit" class="button btn-chocolate">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </ul>
+            </div>
+            <div tooltip="Филтър по рейтинг">
+                <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-arrow-up-right-dots fa-xl"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <form class="input-field" [formGroup]="filterInputForm" (ngSubmit)="getRestaurantsByRating()">
+                        <input type="text" formControlName="filter" placeholder="Въведете рейтинг">
+                        <button type="submit" class="button btn-chocolate">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </ul>
+            </div>
+            <div tooltip="Сортиране по категория">
+                <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fa-solid fa-arrow-down-wide-short fa-xl"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <button class="button btn-chocolate w-100" (click)="getBestRestaurants()">
+                        Ресторант
+                    </button>
+                    <button class="button btn-chocolate w-100" (click)="getBestCuisineRestaurants()">
+                        Кухня
+                    </button>
+                    <button class="button btn-chocolate w-100" (click)="getBestAtmosphereRestaurants()">
+                        Атмосфера
+                    </button>
+                    <button class="button btn-chocolate w-100" (click)="getBestEmployeesRestaurants()">
+                        Работници
+                    </button>                  
+                </ul>
+            </div>
+            <button class="button btn-inverted" tooltip="Изчистване на филтри" (click)="getAllRestaurants()">
                 <i class="fa-solid fa-filter-circle-xmark"></i>
             </button>
         </div>

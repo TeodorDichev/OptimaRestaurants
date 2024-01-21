@@ -33,7 +33,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       address: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       city: ['', [Validators.required, Validators.minLength(2)]],
-      employeeCapacity: ['', [Validators.required, Validators.pattern('^\d+$')]],
+      employeeCapacity: ['', [Validators.required, Validators.pattern('[0-9]+')]],
       iconFile: ['', []]
     })
   }
