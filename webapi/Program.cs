@@ -95,7 +95,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 var app = builder.Build();
-
+app.UseStaticFiles();
 /* HTTP request pipeline configuration and CORS policies */
 app.UseCors(opt =>
 {
