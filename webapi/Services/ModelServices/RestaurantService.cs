@@ -102,10 +102,9 @@ namespace webapi.Services.ClassServices
 
             return restaurantsDto;
         }
-        public async Task<Tuple<List<BrowseRestaurantDto>, int>> GetRestaurantsByCertainRating(int lastPageIndex, string ratingType)
+        public async Task<List<BrowseRestaurantDto>> GetRestaurantsByCertainRating(int lastPageIndex, string ratingType)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-            int countRes = 0;
 
             switch (ratingType)
             {
@@ -135,8 +134,6 @@ namespace webapi.Services.ClassServices
                             TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
                             TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
-
-                        ++countRes;
                     }
                     break;
 
@@ -166,8 +163,6 @@ namespace webapi.Services.ClassServices
                             TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
                             TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
-
-                        ++countRes;
                     }
                     break;
 
@@ -197,8 +192,6 @@ namespace webapi.Services.ClassServices
                             TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
                             TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
-
-                        ++countRes;
                     }
                     break;
 
@@ -228,8 +221,6 @@ namespace webapi.Services.ClassServices
                             TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
                             TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
                         });
-
-                        ++countRes;
                     }
                     break;
 
@@ -237,7 +228,7 @@ namespace webapi.Services.ClassServices
                     break;
             }
 
-            return Tuple.Create(restaurantsDto, countRes);
+            return restaurantsDto;
         }
         public RestaurantDetailsDto GetRestaurantDetails(Restaurant restaurant)
         {
