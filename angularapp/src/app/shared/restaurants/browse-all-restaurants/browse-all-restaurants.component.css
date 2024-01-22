@@ -15,6 +15,13 @@
     border-radius: 8px 0px 0px 8px;
 }
 
+.heading-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-self: stretch;
+}
+
 .empl-img {
     max-width: 150px;
     aspect-ratio: 1/1;
