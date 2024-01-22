@@ -38,9 +38,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            var isValidToken = _jwtService.ValidateQrToken(token, email);
-
-            if (!isValidToken) return BadRequest("Невалиден токен. Моля, опитайте отново");
+            if (!_jwtService.ValidateQrToken(token, email)) return BadRequest("Невалиден токен. Моля, опитайте отново");
 
             ICollection<BrowseRestaurantDto> restaurants = new List<BrowseRestaurantDto>();
 

@@ -39,7 +39,7 @@ namespace webapi.Services.ClassServices
                 City = city.ToUpper().First() + city.Substring(1).ToLower(),
                 BirthDate = birthDate,
                 TotalReviewsCount = 0,
-                QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review/{userProfile.Email}{_jwtService.GenerateQrToken(userProfile.Email)}")
+                QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review?token={_jwtService.GenerateQrToken(userProfile.Email)}&email={userProfile.Email}")
             };
             await _context.Employees.AddAsync(employee);
 
