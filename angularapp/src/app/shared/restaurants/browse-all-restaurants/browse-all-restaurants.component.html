@@ -2,7 +2,10 @@
 <div class="content">
     <div class="content-screen content-screen-fill">
         <div class="text-muted fst-italic h4">
-            Всички регистрирани ресторанти (Общ брой: {{totalRestaurantCount}})
+            Всички регистрирани ресторанти (Брой: {{totalRestaurantCount}})
+            <span class="h6 text-muted">
+                {{filterCurrent}}
+            </span>
         </div>
         <div class="pages">
             <button class="button button-page" (click)="previousPage()" tooltip="Предишни 20">
@@ -26,26 +29,11 @@
                     <i class="fa-solid fa-map-location-dot fa-xl"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <form class="input-field" [formGroup]="filterInputForm" (ngSubmit)="getRestaurantsByCity()">
-                        <input type="text" formControlName="filter" placeholder="Въведете град">
-                        <button type="submit" class="button btn-chocolate">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
-                </ul>
-            </div>
-            <div tooltip="Филтър по рейтинг">
-                <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="fa-solid fa-arrow-up-right-dots fa-xl"></i>
-                </button>
-                <ul class="dropdown-menu">
-                    <form class="input-field" [formGroup]="filterInputForm" (ngSubmit)="getRestaurantsByRating()">
-                        <input type="text" formControlName="filter" placeholder="Въведете рейтинг">
-                        <button type="submit" class="button btn-chocolate">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </form>
+                    <div *ngFor="let city of cities">
+                        <div class="button btn-inverted" (click)="setPageToFirst(); getRestaurantsByCity(city)">
+                            {{city}}
+                        </div>
+                    </div>
                 </ul>
             </div>
             <div tooltip="Сортиране по категория">
@@ -54,24 +42,26 @@
                     <i class="fa-solid fa-arrow-down-wide-short fa-xl"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <button class="button btn-chocolate w-100" (click)="getBestRestaurants()">
+                    <button class="button btn-chocolate w-100" (click)="setPageToFirst(); getBestRestaurants()">
                         Ресторант
                     </button>
-                    <button class="button btn-chocolate w-100" (click)="getBestCuisineRestaurants()">
+                    <button class="button btn-chocolate w-100" (click)="setPageToFirst(); getBestCuisineRestaurants()">
                         Кухня
                     </button>
-                    <button class="button btn-chocolate w-100" (click)="getBestAtmosphereRestaurants()">
+                    <button class="button btn-chocolate w-100" (click)="setPageToFirst(); getBestAtmosphereRestaurants()">
                         Атмосфера
                     </button>
-                    <button class="button btn-chocolate w-100" (click)="getBestEmployeesRestaurants()">
+                    <button class="button btn-chocolate w-100" (click)="setPageToFirst(); getBestEmployeesRestaurants()">
                         Работници
-                    </button>                  
+                    </button>
                 </ul>
             </div>
-            <button class="button btn-inverted" tooltip="Изчистване на филтри" (click)="getAllRestaurants()">
+            <button class="button btn-inverted" tooltip="Изчистване на филтри" (click)=" setPageToFirst(); getAllRestaurants()">
                 <i class="fa-solid fa-filter-circle-xmark"></i>
             </button>
+            
         </div>
+        
         <div class="rest-list screen-left">
             <div class="list-items" *ngFor="let restaurant of allRestaurants">
                 <div class="restaurant" (click)="getRestaurantDetails(restaurant.id)">

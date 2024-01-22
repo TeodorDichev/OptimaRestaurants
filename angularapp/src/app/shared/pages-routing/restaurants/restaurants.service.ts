@@ -18,12 +18,16 @@ export class RestaurantsService {
     return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants/${lastPageIndex}`);
   }
 
-  getAllRestaurantsInACity(lastPageIndex: number, cityName: string) {
-    return this.http.get(`${environment.appUrl}/api/restaurants/get-local-restaurants/${cityName}/${lastPageIndex}`);
+  getCitiesNames() {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-names`);
   }
-  
-  getAllRestaurantsAboveRating(lastPageIndex: number, rating: number) {
-    return this.http.get(`${environment.appUrl}/api/restaurants/get-rating-restaurants/${rating}/${lastPageIndex}`);
+
+  getRestaurantsCountInACity(cityName: string) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-count/${cityName}`);
+  }
+
+  getAllRestaurantsInACity(lastPageIndex: number, cityName: string) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-restaurants/${cityName}/${lastPageIndex}`);
   }
 
   getBestCuisineRestaurants(lastPageIndex: number) {
