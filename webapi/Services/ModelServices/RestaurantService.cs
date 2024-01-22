@@ -36,7 +36,7 @@ namespace webapi.Services.ClassServices
         }
         public async Task<List<string>> GetCityRestaurantNames()
         {
-            return await _context.Restaurants.DistinctBy(r => r.City).Select(r => r.City).ToListAsync();
+            return await _context.Restaurants.Select(r => r.City).Distinct().ToListAsync();
         }
         public async Task<List<BrowseRestaurantDto>> GetAllRestaurants(int lastPageIndex)
         {
