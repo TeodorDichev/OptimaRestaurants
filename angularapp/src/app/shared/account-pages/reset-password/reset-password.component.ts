@@ -24,6 +24,7 @@ export class ResetPasswordComponent implements OnInit {
   private formBuilder: FormBuilder,
   private router: Router,
   private activatedRoute: ActivatedRoute) {}
+  
   ngOnInit(): void {
     this.accountService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {

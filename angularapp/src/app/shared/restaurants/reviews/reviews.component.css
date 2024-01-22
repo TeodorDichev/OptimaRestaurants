@@ -1,7 +1,8 @@
-.outer {
+::ng-deep app-reviews {
+    background-color: rgb(255, 231, 185);
     display: flex;
+    flex-direction: column;
     align-items: flex-start;
     flex: 1 0 0;
     align-self: stretch;
-    background-color: lightblue;
 }
