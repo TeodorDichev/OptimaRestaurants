@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReviewsService } from '../../pages-routing/review/reviews.service';
 import { SharedService } from '../../shared.service';
+import { Restaurant } from '../../models/restaurant/restaurant';
+import { ReviewEmployeeInfo } from '../../models/reviews/review-employee-info';
 
 @Component({
   selector: 'app-reviews',
@@ -14,6 +16,11 @@ export class ReviewsComponent implements OnInit {
   token: string | undefined;
   email: string | undefined;
   errorMessages: string[] = [];
+
+  reviewEmployeeInfo: ReviewEmployeeInfo | undefined;
+
+  selectedRestaurant: Restaurant | undefined;
+
   constructor(private reviewsService: ReviewsService,
     private sharedService: SharedService,
     private router: Router,
@@ -30,8 +37,10 @@ export class ReviewsComponent implements OnInit {
         this.email = params.get('email');
         if (this.token && this.email) {
           this.reviewsService.getCustomerReviewForm(this.email, this.token).subscribe({
-            next: () => { }, error: error => {
-              this.router.navigateByUrl('');
+            next: (response: any) => {
+              this.reviewEmployeeInfo = response;
+            }, error: error => {
+              // this.router.navigateByUrl('');
               this.sharedService.showNotification(false, 'Невалиден токен!', error.error);
             }
           });
@@ -55,5 +64,7 @@ export class ReviewsComponent implements OnInit {
 
   }
 
-
+  selectRestaurant(restaurant: Restaurant) {
+    this.selectedRestaurant = restaurant;
+  }
 }

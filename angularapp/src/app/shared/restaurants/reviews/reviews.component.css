@@ -6,3 +6,8 @@
     flex: 1 0 0;
     align-self: stretch;
 }
+
+.content-screen-fill {
+    align-items: center;
+    justify-content: flex-start;
+}
