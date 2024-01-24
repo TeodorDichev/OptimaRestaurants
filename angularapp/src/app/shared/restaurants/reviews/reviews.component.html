@@ -17,7 +17,7 @@
                 </div>
             </ul>
         </div>
-        <div class="custom-class-d-flex-row-fill-row" *ngIf="!selectedRestaurant">
+        <div class="rate-group" *ngIf="!selectedRestaurant">
             <div class="center-this-and-flex-start-vertically">
                 Оценете работата на {{reviewEmployeeInfo?.employeeName}}
             </div>
@@ -25,6 +25,10 @@
                 Оценете и ресторант {{selectedRestaurant}}
             </div>
         </div>
-        <div></div>
+        <div>
+            <button class="button btn-chocolate"> 
+                Поставяне на оценка
+            </button> 
+        </div>
     </div>
 </div>

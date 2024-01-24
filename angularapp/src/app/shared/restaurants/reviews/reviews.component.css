@@ -11,3 +11,11 @@
     align-items: center;
     justify-content: flex-start;
 }
+
+.rate-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+    flex: 1 0 0;
+}
