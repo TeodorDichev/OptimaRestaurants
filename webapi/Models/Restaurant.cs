@@ -18,13 +18,13 @@ namespace webapi.Models
         public bool IsWorking { get; set; }
         public string? IconPath { get; set; }
 
-        [Precision(2, 2)]
+        [Precision(4, 2)]
         public decimal? CuisineAverageRating { get; set; }
-        [Precision(2, 2)]
+        [Precision(4, 2)]
         public decimal? AtmosphereAverageRating { get; set; }
-        [Precision(2, 2)]
+        [Precision(4, 2)]
         public decimal? EmployeesAverageRating { get; set; }
-        [Precision(2, 2)]
+        [Precision(4, 2)]
         public decimal? RestaurantAverageRating { get; set; }
         public virtual Manager? Manager { get; set; }
         public virtual ICollection<EmployeeRestaurant> EmployeesRestaurants { get; set; } = new List<EmployeeRestaurant>();
