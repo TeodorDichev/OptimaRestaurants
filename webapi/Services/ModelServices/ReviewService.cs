@@ -24,10 +24,10 @@ namespace webapi.Services.ClassServices
                 Restaurant = restaurant,
                 DateTime = DateTime.Now,
                 Comment = model.Comment,
-                SpeedRating = model.SpeedRating,
-                AttitudeRating = model.AttitudeRating,
-                AtmosphereRating = model.AtmosphereRating,
-                CuisineRating = model.CuisineRating,
+                SpeedRating = model.SpeedRating == 0 ? null : model.SpeedRating,
+                AttitudeRating = model.AttitudeRating == 0 ? null : model.AttitudeRating,
+                AtmosphereRating = model.AtmosphereRating == 0 ? null : model.AtmosphereRating,
+                CuisineRating = model.CuisineRating == 0 ? null : model.CuisineRating,
             };
 
             await _context.CustomerReviews.AddAsync(review);
@@ -44,8 +44,8 @@ namespace webapi.Services.ClassServices
                 Restaurant = restaurant,
                 DateTime = DateTime.Now,
                 Comment = model.Comment,
-                CollegialityRating = model.CollegialityRating,
-                PunctualityRating = model.PunctualityRating,
+                CollegialityRating = model.CollegialityRating == 0 ? null : model.CollegialityRating,
+                PunctualityRating = model.PunctualityRating == 0 ? null : model.PunctualityRating,
             };
 
             await _context.ManagerReviews.AddAsync(review);
