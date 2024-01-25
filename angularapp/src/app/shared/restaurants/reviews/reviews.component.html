@@ -7,10 +7,10 @@
             <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <span *ngIf="!selectedRestaurant">Изберете ресторант</span>
-                <span *ngIf="selectedRestaurant">selectedRestaurant.name</span>
+                <span *ngIf="selectedRestaurant">{{selectedRestaurant.name}}</span>
             </button>
             <ul class="dropdown-menu">
-                <div *ngFor="let restaurant of reviewEmployeeInfo?.restaurants">
+                <div class="p-2" *ngFor="let restaurant of reviewEmployeeInfo?.restaurantDtos">
                     <div class="button btn-inverted" (click)="selectRestaurant(restaurant)">
                         {{restaurant.name}}
                     </div>
@@ -18,14 +18,26 @@
             </ul>
         </div>
         <div class="rate-group" *ngIf="!selectedRestaurant">
-            <div class="center-this-and-flex-start-vertically">
+            <div>
                 Оценете работата на {{reviewEmployeeInfo?.employeeName}}
+                <div>
+                    Speed: <app-rate-employee-restaurant></app-rate-employee-restaurant>
+                </div>
+                <div>
+                    Attitude: 
+                </div>
             </div>
-            <div class="center-this-and-flex-start-vertically">
-                Оценете и ресторант {{selectedRestaurant}}
+            <div>
+                Оценете и ресторант 
+                <div>
+                    Cuisine: 
+                </div>
+                <div>
+                    Atmosphere: 
+                </div>
             </div>
         </div>
-        <div>
+        <div *ngIf="selectedRestaurant">
             <button class="button btn-chocolate"> 
                 Поставяне на оценка
             </button> 

@@ -15,7 +15,7 @@
 .rate-group {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
+    justify-content: space-around;
+    align-self: stretch;
     flex: 1 0 0;
 }
