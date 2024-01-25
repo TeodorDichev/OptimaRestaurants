@@ -69,9 +69,15 @@
     overflow: auto;
 }
 
-/* @media only screen and (max-width: 1050px) {
-    .content {
-        flex-direction: column;
-        overflow: auto;
-    }
-}  */
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    justify-content: space-between;
+}

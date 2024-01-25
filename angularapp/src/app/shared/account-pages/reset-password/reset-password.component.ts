@@ -13,18 +13,18 @@ import { ResetPassword } from '../../models/account/reset-password';
   styleUrls: ['./reset-password.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
- resetPasswordForm: FormGroup = new FormGroup({});
- token: string | undefined;
- email: string | undefined;
- submitted = false;
- errorMessages: string[] = [];
+  resetPasswordForm: FormGroup = new FormGroup({});
+  token: string | undefined;
+  email: string | undefined;
+  submitted = false;
+  errorMessages: string[] = [];
 
- constructor(private accountService: AccountService,
-  private sharedService: SharedService,
-  private formBuilder: FormBuilder,
-  private router: Router,
-  private activatedRoute: ActivatedRoute) {}
-  
+  constructor(private accountService: AccountService,
+    private sharedService: SharedService,
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) { }
+
   ngOnInit(): void {
     this.accountService.user$.pipe(take(1)).subscribe({
       next: (user: User | null) => {
@@ -34,10 +34,10 @@ export class ResetPasswordComponent implements OnInit {
           this.activatedRoute.queryParamMap.subscribe({
             next: (params: any) => {
               this.token = params.get('token');
-              this.email = params.get('email');          
-              if (this.token && this.email){
+              this.email = params.get('email');
+              if (this.token && this.email) {
                 this.initializeForm(this.email);
-              } else{
+              } else {
                 this.router.navigateByUrl('/account/login');
               }
             }
@@ -47,14 +47,14 @@ export class ResetPasswordComponent implements OnInit {
     })
   }
 
-  initializeForm(username: string){
+  initializeForm(username: string) {
     this.resetPasswordForm = this.formBuilder.group({
-      email: [{value: username, disabled: true}],
+      email: [{ value: username, disabled: true }],
       newPassword: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]]
     })
   }
 
-  resetPassword(){
+  resetPassword() {
     this.submitted = true;
     this.errorMessages = [];
 
@@ -65,7 +65,7 @@ export class ResetPasswordComponent implements OnInit {
         password: this.resetPasswordForm.get('newPassword')?.value
       };
       this.accountService.resetPassword(model).subscribe({
-        next: (response:any) => {
+        next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.router.navigateByUrl('/account/login')
         },
@@ -80,7 +80,7 @@ export class ResetPasswordComponent implements OnInit {
     }
   }
 
-  cancel(){
+  cancel() {
     this.router.navigateByUrl('/account/login');
   }
 

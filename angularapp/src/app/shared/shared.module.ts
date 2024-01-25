@@ -32,7 +32,7 @@ import { SearchResultAccountComponent } from './components/collapses/search-resu
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { SearchResultRestaurantComponent } from './components/collapses/search-result/restaurant/search-result-restaurant.component';
-import { ReviewsComponent } from './restaurants/reviews/reviews.component';
+import { ReviewsComponent } from './restaurants/reviews/review-customer.component';
 import { AboutComponent } from './restaurants/about/about.component';
 import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee-restaurant/rate-employee-restaurant.component';
 

@@ -1,9 +1,16 @@
 <nav-top></nav-top>
 <div class="content flex-direction-row">
     <div class="content-screen content-screen-fill">
-        <div class="text-muted fst-italic h4">
-            Ресторантите, в които работите
-        </div>
+        <div class="header-info">
+            <div class="text-muted fst-italic h4">
+                Ресторантите, в които работите
+            </div>
+            <div>
+                <button class="button btn-inverted h4" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasEmployeeInfo">Вашите статискитки,
+                {{employee?.firstName}}</button>
+            </div>    
+        </div> 
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">
@@ -26,11 +33,14 @@
             </div>
         </div>
     </div>
-    <div class="content-screen content-screen-fill-row">
-        <div class="text-muted fst-italic h5">
-            Вашите оценки, {{employee?.firstName}}
+
+    <div class="offcanvas offcanvas-end" id="offcanvasEmployeeInfo">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title fst-italic border-bottom">
+                Вашите оценки, {{employee?.firstName}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="screen-right border-top" *ngIf="employee">
+        <div class="offcanvas-body" *ngIf="employee">
             <div class="ratings border-bottom">
                 <div class="fw-bold">
                     Средно / <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
@@ -46,7 +56,7 @@
                 </div>
                 <div>
                     Колегиалност / <app-star-rating [rating]="employee.collegialityAverageRating"></app-star-rating>
-                </div>              
+                </div>
             </div>
             <div class="fw-bold">
                 Последни оценки

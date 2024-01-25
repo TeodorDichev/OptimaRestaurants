@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-rate-employee-restaurant',
@@ -7,8 +7,10 @@ import { Component } from '@angular/core';
 })
 export class RateEmployeeRestaurantComponent {
 
-  stars: Array<{ filled: boolean; color: string; }> = [];
-  selectedStar: number | undefined;
+  @Output() ratingResult = new EventEmitter<number>();
+
+  stars: Array<{ filled: boolean; }> = [];
+  selectedStar: number = 0; 
 
   ngOnInit(): void {
     this.initializeStars();
@@ -16,7 +18,7 @@ export class RateEmployeeRestaurantComponent {
 
   initializeStars(): void {
     for (let i = 0; i < 5; i++) {
-      this.stars.push({ filled: false, color: 'goldenrod' });
+      this.stars.push({ filled: false });
     }
   }
 
@@ -43,6 +45,17 @@ export class RateEmployeeRestaurantComponent {
     for (let i = 0; i <= index; i++) {
       this.stars[i].filled = true;
     }
+    this.returnRatings();
+  }
+
+  resetStars() {
+    this.clearFill();
+    this.selectedStar = 0;
+    this.returnRatings();
+  }
+
+  returnRatings() {
+    this.ratingResult.emit(this.selectedStar);
   }
 
   private clearFill() {

@@ -1,4 +1,7 @@
-<span *ngFor="let star of stars; let i = index" class="fa"
-    [ngClass]="{'fa-star': star.filled, 'fa-star-o': !star.filled}" [style.color]="star.color"
+<span *ngFor="let star of stars; let i = index" class="fa fa-xl"
+    [ngClass]="{'fa-star': star.filled, 'fa-star-o': !star.filled}"
     (mouseenter)="onStarHover(i)" (mouseleave)="onStarLeave(i)" (click)="onStarClick(i)">
+</span>
+<span (click)="resetStars()">
+    <i class="fa-solid fa-ban fa-xl"></i>
 </span>
