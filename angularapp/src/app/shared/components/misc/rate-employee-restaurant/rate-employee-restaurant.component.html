@@ -1,0 +1,4 @@
+<span *ngFor="let star of stars; let i = index" class="fa"
+    [ngClass]="{'fa-star': star.filled, 'fa-star-o': !star.filled}" [style.color]="star.color"
+    (mouseenter)="onStarHover(i)" (mouseleave)="onStarLeave(i)" (click)="onStarClick(i)">
+</span>
