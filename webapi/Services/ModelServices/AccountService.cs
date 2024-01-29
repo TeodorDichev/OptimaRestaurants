@@ -37,7 +37,9 @@ namespace webapi.Services.ClassServices
                 .Where(u =>
                     EF.Functions.Like(u.Email, $"{input}%") ||
                     EF.Functions.Like(u.FirstName, $"{input}%") ||
-                    EF.Functions.Like(u.LastName, $"{input}%")).ToListAsync();
+                    EF.Functions.Like(u.LastName, $"{input}%"))
+                .Take(20)
+                .ToListAsync();
         }
         public async Task<ApplicationUser> GetUserByEmailOrUserName(string email)
         {

@@ -90,7 +90,7 @@ namespace webapi.Controllers
             return _restaurantService.GetRestaurantDetails(restaurant);
         }
 
-        [HttpGet("api/restaurants/search/{str}")]
+        [HttpGet("api/restaurants/search/{input}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> SearchRestaurant(string input)
         {
             List<Restaurant> foundRestaurants = await _restaurantService.GetRestaurantsWithMatchingNames(input);

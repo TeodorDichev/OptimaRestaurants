@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({});
   submitted = false;
   user: User | null | undefined;
-  
+
   searchResultAccount: SearchResultAccount[] = [];
   searchResultRestaurant: SearchResultRestaurant[] = [];
   @ViewChild('dropdown') dropdown: ElementRef | undefined;
@@ -140,6 +140,6 @@ export class NavbarComponent implements OnInit {
   }
 
   schedule() {
-    
+
   }
 }

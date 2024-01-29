@@ -1,5 +1,4 @@
 ::ng-deep app-manager-logged-view {
-    background-color: rgb(255, 231, 185);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -88,11 +87,20 @@
     padding: 8px 12px;
 }
 
-.header-text-button {
+.header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+.heading-with-button {
     display: flex;
     flex-direction: row;
     gap: 3%;
-    align-items: center;
-    align-self: stretch;
 }
 
+.offcanvas {
+    background-color: rgba(252, 226, 179, 0.938);
+}

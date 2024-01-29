@@ -26,14 +26,14 @@ import { RestaurantInfoComponent } from './components/modals/show/restaurant-inf
 import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
 import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee-search/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
-import { BrowseAllRestaurantsComponent } from './restaurants/browse-all-restaurants/browse-all-restaurants.component';
+import { BrowseAllRestaurantsComponent } from './user-pages/browse-all-restaurants/browse-all-restaurants.component';
 import { EmployeeInfoComponent } from './components/collapses/employee-info/employee-info.component';
 import { SearchResultAccountComponent } from './components/collapses/search-result/account/search-result-account.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { SearchResultRestaurantComponent } from './components/collapses/search-result/restaurant/search-result-restaurant.component';
-import { ReviewsComponent } from './restaurants/reviews/review-customer.component';
-import { AboutComponent } from './restaurants/about/about.component';
+import { ReviewsComponent } from './user-pages/reviews/review-customer.component';
+import { AboutComponent } from './user-pages/about/about.component';
 import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee-restaurant/rate-employee-restaurant.component';
 import { MapComponent } from './components/map/map.component';
 

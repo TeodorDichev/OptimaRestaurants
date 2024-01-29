@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { SearchResultAccount } from 'src/app/shared/models/account/search-result-account';
 import { SearchResultRestaurant } from 'src/app/shared/models/restaurant/search-result-restaurant';
 import { SharedService } from 'src/app/shared/shared.service';
 
@@ -13,7 +12,7 @@ export class SearchResultRestaurantComponent {
 
   constructor(private sharedService: SharedService) { }
 
-  openInfoModal(result: SearchResultAccount) {
-    
+  openInfoModal(result: SearchResultRestaurant) {
+    this.sharedService.openRestaurantDetailsModal(result.id);
   }
 }

@@ -52,7 +52,5 @@ export class MapComponent {
     else {
       this.addressSearchResults = [];
     }
-
-    console.log(this.addressSearchResults);
   }
 }

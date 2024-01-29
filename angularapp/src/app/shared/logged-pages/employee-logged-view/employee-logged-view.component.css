@@ -1,5 +1,4 @@
 ::ng-deep app-employee-logged-view {
-    background-color: rgb(255, 240, 213);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -80,4 +79,8 @@
     flex-direction: row;
     align-self: stretch;
     justify-content: space-between;
+}
+
+.offcanvas {
+    background-color: rgba(252, 226, 179, 0.938);
 }

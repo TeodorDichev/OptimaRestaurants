@@ -1,16 +1,19 @@
-<div class="search-body scrollable-vert">
-    <div class="roboto font-size-20 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
+<div class="search-body">
+    <div class="h5 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
         Няма намерени резултати
     </div>
-    <div *ngIf="searchResult">
-        <div class="px-1" *ngFor="let result of searchResult">
-            <div class="search-result border-top border-bottom mb-1 py-2" (click)="openInfoModal(result)">
-                <div class="roboto font-size-20 chocolate ms-1">
-                    <img src="{{result.picturePath}}"> 
-                    {{result.fullname}}
+    <div class="results">
+        <div *ngFor="let result of searchResult">
+            <div class="search-result border-top border-bottom" (click)="openInfoModal(result)">
+                <div>
+                    <img src="{{result.picturePath}}">
+                    <span class="fw-bold"> {{result.fullname}} </span>
                 </div>
-                <div class="roboto font-size-15">{{result.email}}</div>
-                <div class="roboto font-size-15 text-muted fst-italic text-end">{{result.role}}</div>
+                <div>
+                    <span *ngIf="result.email.length > 20"> {{result.email.substring(0, 19)}}... </span>
+                    <span *ngIf="result.email.length <= 20"> {{result.email}} </span>
+                </div>
+                <div class="text-muted fst-italic text-end">{{result.role}}</div>
             </div>
         </div>
     </div>
