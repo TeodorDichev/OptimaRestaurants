@@ -1,0 +1,14 @@
+<div class="map-search">
+    <div class="input-field" *ngIf="hasSearchBar">
+        <span class="fa-solid fa-map-pin p-2"></span>
+        <input type="text" placeholder="Търсете адрес" (keyup)="searchAddress($event)" />
+    </div>
+    <div class="dropdown">
+        <ul class="dropdown-menu show w-100" *ngIf="addressSearchResults.length > 0">
+            <div *ngFor="let result of addressSearchResults">
+                {{result.country}}
+            </div>
+        </ul>
+    </div>
+    <div id="leafletMap" class="leafletMap"></div>
+</div>

@@ -1,0 +1,10 @@
+.leafletMap {
+    aspect-ratio: 3/2;
+    height: 100%;
+}
+
+.map-search {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

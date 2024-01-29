@@ -5,12 +5,13 @@
             <div class="text-muted fst-italic h4">
                 Ресторантите, в които работите
             </div>
-            <div>
+            <div tooltip="Вашите оценки">
                 <button class="button btn-inverted h4" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasEmployeeInfo">Вашите статискитки,
-                {{employee?.firstName}}</button>
-            </div>    
-        </div> 
+                    data-bs-target="#offcanvasEmployeeInfo">
+                    <i class="fa-solid fa-chart-line fa-xl"></i>
+                </button>
+            </div>
+        </div>
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">

@@ -35,6 +35,7 @@ import { SearchResultRestaurantComponent } from './components/collapses/search-r
 import { ReviewsComponent } from './restaurants/reviews/review-customer.component';
 import { AboutComponent } from './restaurants/about/about.component';
 import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee-restaurant/rate-employee-restaurant.component';
+import { MapComponent } from './components/map/map.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee
     SearchResultRestaurantComponent,
     ReviewsComponent,
     AboutComponent,
-    RateEmployeeRestaurantComponent
+    RateEmployeeRestaurantComponent,
+    MapComponent
   ],
   imports: [
     CommonModule,
