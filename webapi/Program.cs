@@ -20,7 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"),
+    options.UseSqlServer("Server=mssql2012.asphostbg.net, 14330;Database=optimare_staurant;Uid=optimare_1;Password=0ptim@Res;TrustServerCertificate=Yes",
         x => x.UseDateOnlyTimeOnly());
 });
 
@@ -28,7 +28,6 @@ builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<QrCodesService>();
 builder.Services.AddScoped<PdfFilesService>();
-builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
 
 builder.Services.AddScoped<ReviewService>();
@@ -108,24 +107,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
-/* Seeding roles to the database */
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
-        await contextSeedServices.InitializeContextAsync();
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
-        logger.LogError(ex.Message, "Failed to initialize and seed database ");    
-    }
-}
 
 app.Run();

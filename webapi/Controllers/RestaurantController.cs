@@ -27,12 +27,12 @@ namespace webapi.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("api/restaurants/get-all-restaurants-count")]
+        [HttpGet("/api/restaurants/get-all-restaurants-count")]
         public async Task<ActionResult<int>> GetAllRestaurantsCount()
         {
             return await _restaurantService.GetAllRestaurantsCount();
         }
-        [HttpGet("api/restaurants/get-all-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("/api/restaurants/get-all-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetAllRestaurants(lastRestaurantIndex);
