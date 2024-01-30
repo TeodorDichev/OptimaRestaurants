@@ -1,52 +1,48 @@
-<div class="max-height-90vh collapse-body scrollable-vert" *ngIf="employee">
-  <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
-  <div class="roboto font-size-20 mx-4">
-    <div class="my-2">
-      <div class="fw-bold font-size-20">
-        <span class="me-2" *ngIf="employee.profilePicturePath">
+<div class="collapse-body" *ngIf="employee">
+  <div class="h3 border-bottom">Вашият профил</div>
+  <div class="">
+    <div class="">
+      <div class="fw-bold">
+        <span *ngIf="employee.profilePicturePath">
           <img src="{{employee.profilePicturePath}}">
         </span>Здравейте,
-        <span class="fst-italic chocolate"> {{employee.firstName}} {{employee.lastName}} </span>!
+        <span class="fst-italic"> {{employee.firstName}} {{employee.lastName}} </span>!
       </div>
     </div>
-    <div class="my-2 font-size-20">
+    <div class="">
       <span class="fw-bold">Имейл:
         <span class="fw-normal fst-italic">{{employee.email}}</span>
       </span>
     </div>
-    <div class="my-2 font-size-20">
+    <div class="">
       <span class="fw-bold">Дата на раждане:
         <span class="fw-normal fst-italic">{{employee.birthDate}}</span>
       </span>
     </div>
-    <div class="my-2 font-size-20">
+    <div class="">
       <span class="fw-bold">Град:
         <span class="fw-normal fst-italic">{{employee.city}}</span>
       </span>
     </div>
-    <div class="my-2 font-size-20">
+    <div class="">
       <span class="fw-bold">Телефон:
         <span class="fw-normal fst-italic">{{employee.phoneNumber}}</span>
       </span>
     </div>
-    <div class="my-2 font-size-20">
+    <div class="">
       <span class="fst-italic">
         Вие <span *ngIf="!employee.isLookingForJob">не</span> си търсите работа.
       </span>
     </div>
-    <span class="my-2" *ngIf="!employee.profilePicturePath">
+    <span class="" *ngIf="!employee.profilePicturePath">
       Все още нямате профилна снимка.
     </span>
-    <div class="my-2 text-center font-size-20">
-      <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-        (click)="downloadPDF()" tooltip="Сваляне на CV">
-        <i class="fa-solid fa-file-pdf fa-lg"></i>
-      </div>
-      <div class="btn btn-outline-dark btn-yellow-inverted roboto font-size-30 mx-xl-2" aria-current="page"
-      (click)="openQRCodeModal()"  tooltip="Вашият QR код">
-        <i class="fa-solid fa-qrcode fa-lg"></i>
-      </div>
-    </div>
+    <button class="button btn-inverted" (click)="downloadPDF()" tooltip="Сваляне на CV">
+      <i class="fa-solid fa-file-pdf fa-xl"></i>
+    </button>
+    <button class="button btn-inverted" (click)="openQRCodeModal()" tooltip="Вашият QR код">
+      <i class="fa-solid fa-qrcode fa-xl"></i>
+    </button>
   </div>
   <div class="text-end border-top sticky-bottom">
     <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на
