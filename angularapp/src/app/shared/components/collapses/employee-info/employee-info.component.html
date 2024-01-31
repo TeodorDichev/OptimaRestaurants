@@ -1,52 +1,56 @@
 <div class="collapse-body" *ngIf="employee">
   <div class="h3 border-bottom">Вашият профил</div>
-  <div class="">
-    <div class="">
-      <div class="fw-bold">
+  <div class="border-bottom">
+    <div>
+      <div class="fw-bold h5">
         <span *ngIf="employee.profilePicturePath">
           <img src="{{employee.profilePicturePath}}">
-        </span>Здравейте,
-        <span class="fst-italic"> {{employee.firstName}} {{employee.lastName}} </span>!
+        </span>
+        Здравейте, <span class="fst-italic"> {{employee.firstName}} {{employee.lastName}}</span>
       </div>
     </div>
-    <div class="">
-      <span class="fw-bold">Имейл:
-        <span class="fw-normal fst-italic">{{employee.email}}</span>
-      </span>
+    <div class="employee-info">
+      <div>
+        <span class="fw-bold">Имейл:
+          <span class="fw-normal fst-italic">{{employee.email}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fw-bold">Дата на раждане:
+          <span class="fw-normal fst-italic">{{employee.birthDate}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fw-bold">Град:
+          <span class="fw-normal fst-italic">{{employee.city}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fw-bold">Телефон:
+          <span class="fw-normal fst-italic">{{employee.phoneNumber}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fst-italic">
+          Вие <span *ngIf="!employee.isLookingForJob">не</span> си търсите работа.
+        </span>
+      </div>
+      <div class="fst-italic" *ngIf="!employee.profilePicturePath">
+        Все още нямате профилна снимка.
+      </div>
     </div>
-    <div class="">
-      <span class="fw-bold">Дата на раждане:
-        <span class="fw-normal fst-italic">{{employee.birthDate}}</span>
-      </span>
+    <div class="buttons justify-content-center">
+      <button class="button btn-inverted" (click)="downloadPDF()" tooltip="Сваляне на CV">
+        <i class="fa-solid fa-file-pdf fa-2x "></i>
+      </button>
+      <button class="button btn-inverted" (click)="openQRCodeModal()" tooltip="Вашият QR код">
+        <i class="fa-solid fa-qrcode fa-2x "></i>
+      </button>
     </div>
-    <div class="">
-      <span class="fw-bold">Град:
-        <span class="fw-normal fst-italic">{{employee.city}}</span>
-      </span>
-    </div>
-    <div class="">
-      <span class="fw-bold">Телефон:
-        <span class="fw-normal fst-italic">{{employee.phoneNumber}}</span>
-      </span>
-    </div>
-    <div class="">
-      <span class="fst-italic">
-        Вие <span *ngIf="!employee.isLookingForJob">не</span> си търсите работа.
-      </span>
-    </div>
-    <span class="" *ngIf="!employee.profilePicturePath">
-      Все още нямате профилна снимка.
-    </span>
-    <button class="button btn-inverted" (click)="downloadPDF()" tooltip="Сваляне на CV">
-      <i class="fa-solid fa-file-pdf fa-xl"></i>
-    </button>
-    <button class="button btn-inverted" (click)="openQRCodeModal()" tooltip="Вашият QR код">
-      <i class="fa-solid fa-qrcode fa-xl"></i>
-    </button>
   </div>
-  <div class="text-end border-top sticky-bottom">
-    <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editEmployeeProfile()">Редактиране на
+  <div class="buttons">
+    <button type="button" class="button btn-chocolate" (click)="editEmployeeProfile()">Редактиране на
       данните</button>
-    <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
+    <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Затваряне</button>
   </div>
 </div>

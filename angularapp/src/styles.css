@@ -112,10 +112,11 @@ app-root {
 .pacifico {
     font-family: Pacifico;
 }
-
-.scrollable-vert {
-    overflow-y: auto;
-    overflow-x: hidden;
+    
+.btn-gray {
+    background-color: rgb(71, 71, 71);
+    color: white;
+    border: transparent;
 }
 
 .theme-main {

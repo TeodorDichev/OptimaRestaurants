@@ -3,9 +3,27 @@ img {
     width: 50px;
     border-radius: 25px;
     box-shadow: 2px 1px 2px black;
+    margin: 6px;
 }
+
 .collapse-body {
-    display: block;
-    width: 400px;
-    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    padding: 12px;
+    gap: 12px;
+    background-color:rgba(252, 235, 203, 0.93);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.employee-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }

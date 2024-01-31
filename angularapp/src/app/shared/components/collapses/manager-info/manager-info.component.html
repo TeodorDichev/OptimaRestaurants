@@ -1,25 +1,33 @@
-<div class="max-height-70vh collapse-body scrollable-vert" *ngIf="manager">
-  <div class="roboto m-3 fw-bold font-size-40 chocolate border-bottom">Вашият профил</div>
-  <div class="roboto mx-4 pb-4">
-    <div class="my-2">
-      <span class="fw-bold font-size-20">
-        <span class="me-2" *ngIf="manager.profilePicturePath">
+<div class="collapse-body" *ngIf="manager">
+  <div class="h3 border-bottom">Вашият профил</div>
+  <div class="border-bottom">
+    <div>
+      <div class="fw-bold h5">
+        <span *ngIf="manager.profilePicturePath">
           <img src="{{manager.profilePicturePath}}">
         </span>
-        Здравейте, <span class="fst-italic chocolate"> {{manager.firstName}} {{manager.lastName}} </span>!
-      </span>
+        Здравейте, <span class="fst-italic"> {{manager.firstName}} {{manager.lastName}}</span>
+      </div>
     </div>
-    <div class="my-1 font-size-18">
-      <span class="fw-bold">Имейл: <span class="fw-normal fst-italic">{{manager.email}}</span></span>
+    <div class="manager-info">
+      <div>
+        <span class="fw-bold">Имейл:
+          <span class="fw-normal fst-italic">{{manager.email}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fw-bold">Телефон:
+          <span class="fw-normal fst-italic">{{manager.phoneNumber}}</span>
+        </span>
+      </div>
+      <div class="fst-italic" *ngIf="!manager.profilePicturePath">
+        Все още нямате профилна снимка.
+      </div>
     </div>
-    <div class="my-1 font-size-18">
-      <span class="fw-bold">Телефон: <span class="fw-normal fst-italic">{{manager.phoneNumber}}</span></span>
-    </div>
-    <span class="fst-italic" *ngIf="!manager.profilePicturePath">Все още нямате профилна снимка.</span>
   </div>
-  <div class="text-end border-top">
-    <button type="button" class="btn btn-chocolate mt-2 me-1" (click)="editManagerProfile()">Редактиране на
+  <div class="buttons">
+    <button type="button" class="button btn-chocolate" (click)="editManagerProfile()">Редактиране на
       данните</button>
-    <button type="button" class="btn btn-secondary mt-2 me-1" (click)="bsModalRef.hide()">Затваряне</button>
+    <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Затваряне</button>
   </div>
 </div>

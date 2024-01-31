@@ -21,7 +21,7 @@
             <i class="fa-solid fa-users-between-lines fa-xl"></i>
         </div>
         <div class="dropdown">
-            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
+            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
                 tooltip="Профил" *ngIf="this.user">
                 <i class="fa fa-user-pen fa-xl"></i>
             </div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="dropdown">
-            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
+            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false"
                 *ngIf="this.user" tooltip="Съобщения">
                 <i class="fa-solid fa-envelope fa-xl"></i>
                 <i class="fa-solid fa-exclamation fa-xl ms-1" style="color:Tomato;" *ngIf="newNotifications"></i>

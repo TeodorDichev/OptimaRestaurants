@@ -43,3 +43,8 @@ input[type=checkbox]:checked {
 .search {
     background-color: #fff9eeec;
 }
+
+.dropdown-menu {
+    padding: 0px;
+    background-color: transparent;
+}

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import * as Leaflet from 'leaflet';
+import { LayerGroup, LeafletMouseEvent, Marker, layerGroup, map, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -9,7 +9,7 @@ import * as Leaflet from 'leaflet';
 export class MapComponent {
   @Input() hasSearchBar: boolean = true;
   map: any;
-  markers: Leaflet.LayerGroup = Leaflet.layerGroup();
+  markers: LayerGroup = layerGroup();
   addressSearchResults: any[] = [];
   selectedLocation: any;
 
@@ -18,21 +18,21 @@ export class MapComponent {
   }
 
   initializeMap(): void {
-    this.map = Leaflet.map('leafletMap').setView([42.605, 23.39], 10);
+    this.map = map('leafletMap').setView([42.605, 23.39], 10);
 
-    Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors',
     }).addTo(this.map);
 
     this.map.addLayer(this.markers);
-    this.map.on('click', (e: Leaflet.LeafletMouseEvent) => this.onMapClick(e));
+    this.map.on('click', (e: LeafletMouseEvent) => this.onMapClick(e));
   }
 
-  onMapClick(e: Leaflet.LeafletMouseEvent): void {
+  onMapClick(e: LeafletMouseEvent): void {
     this.markers.clearLayers();
-    const marker = Leaflet.marker(e.latlng);
-    this.markers.addLayer(marker);
 
+    const marker = new Marker(e.latlng);
+    this.markers.addLayer(marker);
     /* Latitude: e.latlng.lat.toFixed(6), Longitude: e.latlng.lng.toFixed(6) */
   }
 
