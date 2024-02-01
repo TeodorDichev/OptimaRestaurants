@@ -125,11 +125,9 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-
   employeeSearch() {
     this.router.navigateByUrl('/manager/employees-looking-for-job');
   }
-
 
   help() {
     this.router.navigateByUrl('/about');
@@ -141,5 +139,12 @@ export class NavbarComponent implements OnInit {
 
   schedule() {
 
+  }
+
+  closeDropdown() {
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    if (dropdownToggle) {
+      dropdownToggle.click();
+    }
   }
 }

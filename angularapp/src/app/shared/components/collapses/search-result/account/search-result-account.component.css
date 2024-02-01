@@ -12,8 +12,8 @@ img {
     flex-direction: column;
     align-self: stretch;
     justify-content: flex-start;
-    background-color: transparent;
-    padding: 5px 7px 0px 7px;
+    background-color: rgba(252, 235, 203, 0.93);
+    padding: 5px 7px;
 }
 
 .search-result {
@@ -28,7 +28,7 @@ img {
 }
 
 .search-result {
-    background-color: #ffe5b5a2;
+    background-color: #ffe5b5e1;
 }
 
 .results {

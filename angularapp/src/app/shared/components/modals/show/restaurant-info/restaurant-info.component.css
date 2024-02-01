@@ -1,14 +1,37 @@
 .rest-img {
     aspect-ratio: 4/3;
-    max-width: 600px;
+    width: 100%;
     border-radius: 1%;
+    object-fit: cover;
     box-shadow: 4px 2px 3px black;
-    background-color: rgb(102, 102, 102);
 }
 
 .empl-img {
     aspect-ratio: 1/1;
     width: 120px;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 2px 1px 2px black;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    background-color: rgb(238, 222, 191);
+    border-radius: 8px;
+}
+
+.rest-info {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.info-text {
+    display: flex;
+    flex-direction: column; /* under some pixels change to row, so img and map are big enough to see */
+    gap: 18px;
+    justify-content: center;
 }

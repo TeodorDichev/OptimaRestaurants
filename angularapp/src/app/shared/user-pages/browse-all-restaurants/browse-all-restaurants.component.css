@@ -1,5 +1,4 @@
 ::ng-deep app-browse-all-restaurants {
-    background-color: rgb(255, 231, 185);
     display: flex;
     flex-direction: column;
     align-items: flex-start;

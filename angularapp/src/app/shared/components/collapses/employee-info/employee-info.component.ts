@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
@@ -12,6 +12,8 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class EmployeeInfoComponent {
   @Input() employeeEmail: string | undefined;
+  @Output() closeDropdownEvent = new EventEmitter<void>();
+
   employee: Employee | undefined;
   fileName: string | undefined;
   constructor(public bsModalRef: BsModalRef,
@@ -35,6 +37,10 @@ export class EmployeeInfoComponent {
         }
       })
     }
+  }
+
+  closeDropdown() {
+    this.closeDropdownEvent.emit();
   }
 
   downloadPDF() {

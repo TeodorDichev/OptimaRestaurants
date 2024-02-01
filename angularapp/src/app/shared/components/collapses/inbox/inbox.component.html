@@ -1,48 +1,56 @@
-<div class="collapse-body" *ngIf="requests">
-    <div class="fw-bold">
+<div class="dropdown-body" *ngIf="requests">
+    <div class="fw-bold h3">
         Съобщения
     </div>
     <div class="fst-italic" *ngIf="!newNotifications">
         Нямате нови съобщения
     </div>
-    <div *ngFor="let request of requests">
-        <div *ngIf="request.confirmed == null">
-            <div> {{request.text}}
-                <span class="fst-italic text-muted">
-                    {{request.senderEmail}}, {{request.sentOn}}
-                </span>
+    <div class="requests" *ngFor="let request of unconfirmedRequests">
+        <div>
+            <span class="h5">
+                {{request.text}}
+            </span>
+            <span class="h6 fst-italic text-muted">
+                <span class="user-info" (click)="openSenderInfoModal(request.senderEmail)">{{request.senderEmail}}</span>, {{request.sentOn}}
+            </span>
+        </div>
+        <div class="buttons">
+            <div>
+                <button type="button" class="button btn-green" (click)="respondToRequest(true, request)">
+                    <i class="fa fa-check-circle"></i>
+                    <span> Приемане </span>
+                </button>
             </div>
-            <div class="">
-                <div class="">
-                    <button type="button" class="btn btn-success col-10" (click)="respondToRequest(true, request)">
-                        <i class="fa fa-check-circle"></i>
-                    </button>
+            <div>
+                <button type="button" class="button btn-red" (click)="respondToRequest(false, request)">
+                    <i class="fa fa-times-circle"></i>
+                    <span> Отхвърляне </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-direction-col">
+        <button class="button btn-chocolate h6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConfirmed"
+            aria-controls="collapseExample">
+            Отговорени заявки
+            <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="collapse" id="collapseConfirmed">
+            <div class="requests text-muted my-2" *ngFor="let request of confirmedRequests">
+                <div class="fw-bold">
+                    {{request.text}}
                 </div>
-                <div class="">
-                    <button type="button" class="btn btn-danger col-10" (click)="respondToRequest(false, request)">
-                        <i class="fa fa-times-circle"></i>
-                    </button>
+                <div class="fst-italic">
+                    <span class="user-info" (click)="openSenderInfoModal(request.senderEmail)">{{request.senderEmail}}</span>, {{request.sentOn}}
+                </div>
+                <div class="fst-italic fw-bold">
+                    <span class="text-success" *ngIf="request.confirmed">Заявката е потвърдена.</span>
+                    <span class="text-danger" *ngIf="!request.confirmed">Заявката е отхвърлена.</span>
                 </div>
             </div>
         </div>
-    </div><button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-        aria-expanded="false" aria-controls="collapseExample">
-        Отговорени заявки
-    </button>
-    <div class="collapse" id="collapseExample">
-        <div *ngFor="let request of requests">
-            <div *ngIf="request.confirmed != null">
-                <div class=""> {{request.text}}
-                    <span class="row fst-italic font-size-10">
-                        {{request.senderEmail}}, {{request.sentOn}}
-                        <span *ngIf="request.confirmed">Заявката е потвърдена.</span>
-                        <span *ngIf="!request.confirmed">Заявката е отхвърлена.</span>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div> 
-    <div class="">
-        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Затвори</button>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="button btn-gray" (click)="closeDropdown()">Затвори</button>
     </div>
 </div>

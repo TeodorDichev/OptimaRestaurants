@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -12,6 +11,7 @@ import { SharedService } from 'src/app/shared/shared.service';
 })
 export class ManagerInfoComponent implements OnInit {
   @Input() managerEmail: string | undefined;
+  
   manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,

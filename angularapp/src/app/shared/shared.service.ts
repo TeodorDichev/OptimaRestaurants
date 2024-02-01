@@ -9,7 +9,7 @@ import { NotificationComponent } from './components/modals/notification/notifica
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { Restaurant } from './models/restaurant/restaurant';
-import { QrCodeComponent } from './components/collapses/qr-code/qr-code.component';
+import { QrCodeComponent } from './components/modals/qr-code/qr-code.component';
 
 @Injectable({
   providedIn: 'root'

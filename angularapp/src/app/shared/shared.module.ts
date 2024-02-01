@@ -14,7 +14,7 @@ import { ResetPasswordComponent } from './account-pages/reset-password/reset-pas
 import { SendEmailComponent } from './account-pages/send-email/send-email.component';
 import { InboxComponent } from './components/collapses/inbox/inbox.component';
 import { ManagerInfoComponent } from './components/collapses/manager-info/manager-info.component';
-import { QrCodeComponent } from './components/collapses/qr-code/qr-code.component';
+import { QrCodeComponent } from './components/modals/qr-code/qr-code.component';
 import { ValidationMessagesComponent } from './components/errors/validation-messages/validation-messages.component';
 import { StarRatingComponent } from './components/misc/star-rating/star-rating.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
@@ -36,6 +36,7 @@ import { ReviewsComponent } from './user-pages/reviews/review-customer.component
 import { AboutComponent } from './user-pages/about/about.component';
 import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee-restaurant/rate-employee-restaurant.component';
 import { MapComponent } from './components/map/map.component';
+import { ConfirmComponent } from './components/modals/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { MapComponent } from './components/map/map.component';
     ReviewsComponent,
     AboutComponent,
     RateEmployeeRestaurantComponent,
-    MapComponent
+    MapComponent,
+    ConfirmComponent
   ],
   imports: [
     CommonModule,

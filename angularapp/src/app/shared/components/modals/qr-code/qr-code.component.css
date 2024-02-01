@@ -1,0 +1,12 @@
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    gap: 12px;
+}
+
+.download-qr {
+    cursor: pointer;
+    text-decoration: underline;
+    text-align: center;
+}

@@ -33,7 +33,7 @@ export class MapComponent {
 
     const marker = new Marker(e.latlng);
     this.markers.addLayer(marker);
-    /* Latitude: e.latlng.lat.toFixed(6), Longitude: e.latlng.lng.toFixed(6) */
+    marker.bindPopup(`<b>Избрахте локация!</b><br>${marker.getLatLng().lat.toFixed(6)} ${marker.getLatLng().lng.toFixed(6)}.`).openPopup();
   }
 
   searchAddress(userInput: any) {

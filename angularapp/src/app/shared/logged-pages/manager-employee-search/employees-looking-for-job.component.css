@@ -1,5 +1,4 @@
 ::ng-deep app-employees-looking-for-job {
-    background-color: rgb(255, 240, 213);
     display: flex;
     flex-direction: column;
     align-items: flex-start;

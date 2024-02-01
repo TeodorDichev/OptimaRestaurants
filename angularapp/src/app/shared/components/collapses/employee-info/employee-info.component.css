@@ -6,13 +6,14 @@ img {
     margin: 6px;
 }
 
-.collapse-body {
+.dropdown-body {
     display: flex;
     flex-direction: column;
     width: 350px;
     padding: 12px;
     gap: 12px;
     background-color:rgba(252, 235, 203, 0.93);
+    box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.25);
 }
 
 .buttons {

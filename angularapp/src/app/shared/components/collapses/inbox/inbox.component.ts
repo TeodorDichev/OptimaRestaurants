@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { Request } from 'src/app/shared/models/requests/request';
@@ -14,13 +14,20 @@ import { AccountService } from 'src/app/shared/pages-routing/account/account.ser
   styleUrls: ['./inbox.component.css']
 })
 export class InboxComponent implements OnInit {
+  @Output() closeDropdownEvent = new EventEmitter<void>();
+
   user: User | undefined;
+
   requests: Request[] = [];
+  confirmedRequests: Request[] = [];
+  unconfirmedRequests: Request[] = [];
+
   requestResponse: RequestResponse = {
     confirmed: false,
     restaurantId: '',
     requestId: ''
   };
+
   newNotifications: boolean = false;
 
   constructor(public bsModalRef: BsModalRef,
@@ -37,39 +44,30 @@ export class InboxComponent implements OnInit {
   getRequests() {
     if (this.user?.isManager) {
       this.managerService.getRequests(this.user.email).subscribe({
-        next: (response: any) => {
-          this.requests = response;
-
-          const hasUnconfirmedRequest = response.some((item: { confirmed: boolean; }) => item.confirmed === null);
-          if (hasUnconfirmedRequest) {
-            this.newNotifications = true;
-          } else {
-            this.newNotifications = false;
-          }
-
-          this.sharedService.updateNotifications(this.newNotifications);
-        }
+        next: response => { this.handleRequests(response); }
       })
     }
-    else if (this.user?.isManager == false) {
+    else if (this.user?.isManager === false) {
       this.employeeService.getRequests(this.user.email).subscribe({
-        next: (response: any) => {
-          this.requests = response;
-
-          const hasUnconfirmedRequest = response.some(
-            (item: { confirmed: boolean; }) =>
-              item.confirmed === null);
-
-          if (hasUnconfirmedRequest) {
-            this.newNotifications = true;
-          } else {
-            this.newNotifications = false;
-          }
-
-          this.sharedService.updateNotifications(this.newNotifications);
-        }
+        next: response => { this.handleRequests(response); }
       })
     }
+  }
+
+  hasUnconfirmedRequests(response: any): boolean {
+    return response.some((item: { confirmed: boolean; }) => item.confirmed === null);
+  }
+
+  splitRequestList() {
+    this.confirmedRequests = this.requests.filter(item => item.confirmed !== null);
+    this.unconfirmedRequests = this.requests.filter(item => item.confirmed === null);
+  }
+
+  handleRequests(response: any) {
+    this.requests = response;
+    this.newNotifications = this.hasUnconfirmedRequests(response);
+    this.splitRequestList();
+    this.sharedService.updateNotifications(this.newNotifications);
   }
 
   respondToRequest(confirmed: boolean, currentRequest: Request) {
@@ -93,8 +91,8 @@ export class InboxComponent implements OnInit {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.bsModalRef.hide();
             this.getRequests();
-            if (this.user?.email){
-              this.employeeService.getEmployee(this.user?.email).subscribe({
+            if (this.user?.email) {
+              this.employeeService.getEmployee(this.user.email).subscribe({
                 next: (response: any) => {
                   this.employeeService.setEmployee(response);
                 }
@@ -104,7 +102,6 @@ export class InboxComponent implements OnInit {
         })
       }
     }
-
   }
 
   getUser() {
@@ -113,5 +110,18 @@ export class InboxComponent implements OnInit {
         this.user = response;
       }
     })
+  }
+  
+  openSenderInfoModal(senderEmail: string) {
+    if (this.user?.isManager) {
+      this.sharedService.openUserInfoModal(senderEmail, 'Employee');
+    }
+    else {
+      this.sharedService.openUserInfoModal(senderEmail, 'Manager');
+    }
+  }
+
+  closeDropdown() {
+    this.closeDropdownEvent.emit();
   }
 }
