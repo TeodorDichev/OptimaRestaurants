@@ -3,7 +3,7 @@ import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
-import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant-modal.component';
+import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant.component';
 import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
 import { NotificationComponent } from './components/modals/notification/notification.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
@@ -25,7 +25,7 @@ export class SharedService {
   updateNotifications(value: boolean) {
     this.newNotificationsSubject.next(value);
   }
-  
+
   showNotification(isSuccess: boolean, title: string, message: string) {
     const initialState: ModalOptions = {
       initialState: {

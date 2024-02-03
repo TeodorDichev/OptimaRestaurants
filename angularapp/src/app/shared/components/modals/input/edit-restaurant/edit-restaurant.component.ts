@@ -7,9 +7,9 @@ import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.ser
 import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
-  selector: 'app-edit-restaurant-modal',
-  templateUrl: './edit-restaurant-modal.component.html',
-  styleUrls: ['./edit-restaurant-modal.component.css']
+  selector: 'app-edit-restaurant',
+  templateUrl: './edit-restaurant.component.html',
+  styleUrls: ['./edit-restaurant.component.css']
 })
 export class EditRestaurantModalComponent implements OnInit {
   @Input() restaurant: Restaurant | undefined;

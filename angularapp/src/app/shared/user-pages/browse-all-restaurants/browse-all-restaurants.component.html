@@ -6,7 +6,7 @@
                 <span>
                     Всички регистрирани ресторанти
                 </span>
-                <span class="h6 text-muted">
+                <span class="h6 text-success">
                     {{filterCurrent}}
                 </span>
                 <span class="h6 text-muted">
@@ -36,7 +36,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <div *ngFor="let city of cities">
-                            <div class="button btn-inverted" (click)="setPageToFirst(); getRestaurantsByCity(city)">
+                            <div class="button btn-chocolate" (click)="setPageToFirst(); getRestaurantsByCity(city)">
                                 {{city}}
                             </div>
                         </div>
@@ -76,27 +76,32 @@
             <div class="list-items" *ngFor="let restaurant of allRestaurants">
                 <div class="restaurant" (click)="getRestaurantDetails(restaurant.id)">
                     <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-                    <div>
-                        <div class="h2 fw-bold">{{restaurant.name}}</div>
-                        <div class="h6 text-muted">{{restaurant.address}}</div>
-                        <div class="h6 text-muted">{{restaurant.city}}</div>
-                    </div>
-                    <div>
-                        <div class="h5 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address}}</div>
+                            <div class="h6 text-muted">{{restaurant.city}}</div>
                         </div>
-                        <div class="fw-bold">Работещ:
-                            <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
-                            <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
                         </div>
-                    </div>
-                    <div *ngIf="restaurant.topEmployeeEmail">
-                        <div class="fw-bold">Най-добър работник:
-                            <div class="fw-normal">{{restaurant.topEmployeeFullName}}</div>
-                        </div>
-                        <div class="fw-bold">Неговият рейтинг:
-                            <div><app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating></div>
-                        </div>
+                        <div *ngIf="restaurant.topEmployeeEmail">
+                            <div class="fw-bold">Най-добър работник:
+                                <div class="fw-normal">{{restaurant.topEmployeeFullName}}</div>
+                            </div>
+                            <div class="fw-bold">Неговият рейтинг:
+                                <div><app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating></div>
+                            </div>
+                        </div>  
+                        <div class="fw-bold text-danger" *ngIf="!restaurant.topEmployeeEmail">
+                            Няма намерени работници
+                        </div>  
                     </div>
                 </div>
             </div>

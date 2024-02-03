@@ -21,30 +21,30 @@
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
                 <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
-                    <div>
-                        <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-                    </div>
-                    <div>
-                        <div class="h2 fw-bold">{{restaurant.name}}</div>
-                        <div class="h6 text-muted">{{restaurant.address}}</div>
-                        <div class="h6 text-muted">{{restaurant.city}}</div>
-                    </div>
-                    <div>
-                        <div class="h5 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address}}</div>
+                            <div class="h6 text-muted">{{restaurant.city}}</div>
                         </div>
-                        <div class="fw-bold">Работещ:
-                            <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
-                            <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
-                        <button class="button btn-inverted" (click)="infoRestaurant()">
-                            <i class="fa-solid fa-info fa-xl"></i>
-                        </button>
-                        <button class="button btn-inverted" (click)="editRestaurant()">
-                            <i class="fa-solid fa-pencil fa-xl"></i>
-                        </button>
+                        <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
+                            <button class="button btn-inverted" (click)="infoRestaurant()">
+                                <i class="fa-solid fa-info fa-xl"></i>
+                            </button>
+                            <button class="button btn-inverted" (click)="editRestaurant()">
+                                <i class="fa-solid fa-pencil fa-xl"></i>
+                            </button>
+                        </div>    
                     </div>
                 </div>
             </div>

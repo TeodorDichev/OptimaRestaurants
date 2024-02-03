@@ -8,13 +8,15 @@
             <div class="list-items" *ngFor="let employee of this.employeesLookingForJob;">
                 <div class="employee" (click)="getEmployeeInfo(employee.email)">
                     <img class="emp-img" src="{{employee.profilePicturePath}}">
-                    <div>
-                        <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
-                        <div>{{employee.email}}</div>
-                    </div>
-                    <div>
-                        <div class="h4 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
+                    <div class="empl-info">
+                        <div>
+                            <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
+                            <div>{{employee.email}}</div>
+                        </div>
+                        <div>
+                            <div class="h4 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
+                            </div>
                         </div>
                     </div>
                 </div>

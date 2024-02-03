@@ -251,7 +251,7 @@ namespace webapi.Services.ClassServices
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),
                 ManagerFullName = manager?.Profile.FirstName + " " + manager?.Profile.LastName,
-                ManagerPhoneNumber = manager?.Profile.Email ?? string.Empty,
+                ManagerPhoneNumber = manager?.Profile.PhoneNumber ?? string.Empty,
                 ManagerEmail = manager?.Profile.Email ?? string.Empty,
                 TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
                 TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,

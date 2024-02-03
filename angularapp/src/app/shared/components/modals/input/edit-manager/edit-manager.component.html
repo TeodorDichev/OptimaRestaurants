@@ -1,28 +1,25 @@
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на профил</h5>
-    </div>
-    <div class="modal-body text-center">
+<div class="modal-body">
+    <div class="h2 fw-bold theme-main">Редактиране на профил</div>
+    <div class="text-center">
         <form [formGroup]="editManagerForm" (ngSubmit)="editManager()" autocomplete="off">
-            <div class="form-group pt-3">
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newFirstName" type="text"
+            <div class="form-group">
+                <div class="input-field">
+                    <span class="fa fa-user p-2"></span>
+                    <input formControlName="newFirstName" type="text"
                         placeholder="Ново първо име ({{manager?.firstName}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newLastName" type="text"
-                        placeholder="Нова фамилия ({{manager?.lastName}})">
+                <div class="input-field">
+                    <span class="fa fa-user p-2"></span>
+                    <input formControlName="newLastName" type="text" placeholder="Нова фамилия ({{manager?.lastName}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-phone chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text"
+                <div class="input-field">
+                    <span class="fa fa-phone p-2"></span>
+                    <input formControlName="newPhoneNumber" type="text"
                         placeholder="Нов телефонен номер ({{manager?.phoneNumber}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-picture-o chocolate p-2"></span>
-                    <input class="col-11" (change)="onFileSelected($event)" type="file" accept="image/*">
+                <div class="input-field">
+                    <span class="fa fa-picture-o p-2"></span>
+                    <input (change)="onFileSelected($event)" type="file" accept="image/*">
                 </div>
                 <div *ngIf="submitted">
                     <div class="text-danger"
@@ -34,22 +31,22 @@
                         Невалиден телефонен номер!
                     </div>
                 </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-danger mt-4" (click)="deleteManagerAccount()">
-                        Изтриване на акаунт
-                    </button>
-                    <div class="text-danger font-size-15 p-2">
-                        Внимание! След тази операция акаунтът не може да бъде върнат!
-                    </div>
-                </div>
             </div>
             <div class="form-floating" *ngIf="errorMessages.length > 0">
                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
             </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
-        <button type="button" class="btn btn-chocolate" (click)="editManager()">Запази</button>
+    <div class="text-center">
+        <div class="text-danger p-2">
+            Внимание! След тази операция акаунтът не може да бъде върнат!
+        </div>
+        <button type="button" class="button btn-red" (click)="deleteManagerAccount()">
+            Изтриване на акаунт
+        </button>
+    </div>
+    <div class="buttons">
+        <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Отказ</button>
+        <button type="button" class="button btn-chocolate" (click)="editManager()">Запази</button>
     </div>
 </div>

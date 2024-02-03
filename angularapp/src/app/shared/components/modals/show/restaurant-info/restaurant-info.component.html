@@ -1,88 +1,97 @@
 <div class="modal-body" *ngIf="restaurant">
-  <div class="h2">
+  <div class="h1">
     <div class="fw-bold">Ресторант
       <span class="fst-italic theme-main">{{restaurant.name}}</span>
     </div>
   </div>
-  <div>
-    <div class="rest-info">
-      <div>
+  <div class="main-info">
+    <div class="img-map">
+      <div class="screen-left">
         <img class="rest-img" src="{{restaurant.iconPath}}">
       </div>
-      <div class="info-text h4">
-        <div class="text-danger"> *Remove these*</div>
-        <div> Адрес: {{restaurant.address}} </div>
-        <div> Град: {{restaurant.city}}</div>
-        <div class="text-danger"> *Show info on map*</div>
+      <div class="map">
+        <div> Адрес: {{restaurant.address}}, Град: {{restaurant.city}}</div>
+      </div>
+    </div>
+    <div class="ratings">
+      <div class="rest-info justify-content-between h4">
         <div> <span class="fw-bold"> Общ капацитет: </span> {{restaurant.employeeCapacity}}</div>
         <div> <span class="fw-bold"> Работещ: </span>
           <span class="text-success" *ngIf="restaurant.isWorking">Да</span>
           <span class="text-danger" *ngIf="!restaurant.isWorking">Не</span>
         </div>
       </div>
-    </div>
-    <div>
-      <span class="col-6 fw-bold my-2">Рейтинг на атмосферата
+      <div class="rest-info justify-content-between h4">
         <div>
+          <span>Рейтинг на атмосферата: </span>
           <app-star-rating [rating]="restaurant.atmosphereAverageRating"></app-star-rating>
         </div>
-      </span>
-      <span class="col-6 fw-bold my-2">Рейтинг на работниците
         <div>
+          <span>Рейтинг на работниците: </span>
           <app-star-rating [rating]="restaurant.employeesAverageRating"></app-star-rating>
         </div>
-      </span>
-    </div>
-    <div>
-      <span class="col-6 fw-bold my-2">Рейтинг на храната
+      </div>
+      <div class="rest-info justify-content-between h4">
         <div>
+          <span>Рейтинг на кухнята: </span>
           <app-star-rating [rating]="restaurant.cuisineAverageRating"></app-star-rating>
         </div>
-      </span>
-      <span class="col-6 fw-bold my-2">Рейтинг на ресторанта
         <div>
+          <span>Среден рейтинг на ресторант: </span>
           <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
         </div>
-      </span>
+      </div>
     </div>
-    <div *ngIf="!managerOwnsRestaurant">
-      <div class="modal-header">
-        <div class="modal-title roboto fw-bold font-size-40">
-          Информация за мениджъра на <span class="fst-italic chocolate">{{restaurant.name}}</span>
+    <div *ngIf="restaurant.topEmployeeEmail">
+      <div class="h1" *ngIf="restaurant.topEmployeeEmail">
+        Най-добрият работник на <span class="theme-main fst-italic fw-bold">{{restaurant.name}}</span>
+      </div>
+      <div class="info-row item-hover" (click)="openTopEmployeeInfo(restaurant.topEmployeeEmail)">
+        <div>
+          <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
+        </div>
+        <div class="h4 top-employee-info">
+          <div>Имена:
+            <span class="theme-main fst-italic">{{restaurant.topEmployeeFullName}}</span>
+          </div>
+          <div>Имейл:
+            <span class="theme-main fst-italic">{{restaurant.topEmployeeEmail}}</span>
+          </div>
+          <div class="fw-bold">Неговият рейтинг:
+            <app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating>
+          </div>
         </div>
       </div>
-      <div class="font-size-20 fw-bold text-start my-4 mx-3">Имена:
-        <span class="fst-italic fw-normal chocolate">{{restaurant.managerFullName}}</span>
+    </div>
+    <div *ngIf="!managerOwnsRestaurant && restaurant.managerEmail">
+      <div class="h1">
+        Информация за мениджъра на <span class="theme-main fst-italic fw-bold">{{restaurant.name}}</span>
       </div>
-      <div class="font-size-20 fw-bold text-start my-4 mx-3">Имейл:
-        <span class="fst-italic fw-normal chocolate">{{restaurant.managerEmail}}</span>
-      </div>
-      <div class="font-size-20 fw-bold text-start my-4 mx-3">Телефон:
-        <span class="fst-italic fw-normal chocolate">{{restaurant.managerPhoneNumber}}</span>
+      <div class="info-row item-hover" (click)="openManagerInfo(restaurant.managerEmail)"
+        *ngIf="restaurant.topEmployeeEmail">
+        <div class="h4 top-employee-info">
+          <div>Имена:
+            <span class="theme-main fst-italic">{{restaurant.managerFullName}}</span>
+          </div>
+          <div>Имейл:
+            <span class="theme-main fst-italic">{{restaurant.managerEmail}}</span>
+          </div>
+          <div>Телефон:
+            <span class="theme-main fst-italic">{{restaurant.managerPhoneNumber}}</span>
+          </div>
+        </div>
       </div>
     </div>
     <div *ngIf="!restaurant.managerEmail">
-      <span class="fst-italic fw-normal chocolate">Този ресторант няма мениджър.</span>
+      <span class="fst-italic">Този ресторант няма мениджър.</span>
     </div>
     <div *ngIf="user?.isManager == false && !employeeWorksInRestaurant">
-      <div class="btn btn-chocolate roboto font-size-20" (click)="sendWorkingRequest()">
+      <div class="button btn-chocolate" (click)="sendWorkingRequest()">
         Изпращане на заявка за работа в <span class="fst-italic">{{restaurant.name}}</span>
       </div>
     </div>
   </div>
-  <div class="" *ngIf="restaurant.topEmployeeEmail">
-    <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
-    <div class="fw-bold">Най-добър работник:
-      <span class="fw-normal">{{restaurant.topEmployeeFullName}}</span>
-    </div>
-    <div class="fw-bold">Неговият имейл:
-      <span class="fw-normal">{{restaurant.topEmployeeEmail}}</span>
-    </div>
-    <div class="fw-bold">Неговият рейтинг:
-      <app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <div type="button" class="btn btn-secondary" (click)="close()">Затваряне</div>
+  <div class="button-close">
+    <div type="button" class="button btn-gray" (click)="close()">Затваряне</div>
   </div>
 </div>

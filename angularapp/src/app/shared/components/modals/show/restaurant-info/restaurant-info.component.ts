@@ -91,4 +91,14 @@ export class RestaurantInfoComponent implements OnInit {
       })
     }
   }
+
+  openTopEmployeeInfo(restaurantTopEmployeeEmail: string) {
+    this.sharedService.openUserInfoModal(restaurantTopEmployeeEmail, 'Employee');
+    this.bsModalRef.hide();
+  }
+
+  openManagerInfo(managerEmail: string) {
+    this.sharedService.openUserInfoModal(managerEmail, 'Manager');
+    this.bsModalRef.hide();
+  }
 }

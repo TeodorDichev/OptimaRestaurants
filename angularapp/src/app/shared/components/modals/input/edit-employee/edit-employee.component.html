@@ -1,43 +1,40 @@
-<div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Редактиране на профил</h5>
-    </div>
-    <div class="modal-body">
+<div class="modal-body">
+    <div class="fw-bold theme-main h2">Редактиране на профил</div>
+    <div>
         <form [formGroup]="editEmployeeForm" (ngSubmit)="editEmployee()" autocomplete="off">
-            <div class="form-group pt-3">
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newFirstName" type="text"
+            <div class="form-group">
+                <div class="input-field">
+                    <span class="fa fa-user theme-main p-2"></span>
+                    <input formControlName="newFirstName" type="text"
                         placeholder="Ново първо име ({{employee?.firstName}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newLastName" type="text"
+                <div class="input-field">
+                    <span class="fa fa-user theme-main p-2"></span>
+                    <input formControlName="newLastName" type="text"
                         placeholder="Нова фамилия ({{employee?.lastName}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newPhoneNumber" type="text"
+                <div class="input-field">
+                    <span class="fa fa-phone p-2"></span>
+                    <input formControlName="newPhoneNumber" type="text"
                         placeholder="Нов телефонен номер ({{employee?.phoneNumber}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-calendar chocolate p-2"></span>
-                    <span class="text-muted me-3">Нова дата на раждане:</span>
+                <div class="input-field">
+                    <span class="fa fa-calendar p-2"></span>
+                    <span class="text-muted">Обновете дата на раждане: </span>
                     <input class="custom-date-input text-muted" formControlName="newBirthDate" type="date">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <input class="col-11" formControlName="newCity" type="text"
-                        placeholder="Нов град ({{employee?.city}})">
+                <div class="input-field">
+                    <span class="fa fa-map-pin p-2"></span>
+                    <input formControlName="newCity" type="text" placeholder="Нов град ({{employee?.city}})">
                 </div>
-                <div class="input-field my-2">
-                    <span class="fa fa-picture-o chocolate p-2"></span>
-                    <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
+                <div class="input-field">
+                    <span class="fa fa-picture-o p-2"></span>
+                    <input type="file" (change)="onFileSelected($event)" accept="image/*">
                 </div>
-                <div class="input-field my-2 form-check form-switch" *ngIf="employee">
-                    <span class="fa fa-user chocolate p-2"></span>
-                    <span class="col-5 text-muted">Търся си работа</span>
-                    <input class="form-check-input chocolate" type="checkbox" formControlName="isLookingForJob"
+                <div class="input-field" *ngIf="employee">
+                    <span class="fa fa-user p-2"></span>
+                    <span class="text-muted">Търся си работа: </span>
+                    <input class="checkbox-input m-2" type="checkbox" formControlName="isLookingForJob"
                         [(ngModel)]="employee.isLookingForJob">
                 </div>
                 <div *ngIf="submitted">
@@ -53,22 +50,22 @@
                         Невалиден телефонен номер!
                     </div>
                 </div>
-                <div class="text-center">
-                    <button type="button" class="btn btn-danger mt-4" (click)="deleteEmployeeAccount()">
-                        Изтриване на акаунт
-                    </button>
-                    <div class="text-danger font-size-15 p-2">
-                        Внимание! След тази операция акаунтът не може да бъде върнат!
-                    </div>
-                </div>
             </div>
             <div class="form-floating" *ngIf="errorMessages.length > 0">
                 <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
             </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
-        <button type="button" class="btn btn-chocolate" (click)="editEmployee()">Запази</button>
+    <div class="text-center">
+        <div class="text-danger p-2">
+            Внимание! След тази операция акаунтът не може да бъде върнат!
+        </div>
+        <button type="button" class="button btn-red" (click)="deleteEmployeeAccount()">
+            Изтриване на акаунт
+        </button>
+    </div>
+    <div class="buttons">
+        <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Отказ</button>
+        <button type="button" class="button btn-chocolate" (click)="editEmployee()">Запази</button>
     </div>
 </div>

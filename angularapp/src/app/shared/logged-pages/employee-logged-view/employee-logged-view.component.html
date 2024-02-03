@@ -15,16 +15,21 @@
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">
-                    <div>
-                        <img class="rest-img" src="{{restaurant.iconPath}}">
-                    </div>
-                    <div>
-                        <div class="h2 fw-bold">{{restaurant.name}}</div>
-                        <div class="h6 text-muted">{{restaurant.address}}, гр. {{restaurant.city}}</div>
-                    </div>
-                    <div>
-                        <div class="h5 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address}}</div>
+                            <div class="h6 text-muted">{{restaurant.city}}</div>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
                         </div>
                     </div>
                 </div>

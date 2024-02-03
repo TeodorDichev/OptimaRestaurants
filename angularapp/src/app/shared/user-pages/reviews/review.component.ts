@@ -1,3 +1,4 @@
+import { ManagerReview } from './../../models/reviews/manager-review';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Restaurant } from '../../models/restaurant/restaurant';
@@ -5,11 +6,12 @@ import { ReviewEmployeeInfo } from '../../models/reviews/review-employee-info';
 import { ReviewsService } from '../../pages-routing/review/reviews.service';
 import { SharedService } from '../../shared.service';
 import { CustomerReview } from '../../models/reviews/customer-review';
+import { AccountService } from '../../pages-routing/account/account.service';
 
 @Component({
-  selector: 'app-review-customer',
-  templateUrl: './review-customer.component.html',
-  styleUrls: ['./review-customer.component.css']
+  selector: 'app-review',
+  templateUrl: './review.component.html',
+  styleUrls: ['./review.component.css']
 })
 export class ReviewsComponent implements OnInit {
   errorMessages: string[] = [];
@@ -29,18 +31,24 @@ export class ReviewsComponent implements OnInit {
   constructor(private reviewsService: ReviewsService,
     private sharedService: SharedService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.authorizeRequest();
   }
 
   private authorizeRequest() {
-    this.activatedRoute.queryParamMap.subscribe({
-      next: (params: any) => {
-        this.getCustomerReviewForm(params.get('email'), params.get('token'));
-      }
-    })
+    if (this.accountService.getIsManager() === false) {
+      this.router.navigateByUrl('');
+    }
+    else {
+      this.activatedRoute.queryParamMap.subscribe({
+        next: (params: any) => {
+          this.getCustomerReviewForm(params.get('email'), params.get('token'));
+        }
+      })
+    }
   }
 
   getCustomerReviewForm(email: string, token: string) {
@@ -49,12 +57,12 @@ export class ReviewsComponent implements OnInit {
         next: (response: any) => {
           this.reviewEmployeeInfo = response;
         }, error: error => {
-          this.router.navigateByUrl('');
+          //this.router.navigateByUrl('');
           this.sharedService.showNotification(false, 'Невалиден токен!', error.error);
         }
       });
     } else {
-      this.router.navigateByUrl('');
+      //this.router.navigateByUrl('');
       this.sharedService.showNotification(false, 'Липсващ токен!', 'Моля проверете дали сте сканирали правилно QR кода.');
     }
   }
@@ -96,7 +104,7 @@ export class ReviewsComponent implements OnInit {
 
   reviewCommentValue(event: any) {
     this.customerReview.comment = event.target.value;
-    
+
   }
 
   selectRestaurant(restaurant: Restaurant) {

@@ -1,34 +1,32 @@
-<div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title roboto fw-bold font-size-40 chocolate">Създаване на нов ресторант</h5>
-  </div>
-  <div class="modal-body text-center">
+<div class="modal-body">
+  <div class="h2 fw-bold theme-main">Създаване на нов ресторант</div>
+  <div class="text-center">
     <form [formGroup]="newRestaurantForm" (ngSubmit)="addNewRestaurant()" autocomplete="off">
-      <div class="form-group pt-3">
-        <div class="input-field my-2">
-          <span class="fa fa-cutlery chocolate p-2"></span>
-          <input class="col-11" formControlName="name" type="text" placeholder="Име на ресторанта"
+      <div class="form-group">
+        <div class="input-field">
+          <span class="fa fa-cutlery theme-main p-2"></span>
+          <input formControlName="name" type="text" placeholder="Име на ресторанта"
             [class.is-invalid]="submitted && newRestaurantForm.get('name')?.errors">
         </div>
-        <div class="input-field my-2">
-          <span class="fa fa-map-marker chocolate p-2"></span>
-          <input class="col-11" formControlName="address" type="text" placeholder="Адрес"
+        <div class="input-field">
+          <span class="fa fa-map-marker theme-main p-2"></span>
+          <input formControlName="address" type="text" placeholder="Адрес"
             [class.is-invalid]="submitted && newRestaurantForm.get('address')?.errors">
         </div>
-        <div class="input-field my-2">
-          <span class="fa fa-location-arrow chocolate p-2"></span>
-          <input class="col-11" formControlName="city" type="text" placeholder="Град"
+        <div class="input-field">
+          <span class="fa fa-location-arrow theme-main p-2"></span>
+          <input formControlName="city" type="text" placeholder="Град"
             [class.is-invalid]="submitted && newRestaurantForm.get('city')?.errors">
         </div>
-        <div class="input-field my-2">
-          <span class="fa fa-user chocolate p-2"></span>
-          <input class="col-11" formControlName="employeeCapacity" type="text"
+        <div class="input-field">
+          <span class="fa fa-user theme-main p-2"></span>
+          <input formControlName="employeeCapacity" type="text"
             placeholder="Максимален капацитет на работници"
             [class.is-invalid]="submitted && newRestaurantForm.get('employeeCapacity')?.errors">
         </div>
-        <div class="input-field my-2">
-          <span class="fa fa-picture-o chocolate p-2"></span>
-          <input class="col-11" type="file" (change)="onFileSelected($event)" accept="image/*">
+        <div class="input-field">
+          <span class="fa fa-picture-o theme-main p-2"></span>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
         </div>
         <div *ngIf="submitted">
           <div class="text-danger" *ngIf="newRestaurantForm.get('name')?.hasError('required')
@@ -55,8 +53,8 @@
       </div>
     </form>
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Отказ</button>
-    <button type="button" class="btn btn-chocolate" (click)="addNewRestaurant()">Създаване</button>
+  <div class="buttons">
+    <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Отказ</button>
+    <button type="button" class="button btn-chocolate" (click)="addNewRestaurant()">Запази</button>
   </div>
 </div>
