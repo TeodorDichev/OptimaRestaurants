@@ -1,0 +1,13 @@
+<div class="modal-body" *ngIf="employee">
+    <div class="fw-bold h1">Вашият график,
+        <span class="fst-italic theme-main">{{employee.firstName}} {{employee.lastName}}</span>
+    </div>
+    <div class="schedule">
+        
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="button btn-gray" (click)="close()">
+            Затваряне
+        </button>
+    </div>
+</div>

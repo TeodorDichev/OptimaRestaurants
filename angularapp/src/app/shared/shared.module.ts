@@ -29,12 +29,15 @@ import { RestaurantInfoComponent } from './components/modals/show/restaurant-inf
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
-import { EmployeesLookingForJobComponent } from './logged-pages/manager-employee-search/employees-looking-for-job.component';
+import { EmployeesLookingForJobComponent } from './logged-pages/employees-looking-for-job/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { AboutComponent } from './user-pages/about/about.component';
 import { BrowseAllRestaurantsComponent } from './user-pages/browse-all-restaurants/browse-all-restaurants.component';
 import { ReviewsComponent } from './user-pages/reviews/review.component';
 import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant.component';
+import { AdminViewComponent } from './logged-pages/admin-view/admin-view.component';
+import { ScheduleEmployeeComponent } from './components/modals/schedules/schedule-employee/schedule-employee.component';
+import { ScheduleManagerComponent } from './components/modals/schedules/schedule-manager/schedule-manager.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,11 @@ import { EditRestaurantModalComponent } from './components/modals/input/edit-res
     ReviewsComponent,
     AboutComponent,
     RateEmployeeRestaurantComponent,
-    EditRestaurantModalComponent
+    EditRestaurantModalComponent,
+    AdminViewComponent,
+    ScheduleEmployeeComponent,
+    ScheduleManagerComponent,
+    
   ],
   imports: [
     CommonModule,

@@ -1,0 +1,25 @@
+::ng-deep app-schedule-employee {
+    display: flex;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 24px;
+    padding: 24px;
+    background-color: rgb(238, 222, 191);
+    border-radius: 8px;
+}
+
+.schedule {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    padding: 24px;
+    border-radius: 8px;
+}

@@ -1,3 +1,4 @@
+import { ScheduleAssignment } from './../../models/employee/schedule-assignent';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -24,12 +25,11 @@ export class EmployeeService {
   deleteEmployeeAccount(email: string) {
     this.logout();
     return this.http.delete(`${environment.appUrl}/api/employee/delete-employee/${email}`);
-
   }
 
   updateEmployeeAccount(model: UpdateEmployee, email: string) {
 
-    const formData: FormData = new FormData(); // for possible file sending, otherwise I send a link to the image (only way i found)
+    const formData: FormData = new FormData(); 
 
     formData.append('newFirstName', model.newFirstName);
     formData.append('newLastName', model.newLastName);
@@ -56,6 +56,30 @@ export class EmployeeService {
 
   getPDFFile(email: string): Observable<Blob> {
     return this.http.get(`${environment.appUrl}/api/employee/download-cv/${email}`, { responseType: 'blob' });
+  }
+
+  getEmployeeRestaurantSchedule(email: string, restaurantId: string, month: number) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-restaurant-schedule/${email}/${restaurantId}/${month}`);
+  }
+
+  getEmployeeFullSchedule(email: string, month: number) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-full-schedule/${email}/${month}`);
+  }
+
+  getDailySchedule(email: string, day: Date) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-day-schedule/${email}/${day}`);
+  }
+
+  addAssignment(scheduleAssignment: ScheduleAssignment) {
+    return this.http.post(`${environment.appUrl}/api/employee/schedule/add-assignment`, scheduleAssignment);
+  }
+
+  editAssignment(scheduleAssignment: ScheduleAssignment) {
+    return this.http.post(`${environment.appUrl}/api/employee/schedule/edit-assignment`, scheduleAssignment);
+  }
+
+  deleteAssignment(scheduleId: string) {
+    return this.http.delete(`${environment.appUrl}/api/employee/schedule/delete-assignment/${scheduleId}`);
   }
 
   logout() {

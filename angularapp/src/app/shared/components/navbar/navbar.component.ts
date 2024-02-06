@@ -138,7 +138,12 @@ export class NavbarComponent implements OnInit {
   }
 
   schedule() {
-
+    if (this.user?.isManager) {
+      this.sharedService.openScheduleManagerModal();
+    }
+    else if (this.user?.isManager == false){
+      this.sharedService.openScheduleEmployeeModal();
+    }
   }
 
   closeDropdown() {

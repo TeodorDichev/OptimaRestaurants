@@ -10,6 +10,8 @@ import { RestaurantInfoComponent } from './components/modals/show/restaurant-inf
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { Restaurant } from './models/restaurant/restaurant';
 import { QrCodeComponent } from './components/modals/qr-code/qr-code.component';
+import { ScheduleManagerComponent } from './components/modals/schedules/schedule-manager/schedule-manager.component';
+import { ScheduleEmployeeComponent } from './components/modals/schedules/schedule-employee/schedule-employee.component';
 
 @Injectable({
   providedIn: 'root'
@@ -79,5 +81,13 @@ export class SharedService {
 
   openQRCodeModal() {
     this.bsModalRef = this.modalService.show(QrCodeComponent);
+  }
+
+  openScheduleManagerModal() {
+    this.bsModalRef = this.modalService.show(ScheduleManagerComponent, Object.assign({ class: 'modal-fullscreen' }));
+  }
+
+  openScheduleEmployeeModal() {
+    this.bsModalRef = this.modalService.show(ScheduleEmployeeComponent, Object.assign({ class: 'modal-fullscreen' }));
   }
 }
