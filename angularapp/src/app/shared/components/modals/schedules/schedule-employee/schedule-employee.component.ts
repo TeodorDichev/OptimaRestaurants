@@ -14,13 +14,21 @@ export class ScheduleEmployeeComponent implements OnInit {
   currentDate: Date = new Date();
   daysInCurrentMonth: number = 0;
   weekdays = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+  outsideMonthFlagsWeek3: boolean[] = [];
+  outsideMonthFlagsWeek4: boolean[] = [];
 
   constructor(private emplopyeeService: EmployeeService,
     private bsModalRef: BsModalRef) { }
 
   ngOnInit(): void {
     this.getEmployee();
+    this.setUp();
+  }
+
+  private setUp() {
     this.getDaysCountInCurrentMonth(this.currentDate);
+    this.calculateOutsideMonthFlagsWeek3();
+    this.calculateOutsideMonthFlagsWeek4();
   }
 
   private getEmployee() {
@@ -49,24 +57,40 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-    this.getDaysCountInCurrentMonth(this.currentDate);
+    this.setUp();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-    this.getDaysCountInCurrentMonth(this.currentDate);
+    this.setUp();
   }
 
-  isOutsideMonth(dayNumber: number) {
-    if (dayNumber < this.daysInCurrentMonth) {
-      document.getElementById(dayNumber.toString())?.classList.add('item-hover');
-      // make onclick to execute test()
-      return dayNumber;
+  calculateOutsideMonthFlagsWeek3() {
+    this.outsideMonthFlagsWeek3 = [];
+    for (let i = 0; i < 7; i++) {
+      const dayNumber = this.getCurrentDay(3, i);
+      this.outsideMonthFlagsWeek3.push(this.isInsideMonth(dayNumber));
     }
-    return '-';
   }
 
-  test() {
-    console.log('asdasd')
+  calculateOutsideMonthFlagsWeek4() {
+    this.outsideMonthFlagsWeek4 = [];
+    for (let i = 0; i < 7; i++) {
+      const dayNumber = this.getCurrentDay(4, i);
+      this.outsideMonthFlagsWeek4.push(this.isInsideMonth(dayNumber));
+    }
+  }
+
+  isInsideMonth(dayNumber: number): boolean {
+    return dayNumber <= this.daysInCurrentMonth;
+  }
+
+
+  test(dayNumber: number) {
+    console.log(dayNumber)
+  }
+
+  getCurrentDay(weekNumber: number, dayOfWeekNumber: number) {
+    return dayOfWeekNumber + 1 + 7 * weekNumber + this.getFirstWeekDay(this.currentDate);
   }
 }

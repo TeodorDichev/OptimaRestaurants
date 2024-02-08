@@ -30,35 +30,38 @@
                         </td>
                         <td class="item-hover"
                             *ngFor="let e of [].constructor(getFirstWeekDay(this.currentDate)); index as i"
-                            (click)="test()">
+                            (click)="test(i + 1)">
                             {{i + 1}}
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
-                            {{i + 1 + getFirstWeekDay(this.currentDate)}}
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="test(getCurrentDay(0, i))">
+                            {{getCurrentDay(0, i)}}
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
-                            {{i + 1 + 7 + getFirstWeekDay(this.currentDate)}}
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="test(getCurrentDay(1, i))">
+                            {{getCurrentDay(1, i)}}
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
-                            {{i + 1 + 7 * 2 + getFirstWeekDay(this.currentDate)}}
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="test(getCurrentDay(2, i))">
+                            {{getCurrentDay(2, i)}}
                         </td>
                     </tr>
                     <tr>
-                        <td id="{{i + 1 + 7 * 3 + getFirstWeekDay(this.currentDate)}}"
-                            *ngFor="let e of [].constructor(7); index as i">
-                            {{this.isOutsideMonth(i + 1 + 7 * 3 + getFirstWeekDay(this.currentDate))}}
+                        <td *ngFor="let flag of outsideMonthFlagsWeek3; let i = index" [id]="getCurrentDay(3, i)"
+                            [class.item-hover]="flag" (click)="flag && test(getCurrentDay(3, i))">
+                            {{ !flag ? '-' : getCurrentDay(3, i) }}
                         </td>
                     </tr>
                     <tr>
-                        <td id="{{i + 1 + 7 * 4 + getFirstWeekDay(this.currentDate)}}"
-                            *ngFor="let e of [].constructor(7); index as i">
-                            {{this.isOutsideMonth(i + 1 + 7 * 4 + getFirstWeekDay(this.currentDate))}}
+                        <td *ngFor="let flag of outsideMonthFlagsWeek4; let i = index" [id]="getCurrentDay(4, i)"
+                            [class.item-hover]="flag" (click)="flag && test(getCurrentDay(4, i))">
+                            {{ !flag ? '-' : getCurrentDay(4, i) }}
                         </td>
                     </tr>
                 </tbody>
