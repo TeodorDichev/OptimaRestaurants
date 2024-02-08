@@ -30,20 +30,19 @@
     align-self: stretch;
 }
 
-table {
-    border: 1px solid black;
-}
 th, td {
     text-align: center;
     border-radius: 50px;
-}
-
-th, td {
     padding: 8px;
 }
 
 .today {
-    background-color: rebeccapurple;
+    background-color: rgba(122, 122, 122, 0.3) !important;
+}
+
+.today:hover {
+    background-color: rgba(221, 255, 128, 0.5) !important;
+    cursor: pointer;
 }
 
 .work-day {
@@ -55,7 +54,7 @@ th, td {
 }
 
 .item-hover {
-    background-color: beige;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .item-hover:hover {

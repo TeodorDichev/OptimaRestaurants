@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
-                            (click)="test(getCurrentDay(0, i))">
+                            (click)="test(getCurrentDay(0, i))" [id]="getCurrentDay(0, i)">
                             {{getCurrentDay(0, i)}}
                         </td>
                     </tr>

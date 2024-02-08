@@ -1,5 +1,5 @@
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 
@@ -8,7 +8,7 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
   templateUrl: './schedule-employee.component.html',
   styleUrls: ['./schedule-employee.component.css']
 })
-export class ScheduleEmployeeComponent implements OnInit {
+export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   employee: Employee | undefined;
 
   currentDate: Date = new Date();
@@ -25,6 +25,21 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.setUp();
   }
 
+  ngAfterViewInit(): void {
+    this.setSpecialDaysMarkers();
+  }
+
+  setElementId(weekNumber: number, day: number) {
+    return weekNumber * 7 + day - this.getFirstWeekDay(this.currentDate);
+  }
+
+  setSpecialDaysMarkers() {
+    const today = new Date();
+    if (today) {
+      document.getElementById(today.getDate().toString())?.classList.add('today');
+    }
+  }
+
   private setUp() {
     this.getDaysCountInCurrentMonth(this.currentDate);
     this.calculateOutsideMonthFlagsWeek3();
@@ -37,10 +52,6 @@ export class ScheduleEmployeeComponent implements OnInit {
         this.employee = response;
       }
     })
-  }
-
-  datesColoring() {
-    
   }
 
   close() {
@@ -62,11 +73,13 @@ export class ScheduleEmployeeComponent implements OnInit {
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.setUp();
+    this.setSpecialDaysMarkers();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.setUp();
+    this.setSpecialDaysMarkers();
   }
 
   calculateOutsideMonthFlagsWeek3() {
@@ -89,9 +102,8 @@ export class ScheduleEmployeeComponent implements OnInit {
     return dayNumber <= this.daysInCurrentMonth;
   }
 
-
   test(dayNumber: number) {
-    console.log(dayNumber)
+    console.log('test-method-output', dayNumber);
   }
 
   getCurrentDay(weekNumber: number, dayOfWeekNumber: number) {
