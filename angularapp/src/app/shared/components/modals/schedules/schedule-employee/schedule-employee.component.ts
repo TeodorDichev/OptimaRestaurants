@@ -13,7 +13,7 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   currentDate: Date = new Date();
   daysInCurrentMonth: number = 0;
-  weekdays = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+  weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
   outsideMonthFlagsWeek3: boolean[] = [];
   outsideMonthFlagsWeek4: boolean[] = [];
 
@@ -37,6 +37,10 @@ export class ScheduleEmployeeComponent implements OnInit {
         this.employee = response;
       }
     })
+  }
+
+  datesColoring() {
+    
   }
 
   close() {

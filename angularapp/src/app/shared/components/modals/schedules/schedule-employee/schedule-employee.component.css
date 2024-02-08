@@ -21,7 +21,7 @@
     align-self: stretch;
     flex: 1 0 0;
     padding: 24px;
-    border-radius: 8px;
+    justify-content: center;
 }
 
 .table-schedule {
@@ -30,14 +30,32 @@
     align-self: stretch;
 }
 
-table,
-th,
-td {
+table {
     border: 1px solid black;
+}
+th, td {
+    text-align: center;
+    border-radius: 50px;
 }
 
 th, td {
     padding: 8px;
+}
+
+.today {
+    background-color: rebeccapurple;
+}
+
+.work-day {
+    background-color: red;
+}
+
+.off-day {
+    background-color: gray;
+}
+
+.item-hover {
+    background-color: beige;
 }
 
 .item-hover:hover {
