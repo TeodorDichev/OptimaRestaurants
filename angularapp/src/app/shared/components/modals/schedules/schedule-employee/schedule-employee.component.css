@@ -17,9 +17,30 @@
 
 .schedule {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-self: stretch;
     flex: 1 0 0;
     padding: 24px;
     border-radius: 8px;
+}
+
+.table-schedule {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+}
+
+table,
+th,
+td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+}
+
+.item-hover:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
 }

@@ -84,10 +84,10 @@ export class SharedService {
   }
 
   openScheduleManagerModal() {
-    this.bsModalRef = this.modalService.show(ScheduleManagerComponent, Object.assign({ class: 'modal-fullscreen' }));
+    this.bsModalRef = this.modalService.show(ScheduleManagerComponent, Object.assign({ class: 'modal-xl' }));
   }
 
   openScheduleEmployeeModal() {
-    this.bsModalRef = this.modalService.show(ScheduleEmployeeComponent, Object.assign({ class: 'modal-fullscreen' }));
+    this.bsModalRef = this.modalService.show(ScheduleEmployeeComponent, Object.assign({ class: 'modal-xl' }));
   }
 }

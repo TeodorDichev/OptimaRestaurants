@@ -3,7 +3,71 @@
         <span class="fst-italic theme-main">{{employee.firstName}} {{employee.lastName}}</span>
     </div>
     <div class="schedule">
-        
+        <div class="table-schedule">
+            <table>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="previousMonth()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            {{currentDate.getMonth() + 1}}/{{currentDate.getFullYear()}}
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="nextMonth()">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                    <tr class="text-center text-muted h6 fst-italic">
+                        <td *ngFor="let day of weekdays">
+                            {{day}}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let e of [].constructor(7 - getFirstWeekDay(this.currentDate))">
+                            -
+                        </td>
+                        <td class="item-hover"
+                            *ngFor="let e of [].constructor(getFirstWeekDay(this.currentDate)); index as i"
+                            (click)="test()">
+                            {{i + 1}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
+                            {{i + 1 + getFirstWeekDay(this.currentDate)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
+                            {{i + 1 + 7 + getFirstWeekDay(this.currentDate)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="test()">
+                            {{i + 1 + 7 * 2 + getFirstWeekDay(this.currentDate)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="{{i + 1 + 7 * 3 + getFirstWeekDay(this.currentDate)}}"
+                            *ngFor="let e of [].constructor(7); index as i">
+                            {{this.isOutsideMonth(i + 1 + 7 * 3 + getFirstWeekDay(this.currentDate))}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="{{i + 1 + 7 * 4 + getFirstWeekDay(this.currentDate)}}"
+                            *ngFor="let e of [].constructor(7); index as i">
+                            {{this.isOutsideMonth(i + 1 + 7 * 4 + getFirstWeekDay(this.currentDate))}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div>
+            neshtata
+        </div>
     </div>
     <div class="d-flex justify-content-end">
         <button class="button btn-gray" (click)="close()">
