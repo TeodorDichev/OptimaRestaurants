@@ -5,6 +5,7 @@ using webapi.DTOs.Request;
 using webapi.DTOs.Schedule;
 using webapi.Migrations;
 using webapi.Models;
+using webapi.Services;
 using webapi.Services.ClassServices;
 using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
@@ -230,6 +231,23 @@ namespace webapi.Controllers
                 return Ok(new JsonResult(new { title = "Успешно изтрита задача!", message = "Успешно изтрихте задачата от графика си!" }));
             }
             return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
+        }
+
+        [HttpGet("api/employee/regen-qrcode/{email}")]
+        public async Task<IActionResult> RegenerateQrCode(string email)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+            
+            if(await _employeeService.UpdateQrCode(employee))
+            {
+                return Ok(new JsonResult(new { title = "Успешно обновен QR код!", message = "Вие успешно обновихте QR кода си!" }));
+            }
+            else
+            {
+                return BadRequest("Неуспешно обновяване на QR кода!");
+            }
         }
 
         [HttpGet("api/employee/download-qrcode/{email}")]

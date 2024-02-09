@@ -61,8 +61,10 @@ namespace webapi.Services
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(userClaims),
+                Expires = DateTime.MaxValue,
                 SigningCredentials = credentials,
-                Issuer = _configuration["JWT:Issuer"]
+                Issuer = _configuration["JWT:Issuer"],
+
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

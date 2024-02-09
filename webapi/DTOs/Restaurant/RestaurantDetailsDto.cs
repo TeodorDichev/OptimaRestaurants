@@ -1,11 +1,20 @@
-﻿namespace webapi.DTOs.Restaurant
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace webapi.DTOs.Restaurant
 {
     public class RestaurantDetailsDto
     {
         public required string Id { get; set; }
         public required string Name { get; set; }
-        public required string Address { get; set; }
+        [Precision(9, 6)]
+        public required decimal Longitude { get; set; }
+        [Precision(9, 6)]
+        public required decimal Latitude { get; set; }
+        public required string Address1 { get; set; }
+        public required string Address2 { get; set; }
         public required string City { get; set; }
+        public required string County { get; set; }
+        public required string Country { get; set; }
         public required int EmployeeCapacity { get; set; }
         public required bool IsWorking { get; set; }
         public required int TotalReviewsCount { get; set; }

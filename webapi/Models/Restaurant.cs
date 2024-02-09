@@ -9,10 +9,15 @@ namespace webapi.Models
         public Guid Id { get; set; }
         [MaxLength(50)]
         public required string Name { get; set; }
-        [MaxLength(50)]
-        public required string Address { get; set; }
-        [MaxLength(50)]
+        [Precision(9, 6)]
+        public required decimal Longitude { get; set; }
+        [Precision(9, 6)]
+        public required decimal Latitude { get; set; }
+        public required string Address1 { get; set; }
+        public required string Address2 { get; set; }
         public required string City { get; set; }
+        public required string County { get; set; }
+        public required string Country { get; set; }
         public int? EmployeeCapacity { get; set; }
         public required int TotalReviewsCount { get; set; }
         public bool IsWorking { get; set; }

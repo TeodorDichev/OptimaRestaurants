@@ -102,7 +102,7 @@ namespace webapi.Controllers
                     Id = res.Id.ToString(),
                     Name = res.Name,
                     IconPath = res.IconPath,
-                    Address = res.Address,
+                    Address1 = res.Address1,
                     IsWorking = res.IsWorking,
                     City = res.City,
                     TotalReviewsCount = res.TotalReviewsCount,

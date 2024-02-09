@@ -40,9 +40,9 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/get-manager/{email}")]
-        public async Task<ActionResult<ManagerMainViewDto>> GetManager(string email)
+        public async Task<ActionResult<ManagerMainViewDto>> GetManager(string email, int lastPageIndex)
         {
-            if (await _managerService.CheckManagerExistByEmail(email)) return await GenerateNewManagerDto(email);
+            if (await _managerService.CheckManagerExistByEmail(email)) return await GenerateNewManagerDto(email, lastPageIndex);
             else return BadRequest("Потребителят не съществува!");
         }
 
@@ -56,7 +56,7 @@ namespace webapi.Controllers
             _managerService.UpdateManager(manager, managerDto);
             await _managerService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(email);
+            return await GenerateNewManagerDto(email, 1);
         }
 
         [HttpDelete("api/manager/delete-manager/{email}")]
@@ -84,7 +84,7 @@ namespace webapi.Controllers
             await _restaurantService.AddRestaurant(newRestaurant, manager);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(email);
+            return await GenerateNewManagerDto(email, 1);
         }
 
         [HttpPut("api/manager/update-restaurant/{restaurantId}")]
@@ -101,7 +101,7 @@ namespace webapi.Controllers
             _restaurantService.UpdateRestaurant(restaurant, restaurantDto);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(managerEmail);
+            return await GenerateNewManagerDto(managerEmail, 1);
         }
 
         [HttpDelete("api/manager/delete-restaurant/{restaurantId}")]
@@ -118,13 +118,13 @@ namespace webapi.Controllers
             _restaurantService.DeleteRestaurant(restaurant);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(managerEmail);
+            return await GenerateNewManagerDto(managerEmail, 1);
         }
 
         [HttpGet("api/manager/browse-employees/looking-for-job")]
-        public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob()
+        public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob(int lastPageIndex)
         {
-            return _employeeService.GetEmployeesLookingForJob();
+            return _employeeService.GetEmployeesLookingForJob(lastPageIndex);
         }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
@@ -339,7 +339,7 @@ namespace webapi.Controllers
             return _scheduleService.GetManagerDailySchedule(restaurant, day);
         }
 
-        private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email)
+        private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email, int lastPageIndex)
         {
             Manager manager = await _managerService.GetManagerByEmail(email);
 
@@ -350,7 +350,7 @@ namespace webapi.Controllers
                 LastName = manager.Profile.LastName,
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
                 ProfilePicturePath = manager.Profile.ProfilePicturePath,
-                Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
+                Restaurants = _restaurantService.GetRestaurantsOfManager(manager, lastPageIndex)
             };
 
             return managerMainViewDto;

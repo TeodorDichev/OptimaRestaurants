@@ -55,7 +55,7 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -87,7 +87,7 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -123,7 +123,7 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -152,7 +152,7 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -181,7 +181,7 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -210,7 +210,7 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -238,12 +238,17 @@ namespace webapi.Services.ClassServices
 
             var restaurantDto = new RestaurantDetailsDto
             {
-                Address = restaurant.Address,
                 AtmosphereAverageRating = restaurant.AtmosphereAverageRating ?? 0,
                 RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
                 CuisineAverageRating = restaurant.CuisineAverageRating ?? 0,
                 EmployeesAverageRating = restaurant.EmployeesAverageRating ?? 0,
                 TotalReviewsCount = restaurant.TotalReviewsCount,
+                Longitude = restaurant.Longitude,
+                Latitude = restaurant.Latitude,
+                Address1 = restaurant.Address1,
+                Address2 = restaurant.Address2,
+                County = restaurant.County,
+                Country = restaurant.Country,
                 City = restaurant.City,
                 EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
                 IconPath = restaurant.IconPath,
@@ -286,8 +291,13 @@ namespace webapi.Services.ClassServices
             Restaurant restaurant = new Restaurant
             {
                 Name = model.Name,
-                Address = model.Address,
+                Longitude = model.Longitude,
+                Latitude = model.Latitude,
+                Address1 = model.Address1,
+                Address2 = model.Address2,
                 City = model.City,
+                County = model.County,
+                Country = model.Country,
                 IsWorking = true,
                 EmployeeCapacity = model.EmployeeCapacity,
                 TotalReviewsCount = 0,
@@ -302,7 +312,12 @@ namespace webapi.Services.ClassServices
         public Restaurant UpdateRestaurant(Restaurant restaurant, UpdateRestaurantDto updateDto)
         {
             if (updateDto.IsWorking.HasValue) restaurant.IsWorking = updateDto.IsWorking.Value;
-            if (updateDto.Address != null) restaurant.Address = updateDto.Address;
+            if (updateDto.Longitude != null) restaurant.Longitude = (decimal)updateDto.Longitude;
+            if (updateDto.Latitude != null) restaurant.Latitude = (decimal)updateDto.Latitude;
+            if (updateDto.Address1 != null) restaurant.Address1 = updateDto.Address1;
+            if (updateDto.Address2 != null) restaurant.Address2 = updateDto.Address2;
+            if (updateDto.County != null) restaurant.County = updateDto.County;
+            if (updateDto.Country != null) restaurant.Country = updateDto.Country;
             if (updateDto.City != null) restaurant.City = updateDto.City;
             if (updateDto.Name != null) restaurant.Name = updateDto.Name;
             if (updateDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)updateDto.EmployeeCapacity;
@@ -347,8 +362,8 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
                     City = restaurant.City,
+                    Address1 = restaurant.Address1,
                     TotalReviewsCount = restaurant.TotalReviewsCount,
                     IsWorking = restaurant.IsWorking,
                     EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
@@ -365,17 +380,17 @@ namespace webapi.Services.ClassServices
 
             return restaurants;
         }
-        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager)
+        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager, int lastPageIndex)
         {
             List<AccountRestaurantDto> restaurantsDto = new List<AccountRestaurantDto>();
 
-            foreach (var restaurant in manager.Restaurants)
+            foreach (var restaurant in manager.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20))
             {
                 restaurantsDto.Add(new AccountRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
                     City = restaurant.City,
                     TotalReviewsCount = restaurant.TotalReviewsCount,
                     IsWorking = restaurant.IsWorking,

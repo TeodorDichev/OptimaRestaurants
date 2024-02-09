@@ -51,7 +51,7 @@ namespace webapi.Controllers
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
                     City = restaurant.City,
                     IsWorking = restaurant.IsWorking,
                     TotalReviewsCount = restaurant.TotalReviewsCount,

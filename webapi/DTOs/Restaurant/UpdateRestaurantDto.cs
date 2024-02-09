@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace webapi.DTOs.Restaurant
 {
@@ -6,10 +7,15 @@ namespace webapi.DTOs.Restaurant
     {
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Restaurant name must be at least {2}, and maximum {1} characters")]
         public string? Name { get; set; }
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Restaurant address must be at least {2}, and maximum {1} characters")]
-        public string? Address { get; set; }
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Restaurant city must be at least {2}, and maximum {1} characters")]
+        [Precision(9, 6)]
+        public decimal? Longitude { get; set; }
+        [Precision(9, 6)]
+        public decimal? Latitude { get; set; }
+        public string? Address1 { get; set; }
+        public string? Address2 { get; set; }
         public string? City { get; set; }
+        public string? County { get; set; }
+        public string? Country { get; set; }
         public int? EmployeeCapacity { get; set; }
         public bool? IsWorking { get; set; }
         public IFormFile? IconFile { get; set; }
