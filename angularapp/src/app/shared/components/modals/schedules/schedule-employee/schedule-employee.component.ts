@@ -8,14 +8,15 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
   templateUrl: './schedule-employee.component.html',
   styleUrls: ['./schedule-employee.component.css']
 })
-export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
+export class ScheduleEmployeeComponent implements OnInit {
   employee: Employee | undefined;
 
   currentDate: Date = new Date();
-  daysInCurrentMonth: number = 0;
+  daysInCurrentMonth: number = 0; // also the last date of the month
+  firstDayOfMonth: number = 0; // gets what the first date's weekday is
+  lastDayOfMonth: number = 0; // gets what the last date's weekday is
+
   weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
-  outsideMonthFlagsWeek3: boolean[] = [];
-  outsideMonthFlagsWeek4: boolean[] = [];
 
   constructor(private emplopyeeService: EmployeeService,
     private bsModalRef: BsModalRef) { }
@@ -25,25 +26,10 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
     this.setUp();
   }
 
-  ngAfterViewInit(): void {
-    this.setSpecialDaysMarkers();
-  }
-
-  setElementId(weekNumber: number, day: number) {
-    return weekNumber * 7 + day - this.getFirstWeekDay(this.currentDate);
-  }
-
-  setSpecialDaysMarkers() {
-    const today = new Date();
-    if (today) {
-      document.getElementById(today.getDate().toString())?.classList.add('today');
-    }
-  }
-
   private setUp() {
-    this.getDaysCountInCurrentMonth(this.currentDate);
-    this.calculateOutsideMonthFlagsWeek3();
-    this.calculateOutsideMonthFlagsWeek4();
+    this.getDaysCountInCurrentMonth();
+    this.getFirstWeekDay();
+    this.getLastWeekDay();
   }
 
   private getEmployee() {
@@ -58,55 +44,44 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
     this.bsModalRef.hide();
   }
 
-  getFirstDayOfMonth(date: Date): number {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  getFirstWeekDay() {
+    this.firstDayOfMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getDay();
   }
 
-  getFirstWeekDay(date: Date) {
-    return 7 - this.getFirstDayOfMonth(date);
-  }
-
-  getDaysCountInCurrentMonth(date: Date) {
-    this.daysInCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  getDaysCountInCurrentMonth() {
+    this.daysInCurrentMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDate();
   }
 
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.setUp();
-    this.setSpecialDaysMarkers();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.setUp();
-    this.setSpecialDaysMarkers();
   }
 
-  calculateOutsideMonthFlagsWeek3() {
-    this.outsideMonthFlagsWeek3 = [];
-    for (let i = 0; i < 7; i++) {
-      const dayNumber = this.getCurrentDay(3, i);
-      this.outsideMonthFlagsWeek3.push(this.isInsideMonth(dayNumber));
+  getDate(weekNumber: number, weekdayNumber: number) {
+    return new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), weekdayNumber + (8 - this.firstDayOfMonth) + 7 * (weekNumber - 1)).getDate();
+  }
+
+  getLastWeekDay() {
+    this.lastDayOfMonth = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0).getDay() + 1;
+  }
+
+  lastWeeksNumbers(weekNumber: number) {
+    const weekLastDate = (weekNumber) * 7 - this.firstDayOfMonth;
+    const weekFirstDate = (weekNumber) * 6 + 1;
+    if (weekFirstDate > this.daysInCurrentMonth) {
+      return 0;
     }
-  }
-
-  calculateOutsideMonthFlagsWeek4() {
-    this.outsideMonthFlagsWeek4 = [];
-    for (let i = 0; i < 7; i++) {
-      const dayNumber = this.getCurrentDay(4, i);
-      this.outsideMonthFlagsWeek4.push(this.isInsideMonth(dayNumber));
+    if (weekLastDate < this.daysInCurrentMonth) {
+      return this.lastDayOfMonth;
     }
-  }
-
-  isInsideMonth(dayNumber: number): boolean {
-    return dayNumber <= this.daysInCurrentMonth;
-  }
-
-  test(dayNumber: number) {
-    console.log('test-method-output', dayNumber);
-  }
-
-  getCurrentDay(weekNumber: number, dayOfWeekNumber: number) {
-    return dayOfWeekNumber + 1 + 7 * weekNumber + this.getFirstWeekDay(this.currentDate);
+    if (weekLastDate > this.daysInCurrentMonth) {
+      return this.lastDayOfMonth;
+    }
+    return -1;
   }
 }
