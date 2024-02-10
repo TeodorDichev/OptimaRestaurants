@@ -38,7 +38,6 @@ export class RegisterEmployeeComponent implements OnInit {
   }
 
   registerEmployee() {
-    console.log(this.registerForm.value);
     this.submitted = true;
     this.errorMessages = [];
 
