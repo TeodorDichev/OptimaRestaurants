@@ -26,7 +26,7 @@ export class ResetPasswordComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.accountService.user$.pipe(take(1)).subscribe({
+    this.accountService.user$.pipe(take(1)).subscribe({ 
       next: (user: User | null) => {
         if (user) {
           this.router.navigateByUrl('/');
