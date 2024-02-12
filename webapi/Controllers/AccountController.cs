@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿    using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
@@ -95,7 +95,7 @@ namespace webapi.Controllers
             if (! await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
             else user = await _accountService.GetUserByEmailOrUserName(model.UserName);
 
-            if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
+            //if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
 
             if (!await _accountService.CheckPasswordAsync(user, model.Password)) return Unauthorized("Грешен имейл или парола!");
 

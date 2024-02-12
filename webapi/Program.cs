@@ -19,8 +19,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"), 
-        x => x.UseDateOnlyTimeOnly());
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"));
 });
 
 builder.Services.AddScoped<JWTService>();
