@@ -52,20 +52,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(lastWeeksNumbers(4)); index as i" (click)="null"
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="null"
                             [id]="getDate(4, i) + '_' + (this.currentDate.getMonth() + 1)">
                             {{getDate(4, i)}}
                         </td>
-                        <td *ngFor="let e of [].constructor(7 - lastWeeksNumbers(4))">
+                        <td *ngFor="let e of [].constructor(7)">
                             -
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(lastWeeksNumbers(5)); index as i" (click)="null"
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="null"
                             [id]="getDate(5, i) + '_' + (this.currentDate.getMonth() + 1)">
                             {{getDate(5, i)}}
                         </td>
-                        <td *ngFor="let e of [].constructor(7 - lastWeeksNumbers(5))">
+                        <td *ngFor="let e of [].constructor(7)">
                             -
                         </td>
                     </tr>
