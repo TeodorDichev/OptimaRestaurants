@@ -32,7 +32,7 @@ namespace webapi.Services
                 new Claim(ClaimTypes.Surname, user.LastName),
             };
 
-            var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha256);
 
 #pragma warning disable CS8604 // Possible null reference argument.
             var tokenDescriptor = new SecurityTokenDescriptor
