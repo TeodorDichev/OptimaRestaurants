@@ -8,7 +8,7 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
   templateUrl: './schedule-employee.component.html',
   styleUrls: ['./schedule-employee.component.css']
 })
-export class ScheduleEmployeeComponent implements OnInit {
+export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   employee: Employee | undefined;
 
   currentDate: Date = new Date();
@@ -17,10 +17,12 @@ export class ScheduleEmployeeComponent implements OnInit {
   lastDayOfMonth: number = 0; // gets what the last date's weekday is
 
   week5FirstDay: number = 0;
-  week6FirstDay: number = 0;
   week5LastDay: number = 0;
   week6LastDay: number = 0;
 
+  markedDaysIds: string[] = [];
+
+  dateMarkers = ['today', 'workday', 'offday'];
   weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
 
   constructor(private emplopyeeService: EmployeeService,
@@ -29,6 +31,10 @@ export class ScheduleEmployeeComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployee();
     this.setUp();
+  }
+
+  ngAfterViewInit() {
+    this.setInitialMarkers();
   }
 
   private setUp() {
@@ -78,30 +84,48 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   lastWeeksDays() {
     this.week5FirstDay = 7 - this.firstDayOfMonth + (5 - 2) * 7 + 1;
-    this.week6FirstDay = 7 - this.firstDayOfMonth + (6 - 2) * 7 + 1;
-    
     this.week5LastDay = 6 + this.week5FirstDay;
-    this.week6LastDay = 6 + this.week6FirstDay;
   }
 
   getNumberOfDaysInWeek(weekNumber: number) {
     const differenceInWeek5 = this.daysInCurrentMonth - this.week5FirstDay + 1;
     if (differenceInWeek5 > 7) {
-      if (weekNumber == 5) {
-        return 7;
-      }
-      if (weekNumber == 6) {
-        return differenceInWeek5 - 7;
-      }
+      if (weekNumber == 5) return 7;
+      if (weekNumber == 6) return differenceInWeek5 - 7;
     }
     else {
-      if (weekNumber == 5) {
-        return differenceInWeek5;
-      }
-      if (weekNumber == 6) {
-        return 0;
-      }
+      if (weekNumber == 5) return differenceInWeek5;
+      if (weekNumber == 6) return 0;
     }
     return 0;
+  }
+
+  // dateId: 1_2 -> date_month, class number in array -> 0-today, 1-workday, 2-offday
+  markDate(dateId: string, classNumber: number) {
+    try {
+      document.getElementById(dateId)?.classList.add(this.dateMarkers[classNumber]);
+      this.markedDaysIds.push(dateId);
+    } catch (error) { }
+  }
+
+  clearDatesClasses() {
+    for (let id of this.markedDaysIds) {
+      for (let marker of this.dateMarkers) {
+        document.getElementById(id)?.classList.remove(marker);
+      }
+    }
+  }
+
+  setInitialMarkers() {
+    const today = new Date();
+    if (today.getFullYear() == this.currentDate.getFullYear()) {
+      const todayId = today.getDate() + '_' + (today.getMonth() + 1);
+      console.log(todayId);
+      this.markDate(todayId, 0);  
+    }
+  }
+
+  returnId(id: string) {
+    console.log(id);
   }
 }
