@@ -17,11 +17,26 @@
 
 .schedule {
     display: flex;
-    flex-direction: row;
-    align-self: stretch;
+    flex-direction: column;
+    display: flex;
     flex: 1 0 0;
     padding: 24px;
+    gap: 18px;
     justify-content: center;
+    align-items: center;
+}
+
+@media only screen and(min-width: 1px) {
+    .schedule {
+        display: flex;
+        flex-direction: column !important;
+        display: flex;
+        flex: 1 0 0;
+        padding: 24px;
+        gap: 18px;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .table-schedule {
@@ -33,8 +48,9 @@
 th,
 td {
     text-align: center;
-    border-radius: 50px;
-    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 12px;
 }
 
 .today {
@@ -73,6 +89,11 @@ td {
     cursor: pointer;
 }
 
+.selected {
+    border-radius: 12px;
+    border: 1px solid black;
+}
+
 .legend-markers {
     display: flex;
     flex-direction: row;
@@ -84,4 +105,16 @@ td {
     flex-direction: row;
     align-items: center;
     gap: 4px;
+}
+
+.date-info {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    gap: 12px;
+    border-radius: 10px;
+    padding: 12px;
 }

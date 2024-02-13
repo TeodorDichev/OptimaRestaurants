@@ -11,7 +11,7 @@
                             <i class="fa-solid fa-chevron-left"></i>
                         </th>
                         <th colspan="3">
-                            {{currentDate.getMonth() + 1}}/{{currentDate.getFullYear()}}
+                            {{monthsFull[currentDate.getMonth()]}} {{currentDate.getFullYear()}}
                         </th>
                         <th class="item-hover" colspan="2" (click)="nextMonth()">
                             <i class="fa-solid fa-chevron-right"></i>
@@ -28,8 +28,9 @@
                         <td *ngFor="let e of [].constructor(firstDayOfMonth)">
                             -
                         </td>
-                        <td class="item-hover" *ngFor="let e of [].constructor(7 - firstDayOfMonth); index as i"
-                            (click)="null" [id]="(i + 1) + '_' + (this.currentDate.getMonth() + 1)">
+                        <td class="item-hover selected"
+                            *ngFor="let e of [].constructor(7 - firstDayOfMonth); index as i" (click)="null"
+                            [id]="(i + 1) + '_' + (this.currentDate.getMonth() + 1)">
                             {{i + 1}}
                         </td>
                     </tr>
@@ -76,18 +77,21 @@
                 </tbody>
                 <thead>
                     <tr class="text-center">
-                        <th class="item-hover" colspan="2" (click)="null">
+                        <th class="item-hover" colspan="2" (click)="previousRestaurant()">
                             <i class="fa-solid fa-chevron-left"></i>
                         </th>
                         <th colspan="3">
-                            Всички
+                            <span>{{this.restaurantsNamesList[selectedRestaurantIndex]}}</span>
                         </th>
-                        <th class="item-hover" colspan="2" (click)="null">
+                        <th class="item-hover" colspan="2" (click)="nextRestaurant()">
                             <i class="fa-solid fa-chevron-right"></i>
                         </th>
                     </tr>
                 </thead>
             </table>
+        </div>
+        <div class="date-info">
+            <span class="h5">{{getSelectedDate()}}</span>
         </div>
     </div>
     <div class="legend-markers">
@@ -95,19 +99,25 @@
             <td class="item-hover today">
                 11
             </td>
-            <span> - Днешна дата</span>
+            <span>Днешна дата</span>
         </div>
         <div class="marker-example">
             <td class="item-hover workday">
                 12
             </td>
-            <span> - Работен ден</span>
+            <span>Работен ден</span>
         </div>
         <div class="marker-example">
             <td class="item-hover offday">
                 13
             </td>
-            <span> - Почивен ден</span>
+            <span>Почивен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover selected">
+                14
+            </td>
+            <span>Избрана дата</span>
         </div>
     </div>
     <div class="d-flex justify-content-end">

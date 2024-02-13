@@ -15,29 +15,46 @@ export class ScheduleEmployeeComponent implements OnInit {
   daysInCurrentMonth: number = 0; // also the last date of the month
   firstDayOfMonth: number = 0; // gets what the first date's weekday is
   lastDayOfMonth: number = 0; // gets what the last date's weekday is
-
   week5FirstDay: number = 0;
   week5LastDay: number = 0;
   week6LastDay: number = 0;
 
-  markedDaysIds: string[] = [];
+  restaurantsNamesList: string[] = [];
+  restaurantsIdsList: string[] = [];
+  selectedRestaurantIndex: number = 0;
 
-  dateMarkers = ['today', 'workday', 'offday'];
+  markedDaysIds: string[] = [];
+  dateMarkers = ['today', 'workday', 'offday', 'selected'];
   weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
+  weekdaysFull = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
+  monthsFull = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
+
+  selectedDay: Date = new Date();
+  workDaysIds: string[] = [];
 
   constructor(private emplopyeeService: EmployeeService,
     private bsModalRef: BsModalRef) { }
 
   ngOnInit(): void {
     this.getEmployee();
+    this.getRestaurantsNames();
     this.setUp();
   }
 
-  private setUp() {
+  setUp() {
+    this.setUpSchedule();
+    this.setUpCalendarDisplay();
+  }
+
+  private setUpCalendarDisplay() {
     this.getDaysCountInCurrentMonth();
     this.getFirstWeekDay();
     this.getLastWeekDay();
     this.lastWeeksDays();
+  }
+
+  private setUpSchedule() {
+    this.getRestaurantSchedule();
   }
 
   private getEmployee() {
@@ -46,6 +63,59 @@ export class ScheduleEmployeeComponent implements OnInit {
         this.employee = response;
       }
     })
+  }
+
+  private getRestaurantsNames() {
+    this.restaurantsNamesList.push('Всички');
+    this.restaurantsIdsList.push('');
+
+    if (this.employee?.restaurants) {
+      for (let rest of this.employee.restaurants) {
+        this.restaurantsNamesList.push(rest.name);
+        this.restaurantsIdsList.push(rest.id);
+      }
+    }
+  }
+
+  nextRestaurant() {
+    if (this.selectedRestaurantIndex == this.restaurantsIdsList.length - 1) {
+      this.selectedRestaurantIndex = 0;
+    }
+    else {
+      this.selectedRestaurantIndex++;
+    }
+    this.setUpSchedule();
+  }
+
+  previousRestaurant() {
+    if (this.selectedRestaurantIndex == 0) {
+      this.selectedRestaurantIndex = this.restaurantsNamesList.length - 1;
+    }
+    else {
+      this.selectedRestaurantIndex--;
+    }
+    this.setUpSchedule();
+  }
+
+  getRestaurantSchedule() {
+    if (this.employee) {
+      if (this.selectedRestaurantIndex == 0) {
+        this.emplopyeeService.getEmployeeFullSchedule(this.employee.email, this.currentDate.getMonth() + 1).subscribe({
+          next: (response: any) => {
+            //console.log(response);
+          }
+        })
+      }
+      else {
+        this.emplopyeeService.getEmployeeRestaurantSchedule
+          (this.employee.email, this.restaurantsIdsList[this.selectedRestaurantIndex], this.currentDate.getMonth()).subscribe({
+            next: (response: any) => {
+              //console.log(response);
+            }
+          })
+      }
+
+    }
   }
 
   close() {
@@ -121,10 +191,26 @@ export class ScheduleEmployeeComponent implements OnInit {
     if (todayId == id && today.getFullYear() == this.currentDate.getFullYear()) {
       return this.dateMarkers[0];
     }
+    else if (false) {
+      // if it's a work day
+    }
+    else if (false) {
+      // if it's a off day
+    }
     return '';
   }
 
   getId(date: number) {
     return date + '_' + (this.currentDate.getMonth() + 1);
+  }
+
+  selectDate(id: string) {
+
+  }
+
+  getSelectedDate() {
+    return `${this.weekdaysFull[this.selectedDay.getDay()]}, 
+    ${this.selectedDay.getDate()} 
+    ${this.monthsFull[this.selectedDay.getMonth()]}`
   }
 }
