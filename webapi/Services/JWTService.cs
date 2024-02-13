@@ -56,7 +56,7 @@ namespace webapi.Services
                 new Claim(ClaimTypes.Email, email)
             };
 
-            var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha256);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

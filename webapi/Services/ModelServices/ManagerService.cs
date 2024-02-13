@@ -56,11 +56,15 @@ namespace webapi.Services.ClassServices
                 return false;
             }
         }
-        public Manager UpdateManager(Manager manager, UpdateManagerDto updateDto)
+        public async Task<Manager> UpdateManager(Manager manager, UpdateManagerDto updateDto)
         {
             if (updateDto.NewFirstName != null) manager.Profile.FirstName = updateDto.NewFirstName;
             if (updateDto.NewLastName != null) manager.Profile.LastName = updateDto.NewLastName;
             if (updateDto.NewPhoneNumber != null) manager.Profile.PhoneNumber = updateDto.NewPhoneNumber;
+            if (updateDto.OldPassword != null && updateDto.NewPassword != null)
+            {
+                await _userManager.ChangePasswordAsync(manager.Profile, updateDto.OldPassword, updateDto.NewPassword);
+            }
             if (updateDto.ProfilePictureFile != null)
             {
                 if (manager.Profile.ProfilePicturePath == null) manager.Profile.ProfilePicturePath = _pictureService.SaveImage(updateDto.ProfilePictureFile);

@@ -53,7 +53,7 @@ namespace webapi.Controllers
             if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else manager = await _managerService.GetManagerByEmail(email);
 
-            _managerService.UpdateManager(manager, managerDto);
+            await _managerService.UpdateManager(manager, managerDto);
             await _managerService.SaveChangesAsync();
 
             return await GenerateNewManagerDto(email, 1);
