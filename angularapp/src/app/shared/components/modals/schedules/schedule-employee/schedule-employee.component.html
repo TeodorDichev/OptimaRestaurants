@@ -35,44 +35,79 @@
                     </tr>
                     <tr>
                         <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
-                            [id]="getDate(1, i) + '_' + (this.currentDate.getMonth() + 1)" (click)="null">
+                            [id]="getId(getDate(1, i))" (click)="null"
+                            [ngClass]="getClassForDate(getId(getDate(1, i)))">
                             {{getDate(1, i)}}
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
-                            (click)="returnId(getDate(2, i) + '_' + (this.currentDate.getMonth() + 1))"
-                            [id]="getDate(2, i) + '_' + (this.currentDate.getMonth() + 1)">
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="null"
+                            [id]="getId(getDate(2, i))" [ngClass]="getClassForDate(getId(getDate(2, i)))">
                             {{getDate(2, i)}}
                         </td>
                     </tr>
                     <tr>
                         <td class="item-hover" *ngFor="let e of [].constructor(7); index as i" (click)="null"
-                            [id]="getDate(3, i) + '_' + (this.currentDate.getMonth() + 1)">
+                            [id]="getDate(3, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="getClassForDate(getId(getDate(3, i)))">
                             {{getDate(3, i)}}
                         </td>
                     </tr>
                     <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(5)); index as i"
-                            (click)="null" [id]="getDate(4, i) + '_' + (this.currentDate.getMonth() + 1)">
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(4)); index as i"
+                            (click)="null" [id]="getDate(4, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="getClassForDate(getId(getDate(4, i)))">
                             {{getDate(4, i)}}
+                        </td>
+                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(4))">
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(5)); index as i"
+                            (click)="null" [id]="getDate(5, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="getClassForDate(getId(getDate(5, i)))">
+                            {{getDate(5, i)}}
                         </td>
                         <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(5))">
                             -
                         </td>
                     </tr>
-                    <tr>
-                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(6)); index as i"
-                            (click)="null" [id]="getDate(5, i) + '_' + (this.currentDate.getMonth() + 1)">
-                            {{getDate(5, i)}}
-                        </td>
-                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(6))">
-                            -
-                        </td>
-                    </tr>
                 </tbody>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="null">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            Всички
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="null">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                </thead>
             </table>
-
+        </div>
+    </div>
+    <div class="legend-markers">
+        <div class="marker-example">
+            <td class="item-hover today">
+                11
+            </td>
+            <span> - Днешна дата</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover workday">
+                12
+            </td>
+            <span> - Работен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover offday">
+                13
+            </td>
+            <span> - Почивен ден</span>
         </div>
     </div>
     <div class="d-flex justify-content-end">

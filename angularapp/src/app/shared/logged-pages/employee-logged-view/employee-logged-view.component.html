@@ -12,9 +12,7 @@
                 </button>
             </div>
         </div>
-        <div>
-            <app-schedule-employee></app-schedule-employee>
-        </div>
+        
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">

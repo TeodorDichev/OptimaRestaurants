@@ -30,7 +30,8 @@
     align-self: stretch;
 }
 
-th, td {
+th,
+td {
     text-align: center;
     border-radius: 50px;
     padding: 8px;
@@ -41,16 +42,26 @@ th, td {
 }
 
 .today:hover {
-    background-color: rgba(221, 255, 128, 0.5) !important;
+    background-color: rgba(122, 122, 122, 0.1) !important;
     cursor: pointer;
 }
 
-.work-day {
-    background-color: red;
+.workday {
+    background-color: rgba(255, 0, 0, 0.5) !important;
 }
 
-.off-day {
-    background-color: gray;
+.workday:hover {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    cursor: pointer;
+}
+
+.offday {
+    background-color: rgba(0, 255, 170, 0.5) !important;
+}
+
+.offday:hover {
+    background-color: rgba(0, 255, 170, 0.1) !important;
+    cursor: pointer;
 }
 
 .item-hover {
@@ -60,4 +71,17 @@ th, td {
 .item-hover:hover {
     background-color: rgba(255, 255, 255, 0.5);
     cursor: pointer;
+}
+
+.legend-markers {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.marker-example {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
 }

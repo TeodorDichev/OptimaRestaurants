@@ -1,5 +1,5 @@
+import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 
@@ -8,7 +8,7 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
   templateUrl: './schedule-employee.component.html',
   styleUrls: ['./schedule-employee.component.css']
 })
-export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
+export class ScheduleEmployeeComponent implements OnInit {
   employee: Employee | undefined;
 
   currentDate: Date = new Date();
@@ -31,10 +31,6 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getEmployee();
     this.setUp();
-  }
-
-  ngAfterViewInit() {
-    this.setInitialMarkers();
   }
 
   private setUp() {
@@ -67,11 +63,13 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.setUp();
+    this.clearDatesClasses();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.setUp();
+    this.clearDatesClasses();
   }
 
   getDate(weekNumber: number, weekdayNumber: number) {
@@ -90,12 +88,12 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   getNumberOfDaysInWeek(weekNumber: number) {
     const differenceInWeek5 = this.daysInCurrentMonth - this.week5FirstDay + 1;
     if (differenceInWeek5 > 7) {
-      if (weekNumber == 5) return 7;
-      if (weekNumber == 6) return differenceInWeek5 - 7;
+      if (weekNumber == 4) return 7;
+      if (weekNumber == 5) return differenceInWeek5 - 7;
     }
     else {
-      if (weekNumber == 5) return differenceInWeek5;
-      if (weekNumber == 6) return 0;
+      if (weekNumber == 4) return differenceInWeek5;
+      if (weekNumber == 5) return 0;
     }
     return 0;
   }
@@ -103,6 +101,7 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
   // dateId: 1_2 -> date_month, class number in array -> 0-today, 1-workday, 2-offday
   markDate(dateId: string, classNumber: number) {
     try {
+      console.log(document.getElementById(dateId));
       document.getElementById(dateId)?.classList.add(this.dateMarkers[classNumber]);
       this.markedDaysIds.push(dateId);
     } catch (error) { }
@@ -116,16 +115,16 @@ export class ScheduleEmployeeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setInitialMarkers() {
+  getClassForDate(id: string): string {
     const today = new Date();
-    if (today.getFullYear() == this.currentDate.getFullYear()) {
-      const todayId = today.getDate() + '_' + (today.getMonth() + 1);
-      console.log(todayId);
-      this.markDate(todayId, 0);  
+    const todayId = today.getDate() + '_' + (today.getMonth() + 1);
+    if (todayId == id && today.getFullYear() == this.currentDate.getFullYear()) {
+      return this.dateMarkers[0];
     }
+    return '';
   }
 
-  returnId(id: string) {
-    console.log(id);
+  getId(date: number) {
+    return date + '_' + (this.currentDate.getMonth() + 1);
   }
 }
