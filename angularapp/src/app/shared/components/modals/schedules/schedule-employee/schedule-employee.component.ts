@@ -1,6 +1,10 @@
+import { Time } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';
+import { EmployeeDailySchedule } from 'src/app/shared/models/employee/employee-daily-schedule';
+import { EmployeeFullSchedule } from 'src/app/shared/models/employee/employee-full-schedule';
+import { ScheduleAssignment } from 'src/app/shared/models/employee/schedule-assignent';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 
 @Component({
@@ -35,20 +39,36 @@ export class ScheduleEmployeeComponent implements OnInit {
   selectedDayAsText: string = '';
   workDaysIds: string[] = [];
 
+  selectedDaySchedule: EmployeeDailySchedule[] = [];
+  scheduleAssignment: ScheduleAssignment = {
+    scheduleId: '',
+    employeeEmail: '',
+    restaurantId: '',
+    day: new Date(),
+    fullDay: false,
+    isWorkDay: false
+  };
+  employeeFullSchedule: EmployeeFullSchedule[] = [];
+
+  fullDay: boolean = false;
+  from: Time = { hours: 0, minutes: 0 };
+  to: Time = { hours: 0, minutes: 0 };
+
   constructor(private emplopyeeService: EmployeeService,
     private bsModalRef: BsModalRef) { }
 
   ngOnInit(): void {
     this.getEmployee();
+    this.setTodayMarker();
     this.getRestaurantsNames();
     this.setUp();
-    this.getSelectedDateAsText();
+    this.getDailySchedule();
   }
 
   setUp() {
+    this.getSelectedDateAsText();
     this.setUpSchedule();
     this.setUpCalendarDisplay();
-    this.setTodayMarker();
     this.setDatesClasses();
   }
 
@@ -59,10 +79,6 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.lastWeeksDays();
   }
 
-  private setUpSchedule() {
-    this.getRestaurantSchedule();
-  }
-
   private getEmployee() {
     this.emplopyeeService.employee$.subscribe({
       next: (response: any) => {
@@ -70,6 +86,11 @@ export class ScheduleEmployeeComponent implements OnInit {
       }
     })
   }
+
+  private setUpSchedule() {
+    this.getRestaurantSchedule();
+  }
+
 
   private getRestaurantsNames() {
     this.restaurantsNamesList.push('Всички');
@@ -108,18 +129,60 @@ export class ScheduleEmployeeComponent implements OnInit {
       if (this.selectedRestaurantIndex == 0) {
         this.emplopyeeService.getEmployeeFullSchedule(this.employee.email, this.currentDate.getMonth() + 1).subscribe({
           next: (response: any) => {
-            console.log(response);
+            console.log('full:', response);
           }
         })
       }
       else {
         this.emplopyeeService.getEmployeeRestaurantSchedule(this.employee.email, this.restaurantsIdsList[this.selectedRestaurantIndex], this.currentDate.getMonth())
-        .subscribe({
+          .subscribe({
             next: (response: any) => {
-              console.log(response);
+              console.log('rest:', response);
             }
           })
       }
+    }
+  }
+
+  getDailySchedule() {
+    if (this.employee) {
+      this.emplopyeeService.getDailySchedule(this.employee.email, this.selectedDay).subscribe({
+        next: (response: any) => {
+          this.selectedDaySchedule = response;
+        }
+      })
+    }
+  }
+
+  setDayToOffday() {
+    if (this.employee) {
+      if (this.fullDay) {
+        this.scheduleAssignment = {
+          scheduleId: this.selectedDaySchedule[0].scheduleId,
+          restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
+          employeeEmail: this.employee?.email,
+          day: this.selectedDay,
+          isWorkDay: false,
+          fullDay: this.fullDay
+        }
+      }
+      else {
+        this.scheduleAssignment = {
+          scheduleId: this.selectedDaySchedule[0].scheduleId,
+          restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
+          employeeEmail: this.employee?.email,
+          day: this.selectedDay,
+          from: this.from,
+          to: this.to,
+          isWorkDay: false,
+          fullDay: this.fullDay
+        }
+      }
+      this.emplopyeeService.addAssignment(this.scheduleAssignment).subscribe({
+        next: (response: any) => {
+          this.selectedDaySchedule = response;
+        }
+      })
     }
   }
 
@@ -216,6 +279,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.selectedDay = new Date(parseInt(id.split('_')[2]), parseInt(id.split('_')[1]) - 1, parseInt(id.split('_')[0]));
     this.setDatesClasses();
     this.getSelectedDateAsText();
+    this.getDailySchedule();
   }
 
   getSelectedDateAsText() {

@@ -96,6 +96,37 @@
         </div>
         <div class="date-info">
             <span class="h5">{{selectedDayAsText}}</span>
+            <div *ngIf="selectedDaySchedule.length != 0">
+                <span>data is sent correctly, make pretty</span>
+            </div>
+            <div *ngIf="selectedDaySchedule.length == 0">
+                Нямате задачи за този ден.
+            </div>
+            <div>
+                <button class="button btn-chocolate h6" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseConfirmed" aria-controls="collapseExample">
+                    Отбелязване като почивен ден
+                </button>
+                <div class="collapse" id="collapseConfirmed">
+                    <div>
+                        Цял ден: <input type="checkbox" [(ngModel)]="fullDay">
+                    </div>
+                    <div *ngIf="!fullDay">
+                        <span>
+                            За даден часови период
+                        </span>
+                        <div>
+                            От: <input type="time">
+                        </div>
+                        <div>
+                            До: <input type="time">
+                        </div>
+                    </div>
+                    <button class="button btn-green" (click)="setDayToOffday()">
+                        Отбелязване
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="legend-markers">
