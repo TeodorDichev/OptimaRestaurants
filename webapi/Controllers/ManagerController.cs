@@ -233,7 +233,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/manager/schedule/add-assignment")]
-        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
+        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");

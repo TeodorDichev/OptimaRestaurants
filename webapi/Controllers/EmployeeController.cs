@@ -160,7 +160,7 @@ namespace webapi.Controllers
         /// <returns> The schedule for the day </returns>
 
         [HttpPost("api/employee/schedule/add-assignment")]
-        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
             if (scheduleDto.Day.AddDays(-7) < DateOnly.FromDateTime(DateTime.Now)) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
             
