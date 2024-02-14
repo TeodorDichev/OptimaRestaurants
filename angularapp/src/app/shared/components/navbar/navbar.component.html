@@ -44,7 +44,8 @@
             <form [formGroup]="searchForm" class="d-flex" role="search" #dropdown>
                 <div class="form-check form-switch mt-2">
                     <input class="form-check-input chocolatе" type="checkbox" tooltip="Смяна потребител/ресторант"
-                        formControlName="searchForAccounts" [(ngModel)]="searchForAccounts" (click)="changeSearchText()">
+                        formControlName="searchForAccounts" [(ngModel)]="searchForAccounts"
+                        (click)="changeSearchText()">
                 </div>
                 <li class="dropdown nav-link">
                     <input class="form-control" formControlName="searchString" type="search"
@@ -56,7 +57,7 @@
                             *ngIf="!searchForAccounts"></app-search-result-restaurant>
                     </ul>
                 </li>
-            </form>    
+            </form>
         </div>
         <div class="button btn-inverted" (click)="logout()" tooltip="Излизане от акаунт" *ngIf="this.user">
             <i class="fa fa-sign-out fa-xl"></i>

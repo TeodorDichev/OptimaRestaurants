@@ -11,7 +11,7 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
 export class ScheduleEmployeeComponent implements OnInit {
   employee: Employee | undefined;
 
-  currentDate: Date = new Date();
+  currentDate: Date = new Date(); // calendar's current date on display
   daysInCurrentMonth: number = 0; // also the last date of the month
   firstDayOfMonth: number = 0; // gets what the first date's weekday is
   lastDayOfMonth: number = 0; // gets what the last date's weekday is
@@ -19,17 +19,20 @@ export class ScheduleEmployeeComponent implements OnInit {
   week5LastDay: number = 0;
   week6LastDay: number = 0;
 
+  idMarkerPairs: Record<string, string> = {};
+  today: Date = new Date();
+
   restaurantsNamesList: string[] = [];
   restaurantsIdsList: string[] = [];
   selectedRestaurantIndex: number = 0;
 
-  markedDaysIds: string[] = [];
-  dateMarkers = ['today', 'workday', 'offday', 'selected'];
+  dateMarkers = ['workday', 'offday', 'selected'];
   weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
   weekdaysFull = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
   monthsFull = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
 
-  selectedDay: Date = new Date();
+  selectedDay: Date = new Date(); // user's selected date, which could be on a different month/year than the one displayed
+  selectedDayAsText: string = '';
   workDaysIds: string[] = [];
 
   constructor(private emplopyeeService: EmployeeService,
@@ -39,11 +42,14 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.getEmployee();
     this.getRestaurantsNames();
     this.setUp();
+    this.getSelectedDateAsText();
   }
 
   setUp() {
     this.setUpSchedule();
     this.setUpCalendarDisplay();
+    this.setTodayMarker();
+    this.setDatesClasses();
   }
 
   private setUpCalendarDisplay() {
@@ -67,7 +73,7 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   private getRestaurantsNames() {
     this.restaurantsNamesList.push('Всички');
-    this.restaurantsIdsList.push('');
+    this.restaurantsIdsList.push('id-for-all-restaurants');
 
     if (this.employee?.restaurants) {
       for (let rest of this.employee.restaurants) {
@@ -102,19 +108,18 @@ export class ScheduleEmployeeComponent implements OnInit {
       if (this.selectedRestaurantIndex == 0) {
         this.emplopyeeService.getEmployeeFullSchedule(this.employee.email, this.currentDate.getMonth() + 1).subscribe({
           next: (response: any) => {
-            //console.log(response);
+            console.log(response);
           }
         })
       }
       else {
-        this.emplopyeeService.getEmployeeRestaurantSchedule
-          (this.employee.email, this.restaurantsIdsList[this.selectedRestaurantIndex], this.currentDate.getMonth()).subscribe({
+        this.emplopyeeService.getEmployeeRestaurantSchedule(this.employee.email, this.restaurantsIdsList[this.selectedRestaurantIndex], this.currentDate.getMonth())
+        .subscribe({
             next: (response: any) => {
-              //console.log(response);
+              console.log(response);
             }
           })
       }
-
     }
   }
 
@@ -168,49 +173,52 @@ export class ScheduleEmployeeComponent implements OnInit {
     return 0;
   }
 
-  // dateId: 1_2 -> date_month, class number in array -> 0-today, 1-workday, 2-offday
-  markDate(dateId: string, classNumber: number) {
-    try {
-      console.log(document.getElementById(dateId));
-      document.getElementById(dateId)?.classList.add(this.dateMarkers[classNumber]);
-      this.markedDaysIds.push(dateId);
-    } catch (error) { }
-  }
-
   clearDatesClasses() {
-    for (let id of this.markedDaysIds) {
+    for (let id in this.idMarkerPairs) {
       for (let marker of this.dateMarkers) {
         document.getElementById(id)?.classList.remove(marker);
       }
     }
   }
 
-  getClassForDate(id: string): string {
-    const today = new Date();
-    const todayId = today.getDate() + '_' + (today.getMonth() + 1);
-    if (todayId == id && today.getFullYear() == this.currentDate.getFullYear()) {
-      return this.dateMarkers[0];
+  clearPreviousSelectedDateMarker() {
+    for (let id in this.idMarkerPairs) {
+      document.getElementById(id)?.classList.remove(this.dateMarkers[2]);
+      let index = this.idMarkerPairs[id].indexOf(this.dateMarkers[2]);
+      if (index !== -1) {
+        this.idMarkerPairs[id] = this.idMarkerPairs[id].slice(0, index) + this.idMarkerPairs[id].slice(index + this.dateMarkers[2].length);
+      }
     }
-    else if (false) {
-      // if it's a work day
+  }
+
+  private setTodayMarker() {
+    const todayId = this.today.getDate() + '_' + (this.today.getMonth() + 1) + '_' + this.currentDate.getFullYear();
+    this.idMarkerPairs[todayId] = 'today ';
+  }
+
+  setDatesClasses() {
+    this.clearPreviousSelectedDateMarker();
+
+    const selectedDayId = this.selectedDay.getDate() + '_' + (this.selectedDay.getMonth() + 1) + '_' + this.selectedDay.getFullYear();
+    if (this.idMarkerPairs[selectedDayId]) {
+      this.idMarkerPairs[selectedDayId] += this.dateMarkers[2];
     }
-    else if (false) {
-      // if it's a off day
+    else {
+      this.idMarkerPairs[selectedDayId] = this.dateMarkers[2];
     }
-    return '';
   }
 
   getId(date: number) {
-    return date + '_' + (this.currentDate.getMonth() + 1);
+    return date + '_' + (this.currentDate.getMonth() + 1) + '_' + this.currentDate.getFullYear();
   }
 
   selectDate(id: string) {
-
+    this.selectedDay = new Date(parseInt(id.split('_')[2]), parseInt(id.split('_')[1]) - 1, parseInt(id.split('_')[0]));
+    this.setDatesClasses();
+    this.getSelectedDateAsText();
   }
 
-  getSelectedDate() {
-    return `${this.weekdaysFull[this.selectedDay.getDay()]}, 
-    ${this.selectedDay.getDate()} 
-    ${this.monthsFull[this.selectedDay.getMonth()]}`
+  getSelectedDateAsText() {
+    this.selectedDayAsText = `${this.weekdaysFull[this.selectedDay.getDay()]}, ${this.selectedDay.getDate()} ${this.monthsFull[this.selectedDay.getMonth()]}`
   }
 }
