@@ -92,7 +92,7 @@ namespace webapi.Services.ClassServices
         {
             try
             {
-                //updating employee statistics
+                /* updating employee statistics */
                 employee.AttitudeAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.AttitudeRating != null)
                     .Select(cr => cr.AttitudeRating)
                     .Average();
@@ -109,12 +109,24 @@ namespace webapi.Services.ClassServices
                     .Select(mr => mr.CollegialityRating)
                     .Average();
 
-                employee.EmployeeAverageRating = (employee.PunctualityAverageRating
-                    + employee.AttitudeAverageRating
-                    + employee.CollegialityAverageRating
-                    + employee.SpeedAverageRating) / 4;
+                _context.SaveChanges();
 
-                //updating restaurants statistics
+                int dellEmp = 0;
+                if (employee.PunctualityAverageRating == null) ++dellEmp;
+                if (employee.AttitudeAverageRating == null) ++dellEmp;
+                if (employee.CollegialityAverageRating == null) ++dellEmp;
+                if (employee.SpeedAverageRating == null) ++dellEmp;
+                if(dellEmp != 0)
+                {
+                    employee.EmployeeAverageRating = (employee.PunctualityAverageRating ?? 0
+                        + employee.AttitudeAverageRating ?? 0
+                        + employee.CollegialityAverageRating ?? 0
+                        + employee.SpeedAverageRating ?? 0) / dellEmp;
+                }
+
+                _context.SaveChanges();
+
+                /* updating restaurants statistics */
                 restaurant.AtmosphereAverageRating = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant && cr.AtmosphereRating != null)
                     .Select(cr => cr.AtmosphereRating)
                     .Average();
@@ -128,9 +140,18 @@ namespace webapi.Services.ClassServices
                     .Select(e => e.EmployeeAverageRating)
                     .Average();
 
-                restaurant.RestaurantAverageRating = (restaurant.CuisineAverageRating
-                    + restaurant.AtmosphereAverageRating
-                    + restaurant.EmployeesAverageRating) / 3;
+                _context.SaveChanges();
+
+                int dellRes = 0;
+                if (restaurant.RestaurantAverageRating == null) ++dellRes;
+                if (restaurant.AtmosphereAverageRating == null) ++dellRes;
+                if (restaurant.EmployeesAverageRating == null) ++dellRes;
+
+                restaurant.RestaurantAverageRating = (restaurant.CuisineAverageRating ?? 0
+                    + restaurant.AtmosphereAverageRating ?? 0
+                    + restaurant.EmployeesAverageRating ?? 0) / dellRes;
+
+                _context.SaveChanges();
 
                 return true;
             }

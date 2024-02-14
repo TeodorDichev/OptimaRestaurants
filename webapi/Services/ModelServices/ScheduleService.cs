@@ -29,12 +29,10 @@ namespace webapi.Services.ModelServices
         {
             return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
         }
-
         public async Task<Schedule> AddAssignmentToSchedule(CreateScheduleDto model)
         {
             return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
         }
-
         public async Task<Schedule> EditScheduleAssignment(ScheduleDto model)
         {
             Schedule schedule = await GetEmployeeAssignment(model.ScheduleId);
