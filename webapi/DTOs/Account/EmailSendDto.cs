@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace webapi.DTOs.Account
+﻿namespace webapi.DTOs.Account
 {
     public class EmailSendDto
     {

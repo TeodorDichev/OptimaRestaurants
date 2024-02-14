@@ -55,7 +55,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            _employeeService.UpdateEmployee(employee, updateDto);
+            await _employeeService.UpdateEmployee(employee, updateDto);
             await _employeeService.SaveChangesAsync();
 
             return await GenerateNewEmployeeDto(email);

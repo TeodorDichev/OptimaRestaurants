@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Employee;
@@ -45,13 +46,17 @@ namespace webapi.Services.ClassServices
 
             return employee;
         }
-        public Employee UpdateEmployee(Employee employee, UpdateEmployeeDto updateDto)
+        public async Task<Employee> UpdateEmployee(Employee employee, UpdateEmployeeDto updateDto)
         {
             if (updateDto.NewFirstName != null) employee.Profile.FirstName = updateDto.NewFirstName;
             if (updateDto.NewLastName != null) employee.Profile.LastName = updateDto.NewLastName;
             if (updateDto.NewPhoneNumber != null) employee.Profile.PhoneNumber = updateDto.NewPhoneNumber;
             if (updateDto.NewCity != null) employee.City = updateDto.NewCity;
             if (updateDto.NewBirthDate != null) employee.BirthDate = (DateOnly)updateDto.NewBirthDate;
+            if (updateDto.OldPassword != null && updateDto.NewPassword != null)
+            {
+                await _userManager.ChangePasswordAsync(employee.Profile, updateDto.OldPassword, updateDto.NewPassword);
+            }
             if (updateDto.ProfilePictureFile != null)
             {
                 if (employee.Profile.ProfilePicturePath == null) employee.Profile.ProfilePicturePath = _pictureService.SaveImage(updateDto.ProfilePictureFile);
