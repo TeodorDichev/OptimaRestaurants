@@ -1,3 +1,4 @@
+import { ScheduleAssignment } from 'src/app/shared/models/employee/schedule-assignent';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
@@ -92,6 +93,30 @@ export class ManagerService {
 
   deleteRestaurant(restaurantId: string) {
     return this.http.delete(`${environment.appUrl}/api/manager/delete-restaurant/${restaurantId}`)
+  }
+
+  addAssignment(scheduleAssignment: ScheduleAssignment) {
+
+  }
+
+  editAssignment() {
+
+  }
+
+  deleteAssignment() {
+
+  }
+
+  getFreeEmployees() {
+
+  }
+
+  getManagerFullSchedule() {
+
+  }
+
+  getManagerDailySchedule() {
+
   }
 
   logout() {

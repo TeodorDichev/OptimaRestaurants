@@ -6,6 +6,7 @@ import { EmployeeDailySchedule } from 'src/app/shared/models/employee/employee-d
 import { EmployeeFullSchedule } from 'src/app/shared/models/employee/employee-full-schedule';
 import { ScheduleAssignment } from 'src/app/shared/models/employee/schedule-assignent';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-schedule-employee',
@@ -41,7 +42,6 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   selectedDaySchedule: EmployeeDailySchedule[] = [];
   scheduleAssignment: ScheduleAssignment = {
-    scheduleId: '',
     employeeEmail: '',
     restaurantId: '',
     day: new Date(),
@@ -55,7 +55,8 @@ export class ScheduleEmployeeComponent implements OnInit {
   to: Time = { hours: 0, minutes: 0 };
 
   constructor(private emplopyeeService: EmployeeService,
-    private bsModalRef: BsModalRef) { }
+    private bsModalRef: BsModalRef,
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getEmployee();
@@ -90,7 +91,6 @@ export class ScheduleEmployeeComponent implements OnInit {
   private setUpSchedule() {
     this.getRestaurantSchedule();
   }
-
 
   private getRestaurantsNames() {
     this.restaurantsNamesList.push('Всички');
@@ -158,7 +158,6 @@ export class ScheduleEmployeeComponent implements OnInit {
     if (this.employee) {
       if (this.fullDay) {
         this.scheduleAssignment = {
-          scheduleId: this.selectedDaySchedule[0].scheduleId,
           restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
           employeeEmail: this.employee?.email,
           day: this.selectedDay,
@@ -168,7 +167,6 @@ export class ScheduleEmployeeComponent implements OnInit {
       }
       else {
         this.scheduleAssignment = {
-          scheduleId: this.selectedDaySchedule[0].scheduleId,
           restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
           employeeEmail: this.employee?.email,
           day: this.selectedDay,
@@ -180,7 +178,10 @@ export class ScheduleEmployeeComponent implements OnInit {
       }
       this.emplopyeeService.addAssignment(this.scheduleAssignment).subscribe({
         next: (response: any) => {
+          console.log(response);
           this.selectedDaySchedule = response;
+        }, error: error => {
+          this.sharedService.showNotification(false, 'Неуспешно добавяне на ангажимент!', error.error);
         }
       })
     }

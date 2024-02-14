@@ -1,1 +1,132 @@
-<p>schedule-manager works!</p>
+<div class="modal-body" *ngIf="manager">
+    <div class="fw-bold h1">Вашият график,
+        <span class="fst-italic theme-main">{{manager.firstName}} {{manager.lastName}}</span>
+    </div>
+    <div class="schedule">
+        <div class="table-schedule">
+            <table>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="previousMonth()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            {{monthsFull[currentDate.getMonth()]}} {{currentDate.getFullYear()}}
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="nextMonth()">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                    <tr class="text-center text-muted h6 fst-italic">
+                        <td *ngFor="let day of weekdays">
+                            {{day}}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let e of [].constructor(firstDayOfMonth)">
+                            -
+                        </td>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7 - firstDayOfMonth); index as i"
+                            (click)="selectDate(getId(i + 1))" [id]="getId(i + 1)"
+                            [ngClass]="idMarkerPairs[getId(i + 1)]">
+                            {{i + 1}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            [id]="getId(getDate(1, i))" (click)="selectDate(getId(getDate(1, i)))"
+                            [ngClass]="idMarkerPairs[getId(getDate(1, i))]">
+                            {{getDate(1, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="selectDate(getId(getDate(2, i)))" [id]="getId(getDate(2, i))"
+                            [ngClass]="idMarkerPairs[getId(getDate(2, i))]">
+                            {{getDate(2, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="selectDate(getId(getDate(3, i)))"
+                            [id]="getDate(3, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(3, i))]">
+                            {{getDate(3, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(4)); index as i"
+                            (click)="selectDate(getId(getDate(4, i)))"
+                            [id]="getDate(4, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(4, i))]">
+                            {{getDate(4, i)}}
+                        </td>
+                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(4))">
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(5)); index as i"
+                            (click)="selectDate(getId(getDate(5, i)))"
+                            [id]="getDate(5, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(5, i))]">
+                            {{getDate(5, i)}}
+                        </td>
+                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(5))">
+                            -
+                        </td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="previousRestaurant()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            <span>{{this.restaurantsNamesList[selectedRestaurantIndex]}}</span>
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="nextRestaurant()">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="date-info">
+            <span class="h5">{{selectedDayAsText}}</span>           
+        </div>
+    </div>
+    <div class="legend-markers">
+        <div class="marker-example">
+            <td class="item-hover today">
+                11
+            </td>
+            <span>Днешна дата</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover workday">
+                12
+            </td>
+            <span>Работен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover offday">
+                13
+            </td>
+            <span>Почивен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover selected">
+                14
+            </td>
+            <span>Избрана дата</span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="button btn-gray" (click)="close()">
+            Затваряне
+        </button>
+    </div>
+</div>
