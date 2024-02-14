@@ -96,27 +96,27 @@ export class ManagerService {
   }
 
   addAssignment(scheduleAssignment: ScheduleAssignment) {
-
+    return this.http.post(`${environment.appUrl}/api/manager/schedule/add-assignment`, scheduleAssignment);
   }
 
-  editAssignment() {
-
+  editAssignment(scheduleAssignment: ScheduleAssignment) {
+    return this.http.put(`${environment.appUrl}/api/manager/schedule/edit-assignment`, scheduleAssignment);
   }
 
-  deleteAssignment() {
-
+  deleteAssignment(scheduleId: string) {
+    return this.http.delete(`${environment.appUrl}/api/manager/schedule/delete-assignment/${scheduleId}`);
   }
 
-  getFreeEmployees() {
-
+  getFreeEmployees(restaurantId: string, day: Date) {
+    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-free-employee/${restaurantId}/${day}`);
   }
 
-  getManagerFullSchedule() {
-
+  getManagerFullSchedule(restaurantId: string, month: number) {
+    return this.http.get(`${environment.appUrl}/api/manager/schedule/full-schedule/${restaurantId}/${month}`);
   }
 
-  getManagerDailySchedule() {
-
+  getManagerDailySchedule(restaurantId: string, day: Date) {
+    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-daily-schedule/${restaurantId}/${day}`);
   }
 
   logout() {

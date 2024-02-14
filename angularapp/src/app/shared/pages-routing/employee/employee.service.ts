@@ -75,7 +75,7 @@ export class EmployeeService {
   }
 
   editAssignment(scheduleAssignment: ScheduleAssignment) {
-    return this.http.post(`${environment.appUrl}/api/employee/schedule/edit-assignment`, scheduleAssignment);
+    return this.http.put(`${environment.appUrl}/api/employee/schedule/edit-assignment`, scheduleAssignment);
   }
 
   deleteAssignment(scheduleId: string) {

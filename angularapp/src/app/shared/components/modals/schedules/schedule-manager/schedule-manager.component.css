@@ -1,0 +1,123 @@
+::ng-deep app-schedule-employee {
+    display: flex;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 24px;
+    padding: 24px;
+    background-color: rgb(238, 222, 191);
+    border-radius: 8px;
+}
+
+.schedule {
+    display: flex;
+    flex-direction: row;
+    display: flex;
+    flex: 1 0 0;
+    padding: 24px;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 991px) {
+    .schedule {
+        display: flex;
+        flex-direction: column !important;
+        display: flex;
+        flex: 1 0 0;
+        padding: 24px;
+        gap: 18px;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.table-schedule {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    text-align: center;
+    padding: 12px;
+    border: 2px solid rgb(238, 222, 191);
+}
+
+.today {
+    background-color: rgba(122, 122, 122, 0.3) !important;
+}
+
+.today:hover {
+    background-color: rgba(122, 122, 122, 0.1) !important;
+    cursor: pointer;
+}
+
+.workday {
+    background-color: rgba(255, 0, 0, 0.5) !important;
+}
+
+.workday:hover {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    cursor: pointer;
+}
+
+.offday {
+    background-color: rgba(0, 255, 170, 0.5) !important;
+}
+
+.offday:hover {
+    background-color: rgba(0, 255, 170, 0.1) !important;
+    cursor: pointer;
+}
+
+.item-hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.item-hover:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.selected {
+    box-shadow: 0 0 6px rgba(255, 124, 2, 0.8);
+}
+
+.legend-markers {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.marker-example {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+.date-info {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    gap: 12px;
+    padding: 12px;
+    border-radius: 12px;
+}

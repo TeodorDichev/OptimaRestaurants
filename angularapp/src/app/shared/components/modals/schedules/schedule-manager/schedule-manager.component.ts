@@ -96,65 +96,14 @@ export class ScheduleManagerComponent {
     }
   
     getRestaurantSchedule() {
-      if (this.employee) {
-        if (this.selectedRestaurantIndex == 0) {
-          this.emplopyeeService.getEmployeeFullSchedule(this.employee.email, this.currentDate.getMonth() + 1).subscribe({
-            next: (response: any) => {
-              console.log('full:', response);
-            }
-          })
-        }
-        else {
-          this.emplopyeeService.getEmployeeRestaurantSchedule(this.employee.email, this.restaurantsIdsList[this.selectedRestaurantIndex], this.currentDate.getMonth())
-            .subscribe({
-              next: (response: any) => {
-                console.log('rest:', response);
-              }
-            })
-        }
+      if (this.manager) {
+       
       }
     }
   
     getDailySchedule() {
-      if (this.employee) {
-        this.emplopyeeService.getDailySchedule(this.employee.email, this.selectedDay).subscribe({
-          next: (response: any) => {
-            this.selectedDaySchedule = response;
-          }
-        })
-      }
-    }
-  
-    setDayToOffday() {
-      if (this.employee) {
-        if (this.fullDay) {
-          this.scheduleAssignment = {
-            restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
-            employeeEmail: this.employee?.email,
-            day: this.selectedDay,
-            isWorkDay: false,
-            fullDay: this.fullDay
-          }
-        }
-        else {
-          this.scheduleAssignment = {
-            restaurantId: this.restaurantsIdsList[this.selectedRestaurantIndex], //problem if he wants off day from all restaurants
-            employeeEmail: this.employee?.email,
-            day: this.selectedDay,
-            from: this.from,
-            to: this.to,
-            isWorkDay: false,
-            fullDay: this.fullDay
-          }
-        }
-        this.emplopyeeService.addAssignment(this.scheduleAssignment).subscribe({
-          next: (response: any) => {
-            console.log(response);
-            this.selectedDaySchedule = response;
-          }, error: error => {
-            this.sharedService.showNotification(false, 'Неуспешно добавяне на ангажимент!', error.error);
-          }
-        })
+      if (this.manager) {
+        
       }
     }
   
