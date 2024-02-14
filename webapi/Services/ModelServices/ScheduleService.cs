@@ -24,23 +24,14 @@ namespace webapi.Services.ModelServices
         }
 
         /* Possible issue: not adding to the specific employee */
+
         public async Task<Schedule> AddAssignmentToSchedule(ScheduleDto model)
         {
-            Schedule schedule = new Schedule
-            {
-                Day = model.Day,
-                Employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail),
-                Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId),
-                AssignedOn = DateTime.Now,
-                From = model.From,
-                To = model.To,
-                FullDay = (model.To == null || model.From == null),
-                IsWorkDay = model.IsWorkDay
-            };
-
-            await _context.Schedules.AddAsync(schedule);
-
-            return schedule;
+            return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
+        }
+        public async Task<Schedule> AddAssignmentToSchedule(CreateScheduleDto model)
+        {
+            return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
         }
         public async Task<Schedule> EditScheduleAssignment(ScheduleDto model)
         {
@@ -256,5 +247,24 @@ namespace webapi.Services.ModelServices
         {
             return await _context.Schedules.FirstAsync(s => s.Id.ToString() == scheduleId);
         }
+        private async Task<Schedule> AddAssignmentToScheduleInternal(DateOnly day, string employeeEmail, string restaurantId, TimeOnly? from, TimeOnly? to, bool isWorkDay)
+        {
+            Schedule schedule = new Schedule
+            {
+                Day = day,
+                Employee = await _employeeService.GetEmployeeByEmail(employeeEmail),
+                Restaurant = await _restaurantService.GetRestaurantById(restaurantId),
+                AssignedOn = DateTime.Now,
+                From = from,
+                To = to,
+                FullDay = (to == null || from == null),
+                IsWorkDay = isWorkDay
+            };
+
+            await _context.Schedules.AddAsync(schedule);
+
+            return schedule;
+        }
+
     }
 }
