@@ -4,7 +4,7 @@
     {
         public required string ScheduleId { get; set; }
         public required int PeopleAssignedToWork { get; set; }
-        public required DateOnly Day { get; set; }
+        public required DateTime Day { get; set; }
 
     }
 }

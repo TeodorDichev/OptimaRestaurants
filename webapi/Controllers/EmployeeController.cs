@@ -143,7 +143,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/employee/get-day-schedule/{email}/{day}")]
-        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateOnly day)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateTime day)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
@@ -162,7 +162,7 @@ namespace webapi.Controllers
         [HttpPost("api/employee/schedule/add-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
-            if (scheduleDto.Day.AddDays(-7) < DateOnly.FromDateTime(DateTime.Now)) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
+            if (scheduleDto.Day.AddDays(-7) < DateTime.Now) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
             
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");

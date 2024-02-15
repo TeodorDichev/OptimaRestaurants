@@ -305,7 +305,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/schedule/get-free-employee/{restaurantId}/{day}")]
-        public async Task<ActionResult<List<FreeEmployeeDto>>> GetFreeEmployees(string restaurantId, DateOnly day)
+        public async Task<ActionResult<List<FreeEmployeeDto>>> GetFreeEmployees(string restaurantId, DateTime day)
         {
             Restaurant restaurant;
             if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
@@ -329,7 +329,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/schedule/get-daily-schedule/{restaurantId}/{day}")]
-        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailyWorkingSchedule(string restaurantId, DateOnly day)
+        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailyWorkingSchedule(string restaurantId, DateTime day)
         {
             Restaurant restaurant;
             if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
