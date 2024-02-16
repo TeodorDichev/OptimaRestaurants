@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.JSInterop;
 using System.Runtime.InteropServices;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
@@ -9,6 +10,7 @@ using webapi.Services;
 using webapi.Services.ClassServices;
 using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webapi.Controllers
 {
@@ -149,7 +151,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            return _scheduleService.GetEmployeeDailySchedule(employee, day);
+            return _scheduleService.GetEmployeeDailySchedule(employee, day.ToLocalTime());
         }
 
         /// <summary>
@@ -162,7 +164,11 @@ namespace webapi.Controllers
         [HttpPost("api/employee/schedule/add-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
-            if (scheduleDto.Day.AddDays(-7) < DateTime.Now) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
+            if (scheduleDto.Day.Subtract(DateTime.Now.Date).Days < 7) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
             
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
@@ -188,6 +194,10 @@ namespace webapi.Controllers
         [HttpPut("api/employee/schedule/edit-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте графика за работен ден! Моля свържете се с мениджъра Ви!");
             

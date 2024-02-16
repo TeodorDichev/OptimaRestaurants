@@ -103,7 +103,7 @@ namespace webapi.Services.ModelServices
                     From = TimeOnlyToDateTime(day, assignment.From),
                     To = TimeOnlyToDateTime(day, assignment.To),
                     RestaurantName = assignment.Restaurant.Name,
-                    RestaurantId = assignment.Restaurant.Id,
+                    RestaurantId = assignment.Restaurant.Id.ToString(),
                     IsFullDay = assignment.FullDay
                 });
             }
@@ -188,15 +188,21 @@ namespace webapi.Services.ModelServices
 
             /* Gets the schedule of the employee on this day */
             /* The employee has multiple assignments on this day (8-11 + 12-15 + 20-23) */
-            if (assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day)).ToList().Count > 1)
+            if (assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day.ToLocalTime())).ToList().Count > 1)
             {
                 /* Orders the scheduled assignments of the employee by their time of beginning */
                 List<Schedule> orderedSchedule = assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day)).OrderBy(ad => ad.From).ToList();
 
-                /* Loops through them and checks if there is a suitable gap */
+                /* The new assignment is for earlier (16-20 + 8-14) */
+                if (orderedSchedule.First().From >= TimeOnly.FromDateTime(from.Value)) return true;
+
+                /* Loops through them and checks if there is a suitable gap in the middle */
                 for (int i = 0; i < orderedSchedule.Count - 1; i++)
-                    if (TimeOnly.FromDateTime(from.Value) > orderedSchedule[i].To && TimeOnly.FromDateTime(to.Value) < orderedSchedule[i + 1].From)
+                    if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule[i].To && TimeOnly.FromDateTime(to.Value) <= orderedSchedule[i + 1].From)
                         return true;
+
+                /* The new assignment is for later (8-14 + 16-20) */
+                if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.Last().To) return true;
 
                 /* After the loop there was not a suitable gap */
                 return false;
@@ -218,10 +224,10 @@ namespace webapi.Services.ModelServices
 
             /* The schedule of the employee on this day is not full */
             /* The new assignment is for later (8-14 + 16-20) */
-            if (TimeOnly.FromDateTime(from.Value) > schedule.To) return true;
+            if (TimeOnly.FromDateTime(from.Value) >= schedule.To) return true;
 
             /* The new assignment is for earlier (16-20 + 8-14) */
-            if (schedule.From > TimeOnly.FromDateTime(from.Value)) return true;
+            if (schedule.From >= TimeOnly.FromDateTime(from.Value)) return true;
 
             return false;
         }
