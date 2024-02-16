@@ -69,7 +69,7 @@ td {
 }
 
 .workday {
-    background-color: rgba(255, 0, 0, 0.5) !important;
+    background-color: rgba(238, 77, 3, 0.7) !important;
 }
 
 .workday:hover {
@@ -78,7 +78,7 @@ td {
 }
 
 .offday {
-    background-color: rgba(0, 255, 170, 0.5) !important;
+    background-color: rgba(61, 207, 61, 0.7) !important;
 }
 
 .offday:hover {

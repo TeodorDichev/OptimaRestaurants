@@ -247,7 +247,7 @@ export class ScheduleEmployeeComponent implements OnInit {
 
   setDayToOffday() {
     this.errorMessages = [];
-    if (this.employee && this.isTimeRangeValid()) {
+    if (this.employee && this.isCreateTimeRangeValid()) {
       if (this.restaurantsIdsList[this.selectedRestaurantIndex] == 'id-for-all-restaurants') {
         for (let restaurant of this.employee.restaurants) {
           this.generateOffdayAssignment(restaurant.id);
@@ -313,12 +313,28 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.isEditCollapseOpen = false;
   }
 
-  private isTimeRangeValid(): boolean {
+  private isCreateTimeRangeValid(): boolean {
     if (this.fullDayForCreate) return true;
     const fromHours = parseInt(this.fromForCreate.split(':')[0]);
     const fromMinutes = parseInt(this.fromForCreate.split(':')[1]);
     const toHours = parseInt(this.toForCreate.split(':')[0]);
     const toMinutes = parseInt(this.toForCreate.split(':')[1]);
+
+    const result = fromHours < toHours || (fromHours === toHours && fromMinutes < toMinutes);
+
+    if (result == false) {
+      this.errorMessages.push('Невалиден времеви интервал.');
+      this.successSend = false;
+    }
+    return result;
+  }
+
+  private isEditTimeRangeValid(): boolean {
+    if (this.fullDayForEdit) return true;
+    const fromHours = parseInt(this.fromForEdit.split(':')[0]);
+    const fromMinutes = parseInt(this.fromForEdit.split(':')[1]);
+    const toHours = parseInt(this.toForEdit.split(':')[0]);
+    const toMinutes = parseInt(this.toForEdit.split(':')[1]);
 
     const result = fromHours < toHours || (fromHours === toHours && fromMinutes < toMinutes);
 
@@ -478,25 +494,33 @@ export class ScheduleEmployeeComponent implements OnInit {
   }
 
   editAssignment() { // response is the new daily schedule !
-    this.generateEditAssignment();
-    console.log(this.assignmentEdit);
-    this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
-      next: (response: any) => {
-        this.sharedService.showNotification(true, 'nigga', 'message')
-        this.selectedDaySchedule = response;
-        this.resetTimeRangeEdit();
-        this.resetScheduleEdit();
-      }, error: error => {
-        this.resetTimeRangeEdit();
-        this.resetScheduleEdit();
-        this.isEditCollapseOpen = false;
-        this.sharedService.showNotification(false, 'badnigga', error.error)
-      }
-    })
+    if (this.isEditTimeRangeValid()) {
+      this.generateEditAssignment();
+      this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
+        next: (response: any) => {
+          this.sharedService.showNotification(true, 'Успешно!', 'Вие успешно редактирахте този ангажимент.')
+          this.selectedDaySchedule = response;
+          this.resetTimeRangeEdit();
+          this.resetScheduleEdit();
+          this.getRestaurantSchedule();
+        }, error: error => {
+          this.resetTimeRangeEdit();
+          this.resetScheduleEdit();
+          this.isEditCollapseOpen = false;
+          this.sharedService.showNotification(false, 'Грешка', error.error)
+        }
+      });
+    }
   }
 
   deleteAssignment() { // response is message !
-
+    this.emplopyeeService.deleteAssignment(this.selectedAssignment.scheduleId).subscribe({
+      next: (response: any) => {
+        this.getRestaurantSchedule();
+        this.getDailySchedule();
+        this.sharedService.showNotification(true, response.value.title, response.value.message)
+      }
+    });
   }
 
   getSelectedDateAsText() {
