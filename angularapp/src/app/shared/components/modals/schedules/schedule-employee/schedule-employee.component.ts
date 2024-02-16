@@ -57,7 +57,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     isWorkDay: false,
     isFullDay: false,
     restaurantName: ''
-  }
+  };
   assignmentEdit: ScheduleAssignment = {
     scheduleId: '',
     restaurantId: '',
@@ -66,7 +66,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     isWorkDay: false,
     employeeEmail: '',
     day: new Date()
-  }
+  };
 
   fullDayForCreate: boolean = false;
   fromForCreate: string = '';
@@ -221,7 +221,6 @@ export class ScheduleEmployeeComponent implements OnInit {
   }
 
   private generateOffdayAssignment(restaurantId: string) {
-    console.log(this.selectedDay);
     if (this.employee) {
       if (this.fullDayForCreate) {
         this.createScheduleAssignment = {
@@ -283,21 +282,35 @@ export class ScheduleEmployeeComponent implements OnInit {
       employeeEmail: '',
       restaurantId: '',
       day: new Date(),
+      from: new Date(),
+      to: new Date(),
       fullDay: false,
       isWorkDay: false
     };
+    this.isCreateCollapseOpen = false;
   }
 
   private resetScheduleEdit() {
     this.assignmentEdit = {
       scheduleId: '',
       restaurantId: '',
-      // from: '', to: ''
+      from: new Date(),
+      to: new Date(),
       fullDay: false,
       isWorkDay: false,
       employeeEmail: '',
       day: new Date()
-    }
+    };
+    this.selectedAssignment = {
+      scheduleId: '',
+      restaurantId: '',
+      from: '',
+      to: '',
+      isWorkDay: false,
+      isFullDay: false,
+      restaurantName: ''
+    };
+    this.isEditCollapseOpen = false;
   }
 
   private isTimeRangeValid(): boolean {
@@ -435,6 +448,55 @@ export class ScheduleEmployeeComponent implements OnInit {
     if (selected) {
       this.selectedAssignment = selected;
     }
+  }
+
+  private generateEditAssignment() {
+    if (this.employee) {
+      if (this.fullDayForEdit) {
+        this.assignmentEdit = {
+          scheduleId: this.selectedAssignment.scheduleId,
+          restaurantId: this.selectedAssignment.restaurantId,
+          employeeEmail: this.employee?.email,
+          day: this.selectedDay,
+          isWorkDay: false,
+          fullDay: this.fullDayForEdit
+        }
+      }
+      else {
+        this.assignmentEdit = {
+          scheduleId: this.selectedAssignment.scheduleId,
+          restaurantId: this.selectedAssignment.restaurantId,
+          employeeEmail: this.employee?.email,
+          day: this.selectedDay,
+          from: new Date(this.selectedDay.getFullYear(), this.selectedDay.getMonth(), this.selectedDay.getDate(), parseInt(this.fromForEdit.split(':')[0]), parseInt(this.fromForEdit.split(':')[1])),
+          to: new Date(this.selectedDay.getFullYear(), this.selectedDay.getMonth(), this.selectedDay.getDate(), parseInt(this.toForEdit.split(':')[0]), parseInt(this.toForEdit.split(':')[1])),
+          isWorkDay: false,
+          fullDay: this.fullDayForEdit
+        }
+      }
+    }
+  }
+
+  editAssignment() { // response is the new daily schedule !
+    this.generateEditAssignment();
+    console.log(this.assignmentEdit);
+    this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
+      next: (response: any) => {
+        this.sharedService.showNotification(true, 'nigga', 'message')
+        this.selectedDaySchedule = response;
+        this.resetTimeRangeEdit();
+        this.resetScheduleEdit();
+      }, error: error => {
+        this.resetTimeRangeEdit();
+        this.resetScheduleEdit();
+        this.isEditCollapseOpen = false;
+        this.sharedService.showNotification(false, 'badnigga', error.error)
+      }
+    })
+  }
+
+  deleteAssignment() { // response is message !
+
   }
 
   getSelectedDateAsText() {
