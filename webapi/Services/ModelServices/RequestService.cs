@@ -159,6 +159,10 @@ namespace webapi.Services.ModelServices
         {
             return await _context.Requests.FirstOrDefaultAsync(r => r.Sender == profile && r.Restaurant == restaurant && r.SentOn.AddDays(7) > DateTime.Now) != null;
         }
+        public async Task<bool> IsRequestReceived(ApplicationUser profile, Restaurant restaurant)
+        {
+            return await _context.Requests.FirstOrDefaultAsync(r => r.Receiver == profile && r.Restaurant == restaurant && r.SentOn.AddDays(7) > DateTime.Now) != null;
+        }
         public bool IsEmployeeAlreadyWorkingInRestaurant(Employee employee, Restaurant restaurant)
         {
             return restaurant.EmployeesRestaurants.FirstOrDefault(er => er.Employee == employee && er.EndedOn == null) != null;

@@ -188,7 +188,7 @@ namespace webapi.Controllers
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
             if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");
 
-            if (await _requestService.IsRequestAlreadySent(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
+            if (await _requestService.IsRequestReceived(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
             if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Потребителят вече работи в този ресторант!");
 
             await _requestService.AddRequest(employee, restaurant, false);
@@ -269,7 +269,7 @@ namespace webapi.Controllers
             if (!await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
 
             /* Deleting the old assignment temporarily */
-            Schedule schedule = await _scheduleService.GetEmployeeAssignment(scheduleDto.ScheduleId);
+            CreateScheduleDto oldSchedule = await _scheduleService.CreateScheduleDto(scheduleDto.ScheduleId);
             if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
             await _scheduleService.SaveChangesAsync();
 
@@ -292,7 +292,7 @@ namespace webapi.Controllers
             else
             {
                 /* Adding the old assignment back because the updated one did not fit */
-                await _scheduleService.AddAssignmentToSchedule(schedule);
+                await _scheduleService.AddAssignmentToSchedule(oldSchedule);
                 await _scheduleService.SaveChangesAsync();
                 return BadRequest("Вече съществува запазен друг ангажимент и не можете да промените графика!");
             }

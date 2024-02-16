@@ -22,13 +22,6 @@ namespace webapi.Services.ModelServices
             _restaurantService = restaurantService;
         }
 
-        /* Possible issue: not adding to the specific employee */
-
-        public async Task<Schedule> AddAssignmentToSchedule(Schedule schedule)
-        {
-            await _context.Schedules.AddAsync(schedule);
-            return schedule;
-        }
         public async Task<Schedule> AddAssignmentToSchedule(ScheduleDto model)
         {
             return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
@@ -77,7 +70,7 @@ namespace webapi.Services.ModelServices
         {
             List<EmployeeDailyScheduleDto> schedule = new List<EmployeeDailyScheduleDto>();
 
-            foreach (var assignment in _context.Schedules.Where(s => s.Employee == employee && s.Day == DateOnly.FromDateTime(day)))
+            foreach (var assignment in _context.Schedules.Where(s => s.Employee == employee && s.Day == DateOnly.FromDateTime(day)).OrderBy(s => s.From))
             {
                 schedule.Add(new EmployeeDailyScheduleDto
                 {
@@ -237,6 +230,22 @@ namespace webapi.Services.ModelServices
         public async Task<Schedule> GetEmployeeAssignment(string scheduleId)
         {
             return await _context.Schedules.FirstAsync(s => s.Id.ToString() == scheduleId);
+        }
+        public async Task<CreateScheduleDto> CreateScheduleDto(string scheduleId)
+        {
+            Schedule schedule = await GetEmployeeAssignment(scheduleId);
+            CreateScheduleDto oldSchedule = new CreateScheduleDto()
+            {
+                Day = schedule.Day.ToDateTime(TimeOnly.Parse("0:00:00")),
+                From = TimeOnlyToDateTime(schedule.Day.ToDateTime(TimeOnly.Parse("0:00:00")), schedule.From),
+                To = TimeOnlyToDateTime(schedule.Day.ToDateTime(TimeOnly.Parse("0:00:00")), schedule.To),
+                RestaurantId = schedule.Restaurant.Id.ToString(),
+                EmployeeEmail = schedule.Employee.Profile.Email,
+                FullDay = schedule.FullDay,
+                IsWorkDay = schedule.IsWorkDay,
+            };
+
+            return oldSchedule;
         }
         private async Task<Schedule> AddAssignmentToScheduleInternal(DateTime day, string employeeEmail, string restaurantId, DateTime? from, DateTime? to, bool isWorkDay)
         {
