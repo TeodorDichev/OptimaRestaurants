@@ -25,7 +25,7 @@ export class ScheduleManagerComponent {
 
     selectedRestaurantIndex: number = 0;
   
-    dateMarkers = ['workday', 'offday', 'selected'];
+    dateMarkers = ['no-workers', 'selected'];
     weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
     weekdaysFull = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
     monthsFull = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
@@ -165,12 +165,12 @@ export class ScheduleManagerComponent {
       }
     }
   
-    clearPreviousSelectedDateMarker() {
+    private clearPreviousSelectedDateMarker() {
       for (let id in this.idMarkerPairs) {
-        document.getElementById(id)?.classList.remove(this.dateMarkers[2]);
-        let index = this.idMarkerPairs[id].indexOf(this.dateMarkers[2]);
+        document.getElementById(id)?.classList.remove(this.dateMarkers[1]);
+        let index = this.idMarkerPairs[id].indexOf(this.dateMarkers[1]);
         if (index !== -1) {
-          this.idMarkerPairs[id] = this.idMarkerPairs[id].slice(0, index) + this.idMarkerPairs[id].slice(index + this.dateMarkers[2].length);
+          this.idMarkerPairs[id] = this.idMarkerPairs[id].slice(0, index) + this.idMarkerPairs[id].slice(index + this.dateMarkers[1].length);
         }
       }
     }
@@ -185,11 +185,13 @@ export class ScheduleManagerComponent {
   
       const selectedDayId = this.selectedDay.getDate() + '_' + (this.selectedDay.getMonth() + 1) + '_' + this.selectedDay.getFullYear();
       if (this.idMarkerPairs[selectedDayId]) {
-        this.idMarkerPairs[selectedDayId] += this.dateMarkers[2];
+        this.idMarkerPairs[selectedDayId] += this.dateMarkers[1];
       }
       else {
-        this.idMarkerPairs[selectedDayId] = this.dateMarkers[2];
+        this.idMarkerPairs[selectedDayId] = this.dateMarkers[1];
       }
+
+      
     }
   
     getId(date: number) {

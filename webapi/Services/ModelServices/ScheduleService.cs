@@ -103,6 +103,7 @@ namespace webapi.Services.ModelServices
                     From = TimeOnlyToDateTime(day, assignment.From),
                     To = TimeOnlyToDateTime(day, assignment.To),
                     RestaurantName = assignment.Restaurant.Name,
+                    RestaurantId = assignment.Restaurant.Id,
                     IsFullDay = assignment.FullDay
                 });
             }

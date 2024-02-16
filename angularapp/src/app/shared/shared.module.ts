@@ -22,22 +22,22 @@ import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee
 import { StarRatingComponent } from './components/misc/star-rating/star-rating.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
+import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant.component';
 import { NewRestaurantInputModalComponent } from './components/modals/input/new-restaurant/new-restaurant-input-modal.component';
 import { NotificationComponent } from './components/modals/notification/notification.component';
 import { QrCodeComponent } from './components/modals/qr-code/qr-code.component';
+import { ScheduleEmployeeComponent } from './components/modals/schedules/schedule-employee/schedule-employee.component';
+import { ScheduleManagerComponent } from './components/modals/schedules/schedule-manager/schedule-manager.component';
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { AdminViewComponent } from './logged-pages/admin-view/admin-view.component';
 import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
 import { EmployeesLookingForJobComponent } from './logged-pages/employees-looking-for-job/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
 import { AboutComponent } from './user-pages/about/about.component';
 import { BrowseAllRestaurantsComponent } from './user-pages/browse-all-restaurants/browse-all-restaurants.component';
 import { ReviewsComponent } from './user-pages/reviews/review.component';
-import { EditRestaurantModalComponent } from './components/modals/input/edit-restaurant/edit-restaurant.component';
-import { AdminViewComponent } from './logged-pages/admin-view/admin-view.component';
-import { ScheduleEmployeeComponent } from './components/modals/schedules/schedule-employee/schedule-employee.component';
-import { ScheduleManagerComponent } from './components/modals/schedules/schedule-manager/schedule-manager.component';
 
 @NgModule({
   declarations: [
@@ -73,8 +73,7 @@ import { ScheduleManagerComponent } from './components/modals/schedules/schedule
     EditRestaurantModalComponent,
     AdminViewComponent,
     ScheduleEmployeeComponent,
-    ScheduleManagerComponent,
-    
+    ScheduleManagerComponent 
   ],
   imports: [
     CommonModule,

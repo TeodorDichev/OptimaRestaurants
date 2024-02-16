@@ -1,4 +1,3 @@
-import { ScheduleAssignment } from 'src/app/shared/models/employee/schedule-assignent';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { HttpClient } from '@angular/common/http';
@@ -9,6 +8,8 @@ import { ReplaySubject } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { RequestResponse } from '../../models/requests/requestResponse';
 import { EmployeeRequest } from '../../models/requests/employeeRequest';
+import { CreateScheduleAssignment } from '../../models/employee/create-schedule-assignent';
+import { ScheduleAssignment } from '../../models/employee/schedule-assignment';
 
 @Injectable({
   providedIn: 'root'
@@ -95,8 +96,8 @@ export class ManagerService {
     return this.http.delete(`${environment.appUrl}/api/manager/delete-restaurant/${restaurantId}`)
   }
 
-  addAssignment(scheduleAssignment: ScheduleAssignment) {
-    return this.http.post(`${environment.appUrl}/api/manager/schedule/add-assignment`, scheduleAssignment);
+  addAssignment(createScheduleAssignment: CreateScheduleAssignment) {
+    return this.http.post(`${environment.appUrl}/api/manager/schedule/add-assignment`, createScheduleAssignment);
   }
 
   editAssignment(scheduleAssignment: ScheduleAssignment) {
@@ -108,7 +109,7 @@ export class ManagerService {
   }
 
   getFreeEmployees(restaurantId: string, day: Date) {
-    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-free-employee/${restaurantId}/${day}`);
+    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-free-employee/${restaurantId}/${day.toDateString()}`);
   }
 
   getManagerFullSchedule(restaurantId: string, month: number) {
@@ -116,7 +117,7 @@ export class ManagerService {
   }
 
   getManagerDailySchedule(restaurantId: string, day: Date) {
-    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-daily-schedule/${restaurantId}/${day}`);
+    return this.http.get(`${environment.appUrl}/api/manager/schedule/get-daily-schedule/${restaurantId}/${day.toDateString()}`);
   }
 
   logout() {

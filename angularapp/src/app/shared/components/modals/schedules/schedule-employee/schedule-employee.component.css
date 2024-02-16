@@ -100,6 +100,7 @@ td {
 .legend-markers {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -120,4 +121,52 @@ td {
     gap: 12px;
     padding: 12px;
     border-radius: 12px;
+}
+
+.assignment {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 16px;
+    border-radius: 12px;
+    align-self: stretch;
+    flex: 1 0 0;
+}
+
+.daily-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.errors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 130px;
+    overflow: auto;
+}
+
+.collapse-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.time-input {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }

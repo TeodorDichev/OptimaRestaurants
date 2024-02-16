@@ -66,21 +66,12 @@ td {
     cursor: pointer;
 }
 
-.workday {
+.no-workers {
     background-color: rgba(255, 0, 0, 0.5) !important;
 }
 
-.workday:hover {
+.no-workers:hover {
     background-color: rgba(255, 0, 0, 0.1) !important;
-    cursor: pointer;
-}
-
-.offday {
-    background-color: rgba(0, 255, 170, 0.5) !important;
-}
-
-.offday:hover {
-    background-color: rgba(0, 255, 170, 0.1) !important;
     cursor: pointer;
 }
 

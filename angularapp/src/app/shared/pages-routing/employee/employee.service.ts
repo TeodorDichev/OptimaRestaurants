@@ -1,4 +1,3 @@
-import { ScheduleAssignment } from './../../models/employee/schedule-assignent';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -7,6 +6,8 @@ import { Employee } from 'src/app/shared/models/employee/employee';
 import { environment } from 'src/environments/environment.development';
 import { UpdateEmployee } from 'src/app/shared/models/employee/update-employee';
 import { RequestResponse } from '../../models/requests/requestResponse';
+import { CreateScheduleAssignment } from '../../models/employee/create-schedule-assignent';
+import { ScheduleAssignment } from '../../models/employee/schedule-assignment';
 
 @Injectable({
   providedIn: 'root'
@@ -67,11 +68,11 @@ export class EmployeeService {
   }
 
   getDailySchedule(email: string, day: Date) {
-    return this.http.get(`${environment.appUrl}/api/employee/get-day-schedule/${email}/${day}`);
+    return this.http.get(`${environment.appUrl}/api/employee/get-day-schedule/${email}/${day.toDateString()}`);
   }
 
-  addAssignment(scheduleAssignment: ScheduleAssignment) {
-    return this.http.post(`${environment.appUrl}/api/employee/schedule/add-assignment`, scheduleAssignment);
+  addAssignment(createScheduleAssignment: CreateScheduleAssignment) {
+    return this.http.post(`${environment.appUrl}/api/employee/schedule/add-assignment`, createScheduleAssignment);
   }
 
   editAssignment(scheduleAssignment: ScheduleAssignment) {

@@ -4,6 +4,7 @@
     {
         public required string ScheduleId { get; set; }
         public required string RestaurantName { get; set; }
+        public required Guid RestaurantId { get; set; }
         public required bool IsWorkDay { get; set; }
         public required bool IsFullDay { get; set; }
         public DateTime? From { get; set; }
