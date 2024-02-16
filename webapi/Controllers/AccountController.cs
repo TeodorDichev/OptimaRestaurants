@@ -1,7 +1,6 @@
-﻿    using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
 using webapi.DTOs.Account;
 using webapi.Models;
@@ -92,7 +91,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
         {
             ApplicationUser user;
-            if (! await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
+            if (!await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
             else user = await _accountService.GetUserByEmailOrUserName(model.UserName);
 
             //if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
@@ -116,7 +115,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             ApplicationUser user;
-            if (! await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (!await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
             else user = await _accountService.GetUserByEmailOrUserName(model.Email);
 
             if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
@@ -144,7 +143,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> ResetPassword(string? email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Моля, първо, въведете вашия имейл адрес.");
-            
+
             ApplicationUser user;
             if (!await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Този имейл не е регистриран в системата.");
             else user = await _accountService.GetUserByEmailOrUserName(email);

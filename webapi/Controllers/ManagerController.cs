@@ -4,7 +4,6 @@ using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.DTOs.Schedule;
-using webapi.Migrations;
 using webapi.Models;
 using webapi.Services.ClassServices;
 using webapi.Services.ModelServices;
@@ -250,7 +249,7 @@ namespace webapi.Controllers
 
             /* Manager can add both working and leisure days */
 
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
@@ -270,6 +269,7 @@ namespace webapi.Controllers
             if (!await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
 
             /* Deleting the old assignment temporarily */
+            Schedule schedule = await _scheduleService.GetEmployeeAssignment(scheduleDto.ScheduleId);
             if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
             await _scheduleService.SaveChangesAsync();
 
@@ -283,17 +283,16 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Checking if it can fit in the schedule */
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
-                await _scheduleService.EditScheduleAssignment(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
-
                 return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
             }
             else
             {
                 /* Adding the old assignment back because the updated one did not fit */
-                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(schedule);
                 await _scheduleService.SaveChangesAsync();
                 return BadRequest("Вече съществува запазен друг ангажимент и не можете да промените графика!");
             }

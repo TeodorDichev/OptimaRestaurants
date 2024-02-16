@@ -1,7 +1,4 @@
-﻿using Humanizer;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Schedule;
@@ -27,6 +24,11 @@ namespace webapi.Services.ModelServices
 
         /* Possible issue: not adding to the specific employee */
 
+        public async Task<Schedule> AddAssignmentToSchedule(Schedule schedule)
+        {
+            await _context.Schedules.AddAsync(schedule);
+            return schedule;
+        }
         public async Task<Schedule> AddAssignmentToSchedule(ScheduleDto model)
         {
             return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
@@ -34,25 +36,6 @@ namespace webapi.Services.ModelServices
         public async Task<Schedule> AddAssignmentToSchedule(CreateScheduleDto model)
         {
             return await AddAssignmentToScheduleInternal(model.Day, model.EmployeeEmail, model.RestaurantId, model.From, model.To, model.IsWorkDay);
-        }
-        public async Task<Schedule> EditScheduleAssignment(ScheduleDto model)
-        {
-            Schedule schedule = await GetEmployeeAssignment(model.ScheduleId);
-            
-            schedule.Day = DateOnly.FromDateTime(model.Day);
-            schedule.Employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
-            schedule.Restaurant = await _restaurantService.GetRestaurantById(model.RestaurantId);
-            schedule.FullDay = (model.To == null || model.From == null);
-            schedule.IsWorkDay = model.IsWorkDay;
-
-            if (model.From != null) schedule.From = TimeOnly.FromDateTime((DateTime)model.From);
-            else schedule.From = null;
-            if (model.To != null) schedule.To = TimeOnly.FromDateTime((DateTime)model.To);
-            else schedule.To = null;
-
-            _context.Schedules.Update(schedule);
-
-            return schedule;
         }
         public async Task<bool> DoesScheduleExistsById(string scheduleId)
         {
@@ -147,7 +130,7 @@ namespace webapi.Services.ModelServices
         }
         public async Task<List<ManagerFullScheduleDto>> GetManagerFullSchedule(Restaurant restaurant, int month)
         {
-            List <ManagerFullScheduleDto> fullSchedule = new List<ManagerFullScheduleDto>();
+            List<ManagerFullScheduleDto> fullSchedule = new List<ManagerFullScheduleDto>();
             foreach (var assignment in _context.Schedules.Where(a => a.Day.Month == month && a.Restaurant == restaurant && a.IsWorkDay))
             {
                 fullSchedule.Add(new ManagerFullScheduleDto
@@ -161,7 +144,7 @@ namespace webapi.Services.ModelServices
         }
         public List<ManagerDailyScheduleDto> GetManagerDailySchedule(Restaurant restaurant, DateTime day)
         {
-            List <ManagerDailyScheduleDto> dailySchedule = new List<ManagerDailyScheduleDto>();
+            List<ManagerDailyScheduleDto> dailySchedule = new List<ManagerDailyScheduleDto>();
 
             foreach (var assignment in _context.Schedules.Where(a => a.Day == DateOnly.FromDateTime(day) && a.Restaurant == restaurant))
             {
@@ -179,55 +162,51 @@ namespace webapi.Services.ModelServices
             }
             return dailySchedule;
         }
-
-        /* Possible issue: OrderBy => OrderByAscending */
-        public async Task<bool> IsEmployeeFreeToWork(Employee employee, DateTime day, DateTime? from, DateTime? to)
+        public async Task<bool> IsEmployeeFree(Employee employee, DateTime day, DateTime? from, DateTime? to)
         {
             /* Gets both worked and leave days of employee */
             List<Schedule> assignedDays = await GetEmployeeSchedule(employee);
 
-            /* Gets the schedule of the employee on this day */
-            /* The employee has multiple assignments on this day (8-11 + 12-15 + 20-23) */
-            if (assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day.ToLocalTime())).ToList().Count > 1)
-            {
-                /* Orders the scheduled assignments of the employee by their time of beginning */
-                List<Schedule> orderedSchedule = assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day)).OrderBy(ad => ad.From).ToList();
+            /* Orders the scheduled assignments of the employee by their time of beginning */
+            List<Schedule> orderedSchedule = assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day)).OrderBy(ad => ad.From).ToList();
 
-                /* The new assignment is for earlier (16-20 + 8-14) */
+            /* The employee has nothing assigned for the day */
+            if (orderedSchedule.Count <= 0) return true;
+
+            /* The employee has a single assignment for the day */
+            if (orderedSchedule.Count == 1)
+            {
+                /* The new assignment is for a full day but the employee already has another one */
+                if (from == null || to == null) return false;
+
+                /* The existing assignment of the employee is for a full day */
+                if (orderedSchedule.First().FullDay) return false;
+
+                /* The new assignment is for later compared to the existing assignment (8-14 + 16-20) */
+                if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.First().To) return true;
+
+                /* The new assignment is for earlier compared to the existing assignment (16-20 + 8-14) */
+                if (orderedSchedule.First().From >= TimeOnly.FromDateTime(from.Value)) return true;
+            }
+
+            /* The employee has a multiple assignments for the day */
+            if (orderedSchedule.Count > 1)
+            {
+                /* The new assignment is for a full day but the employee already has another few */
+                if (from == null || to == null) return false;
+
+                /* The new assignment is for earlier compared to the existing assignments (16-20, 20-22 + 8-14) */
                 if (orderedSchedule.First().From >= TimeOnly.FromDateTime(from.Value)) return true;
 
-                /* Loops through them and checks if there is a suitable gap in the middle */
+                /* The new assignment is between existing assignments (8-14 + 16-20 + 20-22) */
                 for (int i = 0; i < orderedSchedule.Count - 1; i++)
                     if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule[i].To && TimeOnly.FromDateTime(to.Value) <= orderedSchedule[i + 1].From)
                         return true;
 
-                /* The new assignment is for later (8-14 + 16-20) */
+                /* The new assignment is for later compared to the existing assignments (8-12, 12-14 + 16-20) */
                 if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.Last().To) return true;
 
-                /* After the loop there was not a suitable gap */
-                return false;
             }
-
-            /* The employee has one or none assignments for the day */
-            Schedule? schedule = assignedDays.FirstOrDefault(wd => wd.Day == DateOnly.FromDateTime(day));
-
-            /* The employee is free on this day */
-            if (schedule == null) return true;
-
-            /* The employee is not free on this day */
-            /* It has to work full day */
-            if (from == null || to == null) return false;
-
-            /* It has to work certain hours */
-            /* The schedule of the employee on this day is already full */
-            if (schedule.FullDay) return false;
-
-            /* The schedule of the employee on this day is not full */
-            /* The new assignment is for later (8-14 + 16-20) */
-            if (TimeOnly.FromDateTime(from.Value) >= schedule.To) return true;
-
-            /* The new assignment is for earlier (16-20 + 8-14) */
-            if (schedule.From >= TimeOnly.FromDateTime(from.Value)) return true;
 
             return false;
         }
@@ -255,7 +234,7 @@ namespace webapi.Services.ModelServices
         {
             return await _context.Schedules.Where(s => s.Employee == employee).ToListAsync();
         }
-        private async Task<Schedule> GetEmployeeAssignment(string scheduleId)
+        public async Task<Schedule> GetEmployeeAssignment(string scheduleId)
         {
             return await _context.Schedules.FirstAsync(s => s.Id.ToString() == scheduleId);
         }
