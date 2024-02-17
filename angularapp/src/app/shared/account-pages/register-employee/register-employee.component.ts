@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedService } from '../../shared.service';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 
 @Component({
   selector: 'app-register-employee',
   templateUrl: './register-employee.component.html',
   styleUrls: ['./register-employee.component.css']
 })
-export class RegisterEmployeeComponent implements OnInit {
+export class RegisterEmployeeComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   registerForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -24,6 +26,10 @@ export class RegisterEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   initializeForm() {
@@ -42,14 +48,15 @@ export class RegisterEmployeeComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.registerForm.valid) {
-      this.accountService.registerEmployee(this.registerForm.value).pipe(take(1)).subscribe({
+      const sub = this.accountService.registerEmployee(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          this.employeeService.getEmployee(response.email).pipe(take(1)).subscribe({
+          const sub1 = this.employeeService.getEmployee(response.email).subscribe({
             next: (resp: any) => {
               this.employeeService.setEmployee(resp);
             }
           })
+          this.subscriptions.push(sub1);
           this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
           this.router.navigateByUrl('/employee');
         },
@@ -61,6 +68,7 @@ export class RegisterEmployeeComponent implements OnInit {
           }
         }
       })
+      this.subscriptions.push(sub);
     }
   }
   isText: boolean = false;

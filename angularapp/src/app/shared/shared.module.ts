@@ -4,13 +4,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ConfirmEmailComponent } from './account-pages/confirm-email/confirm-email.component';
 import { IndexComponent } from './account-pages/index/index.component';
 import { LoginComponent } from './account-pages/login/login.component';
 import { RegisterEmployeeComponent } from './account-pages/register-employee/register-employee.component';
 import { RegisterManagerComponent } from './account-pages/register-manager/register-manager.component';
-import { ResetPasswordComponent } from './account-pages/reset-password/reset-password.component';
 import { SendEmailComponent } from './account-pages/send-email/send-email.component';
 import { EmployeeInfoComponent } from './components/dropdowns/employee-info/employee-info.component';
 import { InboxComponent } from './components/dropdowns/inbox/inbox.component';
@@ -56,7 +56,6 @@ import { ReviewsComponent } from './user-pages/reviews/review.component';
     NotificationComponent,
     ConfirmEmailComponent,
     SendEmailComponent,
-    ResetPasswordComponent,
     NewRestaurantInputModalComponent,
     EditManagerComponent,
     EditEmployeeComponent,
@@ -82,7 +81,8 @@ import { ReviewsComponent } from './user-pages/reviews/review.component';
     HttpClientModule,
     ModalModule.forRoot(),
     FormsModule,
-    TooltipModule
+    TooltipModule,
+    PopoverModule
   ],
   exports: [
     RouterModule,

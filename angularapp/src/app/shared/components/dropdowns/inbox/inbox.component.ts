@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { Request } from 'src/app/shared/models/requests/request';
@@ -7,13 +7,16 @@ import { SharedService } from 'src/app/shared/shared.service';
 import { EmployeeService } from '../../../pages-routing/employee/employee.service';
 import { User } from 'src/app/shared/models/account/user';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   @Output() closeDropdownEvent = new EventEmitter<void>();
 
   user: User | undefined;
@@ -41,16 +44,26 @@ export class InboxComponent implements OnInit {
     this.getRequests();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   getRequests() {
     if (this.user?.isManager) {
-      this.managerService.getRequests(this.user.email).subscribe({
-        next: response => { this.handleRequests(response); }
+      const sub = this.managerService.getRequests(this.user.email).subscribe({
+        next: response => {
+          this.handleRequests(response);
+        }
       })
+      this.subscriptions.push(sub);
     }
     else if (this.user?.isManager === false) {
-      this.employeeService.getRequests(this.user.email).subscribe({
-        next: response => { this.handleRequests(response); }
+      const sub = this.employeeService.getRequests(this.user.email).subscribe({
+        next: response => {
+          this.handleRequests(response);
+        }
       })
+      this.subscriptions.push(sub);
     }
   }
 
@@ -77,41 +90,45 @@ export class InboxComponent implements OnInit {
       this.requestResponse.restaurantId = currentRequest.restaurantId;
 
       if (this.user.isManager) {
-        this.managerService.respondToRequest(this.requestResponse).subscribe({
+        const sub = this.managerService.respondToRequest(this.requestResponse).subscribe({
           next: (response: any) => {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.bsModalRef.hide();
             this.getRequests();
           }
         })
+        this.subscriptions.push(sub);
       }
       else {
-        this.employeeService.respondToRequest(this.requestResponse).subscribe({
+        const sub = this.employeeService.respondToRequest(this.requestResponse).subscribe({
           next: (response: any) => {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.bsModalRef.hide();
             this.getRequests();
             if (this.user?.email) {
-              this.employeeService.getEmployee(this.user.email).subscribe({
+              const sub1 = this.employeeService.getEmployee(this.user.email).subscribe({
                 next: (response: any) => {
                   this.employeeService.setEmployee(response);
                 }
               })
+              this.subscriptions.push(sub1);
             }
           }
         })
+        this.subscriptions.push(sub);
       }
     }
   }
 
   getUser() {
-    this.accountService.user$.subscribe({
+    const sub = this.accountService.user$.subscribe({
       next: (response: any) => {
         this.user = response;
       }
     })
+    this.subscriptions.push(sub);
   }
-  
+
   openSenderInfoModal(senderEmail: string) {
     if (this.user?.isManager) {
       this.sharedService.openUserInfoModal(senderEmail, 'Employee');

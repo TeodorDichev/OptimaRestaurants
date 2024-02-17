@@ -26,8 +26,8 @@
                 <i class="fa fa-user-pen fa-xl"></i>
             </div>
             <div class="dropdown-menu">
-                <app-employee-info [employeeEmail]="user?.email" *ngIf="!this.user?.isManager"></app-employee-info>
-                <app-manager-info [managerEmail]="user?.email" *ngIf="this.user?.isManager"></app-manager-info>
+                <app-employee-info *ngIf="!this.user?.isManager"></app-employee-info>
+                <app-manager-info *ngIf="this.user?.isManager"></app-manager-info>
             </div>
         </div>
         <div class="dropdown">

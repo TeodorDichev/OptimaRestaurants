@@ -253,14 +253,17 @@ export class ScheduleEmployeeComponent implements OnInit {
           this.generateOffdayAssignment(restaurant.id);
           this.addAssignment();
         }
+        this.resetTimeRangeCreation();
+        this.resetScheduleAssignmentCreation();
       }
       else {
         this.generateOffdayAssignment(this.restaurantsIdsList[this.selectedRestaurantIndex]);
         this.addAssignment();
+        this.resetTimeRangeCreation();
+        this.resetScheduleAssignmentCreation();
       }
       if (this.successSend) {
         this.sharedService.showNotification(true, 'Успешно записан ангажимент!', 'Вашият ангажимент беше успешно записан, може спокойно да продължите работа.');
-        this.close();
       }
     }
   }
@@ -357,8 +360,6 @@ export class ScheduleEmployeeComponent implements OnInit {
         this.errorMessages.push(error.error);
       }
     })
-    this.resetTimeRangeCreation();
-    this.resetScheduleAssignmentCreation();
   }
 
   close() {
@@ -460,10 +461,7 @@ export class ScheduleEmployeeComponent implements OnInit {
   }
 
   selectAssignment(schedule: EmployeeDailySchedule) {
-    const selected = this.selectedDaySchedule.find(obj => obj.scheduleId === schedule.scheduleId);
-    if (selected) {
-      this.selectedAssignment = selected;
-    }
+    this.selectedAssignment = schedule;
   }
 
   private generateEditAssignment() {
@@ -493,7 +491,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     }
   }
 
-  editAssignment() { // response is the new daily schedule !
+  editAssignment() {
     if (this.isEditTimeRangeValid()) {
       this.generateEditAssignment();
       this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
@@ -507,18 +505,20 @@ export class ScheduleEmployeeComponent implements OnInit {
           this.resetTimeRangeEdit();
           this.resetScheduleEdit();
           this.isEditCollapseOpen = false;
-          this.sharedService.showNotification(false, 'Грешка', error.error)
+          this.sharedService.showNotification(false, 'Грешка', error.error);
         }
       });
     }
   }
 
-  deleteAssignment() { // response is message !
+  deleteAssignment() {
     this.emplopyeeService.deleteAssignment(this.selectedAssignment.scheduleId).subscribe({
       next: (response: any) => {
         this.getRestaurantSchedule();
         this.getDailySchedule();
         this.sharedService.showNotification(true, response.value.title, response.value.message)
+      }, error: error => {
+        this.sharedService.showNotification(true, 'Неуспешно изтриване.', error.error);
       }
     });
   }

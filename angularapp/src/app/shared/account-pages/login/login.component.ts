@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   loginForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -25,6 +28,10 @@ export class LoginComponent implements OnInit {
     this.initializeForm();
   }
 
+  ngOnDestroy() {
+    //this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   initializeForm() {
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required]],
@@ -36,22 +43,24 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
     if (this.loginForm.valid) {
-      this.accountService.login(this.loginForm.value).subscribe({
+      const sub = this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          if (!response.isManager) {
-            this.employeeService.getEmployee(response.email).subscribe({
+          if (response.isManager == false) {
+            const sub1 = this.employeeService.getEmployee(response.email).subscribe({
               next: (resp: any) => {
                 this.employeeService.setEmployee(resp);
               }
             })
+            this.subscriptions.push(sub1);
           }
-          else if (response.isManager) {
-            this.managerService.getManager(response.email).subscribe({
+          else if (response.isManager == true) {
+            const sub2 = this.managerService.getManager(response.email).subscribe({
               next: (resp: any) => {
                 this.managerService.setManager(resp);
               }
             })
+            this.subscriptions.push(sub2);
           }
         },
         error: error => {
@@ -62,6 +71,7 @@ export class LoginComponent implements OnInit {
           }
         }
       })
+      this.subscriptions.push(sub);
     }
   }
 

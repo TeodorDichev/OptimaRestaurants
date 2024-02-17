@@ -1,0 +1,16 @@
+::ng-deep app-send-email {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+}
+
+.outer {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { SharedService } from '../../shared.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { User } from '../../models/account/user';
 
 @Component({
@@ -11,7 +11,10 @@ import { User } from '../../models/account/user';
   templateUrl: './send-email.component.html',
   styleUrls: ['./send-email.component.css']
 })
-export class SendEmailComponent implements OnInit {
+export class SendEmailComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
+  title: string = '';
   emailForm: FormGroup = new FormGroup({});
   submitted = false;
   mode: string | undefined;
@@ -24,7 +27,7 @@ export class SendEmailComponent implements OnInit {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.accountService.user$.pipe(take(1)).subscribe({
+    const sub = this.accountService.user$.subscribe({
       next: (user: User | null) => {
         if (user) {
           this.router.navigateByUrl('/');
@@ -32,12 +35,20 @@ export class SendEmailComponent implements OnInit {
           const mode = this.activatedRoute.snapshot.paramMap.get('mode');
           if (mode) {
             this.mode = mode;
-            console.log(mode);
+            if (this.mode.includes('resend-email-confirmation-link'))
+              this.title = 'Повторно изпращане на имейл за потвърждаване';
+            else
+              this.title = 'Нулиране на забравена парола';
             this.initializeForm();
           }
         }
       }
     })
+    this.subscriptions.push(sub);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   initializeForm() {
@@ -52,21 +63,7 @@ export class SendEmailComponent implements OnInit {
 
     if (this.emailForm.valid && this.mode) {
       if (this.mode.includes('resend-email-confirmation-link')) {
-        this.accountService.resendEmailConfirmationLink(this.emailForm.get('email')?.value).subscribe({
-          next: (response: any) =>{
-            this.sharedService.showNotification(true, response.value.title, response.value.message);
-            this.router.navigateByUrl('/account/login');
-          },
-          error: error => {
-            if (error.error.errors) {
-              this.errorMessages = error.error.errors;
-            } else {
-              this.errorMessages.push(error.error);
-            }
-          }
-        })
-      } else if (this.mode.includes('forgot-username-or-password')) {
-        this.accountService.forgotUsernameOrPassword(this.emailForm.get('email')?.value).subscribe({
+        const sub = this.accountService.resendEmailConfirmationLink(this.emailForm.get('email')?.value).subscribe({
           next: (response: any) => {
             this.sharedService.showNotification(true, response.value.title, response.value.message);
             this.router.navigateByUrl('/account/login');
@@ -79,12 +76,28 @@ export class SendEmailComponent implements OnInit {
             }
           }
         })
+        this.subscriptions.push(sub);
+      } else if (this.mode.includes('forgot-username-or-password')) {
+        const sub = this.accountService.resetPassword(this.emailForm.get('email')?.value).subscribe({
+          next: (response: any) => {
+            this.sharedService.showNotification(true, response.value.title, response.value.message);
+            this.router.navigateByUrl('/account/login');
+          },
+          error: error => {
+            if (error.error.errors) {
+              this.errorMessages = error.error.errors;
+            } else {
+              this.errorMessages.push(error.error);
+            }
+          }
+        })
+        this.subscriptions.push(sub);
       }
     }
-    
+
   }
 
-  cancel(){
+  cancel() {
     this.router.navigateByUrl('/account/login');
   }
 }

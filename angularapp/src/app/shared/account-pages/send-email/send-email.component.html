@@ -1,4 +1,8 @@
-<div class="d-flex justify-content-center" *ngIf="mode">
+<nav-top></nav-top>
+<div class="outer" *ngIf="mode">
+    <div class="h2 fw-bold">
+        {{title}}
+    </div>
     <div class="col-12 col-lg-5">
         <form [formGroup]="emailForm" (ngSubmit)="sendEmail()" autocomplete="off">
             <div class="text-center mb-4">

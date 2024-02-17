@@ -1,3 +1,4 @@
+import { ConfirmEmailComponent } from './shared/account-pages/confirm-email/confirm-email.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IndexComponent } from './shared/account-pages/index/index.component';
@@ -7,6 +8,7 @@ import { LoggedAuthorizationGuard } from './shared/guards/logged-guard/logged-au
 
 const routes: Routes = [
   { path: '', canActivate: [LoggedAuthorizationGuard], component: IndexComponent },
+  { path: 'account/confirm-email', component: ConfirmEmailComponent },
   { path: 'account', canActivate: [LoggedAuthorizationGuard], loadChildren: () => import('./shared/pages-routing/account/account.module').then(module => module.AccountModule) },
   { path: 'manager', canActivate: [AuthorizationGuard], loadChildren: () => import('./shared/pages-routing/manager/manager.module').then(module => module.ManagerModule) },
   { path: 'employee', canActivate: [AuthorizationGuard], loadChildren: () => import('./shared/pages-routing/employee/employee.module').then(module => module.EmployeeModule) },

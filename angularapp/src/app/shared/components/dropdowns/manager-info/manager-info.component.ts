@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -9,9 +10,9 @@ import { SharedService } from 'src/app/shared/shared.service';
   templateUrl: './manager-info.component.html',
   styleUrls: ['./manager-info.component.css']
 })
-export class ManagerInfoComponent implements OnInit {
-  @Input() managerEmail: string | undefined;
-  
+export class ManagerInfoComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   manager: Manager | undefined;
 
   constructor(public bsModalRef: BsModalRef,
@@ -22,18 +23,21 @@ export class ManagerInfoComponent implements OnInit {
     this.getManager();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   editManagerProfile() {
     this.sharedService.openEditManagerModal();
     this.bsModalRef.hide();
   }
 
   private getManager() {
-    if(this.managerEmail) {
-      this.managerService.manager$.subscribe({  
-        next: (response: any) => {
-          this.manager = response;
-        }
-      })
-    }
+    const sub = this.managerService.manager$.subscribe({
+      next: (response: any) => {
+        this.manager = response;
+      }
+    })
+    this.subscriptions.push(sub);
   }
 }
