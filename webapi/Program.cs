@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using webapi.Data;
 using webapi.Models;
 using webapi.Services;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using webapi.Services.FileServices;
 using webapi.Services.ClassServices;
+using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
+builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"));
 });
@@ -42,13 +42,13 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
     /* password configuration */
     options.Password.RequiredLength = 6;
-    options.Password.RequireDigit = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
 
     /* email configuration */
-    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedEmail = true;
     options.User.RequireUniqueEmail = true;
 })
     .AddRoles<IdentityRole>()
@@ -105,8 +105,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//remove when remote
-//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
@@ -122,7 +120,7 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
-        logger.LogError(ex.Message, "Failed to initialize and seed database ");    
+        logger.LogError(ex.Message, "Failed to initialize and seed database ");
     }
 }
 

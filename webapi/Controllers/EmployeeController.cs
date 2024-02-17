@@ -196,7 +196,7 @@ namespace webapi.Controllers
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте графика за работен ден! Моля свържете се с мениджъра Ви!");
 
-            /* Deleting the old assignment temporarily but saving it first */
+            /* Deleting the old assignment temporarily but saving its data first */
             CreateScheduleDto oldSchedule = await _scheduleService.CreateScheduleDto(scheduleDto.ScheduleId);
             if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
             await _scheduleService.SaveChangesAsync();

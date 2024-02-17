@@ -1,6 +1,4 @@
-﻿using webapi.DTOs.Restaurant;
-
-namespace webapi.DTOs.Employee
+﻿namespace webapi.DTOs.Employee
 {
     public class BrowseEmployeeDto
     {

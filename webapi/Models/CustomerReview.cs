@@ -4,7 +4,7 @@ namespace webapi.Models
 {
     public class CustomerReview : Review
     {
-        [Precision(4,2)]
+        [Precision(4, 2)]
         public decimal? SpeedRating { get; set; }
         [Precision(4, 2)]
         public decimal? AttitudeRating { get; set; }

@@ -14,8 +14,6 @@ namespace webapi.Services.FileServices
         {
             _configuration = configuration;
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
@@ -82,7 +80,6 @@ namespace webapi.Services.FileServices
 
             return onlinePath;
         }
-
         public bool DeleteQrCode(string qrCodeFileUrl)
         {
             try

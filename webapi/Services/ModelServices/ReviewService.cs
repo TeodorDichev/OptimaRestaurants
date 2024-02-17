@@ -17,7 +17,7 @@ namespace webapi.Services.ClassServices
         {
             employee.TotalReviewsCount++;
             restaurant.TotalReviewsCount++;
-            
+
             CustomerReview review = new CustomerReview()
             {
                 Employee = employee,
@@ -56,7 +56,7 @@ namespace webapi.Services.ClassServices
         {
             List<OldReviewDto> reviews = new List<OldReviewDto>();
 
-            foreach(var cr in _context.CustomerReviews.Take(10).Where(cr => cr.Employee == employee).ToList())
+            foreach (var cr in _context.CustomerReviews.Take(10).Where(cr => cr.Employee == employee).ToList())
             {
                 reviews.Add(new OldReviewDto
                 {
@@ -72,7 +72,7 @@ namespace webapi.Services.ClassServices
                 });
             }
 
-            foreach(var mr in _context.ManagerReviews.Take(10).Where(mr => mr.Employee == employee).ToList())
+            foreach (var mr in _context.ManagerReviews.Take(10).Where(mr => mr.Employee == employee).ToList())
             {
                 reviews.Add(new OldReviewDto
                 {
@@ -116,7 +116,7 @@ namespace webapi.Services.ClassServices
                 if (employee.AttitudeAverageRating == null) ++dellEmp;
                 if (employee.CollegialityAverageRating == null) ++dellEmp;
                 if (employee.SpeedAverageRating == null) ++dellEmp;
-                if(dellEmp != 0)
+                if (dellEmp != 0)
                 {
                     employee.EmployeeAverageRating = (employee.PunctualityAverageRating ?? 0
                         + employee.AttitudeAverageRating ?? 0

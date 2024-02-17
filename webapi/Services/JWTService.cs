@@ -18,9 +18,7 @@ namespace webapi.Services
         public JWTService(IConfiguration configuration)
         {
             _configuration = configuration;
-#pragma warning disable CS8604 // Possible null reference argument.
             _jwtKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-#pragma warning restore CS8604 // Possible null reference argument.
         }
         public string CreateJWT(ApplicationUser user)
         {
@@ -34,7 +32,6 @@ namespace webapi.Services
 
             var credentials = new SigningCredentials(_jwtKey, SecurityAlgorithms.HmacSha256);
 
-#pragma warning disable CS8604 // Possible null reference argument.
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(userClaims),
@@ -42,7 +39,6 @@ namespace webapi.Services
                 SigningCredentials = credentials,
                 Issuer = _configuration["JWT:Issuer"]
             };
-#pragma warning restore CS8604 // Possible null reference argument.
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var jwt = tokenHandler.CreateToken(tokenDescriptor);
@@ -81,9 +77,7 @@ namespace webapi.Services
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-#pragma warning disable CS8604 // Possible null reference argument.
                 var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
-#pragma warning restore CS8604 // Possible null reference argument.
 
                 tokenHandler.ValidateToken(decodedToken, new TokenValidationParameters
                 {
@@ -91,11 +85,7 @@ namespace webapi.Services
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
                     ValidIssuer = _configuration["Jwt:Issuer"],
-                    //Audience is empty
                     ValidateAudience = false,
-                    //ValidAudience = _configuration["Jwt:Issuer"],
-                    //ValidateLifetime = true,
-                    //ClockSkew = TimeSpan.Zero
                 }, out var validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;

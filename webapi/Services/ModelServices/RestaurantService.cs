@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -45,7 +44,7 @@ namespace webapi.Services.ClassServices
             foreach (var restaurant in await _context.Restaurants
                 .OrderBy(r => r.Name)
                 .ThenBy(r => r.IsWorking)
-                .Skip((lastPageIndex-1)*20)
+                .Skip((lastPageIndex - 1) * 20)
                 .Take(20)
                 .ToListAsync())
             {

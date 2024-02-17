@@ -8,6 +8,6 @@
         public required bool IsWorkDay { get; set; }
         public required bool IsFullDay { get; set; }
         public DateTime? From { get; set; }
-        public DateTime? To { get; set;}
+        public DateTime? To { get; set; }
     }
 }
