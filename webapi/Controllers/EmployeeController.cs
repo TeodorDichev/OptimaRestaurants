@@ -177,7 +177,7 @@ namespace webapi.Controllers
             /* Employee can only add leisure days */
             scheduleDto.IsWorkDay = false;
 
-            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
@@ -211,7 +211,7 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Checking if the changed assignment can fit in the schedule */
-            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();

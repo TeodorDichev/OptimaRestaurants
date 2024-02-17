@@ -249,7 +249,7 @@ namespace webapi.Controllers
 
             /* Manager can add both working and leisure days */
 
-            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
@@ -283,7 +283,7 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Checking if it can fit in the schedule */
-            if (await _scheduleService.IsEmployeeFree(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();

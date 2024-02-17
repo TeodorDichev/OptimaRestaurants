@@ -155,14 +155,37 @@ namespace webapi.Services.ModelServices
             }
             return dailySchedule;
         }
-        public async Task<bool> IsEmployeeFree(Employee employee, DateTime day, DateTime? from, DateTime? to)
+        public async Task<bool> CanEmployeeTakeVacationOn(Employee employee, Restaurant restaurant, DateTime day, DateTime? from, DateTime? to)
+        {
+            /* Gets both worked and leave days of employee */
+            List<Schedule> assignedDays = await GetEmployeeSchedule(employee);
+
+            /* Gets all working assignments of the employee for the day */
+            if (!IsEmployeeFree(assignedDays
+                .Where(ad => ad.Day == DateOnly.FromDateTime(day) && ad.IsWorkDay)
+                .OrderBy(ad => ad.From).
+                ToList(), from, to))
+                return false;
+
+            /* Gets all non-working assignments of the employee for the day in the specified restaurant */
+            return IsEmployeeFree(assignedDays
+                .Where(ad => ad.Day == DateOnly.FromDateTime(day) && !ad.IsWorkDay && ad.Restaurant.Id == restaurant.Id)
+                .OrderBy(ad => ad.From)
+                .ToList(), from, to);
+        }
+        public async Task<bool> CanEmployeeWorkOn(Employee employee, DateTime day, DateTime? from, DateTime? to)
         {
             /* Gets both worked and leave days of employee */
             List<Schedule> assignedDays = await GetEmployeeSchedule(employee);
 
             /* Orders the scheduled assignments of the employee by their time of beginning */
-            List<Schedule> orderedSchedule = assignedDays.Where(ad => ad.Day == DateOnly.FromDateTime(day)).OrderBy(ad => ad.From).ToList();
-
+            return IsEmployeeFree(assignedDays
+                .Where(ad => ad.Day == DateOnly.FromDateTime(day))
+                .OrderBy(ad => ad.From)
+                .ToList(), from, to);
+        }
+        private bool IsEmployeeFree(List<Schedule> orderedSchedule, DateTime? from, DateTime? to)
+        {
             /* The employee has nothing assigned for the day */
             if (orderedSchedule.Count <= 0) return true;
 
@@ -198,7 +221,6 @@ namespace webapi.Services.ModelServices
 
                 /* The new assignment is for later compared to the existing assignments (8-12, 12-14 + 16-20) */
                 if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.Last().To) return true;
-
             }
 
             return false;
