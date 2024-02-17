@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee/employee';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
 import { SharedService } from '../../shared.service';
-import { take } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employees-looking-for-job',
   templateUrl: './employees-looking-for-job.component.html',
   styleUrls: ['./employees-looking-for-job.component.css']
 })
-export class EmployeesLookingForJobComponent implements OnInit {
+export class EmployeesLookingForJobComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   employeesLookingForJob: Employee[] = [];
 
   constructor(private managerService: ManagerService,
@@ -19,12 +21,17 @@ export class EmployeesLookingForJobComponent implements OnInit {
     this.getEmployeesLookingForJob();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   getEmployeesLookingForJob() {
-    this.managerService.getEmployeesLookingForJob().pipe(take(1)).subscribe({
+    const sub = this.managerService.getEmployeesLookingForJob().subscribe({
       next: (response: any) => {
         this.employeesLookingForJob = response;
       }
     });
+    this.subscriptions.push(sub);
   }
 
   getEmployeeInfo(employeeEmail: string) {

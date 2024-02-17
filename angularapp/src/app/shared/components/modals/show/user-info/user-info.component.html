@@ -4,12 +4,15 @@
   </div>
   <div class="main-info">
     <div class="img-info">
-      <img class="empl-img" src="{{employee.profilePicturePath}}">
-      <div class="user-info h4">
+      <img class="empl-img" src="{{employee.profilePicturePath}}" (error)="missingIconEmployee(employee)">
+      <div *ngIf="this.currentUser" class="user-info h4">
         <div>Имейл: <span class="fst-italic theme-main">{{employee.email}}</span></div>
         <div>Град: <span class="fst-italic theme-main">{{employee.city}}</span></div>
         <div>Телефон: <span class="fst-italic theme-main">{{employee.phoneNumber}}</span></div>
         <div>Дата на раждане: <span class="fst-italic theme-main">{{employee.birthDate}}</span></div>
+      </div>
+      <div *ngIf="!this.currentUser" class="h3 text-danger fw-bold">
+        За да видите повече информация, трябва да разполагате с акаунт.
       </div>
     </div>
     <div class="info-row">
@@ -35,20 +38,66 @@
     </div>
     <div class="rest-request" *ngIf="currentUser?.isManager && currentManagersRestaurants">
       <div class="d-flex flex-direction-col">
-        <button class="button btn-chocolate h6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseConfirmed">
+        <button class="button btn-chocolate h6" type="button" data-bs-toggle="collapse"
+          data-bs-target="#collapseConfirmed">
           <span>Изпратете заявка на {{employee.firstName}} за работа във Ваш ресторант</span>
-            <i class="fa fa-chevron-down"></i>
+          <i class="fa fa-chevron-down"></i>
         </button>
         <div class="collapse" id="collapseConfirmed">
-            <div class="restaurants text-muted my-2" *ngFor="let restaurant of currentManagersRestaurants" (click)="selectRestaurant(restaurant)">
-                <div class="fw-bold">
-                  {{restaurant.name}}
-                </div>
+          <div class="restaurants text-muted my-2" *ngFor="let restaurant of currentManagersRestaurants"
+            (click)="selectRestaurant(restaurant)">
+            <div class="fw-bold">
+              {{restaurant.name}}
             </div>
+          </div>
         </div>
-    </div>
+      </div>
       <button class="button btn-green" (click)="sendWorkingRequest(selectedRestaurant.id)"
         *ngIf="selectedRestaurant">Изпращане на заявка за работа в {{selectedRestaurant.name}}</button>
+    </div>
+    <div class="d-flex flex-direction-col" *ngIf="this.currentUser">
+      <button class="button btn-chocolate h6" type="button" data-bs-toggle="collapse" data-bs-target="#collapseReviews"
+        (click)="getEmployeeLastRequests()">
+        <span>Вижте последните рейтинги на {{employee.firstName}}</span>
+        <i class="fa fa-chevron-down"></i>
+      </button>
+      <div class="collapse" id="collapseReviews">
+        <div class="review text-muted my-2" *ngFor="let review of employeeReviewsHistory">
+          <div>
+            <span class="fw-bold"> {{review.restaurantName}}, {{review.restaurantCity}} </span>
+            <span> (Тип: {{review.reviewType}}) </span>
+          </div>
+          <div>
+            <p> Коментар: {{review.comment}} </p>
+          </div>
+          <div>
+            <hr>
+            <div class="review-ratings">
+              Закъснение <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.punctualityRating"
+                *ngIf="review.punctualityRating"></app-star-rating>
+              <div class="vr"></div>
+              Колегиалност <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.collegialityRating"
+                *ngIf="review.collegialityRating"></app-star-rating>
+              <div class="vr"></div>
+              Атмосфера <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.atmosphereRating"
+                *ngIf="review.atmosphereRating"></app-star-rating>
+            </div>
+            <hr>
+            <div class="review-ratings">
+              Поведение <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.attitudeRating"
+                *ngIf="review.attitudeRating"></app-star-rating>
+              <div class="vr"></div>
+              Бързина <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.speedRating"
+                *ngIf="review.speedRating"></app-star-rating>
+              <div class="vr"></div>
+              Кухня <i class="fa-solid fa-arrow-right"></i> <app-star-rating [rating]="review.cuisineRating"
+                *ngIf="review.cuisineRating"></app-star-rating>
+            </div>
+            <hr>
+            <span class="text-end"> (Дата: {{review.reviewDate}}) </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -59,11 +108,14 @@
   </div>
   <div class="main-info">
     <div class="img-info">
-      <img class="empl-img" src="{{manager.profilePicturePath}}">
-      <div class="user-info h4">
+      <img class="empl-img" src="{{manager.profilePicturePath}}" (error)="missingIconManager(manager)">
+      <div *ngIf="this.currentUser" class="user-info h4">
         <div>Имейл: <span class="fst-italic theme-main">{{manager.email}}</span></div>
         <div>Телефон: <span class="fst-italic theme-main">{{manager.phoneNumber}}</span></div>
-        <div>Управлява: <span class="fst-italic theme-main">{{manager.restaurants.length}} ресторанта</span></div>
+        <div>Управлява: <span class="fst-italic theme-main">{{manager.restaurants.length}} ресторант/а</span></div>
+      </div>
+      <div *ngIf="!this.currentUser" class="h3 text-danger fw-bold">
+        За да видите повече информация, трябва да разполагате с акаунт.
       </div>
     </div>
   </div>

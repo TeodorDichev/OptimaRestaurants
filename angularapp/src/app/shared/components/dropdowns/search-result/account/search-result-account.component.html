@@ -6,10 +6,10 @@
         <div *ngFor="let result of searchResult">
             <div class="search-result border-top border-bottom" (click)="openInfoModal(result)">
                 <div>
-                    <img src="{{result.picturePath}}">
+                    <img src="{{result.picturePath}}" (error)="missingIcon(result)">
                     <span class="fw-bold"> {{result.fullname}} </span>
                 </div>
-                <div>
+                <div *ngIf="this.user">
                     <span *ngIf="result.email.length > 20"> {{result.email.substring(0, 19)}}... </span>
                     <span *ngIf="result.email.length <= 20"> {{result.email}} </span>
                 </div>

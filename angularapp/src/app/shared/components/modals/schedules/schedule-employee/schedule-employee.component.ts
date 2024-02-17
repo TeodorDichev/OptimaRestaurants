@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { EmployeeDailySchedule } from 'src/app/shared/models/employee/employee-daily-schedule';
@@ -7,13 +7,15 @@ import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.
 import { SharedService } from 'src/app/shared/shared.service';
 import { CreateScheduleAssignment } from './../../../../models/employee/create-schedule-assignent';
 import { ScheduleAssignment } from 'src/app/shared/models/employee/schedule-assignment';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-employee',
   templateUrl: './schedule-employee.component.html',
   styleUrls: ['./schedule-employee.component.css']
 })
-export class ScheduleEmployeeComponent implements OnInit {
+export class ScheduleEmployeeComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   employee: Employee | undefined;
 
   currentDate: Date = new Date(); // calendar's current date on display
@@ -95,9 +97,13 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.getDailySchedule();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   setUp() {
     this.getSelectedDateAsText();
-    this.setUpSchedule();
+    this.getRestaurantSchedule();
     this.setUpCalendarDisplay();
   }
 
@@ -109,15 +115,12 @@ export class ScheduleEmployeeComponent implements OnInit {
   }
 
   private getEmployee() {
-    this.emplopyeeService.employee$.subscribe({
+    const sub = this.emplopyeeService.employee$.subscribe({
       next: (response: any) => {
         this.employee = response;
       }
-    })
-  }
-
-  private setUpSchedule() {
-    this.getRestaurantSchedule();
+    });
+    this.subscriptions.push(sub);
   }
 
   private getRestaurantsNames() {
@@ -139,7 +142,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     else {
       this.selectedRestaurantIndex++;
     }
-    this.setUpSchedule();
+    this.getRestaurantSchedule();
   }
 
   previousRestaurant() {
@@ -149,7 +152,7 @@ export class ScheduleEmployeeComponent implements OnInit {
     else {
       this.selectedRestaurantIndex--;
     }
-    this.setUpSchedule();
+    this.getRestaurantSchedule();
   }
 
   getRestaurantSchedule() {
@@ -212,11 +215,12 @@ export class ScheduleEmployeeComponent implements OnInit {
     this.resetTimeRangeCreation();
     this.resetTimeRangeEdit();
     if (this.employee) {
-      this.emplopyeeService.getDailySchedule(this.employee.email, this.selectedDay).subscribe({
+      const sub = this.emplopyeeService.getDailySchedule(this.employee.email, this.selectedDay).subscribe({
         next: (response: any) => {
           this.selectedDaySchedule = response;
         }
-      })
+      });
+      this.subscriptions.push(sub);
     }
   }
 
@@ -349,7 +353,7 @@ export class ScheduleEmployeeComponent implements OnInit {
   }
 
   private addAssignment() {
-    this.emplopyeeService.addAssignment(this.createScheduleAssignment).subscribe({
+    const sub = this.emplopyeeService.addAssignment(this.createScheduleAssignment).subscribe({
       next: (response: any) => {
         this.errorMessages = [];
         this.successSend = true;
@@ -359,7 +363,8 @@ export class ScheduleEmployeeComponent implements OnInit {
         this.successSend = false;
         this.errorMessages.push(error.error);
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   close() {
@@ -494,7 +499,7 @@ export class ScheduleEmployeeComponent implements OnInit {
   editAssignment() {
     if (this.isEditTimeRangeValid()) {
       this.generateEditAssignment();
-      this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
+      const sub = this.emplopyeeService.editAssignment(this.assignmentEdit).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, 'Успешно!', 'Вие успешно редактирахте този ангажимент.')
           this.selectedDaySchedule = response;
@@ -508,19 +513,27 @@ export class ScheduleEmployeeComponent implements OnInit {
           this.sharedService.showNotification(false, 'Грешка', error.error);
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   deleteAssignment() {
-    this.emplopyeeService.deleteAssignment(this.selectedAssignment.scheduleId).subscribe({
+    const sub = this.emplopyeeService.deleteAssignment(this.selectedAssignment.scheduleId).subscribe({
       next: (response: any) => {
         this.getRestaurantSchedule();
         this.getDailySchedule();
+        this.resetTimeRangeEdit();
+        this.resetScheduleEdit();
+        this.isEditCollapseOpen = false;
         this.sharedService.showNotification(true, response.value.title, response.value.message)
       }, error: error => {
+        this.resetTimeRangeEdit();
+        this.resetScheduleEdit();
+        this.isEditCollapseOpen = false;
         this.sharedService.showNotification(true, 'Неуспешно изтриване.', error.error);
       }
     });
+    this.subscriptions.push(sub);
   }
 
   getSelectedDateAsText() {

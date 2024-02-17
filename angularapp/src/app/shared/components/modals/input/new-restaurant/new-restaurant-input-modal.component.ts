@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
 import { SharedService } from 'src/app/shared/shared.service';
@@ -11,7 +11,8 @@ import { SharedService } from 'src/app/shared/shared.service';
   templateUrl: './new-restaurant-input-modal.component.html',
   styleUrls: ['./new-restaurant-input-modal.component.css']
 })
-export class NewRestaurantInputModalComponent implements OnInit {
+export class NewRestaurantInputModalComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   newRestaurantForm: FormGroup = new FormGroup({});
   submitted = false;
@@ -28,6 +29,10 @@ export class NewRestaurantInputModalComponent implements OnInit {
     this.initializeForm();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   initializeForm() {
     this.newRestaurantForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -41,9 +46,9 @@ export class NewRestaurantInputModalComponent implements OnInit {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-        this.newRestaurantForm.patchValue({
-            iconFile: file
-        });
+      this.newRestaurantForm.patchValue({
+        iconFile: file
+      });
     }
   }
 
@@ -52,7 +57,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
     this.errorMessages = [];
 
     if (this.newRestaurantForm.valid && this.email) {
-      this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
+      const sub = this.managerService.addNewRestaurant(this.newRestaurantForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно създаден ресторант!', 'Вашият ресторант беше създаден успешно!');
@@ -66,6 +71,7 @@ export class NewRestaurantInputModalComponent implements OnInit {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 }

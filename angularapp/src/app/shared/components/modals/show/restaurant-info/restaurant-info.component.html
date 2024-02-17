@@ -7,7 +7,7 @@
   <div class="main-info">
     <div class="img-map">
       <div class="screen-left">
-        <img class="rest-img" src="{{restaurant.iconPath}}">
+        <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
       </div>
       <div class="map">
         <div> Адрес: {{restaurant.address}}, Град: {{restaurant.city}}</div>
@@ -15,7 +15,7 @@
     </div>
     <div class="ratings">
       <div class="rest-info justify-content-between h4">
-        <div> <span class="fw-bold"> Общ капацитет: </span> {{restaurant.employeeCapacity}}</div>
+        <div *ngIf="user"> <span class="fw-bold"> Общ капацитет: </span> {{restaurant.employeeCapacity}}</div>
         <div> <span class="fw-bold"> Работещ: </span>
           <span class="text-success" *ngIf="restaurant.isWorking">Да</span>
           <span class="text-danger" *ngIf="!restaurant.isWorking">Не</span>
@@ -42,13 +42,13 @@
         </div>
       </div>
     </div>
-    <div *ngIf="restaurant.topEmployeeEmail">
+    <div *ngIf="restaurant.topEmployeeEmail && this.user">
       <div class="h1" *ngIf="restaurant.topEmployeeEmail">
         Най-добрият работник на <span class="theme-main fst-italic fw-bold">{{restaurant.name}}</span>
       </div>
       <div class="info-row item-hover" (click)="openTopEmployeeInfo(restaurant.topEmployeeEmail)">
         <div>
-          <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}">
+          <img class="empl-img" src="{{restaurant.topEmployeePicturePath}}" (error)="missingIconEmployee(restaurant)">
         </div>
         <div class="h4 top-employee-info">
           <div>Имена:
@@ -63,12 +63,11 @@
         </div>
       </div>
     </div>
-    <div *ngIf="!managerOwnsRestaurant && restaurant.managerEmail">
+    <div *ngIf="!managerOwnsRestaurant && restaurant.managerEmail && this.user">
       <div class="h1">
         Информация за мениджъра на <span class="theme-main fst-italic fw-bold">{{restaurant.name}}</span>
       </div>
-      <div class="info-row item-hover" (click)="openManagerInfo(restaurant.managerEmail)"
-        *ngIf="restaurant.topEmployeeEmail">
+      <div class="info-row item-hover" (click)="openManagerInfo(restaurant.managerEmail)">
         <div class="h4 top-employee-info">
           <div>Имена:
             <span class="theme-main fst-italic">{{restaurant.managerFullName}}</span>

@@ -92,3 +92,28 @@
     padding: 16px;
     justify-content: space-between;
 }
+
+.review {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 12px;
+    border-radius: 14px;
+    gap: 12px;
+}
+
+.review-ratings {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+}
+
+.reviews-outer {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    overflow: auto;
+}

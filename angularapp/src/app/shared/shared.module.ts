@@ -19,6 +19,7 @@ import { SearchResultAccountComponent } from './components/dropdowns/search-resu
 import { SearchResultRestaurantComponent } from './components/dropdowns/search-result/restaurant/search-result-restaurant.component';
 import { ValidationMessagesComponent } from './components/errors/validation-messages/validation-messages.component';
 import { RateEmployeeRestaurantComponent } from './components/misc/rate-employee-restaurant/rate-employee-restaurant.component';
+import { RestaurantMapComponent } from './components/misc/restaurant-map/restaurant-map.component';
 import { StarRatingComponent } from './components/misc/star-rating/star-rating.component';
 import { EditEmployeeComponent } from './components/modals/input/edit-employee/edit-employee.component';
 import { EditManagerComponent } from './components/modals/input/edit-manager/edit-manager.component';
@@ -31,7 +32,6 @@ import { ScheduleManagerComponent } from './components/modals/schedules/schedule
 import { RestaurantInfoComponent } from './components/modals/show/restaurant-info/restaurant-info.component';
 import { UserInfoComponent } from './components/modals/show/user-info/user-info.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { AdminViewComponent } from './logged-pages/admin-view/admin-view.component';
 import { EmployeeLoggedViewComponent } from './logged-pages/employee-logged-view/employee-logged-view.component';
 import { EmployeesLookingForJobComponent } from './logged-pages/employees-looking-for-job/employees-looking-for-job.component';
 import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/manager-logged-view.component';
@@ -70,9 +70,9 @@ import { ReviewsComponent } from './user-pages/reviews/review.component';
     AboutComponent,
     RateEmployeeRestaurantComponent,
     EditRestaurantModalComponent,
-    AdminViewComponent,
     ScheduleEmployeeComponent,
-    ScheduleManagerComponent 
+    ScheduleManagerComponent,
+    RestaurantMapComponent 
   ],
   imports: [
     CommonModule,

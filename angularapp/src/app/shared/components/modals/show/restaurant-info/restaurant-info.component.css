@@ -63,7 +63,8 @@
 .top-employee-info {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    gap: 6px;
 }
 
 .info-row {

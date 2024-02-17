@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { ManagerService } from '../../pages-routing/manager/manager.service';
-import { AccountService } from '../../pages-routing/account/account.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'src/app/shared/models/account/user';
 import { Manager } from 'src/app/shared/models/manager/manager';
-import { SharedService } from '../../shared.service';
-import { Restaurant } from '../../models/restaurant/restaurant';
 import { Employee } from '../../models/employee/employee';
-import { take } from 'rxjs';
-
+import { Restaurant } from '../../models/restaurant/restaurant';
+import { AccountService } from '../../pages-routing/account/account.service';
+import { ManagerService } from '../../pages-routing/manager/manager.service';
+import { SharedService } from '../../shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-manager-logged-view',
   templateUrl: './manager-logged-view.component.html',
   styleUrls: ['./manager-logged-view.component.css']
 })
-export class ManagerLoggedViewComponent implements OnInit {
+export class ManagerLoggedViewComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   user: User | null | undefined;
   manager: Manager | null | undefined;
@@ -30,6 +30,10 @@ export class ManagerLoggedViewComponent implements OnInit {
     this.getManager();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   addNewRestaurant() {
     this.sharedService.openRestaurantCreateModal();
   }
@@ -40,11 +44,11 @@ export class ManagerLoggedViewComponent implements OnInit {
 
   getCurrrentRestaurantEmployees() {
     if (this.currentRestaurant?.id) {
-      this.managerService.getRestaurantEmployees(this.currentRestaurant.id).subscribe(
+      const sub = this.managerService.getRestaurantEmployees(this.currentRestaurant.id).subscribe(
         (response: any) => {
           this.employees = response;
-        }
-      );
+        });
+        this.subscriptions.push(sub);
     }
   }
 
@@ -54,12 +58,13 @@ export class ManagerLoggedViewComponent implements OnInit {
 
   fireEmployee(employeeEmail: string, restaurantId: string | undefined) {
     if (restaurantId) {
-      this.managerService.fireEmployee(employeeEmail, restaurantId).subscribe({
+      const sub = this.managerService.fireEmployee(employeeEmail, restaurantId).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, 'Успешно уволнихте служител!', 'Вече той не работи за вас.')
           this.employees = response;
         }
-      })  
+      });
+      this.subscriptions.push(sub);
     }
   }
 
@@ -79,15 +84,16 @@ export class ManagerLoggedViewComponent implements OnInit {
   }
 
   private getUser() {
-    this.accountService.user$.pipe(take(1)).subscribe({
+    const sub = this.accountService.user$.subscribe({
       next: (user: any) => {
         this.user = user;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   private getManager() {
-    this.managerService.manager$.subscribe({
+    const sub = this.managerService.manager$.subscribe({
       next: (manager: any) => {
         this.manager = manager;
         if (this.manager?.restaurants) {
@@ -96,5 +102,6 @@ export class ManagerLoggedViewComponent implements OnInit {
         }
       }
     });
+    this.subscriptions.push(sub);
   }
 }

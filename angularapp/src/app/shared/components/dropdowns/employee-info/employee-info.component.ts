@@ -72,4 +72,8 @@ export class EmployeeInfoComponent implements OnInit, OnDestroy {
   openQRCodeModal() {
     this.sharedService.openQRCodeModal();
   }
+
+  missingIcon(employee: Employee) { 
+    employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+  }
 }

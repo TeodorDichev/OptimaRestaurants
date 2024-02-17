@@ -49,12 +49,11 @@ export class RegisterManagerComponent implements OnInit, OnDestroy {
       const sub = this.accountService.registerManager(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          const sub1 = this.managerService.getManager(response.email).subscribe({
+          this.managerService.getManager(response.email).subscribe({
             next: (resp: any) => {
               this.managerService.setManager(resp);
             }
           })
-          this.subscriptions.push(sub1);
           this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
           this.router.navigateByUrl('/manager');
         },

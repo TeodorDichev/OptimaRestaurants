@@ -51,12 +51,11 @@ export class RegisterEmployeeComponent implements OnInit, OnDestroy {
       const sub = this.accountService.registerEmployee(this.registerForm.value).subscribe({
         next: (response: any) => {
           this.accountService.setUser(response);
-          const sub1 = this.employeeService.getEmployee(response.email).subscribe({
+          this.employeeService.getEmployee(response.email).subscribe({
             next: (resp: any) => {
               this.employeeService.setEmployee(resp);
             }
           })
-          this.subscriptions.push(sub1);
           this.sharedService.showNotification(true, 'Успешно създаден акаунт!', 'Вашият акаунт беше успешно създаден! Моля, потвърдете имейл адреса си.');
           this.router.navigateByUrl('/employee');
         },

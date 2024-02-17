@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { User } from '../../models/account/user';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { EmployeeService } from '../../pages-routing/employee/employee.service';
 import { ManagerService } from '../../pages-routing/manager/manager.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,8 @@ import { Subscription } from 'rxjs';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
+
+  user: User | undefined;
 
   loginForm: FormGroup = new FormGroup({});
   submitted = false;
@@ -29,7 +32,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    //this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   initializeForm() {
@@ -45,23 +48,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       const sub = this.accountService.login(this.loginForm.value).subscribe({
         next: (response: any) => {
-          this.accountService.setUser(response);
-          if (response.isManager == false) {
-            const sub1 = this.employeeService.getEmployee(response.email).subscribe({
-              next: (resp: any) => {
-                this.employeeService.setEmployee(resp);
-              }
-            })
-            this.subscriptions.push(sub1);
-          }
-          else if (response.isManager == true) {
-            const sub2 = this.managerService.getManager(response.email).subscribe({
-              next: (resp: any) => {
-                this.managerService.setManager(resp);
-              }
-            })
-            this.subscriptions.push(sub2);
-          }
+          this.user = response;
+          this.setUserRole();
         },
         error: error => {
           if (error.error.errors) {
@@ -72,6 +60,25 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       })
       this.subscriptions.push(sub);
+    }
+  }
+
+  private setUserRole() {
+    if (this.user) {
+      if (this.user.isManager) {
+        this.managerService.getManager(this.user.email).subscribe({
+          next: (response: any) => {
+            this.managerService.setManager(response);
+          }
+        });
+      }
+      else {
+        this.employeeService.getEmployee(this.user.email).subscribe({
+          next: (response: any) => {
+            this.employeeService.setEmployee(response);
+          }
+        });
+      }
     }
   }
 

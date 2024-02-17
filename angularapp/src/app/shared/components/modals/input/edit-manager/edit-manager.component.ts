@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Manager } from 'src/app/shared/models/manager/manager';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { ManagerService } from 'src/app/shared/pages-routing/manager/manager.service';
@@ -12,7 +12,9 @@ import { SharedService } from 'src/app/shared/shared.service';
   templateUrl: './edit-manager.component.html',
   styleUrls: ['./edit-manager.component.css']
 })
-export class EditManagerComponent {
+export class EditManagerComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   editManagerForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -30,6 +32,11 @@ export class EditManagerComponent {
     this.initializeForm();
   }
 
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   initializeForm() {
     this.editManagerForm = this.formBuilder.group({
       newFirstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
@@ -42,18 +49,18 @@ export class EditManagerComponent {
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-        this.editManagerForm.patchValue({
-            profilePictureFile: file
-        });
+      this.editManagerForm.patchValue({
+        profilePictureFile: file
+      });
     }
   }
 
   editManager() {
     this.submitted = true;
     this.errorMessages = [];
-    
+
     if (this.editManagerForm.valid && this.email) {
-      this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
+      const sub = this.managerService.updateManagerAccount(this.editManagerForm.value, this.email).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -67,12 +74,13 @@ export class EditManagerComponent {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   deleteManagerAccount() {
     if (this.email) {
-      this.managerService.deleteManagerAccount(this.email).pipe(take(1)).subscribe({
+      const sub = this.managerService.deleteManagerAccount(this.email).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -85,14 +93,16 @@ export class EditManagerComponent {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   private setManager() {
-    this.managerService.manager$.pipe(take(1)).subscribe({
+    const sub = this.managerService.manager$.subscribe({
       next: (response: any) => {
         this.manager = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 }

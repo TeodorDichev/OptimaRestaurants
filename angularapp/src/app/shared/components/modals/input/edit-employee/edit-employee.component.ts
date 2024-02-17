@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
 import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
@@ -12,7 +12,9 @@ import { SharedService } from 'src/app/shared/shared.service';
   templateUrl: './edit-employee.component.html',
   styleUrls: ['./edit-employee.component.css']
 })
-export class EditEmployeeComponent {
+export class EditEmployeeComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   editEmployeeForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -28,6 +30,10 @@ export class EditEmployeeComponent {
   ngOnInit(): void {
     this.getEmployee();
     this.initializeForm();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   initializeForm() {
@@ -56,7 +62,7 @@ export class EditEmployeeComponent {
     this.errorMessages = [];
 
     if (this.editEmployeeForm.valid && this.email) {
-      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).pipe(take(1)).subscribe({
+      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).subscribe({
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -75,7 +81,7 @@ export class EditEmployeeComponent {
 
   deleteEmployeeAccount() {
     if (this.email) {
-      this.employeeService.deleteEmployeeAccount(this.email).pipe(take(1)).subscribe({
+      const sub = this.employeeService.deleteEmployeeAccount(this.email).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -88,15 +94,17 @@ export class EditEmployeeComponent {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   private getEmployee() {
-    this.employeeService.employee$.pipe(take(1)).subscribe({
+    const sub = this.employeeService.employee$.subscribe({
       next: (response: any) => {
         this.employee = response;
       }
     })
+    this.subscriptions.push(sub);
   }
 }
 

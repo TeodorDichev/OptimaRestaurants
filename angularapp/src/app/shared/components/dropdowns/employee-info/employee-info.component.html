@@ -3,8 +3,8 @@
   <div class="border-bottom">
     <div>
       <div class="fw-bold h5">
-        <span *ngIf="employee.profilePicturePath">
-          <img src="{{employee.profilePicturePath}}">
+        <span>
+          <img src="{{employee.profilePicturePath}}" (error)="missingIcon(employee)">
         </span>
         Здравейте, <span class="fst-italic"> {{employee.firstName}} {{employee.lastName}}</span>
       </div>

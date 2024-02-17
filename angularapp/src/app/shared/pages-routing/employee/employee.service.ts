@@ -55,6 +55,10 @@ export class EmployeeService {
     return this.http.get(`${environment.appUrl}/api/employee/download-qrcode/${email}`, { responseType: 'blob' });
   }
 
+  regenerateQRCode(email: string) {
+    return this.http.get(`${environment.appUrl}/api/employee/regen-qrcode/${email}`);
+  }
+
   getPDFFile(email: string): Observable<Blob> {
     return this.http.get(`${environment.appUrl}/api/employee/download-cv/${email}`, { responseType: 'blob' });
   }

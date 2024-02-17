@@ -40,4 +40,8 @@ export class ManagerInfoComponent implements OnInit, OnDestroy {
     })
     this.subscriptions.push(sub);
   }
+
+  missingIcon(manager: Manager) { 
+    manager.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+  }
 }
