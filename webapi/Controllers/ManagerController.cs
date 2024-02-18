@@ -125,6 +125,11 @@ namespace webapi.Controllers
         {
             return _employeeService.GetEmployeesLookingForJob(lastPageIndex);
         }
+        [HttpGet("api/manager/browse-employees/looking-for-job-count")]
+        public async Task<ActionResult<int>> GetEmployeesLookingForJobCount()
+        {
+            return await _employeeService.GetEmployeesLookingForJobCount();
+        }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
         public async Task<ActionResult<List<EmployeeDto>>> GetRestaurantEmployees(string restaurantId)

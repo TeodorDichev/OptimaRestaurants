@@ -129,6 +129,10 @@ namespace webapi.Services.ClassServices
 
             return employeesDto;
         }
+        public async Task<int> GetEmployeesLookingForJobCount()
+        {
+            return await _context.Employees.Where(e => e.IsLookingForJob).CountAsync();
+        }
         public string GetEmployeeQrCodePath(Employee employee)
         {
             string qrCodeName = employee.QrCodePath.Split("/").Last();
