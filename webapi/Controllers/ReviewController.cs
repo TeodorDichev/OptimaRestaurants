@@ -83,10 +83,19 @@ namespace webapi.Controllers
             await _reviewService.AddCustomerReview(restaurant, employee, model);
             await _reviewService.SaveChangesAsync();
 
-            if (_reviewService.UpdateStatistics(employee, restaurant))
+            try
+            {
+                if (model.AttitudeRating.HasValue) _reviewService.UpdateAttitude(employee, model.AttitudeRating.Value);
+                if (model.SpeedRating.HasValue) _reviewService.UpdateSpeed(employee, model.SpeedRating.Value);
+                if (model.AtmosphereRating.HasValue) _reviewService.UpdateAtmosphere(restaurant, model.AtmosphereRating.Value);
+                if (model.CuisineRating.HasValue) _reviewService.UpdateCuisine(restaurant, model.CuisineRating.Value);
+                if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
-            else
+            }
+            catch (Exception)
+            {
                 return BadRequest("Неуспешно обновени данни!");
+            }
         }
         [HttpPost("api/manager/review-employee")]
         public async Task<IActionResult> SubmitManagerReview([FromBody] ManagerReviewDto model)
@@ -105,10 +114,17 @@ namespace webapi.Controllers
             await _reviewService.AddManagerReview(restaurant, employee, model);
             await _reviewService.SaveChangesAsync();
 
-            if (_reviewService.UpdateStatistics(employee, restaurant))
+            try
+            {
+                if (model.CollegialityRating.HasValue) _reviewService.UpdateCollegiality(employee, model.CollegialityRating.Value);
+                if (model.PunctualityRating.HasValue) _reviewService.UpdatePunctuality(employee, model.PunctualityRating.Value);
+                if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
-            else
+            }
+            catch (Exception)
+            {
                 return BadRequest("Неуспешно обновени данни!");
+            }
         }
 
         /// <summary>

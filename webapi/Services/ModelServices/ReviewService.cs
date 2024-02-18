@@ -88,70 +88,99 @@ namespace webapi.Services.ClassServices
 
             return reviews.OrderBy(r => Convert.ToDateTime(r.ReviewDate)).ToList();
         }
-        public bool UpdateStatistics(Employee employee, Restaurant restaurant)
+        public bool UpdateAttitude(Employee employee, decimal AttitudeRating)
         {
             try
             {
-                /* updating employee statistics */
-                employee.AttitudeAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.AttitudeRating != null)
-                    .Select(cr => cr.AttitudeRating)
-                    .Average();
-
-                employee.SpeedAverageRating = _context.CustomerReviews.Where(cr => cr.Employee == employee && cr.SpeedRating != null)
-                    .Select(cr => cr.SpeedRating)
-                    .Average();
-
-                employee.PunctualityAverageRating = _context.ManagerReviews.Where(mr => mr.Employee == employee && mr.PunctualityRating != null)
-                    .Select(mr => mr.PunctualityRating)
-                    .Average();
-
-                employee.CollegialityAverageRating = _context.ManagerReviews.Where(mr => mr.Employee == employee && mr.CollegialityRating != null)
-                    .Select(mr => mr.CollegialityRating)
-                    .Average();
-
-                _context.SaveChanges();
-
-                int dellEmp = 0;
-                if (employee.PunctualityAverageRating == null) ++dellEmp;
-                if (employee.AttitudeAverageRating == null) ++dellEmp;
-                if (employee.CollegialityAverageRating == null) ++dellEmp;
-                if (employee.SpeedAverageRating == null) ++dellEmp;
-                if (dellEmp != 0)
+                if (employee.AttitudeAverageRating != null)
                 {
-                    employee.EmployeeAverageRating = (employee.PunctualityAverageRating ?? 0
-                        + employee.AttitudeAverageRating ?? 0
-                        + employee.CollegialityAverageRating ?? 0
-                        + employee.SpeedAverageRating ?? 0) / dellEmp;
+                    employee.AttitudeAverageRating = (employee.AttitudeAverageRating + AttitudeRating) / 2;
+                    return true;
                 }
+                employee.AttitudeAverageRating = AttitudeRating;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateSpeed(Employee employee, decimal speedRating)
+        {
+            try
+            {
+                if (employee.SpeedAverageRating != null) employee.SpeedAverageRating = (employee.SpeedAverageRating + speedRating) / 2;
+                else employee.SpeedAverageRating = speedRating;
+                
+                return UpdateEmployeeAverage(employee, speedRating);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdatePunctuality(Employee employee, decimal punctualityRating)
+        {
+            try
+            {
+                if (employee.PunctualityAverageRating != null) employee.PunctualityAverageRating = (employee.PunctualityAverageRating + punctualityRating) / 2;
+                else employee.PunctualityAverageRating = punctualityRating;
 
-                _context.SaveChanges();
+                return UpdateEmployeeAverage(employee, punctualityRating);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateCollegiality(Employee employee, decimal collegialityRating)
+        {
+            try
+            {
+                if (employee.CollegialityAverageRating != null) employee.CollegialityAverageRating = (employee.CollegialityAverageRating + collegialityRating) / 2;
+                else employee.CollegialityAverageRating = collegialityRating;
 
-                /* updating restaurants statistics */
-                restaurant.AtmosphereAverageRating = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant && cr.AtmosphereRating != null)
-                    .Select(cr => cr.AtmosphereRating)
-                    .Average();
+                return UpdateEmployeeAverage(employee, collegialityRating);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateAtmosphere(Restaurant restaurant, decimal atmosphereRating)
+        {
+            try
+            {
+                if (restaurant.AtmosphereAverageRating != null) restaurant.AtmosphereAverageRating = (restaurant.AtmosphereAverageRating + atmosphereRating) / 2;
+                else restaurant.AtmosphereAverageRating = atmosphereRating;
 
-                restaurant.CuisineAverageRating = _context.CustomerReviews.Where(cr => cr.Restaurant == restaurant && cr.CuisineRating != null)
-                    .Select(cr => cr.CuisineRating)
-                    .Average();
+                return UpdateRestaurantAverage(restaurant, atmosphereRating);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateCuisine(Restaurant restaurant, decimal cuisineRating)
+        {
+            try
+            {
+                if (restaurant.CuisineAverageRating != null) restaurant.CuisineAverageRating = (restaurant.CuisineAverageRating + cuisineRating) / 2;
+                else restaurant.CuisineAverageRating = cuisineRating;
 
-                restaurant.EmployeesAverageRating = restaurant.EmployeesRestaurants
-                    .Select(er => er.Employee)
-                    .Select(e => e.EmployeeAverageRating)
-                    .Average();
-
-                _context.SaveChanges();
-
-                int dellRes = 0;
-                if (restaurant.RestaurantAverageRating == null) ++dellRes;
-                if (restaurant.AtmosphereAverageRating == null) ++dellRes;
-                if (restaurant.EmployeesAverageRating == null) ++dellRes;
-
-                restaurant.RestaurantAverageRating = (restaurant.CuisineAverageRating ?? 0
-                    + restaurant.AtmosphereAverageRating ?? 0
-                    + restaurant.EmployeesAverageRating ?? 0) / dellRes;
-
-                _context.SaveChanges();
+                return UpdateRestaurantAverage(restaurant, cuisineRating);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public bool UpdateRestaurantEmployeesAverage(Restaurant restaurant, decimal rating)
+        {
+            try
+            {
+                if (restaurant.EmployeesAverageRating != null) restaurant.EmployeesAverageRating = (restaurant.RestaurantAverageRating + rating) / 2;
+                else restaurant.EmployeesAverageRating = rating;
 
                 return true;
             }
@@ -163,6 +192,34 @@ namespace webapi.Services.ClassServices
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+        private bool UpdateEmployeeAverage (Employee employee, decimal rating)
+        {
+            try
+            {
+                if (employee.EmployeeAverageRating != null) employee.EmployeeAverageRating = (employee.EmployeeAverageRating + rating) / 2;
+                else employee.EmployeeAverageRating = rating;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        private bool UpdateRestaurantAverage (Restaurant restaurant, decimal rating)
+        {
+            try
+            {
+                if (restaurant.RestaurantAverageRating != null) restaurant.RestaurantAverageRating = (restaurant.RestaurantAverageRating + rating) / 2;
+                else restaurant.RestaurantAverageRating = rating;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
