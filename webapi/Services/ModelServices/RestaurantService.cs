@@ -422,7 +422,7 @@ namespace webapi.Services.ClassServices
         public bool IsRestaurantAtMaxCapacity(Restaurant restaurant)
         {
             return restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
-                .Where(er => er.Restaurant == restaurant).Count();
+                .Where(er => er.Restaurant == restaurant && er.EndedOn == null).Count();
         }
         public bool HasRestaurantAManager(Restaurant restaurant)
         {

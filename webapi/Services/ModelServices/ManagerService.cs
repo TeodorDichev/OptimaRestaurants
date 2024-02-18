@@ -63,7 +63,10 @@ namespace webapi.Services.ClassServices
             if (updateDto.NewPhoneNumber != null) manager.Profile.PhoneNumber = updateDto.NewPhoneNumber;
             if (updateDto.OldPassword != null && updateDto.NewPassword != null)
             {
-                await _userManager.ChangePasswordAsync(manager.Profile, updateDto.OldPassword, updateDto.NewPassword);
+                if (await _userManager.CheckPasswordAsync(manager.Profile, updateDto.OldPassword))
+                {
+                    await _userManager.ChangePasswordAsync(manager.Profile, updateDto.OldPassword, updateDto.NewPassword);
+                }
             }
             if (updateDto.ProfilePictureFile != null)
             {

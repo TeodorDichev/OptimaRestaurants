@@ -54,7 +54,10 @@ namespace webapi.Services.ClassServices
             if (updateDto.NewBirthDate != null) employee.BirthDate = (DateOnly)updateDto.NewBirthDate;
             if (updateDto.OldPassword != null && updateDto.NewPassword != null)
             {
-                await _userManager.ChangePasswordAsync(employee.Profile, updateDto.OldPassword, updateDto.NewPassword);
+                if(await _userManager.CheckPasswordAsync(employee.Profile, updateDto.OldPassword))
+                {
+                    await _userManager.ChangePasswordAsync(employee.Profile, updateDto.OldPassword, updateDto.NewPassword);
+                }
             }
             if (updateDto.ProfilePictureFile != null)
             {
