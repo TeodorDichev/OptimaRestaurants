@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace webapi.DTOs.Restaurant
+﻿namespace webapi.DTOs.Restaurant
 {
     public class BrowseRestaurantDto
     {

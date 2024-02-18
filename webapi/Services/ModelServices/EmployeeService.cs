@@ -1,5 +1,4 @@
-﻿using Mailjet.Client.Resources;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Employee;
@@ -144,7 +143,7 @@ namespace webapi.Services.ClassServices
             }
             catch (Exception)
             {
-                return false;            
+                return false;
             }
         }
         public async Task SaveChangesAsync()

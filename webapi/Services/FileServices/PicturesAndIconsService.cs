@@ -15,7 +15,6 @@
         public string SaveImage(IFormFile imageFile)
         {
             string onlinePath = "";
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 string path = Directory.GetCurrentDirectory();
@@ -43,11 +42,9 @@
             {
                 return onlinePath;
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
         public bool DeleteImage(string imageFileUrl)
         {
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
                 string path = Directory.GetCurrentDirectory();
@@ -65,7 +62,6 @@
             {
                 return false;
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
     }
 }

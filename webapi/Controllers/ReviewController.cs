@@ -99,7 +99,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(model.EmployeeEmail)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
 
-            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null) 
+            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null)
                 return BadRequest("Потребителят не работи за вас!");
 
             await _reviewService.AddManagerReview(restaurant, employee, model);

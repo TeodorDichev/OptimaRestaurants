@@ -79,7 +79,6 @@ namespace webapi.Services.FileServices
             }
 
         }
-
         private Table GenerateTableWithPersonalInfo(Employee employee, PdfFont font)
         {
             /* Creating the image */
