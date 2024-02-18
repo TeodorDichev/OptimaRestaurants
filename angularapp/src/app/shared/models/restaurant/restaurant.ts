@@ -1,7 +1,10 @@
 export interface Restaurant {
     id: string,
     name: string
-    address: string,
+    longitude: number, 
+    latitude: number, 
+    address1: string, 
+    address2: string, 
     city: string,
     employeeCapacity: number,
     isWorking: boolean,

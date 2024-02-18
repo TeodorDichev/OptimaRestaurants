@@ -21,7 +21,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
 
   searchLocationPropmt: string | undefined;
   resultsLocationSearch: string[] = [];
-  selectedCity: string | undefined;
+  selectedCity: string = '';
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
@@ -44,7 +44,7 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
       newPhoneNumber: ['', [Validators.pattern('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')]],
       profilePictureFile: ['', []],
       newBirthDate: ['', []],
-      newCity: ['', [Validators.minLength(2)]],
+      newCity: [''],
       isLookingForJob: ['', []],
       oldPassword: ['', []],
       newPassword: ['', []]
@@ -84,6 +84,10 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
 
     if (this.selectedCity && this.selectedCity != this.searchLocationPropmt) {
       this.editEmployeeForm.get('newCity')?.setErrors({ 'invalid': true });
+    }
+
+    if (this.selectedCity == '') {
+      this.editEmployeeForm.get('newCity')?.setValue('');
     }
 
     if (this.editEmployeeForm.valid && this.employee) {

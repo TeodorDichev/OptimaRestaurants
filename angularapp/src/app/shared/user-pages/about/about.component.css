@@ -7,50 +7,80 @@
     align-self: stretch;
 }
 
-.about-card{
+.about-card {
     background-color: rgba(255, 255, 255, 0.7);
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    flex: 1 0 0;
+    align-items: center;
+    align-self: stretch;
     gap: 10px;
     border-radius: 8px;
     scale: 1;
-    transition: all .2s ease-in-out;
 }
 
-.img {
-    max-width: 500px;
+.img-left {
+    max-width: 400px;
     aspect-ratio: 3/2;
     width: 100% !important;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 8px 0px 0px 8px;
 }
 
-.transform {
-    transition: transform 330ms ease-in-out;
+.img-right {
+    max-width: 400px;
+    aspect-ratio: 3/2;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 0px 8px 8px 0px;
 }
 
 .content-screen-fill-row {
-    background-color: rgba(0, 0, 0, 0.37);
     align-items: center;
-    color: rgb(201, 201, 201);
-}
-
-.content-screen-fill-row:hover {
     background-color: rgba(255, 255, 255, 0.75);
     color: black;
-    transition: all .2s ease-in-out;
 }
 
 .content {
     padding: 48px 0px 12px 0px;
+    gap: 0px;
 }
 
 .cards-list {
     display: flex;
     flex-direction: column;
+    align-self: stretch;
     flex: 1 0 0;
     gap: 12px;
     overflow: scroll;
+}
+
+.text-section {
+    display: flex;
+    align-self: stretch;
+    flex: 1 0 0;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.tri-card {
+    display: flex;
+    align-self: stretch;
+    flex: 1 0 0;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+.about-card2 {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.background-chocolate {
+    background-color: rgba(210, 105, 30, 0.75) !important;
+    color: white;
 }

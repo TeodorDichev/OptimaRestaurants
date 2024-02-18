@@ -25,8 +25,8 @@
                     <div class="restaurant-info">
                         <div>
                             <div class="h2 fw-bold">{{restaurant.name}}</div>
-                            <div class="h6 text-muted">{{restaurant.address}}</div>
-                            <div class="h6 text-muted">{{restaurant.city}}</div>
+                            <div class="h6 text-muted">{{restaurant.address1}}</div>
+                            <div class="h6 text-muted">{{restaurant.address2}}</div>
                         </div>
                         <div>
                             <div class="h5 fw-bold">Средна оценка:
@@ -61,7 +61,7 @@
                 <div class="restaurant-employee" *ngIf="this.currentRestaurant">
                     <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)"
                         data-bs-dismiss="offcanvas">
-                        <img class="emp-img" src="{{employee.profilePicturePath}}">
+                        <img class="emp-img" src="{{employee.profilePicturePath}}" (error)="missingIconEmployee(employee)">
                         <div>
                             <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
                             <div>{{employee.email}}</div>

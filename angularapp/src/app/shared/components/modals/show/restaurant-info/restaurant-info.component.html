@@ -8,9 +8,12 @@
     <div class="img-map">
       <div class="screen-left">
         <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+        <div class="h5 text-muted fst-italic">
+          <span class="fw-bold">{{restaurant.address1}},</span> {{restaurant.address2}}
+        </div>
       </div>
       <div class="map">
-        <div> Адрес: {{restaurant.address}}, Град: {{restaurant.city}}</div>
+        <app-restaurant-map [longitude]="restaurant.longitude.toString()" [latitude]="restaurant.latitude.toString()"></app-restaurant-map>
       </div>
     </div>
     <div class="ratings">

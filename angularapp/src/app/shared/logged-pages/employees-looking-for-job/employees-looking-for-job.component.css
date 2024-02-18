@@ -7,7 +7,8 @@
 }
 
 .employee:hover {
-    background-color: rgba(241, 241, 241, 0.8);;
+    background-color: rgba(241, 241, 241, 0.8);
+    ;
     cursor: pointer;
 }
 
@@ -64,4 +65,29 @@
     align-items: center;
     padding: 16px;
     justify-content: space-between;
+}
+
+.pages {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+}
+
+.button-page {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.377);
+    border: 1px solid rgba(128, 128, 128, 0.336);
+}
+
+.button-page:hover {
+    background-color: white;
+    transition: all .2s ease-in-out;
+}
+
+.selected {
+    background-color: white;
 }

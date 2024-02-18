@@ -8,12 +8,20 @@
           <input formControlName="name" type="text" placeholder="Ново име на ресторанта ({{restaurant?.name}})">
         </div>
         <div class="input-field">
-          <span class="fa fa-map-marker theme-main p-2"></span>
-          <input formControlName="address" type="text" placeholder="Нов адрес ({{restaurant?.address}})">
+          <span class="fa fa-map-pin p-2"></span>
+          <input type="text" placeholder="Търсете локация/адрес" formControlName="fullLocationString"
+            [(ngModel)]="searchLocationPropmt">
+          <div (click)="getSearchLocationResults()" data-bs-toggle="collapse" data-bs-target="#collapseResults"
+            id="collapseToggle">
+            <i class="fa-solid fa-magnifying-glass-location p-2"></i>
+          </div>
         </div>
-        <div class="input-field">
-          <span class="fa fa-location-arrow theme-main p-2"></span>
-          <input formControlName="city" type="text" placeholder="Нов град ({{restaurant?.city}})">
+        <div class="collapse" id="collapseResults">
+          <div class="collapse-body">
+            <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+              {{result}}
+            </div>
+          </div>
         </div>
         <div class="input-field">
           <span class="fa fa-user theme-main p-2"></span>
@@ -32,18 +40,13 @@
         </div>
         <div *ngIf="submitted">
           <div class="text-danger"
-            *ngIf="editRestaurantForm.get('name')?.hasError('minlength') || editRestaurantForm.get('name')?.hasError('maxlength')
-                  || editRestaurantForm.get('address')?.hasError('minlength') || editRestaurantForm.get('address')?.hasError('maxlength')">
-            Името и адресът трябва да са между 2 и 50 символа!
+            *ngIf="editRestaurantForm.get('name')?.hasError('minlength') || editRestaurantForm.get('name')?.hasError('maxlength')">
+            Името трябва да е между 2 и 50 символа!
           </div>
           <div class="text-danger" *ngIf="editRestaurantForm.get('employeeCapacity')?.hasError('pattern')">
             Невалиден капацитет на работници!
           </div>
-          <div class="text-danger" *ngIf="editRestaurantForm.get('city')?.hasError('minlength')">
-            Градът се състои от поне 2 символа!
-          </div>
         </div>
-
       </div>
       <div class="form-floating" *ngIf="errorMessages.length > 0">
         <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>

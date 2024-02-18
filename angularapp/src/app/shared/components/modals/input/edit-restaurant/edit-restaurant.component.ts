@@ -15,6 +15,10 @@ export class EditRestaurantModalComponent implements OnInit {
   @Input() restaurant: Restaurant | undefined;
   private subscriptions: Subscription[] = [];
 
+  searchLocationPropmt: string = '';
+  resultsLocationSearch: string[] = [];
+  selectedLocation: string | undefined;
+
   editRestaurantForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
@@ -35,8 +39,12 @@ export class EditRestaurantModalComponent implements OnInit {
   initializeForm() {
     this.editRestaurantForm = this.formBuilder.group({
       name: ['', [Validators.minLength(2), Validators.maxLength(50)]],
-      address: ['', [Validators.minLength(2), Validators.maxLength(50)]],
-      city: ['', [Validators.minLength(2)]],
+      fullLocationString: [],
+      longitude: [],
+      latitude: [],
+      address1: [],
+      address2: [],
+      city: [],
       employeeCapacity: ['', [Validators.pattern('[0-9]+')]],
       iconFile: ['', []],
       isWorking: ['', []]
@@ -55,7 +63,21 @@ export class EditRestaurantModalComponent implements OnInit {
   editRestaurant() {
     this.submitted = true;
     this.errorMessages = [];
+
+    const sub = this.editRestaurantForm.get('fullLocationString')?.valueChanges.subscribe(loc => {
+      if (loc === '') {
+        this.editRestaurantForm.get('fullLocationString')?.setErrors({ 'required': true });
+      } else {
+        this.editRestaurantForm.get('fullLocationString')?.setErrors(null);
+      }
+    });
+
+    if (this.selectedLocation != this.searchLocationPropmt) {
+      this.editRestaurantForm.get('fullLocationString')?.setErrors({ 'required': true });
+    }
+
     if (this.editRestaurantForm.valid && this.restaurant) {
+      this.setFormValues();
       const sub = this.managerService.editRestaurant(this.editRestaurantForm.value, this.restaurant.id).subscribe({
         next: (response: any) => {
           this.managerService.setManager(response);
@@ -84,6 +106,41 @@ export class EditRestaurantModalComponent implements OnInit {
         }
       });
       this.subscriptions.push(sub);
+    }
+  }
+
+  getSearchLocationResults() {
+    fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchLocationPropmt}&apiKey=0d4bc92697134fac82ff67220bd007e2&limit=5`, { method: 'GET' })
+      .then(response => response.json())
+      .then(result => {
+        this.resultsLocationSearch = [];
+        for (let res of result.features) {
+          const currentResult = res.properties;
+          console.log(currentResult);
+          this.resultsLocationSearch.push(currentResult.lon + '|'
+            + currentResult.lat + '|'
+            + currentResult.address_line1 + '|'
+            + currentResult.address_line2 + '|'
+            + currentResult.city);
+        }
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  selectCity(location: string) {
+    this.selectedLocation = location;
+    this.searchLocationPropmt = this.selectedLocation;
+    document.getElementById('collapseToggle')?.click();
+  }
+
+  private setFormValues() {
+    const loc = this.selectedLocation?.split('|');
+    if (loc) {
+      this.editRestaurantForm.get('longitude')?.setValue(loc[0]);
+      this.editRestaurantForm.get('latitude')?.setValue(loc[1]);
+      this.editRestaurantForm.get('address1')?.setValue(loc[2]);
+      this.editRestaurantForm.get('address2')?.setValue(loc[3]);
+      this.editRestaurantForm.get('city')?.setValue(loc[4]);
     }
   }
 }

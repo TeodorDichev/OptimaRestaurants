@@ -106,7 +106,6 @@ namespace webapi.Services.ClassServices
         {
             List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
 
-            lastPageIndex = 1;
             foreach (var employee in _context.Employees.Where(e => e.IsLookingForJob)
                         .Skip((lastPageIndex - 1) * 20)
                         .Take(20)

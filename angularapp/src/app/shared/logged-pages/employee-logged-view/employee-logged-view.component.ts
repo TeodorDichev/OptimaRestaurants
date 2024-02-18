@@ -66,6 +66,7 @@ export class EmployeeLoggedViewComponent implements OnInit, OnDestroy {
     if (this.employee) {
       const sub = this.reviewsService.getEmployeeReviewsHistory(this.employee.email).subscribe({
         next: (response: any) => {
+          console.log(response);
           this.employeeReviewsHistory = response;
         }
       });

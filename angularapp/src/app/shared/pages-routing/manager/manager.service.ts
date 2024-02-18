@@ -39,10 +39,13 @@ export class ManagerService {
     const formData: FormData = new FormData();
 
     formData.append('name', model.name);
-    formData.append('address', model.address);
+    formData.append('address1', model.address1);
+    formData.append('address2', model.address2);
     formData.append('city', model.city);
     formData.append('employeeCapacity', model.employeeCapacity.toString());
     formData.append('iconFile', model.iconFile);
+    formData.append('longitude', model.longitude.toString());
+    formData.append('latitude', model.latitude.toString());
 
     return this.http.post(`${environment.appUrl}/api/manager/add-new-restaurant/${email}`, formData);
   }
@@ -55,8 +58,12 @@ export class ManagerService {
     return this.http.post(`${environment.appUrl}/api/manager/send-working-request`, employeeRequest);
   }
 
-  getEmployeesLookingForJob() {
-    return this.http.get(`${environment.appUrl}/api/manager/browse-employees/looking-for-job`);
+  getCountOfEmployeesLookingForJob() {
+    return this.http.get(`${environment.appUrl}/api/manager/browse-employees/looking-for-job-count`);
+  }
+
+  getEmployeesLookingForJob(pageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/manager/browse-employees/looking-for-job/${pageIndex}`);
   }
 
   respondToRequest(requestResponse: RequestResponse) {
@@ -85,12 +92,14 @@ export class ManagerService {
     const formData: FormData = new FormData();
 
     formData.append('name', model.name);
-    formData.append('address', model.address);
+    formData.append('address1', model.address1);
+    formData.append('address2', model.address2);
     formData.append('city', model.city);
     formData.append('employeeCapacity', model.employeeCapacity.toString());
-    formData.append('isWorking', model.isWorking.toString());
     formData.append('iconFile', model.iconFile);
-
+    formData.append('longitude', model.longitude.toString());
+    formData.append('latitude', model.latitude.toString());
+    
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);
   }
 

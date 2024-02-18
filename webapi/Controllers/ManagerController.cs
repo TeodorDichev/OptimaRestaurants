@@ -120,7 +120,7 @@ namespace webapi.Controllers
             return await GenerateNewManagerDto(managerEmail, 1);
         }
 
-        [HttpGet("api/manager/browse-employees/looking-for-job")]
+        [HttpGet("api/manager/browse-employees/looking-for-job/{lastPageIndex}")]
         public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob(int lastPageIndex)
         {
             return _employeeService.GetEmployeesLookingForJob(lastPageIndex);

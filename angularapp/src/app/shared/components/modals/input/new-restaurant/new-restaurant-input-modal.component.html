@@ -9,19 +9,24 @@
             [class.is-invalid]="submitted && newRestaurantForm.get('name')?.errors">
         </div>
         <div class="input-field">
-          <span class="fa fa-map-marker theme-main p-2"></span>
-          <input formControlName="address" type="text" placeholder="Адрес"
-            [class.is-invalid]="submitted && newRestaurantForm.get('address')?.errors">
+          <span class="fa fa-map-pin p-2"></span>
+          <input type="text" placeholder="Търсете локация/адрес" formControlName="fullLocationString"
+            [(ngModel)]="searchLocationPropmt">
+          <div (click)="getSearchLocationResults()" data-bs-toggle="collapse" data-bs-target="#collapseResults"
+            id="collapseToggle">
+            <i class="fa-solid fa-magnifying-glass-location p-2"></i>
+          </div>
         </div>
-        <div class="input-field">
-          <span class="fa fa-location-arrow theme-main p-2"></span>
-          <input formControlName="city" type="text" placeholder="Град"
-            [class.is-invalid]="submitted && newRestaurantForm.get('city')?.errors">
+        <div class="collapse" id="collapseResults">
+          <div class="collapse-body">
+            <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+              {{result}}
+            </div>
+          </div>
         </div>
         <div class="input-field">
           <span class="fa fa-user theme-main p-2"></span>
-          <input formControlName="employeeCapacity" type="text"
-            placeholder="Максимален капацитет на работници"
+          <input formControlName="employeeCapacity" type="text" placeholder="Максимален капацитет на работници"
             [class.is-invalid]="submitted && newRestaurantForm.get('employeeCapacity')?.errors">
         </div>
         <div class="input-field">
@@ -31,7 +36,7 @@
         <div *ngIf="submitted">
           <div class="text-danger" *ngIf="newRestaurantForm.get('name')?.hasError('required')
               || newRestaurantForm.get('address')?.hasError('required')
-              || newRestaurantForm.get('city')?.hasError('required')
+              || newRestaurantForm.get('fullLocationString')?.hasError('required')
               || newRestaurantForm.get('employeeCapacity')?.hasError('required')">
             Всички полета са задължителни!
           </div>
@@ -42,9 +47,6 @@
           </div>
           <div class="text-danger" *ngIf="newRestaurantForm.get('employeeCapacity')?.hasError('pattern')">
             Невалиден капацитет на работници!
-          </div>
-          <div class="text-danger" *ngIf="newRestaurantForm.get('city')?.hasError('minlength')">
-            Градът се състои от поне 2 символа!
           </div>
         </div>
       </div>

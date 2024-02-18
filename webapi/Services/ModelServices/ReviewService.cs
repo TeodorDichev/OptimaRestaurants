@@ -81,8 +81,8 @@ namespace webapi.Services.ClassServices
                     ReviewType = "ManagerReview",
                     ReviewDate = mr.DateTime.ToShortDateString(),
                     Comment = mr.Comment,
-                    AtmosphereRating = mr.CollegialityRating,
-                    AttitudeRating = mr.PunctualityRating,
+                    CollegialityRating = mr.CollegialityRating,
+                    PunctualityRating = mr.PunctualityRating,
                 });
             }
 

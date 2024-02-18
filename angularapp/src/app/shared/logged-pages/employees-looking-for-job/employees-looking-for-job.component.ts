@@ -14,19 +14,56 @@ export class EmployeesLookingForJobComponent implements OnInit, OnDestroy {
 
   employeesLookingForJob: Employee[] = [];
 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  totalEmployeeCount: number = 0;
+
   constructor(private managerService: ManagerService,
     private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.getEmployeesLookingForJob();
+    this.getEmployeesOnPage();
+    this.getEmployeeCount();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getEmployeesLookingForJob() {
-    const sub = this.managerService.getEmployeesLookingForJob().subscribe({
+  getEmployeeInfo(employeeEmail: string) {
+    this.sharedService.openUserInfoModal(employeeEmail, 'Employee');
+  }
+
+  previousPage() {
+    if (this.currentPage != 1) {
+      this.currentPage -= 1;
+      this.getEmployeesOnPage();
+    }
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage += 1;
+      this.getEmployeesOnPage();
+    }
+  }
+
+  missingIcon(employee: Employee) {
+    employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+  }
+
+  getEmployeeCount() {
+    const sub = this.managerService.getCountOfEmployeesLookingForJob().subscribe({
+      next: (response: any) => {
+        this.totalPages = Math.ceil(response / 20);
+        this.totalEmployeeCount = response;
+      }
+    });
+    this.subscriptions.push(sub);
+  }
+
+  getEmployeesOnPage() {
+    const sub = this.managerService.getEmployeesLookingForJob(this.currentPage).subscribe({
       next: (response: any) => {
         this.employeesLookingForJob = response;
       }
@@ -34,7 +71,8 @@ export class EmployeesLookingForJobComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sub);
   }
 
-  getEmployeeInfo(employeeEmail: string) {
-    this.sharedService.openUserInfoModal(employeeEmail, 'Employee');
+  setCurrentPage(pageIndex: number) {
+    this.currentPage = pageIndex;
+    this.getEmployeesOnPage();
   }
 }
