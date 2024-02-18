@@ -68,7 +68,8 @@ namespace webapi.Services.FileServices
                     var newFileName = uniqueString + ext;
 
                     var fileWithPath = Path.Combine(path, newFileName);
-                    onlinePath = "../../../../assets/uploads/qrcodes" + $"/{newFileName}";
+                    //onlinePath = "../../../../assets/uploads/qrcodes" + $"/{newFileName}"; //local
+                    onlinePath = "assets/uploads/qrcodes" + $"/{newFileName}"; //remote
 
                     bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
 

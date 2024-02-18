@@ -31,7 +31,8 @@
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                onlinePath = "../../../../assets/uploads/pictures" + $"/{newFileName}";
+                //onlinePath = "../../../../assets/uploads/pictures" + $"/{newFileName}"; //local
+                onlinePath = "assets/uploads/pictures" + $"/{newFileName}"; //remote
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();

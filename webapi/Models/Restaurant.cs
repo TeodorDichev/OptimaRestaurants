@@ -16,8 +16,6 @@ namespace webapi.Models
         public required string Address1 { get; set; }
         public required string Address2 { get; set; }
         public required string City { get; set; }
-        public required string County { get; set; }
-        public required string Country { get; set; }
         public int? EmployeeCapacity { get; set; }
         public required int TotalReviewsCount { get; set; }
         public bool IsWorking { get; set; }

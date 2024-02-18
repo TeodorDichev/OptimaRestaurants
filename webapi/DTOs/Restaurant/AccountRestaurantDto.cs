@@ -5,6 +5,9 @@
         public required string Id { get; set; }
         public required string Name { get; set; }
         public required string Address1 { get; set; }
+        public required string Address2 { get; set; }
+        public required decimal Longitude { get; set; }
+        public required decimal Latitude { get; set; }
         public required string City { get; set; }
         public required int EmployeeCapacity { get; set; }
         public required bool IsWorking { get; set; }
