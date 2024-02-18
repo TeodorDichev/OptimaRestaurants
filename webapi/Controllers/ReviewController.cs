@@ -108,7 +108,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(model.EmployeeEmail)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(model.EmployeeEmail);
 
-            if (employee.EmployeesRestaurants.Select(er => er.EndedOn != null && er.Restaurant == restaurant) != null)
+            if (! _restaurantService.GetEmployeesOfRestaurant(restaurant).Any(e => e.Profile.Email == model.EmployeeEmail))
                 return BadRequest("Потребителят не работи за вас!");
 
             await _reviewService.AddManagerReview(restaurant, employee, model);
@@ -119,6 +119,7 @@ namespace webapi.Controllers
                 if (model.CollegialityRating.HasValue) _reviewService.UpdateCollegiality(employee, model.CollegialityRating.Value);
                 if (model.PunctualityRating.HasValue) _reviewService.UpdatePunctuality(employee, model.PunctualityRating.Value);
                 if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
+                await _reviewService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
             }
             catch (Exception)
