@@ -17,10 +17,22 @@
                             [class.is-invalid]="submitted && registerForm.get('lastName')?.errors">
                     </div>
                 </div>
-                <div class="input-field">
+                <!-- <div class="input-field">
                     <span class="fa fa-map-pin p-2" aria-hidden="true"></span>
                     <input formControlName="city" type="text" placeholder="Град"
                         [class.is-invalid]="submitted && registerForm.get('city')?.errors">
+                </div> -->
+                <div class="input-field">
+                    <span class="fa fa-map-pin p-2"></span>
+                    <input type="text" placeholder="Търсете град" formControlName="city" [(ngModel)]="searchLocationPropmt">
+                    <div (click)="getSearchLocationResults()" data-bs-toggle="collapse" data-bs-target="#collapseResults" id="collapseToggle">
+                        <i class="fa-solid fa-magnifying-glass-location p-2"></i>
+                    </div>             
+                </div>
+                <div class="collapse" id="collapseResults">
+                    <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+                        {{result}}
+                    </div>
                 </div>
                 <div class="input-field">
                     <span class="fa fa-calendar p-2"></span>
@@ -45,6 +57,7 @@
                     <div class="text-danger" *ngIf="registerForm.get('firstName')?.hasError('required')
                         || registerForm.get('lastName')?.hasError('required')
                         || registerForm.get('email')?.hasError('required')
+                        || registerForm.get('city')?.hasError('required')
                         || registerForm.get('password')?.hasError('required')
                         || registerForm.get('birthDate')?.hasError('required')">
                         Всички полета са задължителни!
@@ -77,5 +90,6 @@
                     <a class="theme-main" routerLink="/account/login">Влезте</a>
                 </div>
             </form>
+
         </div>
     </div>
