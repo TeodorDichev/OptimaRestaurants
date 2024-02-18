@@ -50,12 +50,15 @@ export class ManagerReviewComponent implements OnDestroy {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
         }, error: error => {
-          console.log(this.managerReview);
           this.sharedService.showNotification(false, 'Неуспешно изпращане!', error.error);
         }
       });
       this.subscriptions.push(sub);
     }
+  }
+
+  getComment(event: any) {
+    this.managerReview.comment = event.target.value;
   }
 
   getCollegialityRating(rating: number) {
@@ -64,9 +67,5 @@ export class ManagerReviewComponent implements OnDestroy {
 
   getPunctualityRating(rating: number) {
     this.managerReview.punctualityRating = rating;
-  }
-
-  getComment(event: any) {
-    this.managerReview.comment = event.target.value;
   }
 }

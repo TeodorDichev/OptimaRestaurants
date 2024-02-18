@@ -24,14 +24,18 @@
                 </div> -->
                 <div class="input-field">
                     <span class="fa fa-map-pin p-2"></span>
-                    <input type="text" placeholder="Търсете град" formControlName="city" [(ngModel)]="searchLocationPropmt">
-                    <div (click)="getSearchLocationResults()" data-bs-toggle="collapse" data-bs-target="#collapseResults" id="collapseToggle">
+                    <input type="text" placeholder="Търсете град" formControlName="city"
+                        [(ngModel)]="searchLocationPropmt">
+                    <div (click)="getSearchLocationResults()" data-bs-toggle="collapse"
+                        data-bs-target="#collapseResults" id="collapseToggle">
                         <i class="fa-solid fa-magnifying-glass-location p-2"></i>
-                    </div>             
+                    </div>
                 </div>
                 <div class="collapse" id="collapseResults">
-                    <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
-                        {{result}}
+                    <div class="collapse-body">
+                        <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+                            {{result}}
+                        </div>
                     </div>
                 </div>
                 <div class="input-field">
@@ -90,6 +94,5 @@
                     <a class="theme-main" routerLink="/account/login">Влезте</a>
                 </div>
             </form>
-
         </div>
     </div>

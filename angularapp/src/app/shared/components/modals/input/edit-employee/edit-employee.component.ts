@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
-import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
@@ -18,14 +17,16 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
   editEmployeeForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
-  email: string | null = this.accountService.getEmail();
   employee: Employee | undefined;
+
+  searchLocationPropmt: string | undefined;
+  resultsLocationSearch: string[] = [];
+  selectedCity: string | undefined;
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private sharedService: SharedService,
-    private accountService: AccountService) { }
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getEmployee();
@@ -44,7 +45,9 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
       profilePictureFile: ['', []],
       newBirthDate: ['', []],
       newCity: ['', [Validators.minLength(2)]],
-      isLookingForJob: ['', []]
+      isLookingForJob: ['', []],
+      oldPassword: ['', []],
+      newPassword: ['', []]
     })
   }
 
@@ -57,12 +60,34 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
     }
   }
 
+  getSearchLocationResults() {
+    fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchLocationPropmt}&apiKey=0d4bc92697134fac82ff67220bd007e2&limit=3`, { method: 'GET' })
+      .then(response => response.json())
+      .then(result => {
+        this.resultsLocationSearch = [];
+        for (let res of result.features) {
+          this.resultsLocationSearch.push(res.properties.city + ', ' + res.properties.country);
+        }
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  selectCity(cityCountry: string) {
+    this.selectedCity = cityCountry.split(',')[0];
+    this.searchLocationPropmt = this.selectedCity;
+    document.getElementById('collapseToggle')?.click();
+  }
+
   editEmployee() {
     this.submitted = true;
     this.errorMessages = [];
 
-    if (this.editEmployeeForm.valid && this.email) {
-      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).subscribe({
+    if (this.selectedCity && this.selectedCity != this.searchLocationPropmt) {
+      this.editEmployeeForm.get('newCity')?.setErrors({ 'invalid': true });
+    }
+
+    if (this.editEmployeeForm.valid && this.employee) {
+      const sub = this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.employee.email).subscribe({
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -76,12 +101,13 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   deleteEmployeeAccount() {
-    if (this.email) {
-      const sub = this.employeeService.deleteEmployeeAccount(this.email).subscribe({
+    if (this.employee) {
+      const sub = this.employeeService.deleteEmployeeAccount(this.employee.email).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -105,6 +131,26 @@ export class EditEmployeeComponent implements OnInit, OnDestroy {
       }
     })
     this.subscriptions.push(sub);
+  }
+
+  isTextOld: boolean = false;
+  typeOld: string = "Password";
+  eyeIconOld: string = "fa-eye-slash";
+
+  hideShowPassOld() {
+    this.isTextOld = !this.isTextOld;
+    this.isTextOld ? this.eyeIconOld = "fa-eye" : this.eyeIconOld = "fa-eye-slash";
+    this.isTextOld ? this.typeOld = "text" : this.typeOld = "password";
+  }
+
+  isTextNew: boolean = false;
+  typeNew: string = "Password";
+  eyeIconNew: string = "fa-eye-slash";
+
+  hideShowPassNew() {
+    this.isTextNew = !this.isTextNew;
+    this.isTextNew ? this.eyeIconNew = "fa-eye" : this.eyeIconNew = "fa-eye-slash";
+    this.isTextNew ? this.typeNew = "text" : this.typeNew = "password";
   }
 }
 

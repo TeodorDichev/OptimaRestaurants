@@ -32,7 +32,6 @@ export class EditManagerComponent implements OnInit, OnDestroy {
     this.initializeForm();
   }
 
-
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
@@ -42,7 +41,9 @@ export class EditManagerComponent implements OnInit, OnDestroy {
       newFirstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       newLastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       newPhoneNumber: ['', [Validators.pattern('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')]],
-      profilePictureFile: ['', []]
+      profilePictureFile: ['', []],
+      oldPassword: ['', []],
+      newPassword: ['', []]
     })
   }
 
@@ -95,6 +96,26 @@ export class EditManagerComponent implements OnInit, OnDestroy {
       });
       this.subscriptions.push(sub);
     }
+  }
+
+  isTextOld: boolean = false;
+  typeOld: string = "Password";
+  eyeIconOld: string = "fa-eye-slash";
+
+  hideShowPassOld() {
+    this.isTextOld = !this.isTextOld;
+    this.isTextOld ? this.eyeIconOld = "fa-eye" : this.eyeIconOld = "fa-eye-slash";
+    this.isTextOld ? this.typeOld = "text" : this.typeOld = "password";
+  }
+
+  isTextNew: boolean = false;
+  typeNew: string = "Password";
+  eyeIconNew: string = "fa-eye-slash";
+
+  hideShowPassNew() {
+    this.isTextNew = !this.isTextNew;
+    this.isTextNew ? this.eyeIconNew = "fa-eye" : this.eyeIconNew = "fa-eye-slash";
+    this.isTextNew ? this.typeNew = "text" : this.typeNew = "password";
   }
 
   private setManager() {

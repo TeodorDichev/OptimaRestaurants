@@ -39,6 +39,8 @@ export class EmployeeService {
     formData.append('newBirthDate', model.newBirthDate.toString());
     formData.append('newCity', model.newCity);
     formData.append('isLookingForJob', model.isLookingForJob.toString());
+    formData.append('oldPassword', model.oldPassword);
+    formData.append('newPassword', model.newPassword);
 
     return this.http.put(`${environment.appUrl}/api/employee/update-employee/${email}`, formData);
   }

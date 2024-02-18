@@ -56,10 +56,11 @@
                 Служители в {{currentRestaurant?.name}}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body">
+        <div class="offcanvas-body" id="offcanvas">
             <div class="list-items" *ngFor="let employee of this.employees;">
                 <div class="restaurant-employee" *ngIf="this.currentRestaurant">
-                    <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)">
+                    <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)"
+                        data-bs-dismiss="offcanvas">
                         <img class="emp-img" src="{{employee.profilePicturePath}}">
                         <div>
                             <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
@@ -67,11 +68,13 @@
                         </div>
                     </div>
                     <div class="buttons-info-edit">
-                        <button class="button btn-inverted" (click)="openManagerReviewModal(employee.email, currentRestaurant.id)">
+                        <button class="button btn-inverted"
+                            (click)="openManagerReviewModal(employee.email, currentRestaurant.id)"
+                            data-bs-dismiss="offcanvas">
                             <i class="fa-solid fa-star fa-xl"></i>
                         </button>
-                        <button class="button btn-inverted"
-                            (click)="fireEmployee(employee.email, currentRestaurant.id)">
+                        <button class="button btn-inverted" (click)="fireEmployee(employee.email, currentRestaurant.id)"
+                            data-bs-dismiss="offcanvas">
                             <i class="fa-solid fa-user-large-slash fa-xl"></i>
                         </button>
                     </div>

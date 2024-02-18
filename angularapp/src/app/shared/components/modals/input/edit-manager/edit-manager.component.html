@@ -21,6 +21,16 @@
                     <span class="fa fa-picture-o p-2"></span>
                     <input (change)="onFileSelected($event)" type="file" accept="image/*">
                 </div>
+                <div class="input-field">
+                    <span class="fa fa-lock p-2"></span>
+                    <input formControlName="oldPassword" [type]="typeOld" placeholder="Текуща парола">
+                    <span (click)="hideShowPassOld()" class="fa {{eyeIconOld}}"></span>
+                </div>
+                <div class="input-field">
+                    <span class="fa fa-lock p-2"></span>
+                    <input formControlName="newPassword" [type]="typeNew" placeholder="Нова парола">
+                    <span (click)="hideShowPassNew()" class="fa {{eyeIconNew}}"></span>
+                </div>
                 <div *ngIf="submitted">
                     <div class="text-danger"
                         *ngIf="editManagerForm.get('newFirstName')?.hasError('minlength') || editManagerForm.get('newFirstName')?.hasError('maxlength')

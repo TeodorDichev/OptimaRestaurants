@@ -61,5 +61,12 @@ a {
     display: flex;
     padding: 8px;
     border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: chocolate;
+    color: white;
+}
+
+.collapse-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }

@@ -107,7 +107,6 @@ export class RegisterEmployeeComponent implements OnInit, OnDestroy {
         for (let res of result.features) {
           this.resultsLocationSearch.push(res.properties.city + ', ' + res.properties.country);
         }
-        console.log(this.resultsLocationSearch);
       })
       .catch(error => console.log('error', error));
   }

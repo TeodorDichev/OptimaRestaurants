@@ -53,7 +53,8 @@ export class ManagerLoggedViewComponent implements OnInit, OnDestroy {
   }
 
   getEmployeeInfo(employee: Employee) {
-    this.sharedService.openUserInfoModal(employee.email, 'Employee')
+    this.sharedService.openUserInfoModal(employee.email, 'Employee');
+
   }
 
   fireEmployee(employeeEmail: string, restaurantId: string) {

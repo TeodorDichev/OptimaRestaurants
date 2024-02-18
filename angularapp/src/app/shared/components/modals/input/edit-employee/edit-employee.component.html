@@ -25,7 +25,17 @@
                 </div>
                 <div class="input-field">
                     <span class="fa fa-map-pin p-2"></span>
-                    <input formControlName="newCity" type="text" placeholder="Нов град ({{employee?.city}})">
+                    <input type="text" placeholder="Търсете град" formControlName="newCity"
+                        [(ngModel)]="searchLocationPropmt">
+                    <div (click)="getSearchLocationResults()" data-bs-toggle="collapse"
+                        data-bs-target="#collapseResults" id="collapseToggle">
+                        <i class="fa-solid fa-magnifying-glass-location p-2"></i>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseResults">
+                    <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+                        {{result}}
+                    </div>
                 </div>
                 <div class="input-field">
                     <span class="fa fa-picture-o p-2"></span>
@@ -37,14 +47,24 @@
                     <input class="checkbox-input m-2" type="checkbox" formControlName="isLookingForJob"
                         [(ngModel)]="employee.isLookingForJob">
                 </div>
+                <div class="input-field">
+                    <span class="fa fa-lock p-2"></span>
+                    <input formControlName="oldPassword" [type]="typeOld" placeholder="Текуща парола">
+                    <span (click)="hideShowPassOld()" class="fa {{eyeIconOld}}"></span>
+                </div>
+                <div class="input-field">
+                    <span class="fa fa-lock p-2"></span>
+                    <input formControlName="newPassword" [type]="typeNew" placeholder="Нова парола">
+                    <span (click)="hideShowPassNew()" class="fa {{eyeIconNew}}"></span>
+                </div>
                 <div *ngIf="submitted">
                     <div class="text-danger"
                         *ngIf="editEmployeeForm.get('newFirstName')?.hasError('minlength') || editEmployeeForm.get('newFirstName')?.hasError('maxlength')
                             || editEmployeeForm.get('newLastName')?.hasError('minlength') || editEmployeeForm.get('newLastName')?.hasError('maxlength')">
                         Името и фамилията трябва да са между 2 и 50 символа!
                     </div>
-                    <div class="text-danger" *ngIf="editEmployeeForm.get('newCity')?.hasError('minlength')">
-                        Градът се състои от поне 2 символа!
+                    <div class="text-danger" *ngIf="editEmployeeForm.get('newCity')?.hasError('invalid')">
+                        Невалиден град!
                     </div>
                     <div class="text-danger" *ngIf="editEmployeeForm.get('newPhoneNumber')?.hasError('pattern')">
                         Невалиден телефонен номер!

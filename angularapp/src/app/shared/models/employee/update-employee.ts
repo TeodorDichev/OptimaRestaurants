@@ -5,5 +5,7 @@ export interface UpdateEmployee {
     profilePictureFile: File,
     newBirthDate: Date,
     newCity: string,
-    isLookingForJob: boolean
+    isLookingForJob: boolean,
+    oldPassword: string,
+    newPassword: string
 }

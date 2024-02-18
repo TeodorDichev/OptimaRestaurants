@@ -71,6 +71,8 @@ export class ManagerService {
     formData.append('newLastName', model.newLastName);
     formData.append('newPhoneNumber', model.newPhoneNumber);
     formData.append('profilePictureFile', model.profilePictureFile);
+    formData.append('oldPassword', model.oldPassword);
+    formData.append('newPassword', model.newPassword);
 
     return this.http.put(`${environment.appUrl}/api/manager/update-manager/${email}`, formData);
   }
