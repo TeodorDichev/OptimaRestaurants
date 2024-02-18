@@ -409,7 +409,11 @@ namespace webapi.Services.ClassServices
         }
         public Employee? GetTopEmployeeOfRestaurant(Restaurant restaurant)
         {
-            return restaurant.EmployeesRestaurants.Where(er => er.EndedOn == null).Select(e => e.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
+            return restaurant.EmployeesRestaurants
+                .Where(er => er.EndedOn == null)
+                .Select(e => e.Employee)
+                .OrderByDescending(e => e.EmployeeAverageRating)
+                .FirstOrDefault();
         }
         public List<Employee> GetEmployeesOfRestaurant(Restaurant restaurant)
         {
