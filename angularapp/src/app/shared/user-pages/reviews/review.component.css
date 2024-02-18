@@ -4,11 +4,19 @@
     align-items: flex-start;
     flex: 1 0 0;
     align-self: stretch;
+    background-image: url('../../../../assets/images/index-page-img.png') !important;
+}
+
+.content {
+    align-self: center;
 }
 
 .content-screen-fill {
+    border-radius: 10% 90% / 90% 10%;
     align-items: center;
+    padding: 60px 45px;
     justify-content: flex-start;
+    background-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 .rate-group {
@@ -17,4 +25,14 @@
     justify-content: space-around;
     align-self: stretch;
     flex: 1 0 0;
+    align-items: center;
+}
+
+.dropdown-menu {
+    max-height: 200px;
+    overflow: auto;
+}
+
+.custom-padding {
+    padding: 2px 6px;
 }

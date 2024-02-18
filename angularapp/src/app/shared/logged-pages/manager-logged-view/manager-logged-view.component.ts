@@ -48,7 +48,7 @@ export class ManagerLoggedViewComponent implements OnInit, OnDestroy {
         (response: any) => {
           this.employees = response;
         });
-        this.subscriptions.push(sub);
+      this.subscriptions.push(sub);
     }
   }
 
@@ -56,16 +56,18 @@ export class ManagerLoggedViewComponent implements OnInit, OnDestroy {
     this.sharedService.openUserInfoModal(employee.email, 'Employee')
   }
 
-  fireEmployee(employeeEmail: string, restaurantId: string | undefined) {
-    if (restaurantId) {
-      const sub = this.managerService.fireEmployee(employeeEmail, restaurantId).subscribe({
-        next: (response: any) => {
-          this.sharedService.showNotification(true, 'Успешно уволнихте служител!', 'Вече той не работи за вас.')
-          this.employees = response;
-        }
-      });
-      this.subscriptions.push(sub);
-    }
+  fireEmployee(employeeEmail: string, restaurantId: string) {
+    const sub = this.managerService.fireEmployee(employeeEmail, restaurantId).subscribe({
+      next: (response: any) => {
+        this.sharedService.showNotification(true, 'Успешно уволнихте служител!', 'Вече той не работи за вас.')
+        this.employees = response;
+      }
+    });
+    this.subscriptions.push(sub);
+  }
+
+  openManagerReviewModal(employeeEmail: string, restaurantId: string) { 
+    this.sharedService.openManagerReviewModal(employeeEmail, restaurantId);
   }
 
   selectedRestaurant(selectedRestaurant: Restaurant) {

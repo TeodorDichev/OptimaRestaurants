@@ -19,7 +19,7 @@
         </div>
         <div class="screen-left rest-emp-list">
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
+                <div class="restaurant-employee" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
                     <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                     <div class="restaurant-info">
@@ -44,7 +44,7 @@
                             <button class="button btn-inverted" (click)="editRestaurant()">
                                 <i class="fa-solid fa-pencil fa-xl"></i>
                             </button>
-                        </div>    
+                        </div>
                     </div>
                 </div>
             </div>
@@ -58,18 +58,20 @@
         </div>
         <div class="offcanvas-body">
             <div class="list-items" *ngFor="let employee of this.employees;">
-                <div class="restaurant-employee">
-                    <img class="emp-img" src="{{employee.profilePicturePath}}">
-                    <div>
-                        <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
-                        <div>{{employee.email}}</div>
+                <div class="restaurant-employee" *ngIf="this.currentRestaurant">
+                    <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)">
+                        <img class="emp-img" src="{{employee.profilePicturePath}}">
+                        <div>
+                            <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
+                            <div>{{employee.email}}</div>
+                        </div>
                     </div>
                     <div class="buttons-info-edit">
-                        <button class="button btn-inverted" (click)="getEmployeeInfo(employee)">
-                            <i class="fa-solid fa-info fa-xl"></i>
+                        <button class="button btn-inverted" (click)="openManagerReviewModal(employee.email, currentRestaurant.id)">
+                            <i class="fa-solid fa-star fa-xl"></i>
                         </button>
                         <button class="button btn-inverted"
-                            (click)="fireEmployee(employee.email, currentRestaurant?.id)">
+                            (click)="fireEmployee(employee.email, currentRestaurant.id)">
                             <i class="fa-solid fa-user-large-slash fa-xl"></i>
                         </button>
                     </div>

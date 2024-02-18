@@ -12,6 +12,7 @@ import { Restaurant } from './models/restaurant/restaurant';
 import { QrCodeComponent } from './components/modals/qr-code/qr-code.component';
 import { ScheduleManagerComponent } from './components/modals/schedules/schedule-manager/schedule-manager.component';
 import { ScheduleEmployeeComponent } from './components/modals/schedules/schedule-employee/schedule-employee.component';
+import { ManagerReviewComponent } from './components/modals/input/manager-review/manager-review.component';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +78,16 @@ export class SharedService {
       }
     }
     this.bsModalRef = this.modalService.show(UserInfoComponent, Object.assign(userData, { class: 'modal-lg' }));
+  }
+
+  openManagerReviewModal(employeeEmail: string, restaurantId: string) {
+    const data: ModalOptions = {
+      initialState: {
+        employeeEmail,
+        restaurantId
+      }
+    }
+    this.bsModalRef = this.modalService.show(ManagerReviewComponent ,data);
   }
 
   openQRCodeModal() {

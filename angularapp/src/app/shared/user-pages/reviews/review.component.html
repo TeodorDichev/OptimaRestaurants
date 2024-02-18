@@ -1,50 +1,51 @@
 <nav-top></nav-top>
 <div class="content">
     <div class="content-screen content-screen-fill">
-        <div *ngIf="!selectedRestaurant">Здравейте!</div>
-        <div *ngIf="!selectedRestaurant">Моля, изберете ресторанта, в който се намирате:</div>
+        <div class="h2 fw-bold theme-main" *ngIf="!selectedRestaurant">Здравейте!</div>
+        <div class="h4 fst-italic text-muted" *ngIf="!selectedRestaurant">Моля, изберете ресторанта, в който се
+            намирате:</div>
         <div>
-            <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+            <button class="button btn-green dropdown-toggle" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 <span *ngIf="!selectedRestaurant">Изберете ресторант</span>
                 <span *ngIf="selectedRestaurant">{{selectedRestaurant.name}}</span>
             </button>
             <ul class="dropdown-menu">
-                <div class="p-2" *ngFor="let restaurant of reviewEmployeeInfo?.restaurantDtos">
-                    <div class="button btn-inverted" (click)="selectRestaurant(restaurant)">
+                <div class="custom-padding" *ngFor="let restaurant of reviewEmployeeInfo?.restaurantDtos">
+                    <div class="button btn-chocolate" (click)="selectRestaurant(restaurant)">
                         {{restaurant.name}}
                     </div>
                 </div>
             </ul>
         </div>
         <div class="rate-group" *ngIf="selectedRestaurant">
-            <div>
-                Оценете работата на {{reviewEmployeeInfo?.employeeName}}
-                <div>
-                    Speed: <app-rate-employee-restaurant
+            <div class="text-center">
+                <span class="h4">Оценете работата на {{reviewEmployeeInfo?.employeeName}}</span>
+                <div class="pt-2">
+                    <span class="h5 fst-italic">Бързина: </span><app-rate-employee-restaurant
                         (ratingResult)="getSpeedRating($event)"></app-rate-employee-restaurant>
                 </div>
                 <div>
-                    Attitude: <app-rate-employee-restaurant
+                    <span class="h5 fst-italic">Поведение: </span><app-rate-employee-restaurant
                         (ratingResult)="getAttitudeRating($event)"></app-rate-employee-restaurant>
                 </div>
             </div>
-            <div>
-                Оценете и ресторант {{selectedRestaurant.name}}
-                <div>
-                    Cuisine: <app-rate-employee-restaurant
+            <div class="text-center">
+                <span class="h4">Оценете и ресторант {{selectedRestaurant.name}}</span>
+                <div class="pt-2">
+                    <span class="h5 fst-italic">Кухня: </span><app-rate-employee-restaurant
                         (ratingResult)="getCuisineRating($event)"></app-rate-employee-restaurant>
                 </div>
                 <div>
-                    Atmosphere: <app-rate-employee-restaurant
+                    <span class="h5 fst-italic">Атмосфера: </span><app-rate-employee-restaurant
                         (ratingResult)="getAtmosphereRating($event)"></app-rate-employee-restaurant>
                 </div>
             </div>
-            <div>
+            <div class="text-center h4">
                 <span>Оставете коментар</span>
                 <textarea class="form-control" (input)="reviewCommentValue($event)"></textarea>
             </div>
-            <div>
+            <div class="text-center">
                 <button class="button btn-chocolate" (click)="submitCustomerReview()">
                     Поставяне на оценка
                 </button>

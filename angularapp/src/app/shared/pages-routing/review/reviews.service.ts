@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
 import { CustomerReview } from '../../models/reviews/customer-review';
+import { ManagerReview } from '../../models/reviews/manager-review';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class ReviewsService {
     return this.http.post(`${environment.appUrl}/api/review-employee`, customerReview);
   }
 
-  submitManagerReview() {
-    return this.http.get(`${environment.appUrl}/api/manager/review-employee`);
+  submitManagerReview(managerReview: ManagerReview) {
+    return this.http.post(`${environment.appUrl}/api/manager/review-employee`, managerReview);
   }
 
   getEmployeeReviewsHistory(email:string) {

@@ -1,0 +1,27 @@
+<div class="modal-body">
+    <div class="h4 text-center">
+        <span>Оставете оценка за {{employeeEmail}}</span>
+    </div>
+    <div class="review">
+        <div class="text-center">
+            <div class="pt-2">
+                <span class="h5">Закъснения: </span><app-rate-employee-restaurant
+                    (ratingResult)="getPunctualityRating($event)"></app-rate-employee-restaurant>
+                <div class="h6 text-muted fst-italic">Оценка от 5 звезди означава, че работникът НЕ закъснява</div>
+            </div>
+            <div>
+                <span class="h5">Колегиалност: </span><app-rate-employee-restaurant
+                    (ratingResult)="getCollegialityRating($event)"></app-rate-employee-restaurant>
+            </div>
+        </div>
+        <div class="text-center h5">
+            <span>Оставете коментар</span>
+            <textarea class="form-control" (input)="getComment($event)"></textarea>
+        </div>
+        <div class="text-center">
+            <button class="button btn-chocolate" (click)="submitManagerReview()">
+                Поставяне на оценка
+            </button>
+        </div>
+    </div>
+</div>

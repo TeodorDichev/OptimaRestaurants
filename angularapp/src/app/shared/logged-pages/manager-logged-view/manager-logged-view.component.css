@@ -55,11 +55,8 @@
     align-items: flex-start;
 }
 
-.cursor-pointer {
-    cursor: pointer;
-}
-
 .restaurant-employee:hover {
+    cursor: pointer;
     background-color: rgba(241, 241, 241, 0.8);
 }
 
@@ -116,4 +113,20 @@
     align-items: center;
     padding: 16px;
     justify-content: space-between;
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+}
+
+.employee-info-clickable {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
 }

@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RestaurantsService } from '../../pages-routing/restaurants/restaurants.service';
 import { Restaurant } from '../../models/restaurant/restaurant';
 import { SharedService } from '../../shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-browse-all-restaurants',
   templateUrl: './browse-all-restaurants.component.html',
   styleUrls: ['./browse-all-restaurants.component.css']
 })
-export class BrowseAllRestaurantsComponent implements OnInit {
+export class BrowseAllRestaurantsComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
 
   filterCurrent: string = '';
   cities: string[] = [];
@@ -28,91 +30,104 @@ export class BrowseAllRestaurantsComponent implements OnInit {
     this.getAllRestaurants();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
   getAllRestaurants() {
     this.getAllRestaurantsCount();
-    this.restaurantsService.getAllRestaurants(this.currentPage).subscribe({
+    const sub = this.restaurantsService.getAllRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.filterCurrent = '';
         this.allRestaurants = response;
       }
     });
+    this.subscriptions.push(sub);
   }
 
   getAllRestaurantsCount() {
-    this.restaurantsService.getAllRestaurantsCount().subscribe({
+    const sub = this.restaurantsService.getAllRestaurantsCount().subscribe({
       next: (response: any) => {
         this.totalPages = Math.ceil(response / 20);
         this.totalRestaurantCount = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getCitiesNames() {
-    this.restaurantsService.getCitiesNames().subscribe({
+    const sub = this.restaurantsService.getCitiesNames().subscribe({
       next: (response: any) => {
         this.cities = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getRestaurantsCountInACity(cityName: string) {
-    this.restaurantsService.getRestaurantsCountInACity(cityName).subscribe({
+    const sub = this.restaurantsService.getRestaurantsCountInACity(cityName).subscribe({
       next: (response: any) => {
         this.totalPages = Math.ceil(response / 20);
         this.totalRestaurantCount = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getRestaurantsByCity(cityName: string) {
     this.getRestaurantsCountInACity(cityName);
-    this.restaurantsService.getAllRestaurantsInACity(this.currentPage, cityName).subscribe({
+    const sub = this.restaurantsService.getAllRestaurantsInACity(this.currentPage, cityName).subscribe({
       next: (response: any) => {
         this.filterCurrent = 'Включен филтър за градове';
         this.currentCity = cityName;
         this.allRestaurants = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getBestCuisineRestaurants() {
     this.getAllRestaurantsCount();
-    this.restaurantsService.getBestCuisineRestaurants(this.currentPage).subscribe({
+    const sub = this.restaurantsService.getBestCuisineRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.filterCurrent = 'Включено сортиране по ястия';
         this.allRestaurants = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getBestAtmosphereRestaurants() {
     this.getAllRestaurantsCount();
-    this.restaurantsService.getBestAtmosphereRestaurants(this.currentPage).subscribe({
+    const sub = this.restaurantsService.getBestAtmosphereRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.filterCurrent = 'Включено сортиране по атмосфера';
         this.allRestaurants = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getBestEmployeesRestaurants() {
     this.getAllRestaurantsCount();
-    this.restaurantsService.getBestEmployeesRestaurants(this.currentPage).subscribe({
+    const sub = this.restaurantsService.getBestEmployeesRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.filterCurrent = 'Включено сортиране по работници';
         this.allRestaurants = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
   getBestRestaurants() {
     this.getAllRestaurantsCount();
-    this.restaurantsService.getBestRestaurants(this.currentPage).subscribe({
+    const sub = this.restaurantsService.getBestRestaurants(this.currentPage).subscribe({
       next: (response: any) => {
         this.filterCurrent = 'Включено сортиране по ресторанти';
         this.allRestaurants = response;
       }
-    })
+    });
+    this.subscriptions.push(sub);
   }
 
 

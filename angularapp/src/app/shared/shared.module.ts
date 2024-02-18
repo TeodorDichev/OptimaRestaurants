@@ -38,6 +38,7 @@ import { ManagerLoggedViewComponent } from './logged-pages/manager-logged-view/m
 import { AboutComponent } from './user-pages/about/about.component';
 import { BrowseAllRestaurantsComponent } from './user-pages/browse-all-restaurants/browse-all-restaurants.component';
 import { ReviewsComponent } from './user-pages/reviews/review.component';
+import { ManagerReviewComponent } from './components/modals/input/manager-review/manager-review.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ReviewsComponent } from './user-pages/reviews/review.component';
     EditRestaurantModalComponent,
     ScheduleEmployeeComponent,
     ScheduleManagerComponent,
-    RestaurantMapComponent 
+    RestaurantMapComponent,
+    ManagerReviewComponent 
   ],
   imports: [
     CommonModule,
