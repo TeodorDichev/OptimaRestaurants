@@ -86,7 +86,7 @@ namespace webapi.Services.ClassServices
                 });
             }
 
-            return reviews.OrderBy(r => Convert.ToDateTime(r.ReviewDate)).ToList();
+            return reviews.OrderByDescending(r => Convert.ToDateTime(r.ReviewDate)).ToList();
         }
         public bool UpdateAttitude(Employee employee, decimal AttitudeRating)
         {
@@ -182,7 +182,7 @@ namespace webapi.Services.ClassServices
                 if (restaurant.EmployeesAverageRating != null) restaurant.EmployeesAverageRating = (restaurant.RestaurantAverageRating + rating) / 2;
                 else restaurant.EmployeesAverageRating = rating;
 
-                return true;
+                return UpdateRestaurantAverage(restaurant, rating);
             }
             catch (Exception)
             {

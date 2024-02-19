@@ -96,7 +96,10 @@ var app = builder.Build();
 /* HTTP request pipeline configuration and CORS policies */
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    opt
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin();
 });
 
 if (app.Environment.IsDevelopment())
