@@ -192,6 +192,8 @@ namespace webapi.Controllers
             if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
             if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
 
+            if (scheduleDto.Day.Subtract(DateTime.Now.Date).Days < 7) return BadRequest("Промяната на графика трябва да става със седемдневно предизвестие!");
+
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте графика за работен ден! Моля свържете се с мениджъра Ви!");
 
