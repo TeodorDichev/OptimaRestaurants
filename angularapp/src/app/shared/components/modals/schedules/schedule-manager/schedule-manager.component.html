@@ -141,11 +141,16 @@
                     </button>
                 </div>
                 <div class="collapse" id="collapseAdd" [ngClass]="{ 'show': isCreateCollapseOpen }">
-                    <div class="collapse-body">
+                    <div class="text-danger" *ngIf="freeEmployeeList.length == 0">
+                        Няма свободни работници
+                    </div>
+                    <div class="collapse-body" *ngIf="freeEmployeeList.length > 0">
                         <div class="text-center fw-bold fst-italic">
                             Добавяне на ангажимент
                         </div>
-                        Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForCreate">
+                        <div>
+                            Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForEdit">
+                        </div>
                         <div>
                             За цял ден? <input type="checkbox" [(ngModel)]="fullDayForCreate">
                             <span class="text-muted fst-italic" *ngIf="!fullDayForCreate"> или: </span>
@@ -160,17 +165,20 @@
                                 <input type="time" [(ngModel)]="toForCreate">
                             </div>
                         </div>
-                        <div class="assignment" *ngFor="let freeEmployee of freeEmployeeList"
-                            (click)="selectFreeEmployee(freeEmployee)">
-                            <div class="fw-bold">
-                                {{freeEmployee.employeeName}}, {{freeEmployee.employeeEmail}}
-                            </div>
-                            <div class="text-muted" *ngIf="freeEmployee.from">
-                                {{freeEmployee.from}} -> {{freeEmployee.to}}
-                            </div>
-                            <div class="text-success"
-                                *ngIf="freeEmployee.employeeEmail == selectedEmployee.employeeEmail">
-                                <i class="fa-regular fa-circle-check fa-xl text-success"></i>
+                        <div>
+                            <div class="assignment" *ngFor="let freeEmployee of freeEmployeeList"
+                                (click)="selectFreeEmployee(freeEmployee)">
+                                <div class="fw-bold">
+                                    {{freeEmployee.employeeName}}, {{freeEmployee.employeeEmail}}
+                                </div>
+                                <div class="text-muted" *ngIf="freeEmployee.from">
+                                    <span>(Време, посочено за почивно)</span>
+                                    {{freeEmployee.from}} -> {{freeEmployee.to}}
+                                </div>
+                                <div class="text-success"
+                                    *ngIf="freeEmployee.employeeEmail == selectedEmployee.employeeEmail">
+                                    <i class="fa-regular fa-circle-check fa-xl text-success"></i>
+                                </div>
                             </div>
                         </div>
                         <button class="button btn-green" (click)="createAssignment()"
@@ -188,7 +196,9 @@
                         <div class="text-center fw-bold fst-italic">
                             Редактиране на ангажимент към {{selectedAssignment.restaurantName}}
                         </div>
-                        Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForEdit">
+                        <div>
+                            Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForEdit">
+                        </div>
                         <div>
                             За цял ден? <input type="checkbox" [(ngModel)]="fullDayForEdit">
                             <span class="text-muted fst-italic" *ngIf="!fullDayForEdit"> или: </span>

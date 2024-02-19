@@ -181,3 +181,10 @@ td {
     flex-direction: row;
     justify-content: space-evenly;
 }
+
+.employees {
+    display: flex;
+    gap: 4px;
+    max-height: 100px;
+    overflow: auto;
+}
