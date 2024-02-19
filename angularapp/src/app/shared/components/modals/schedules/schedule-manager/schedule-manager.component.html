@@ -95,7 +95,126 @@
             </table>
         </div>
         <div class="date-info">
-            <div class="h5 fw-bold">{{selectedDayAsText}}</div>        
+            <div class="h5 fw-bold">{{selectedDayAsText}}</div>
+            <div *ngIf="selectedDaySchedule.length == 0">
+                Няма отбелязани ангажименти за този ден.
+            </div>
+            <div class="text-muted fst-italic">{{selectedDaySchedule.length}} Ангажимент/а</div>
+            <div class="daily-schedule" *ngIf="selectedDaySchedule.length != 0">
+                <div class="assignment" *ngFor="let assignment of selectedDaySchedule"
+                    (click)="selectAssignment(assignment)">
+                    <div class="h6 text-muted">Ангажимент към ресторант:
+                        <span class="fw-bold theme-main h5">{{assignment.restaurantName}}</span>
+                    </div>
+                    <div class="h6 text-muted">Ангажимент към работник:
+                        <span class="fw-bold theme-main h5">{{assignment.employeeName}}</span>
+                    </div>
+                    <div class="info-check">
+                        <div>
+                            <div class="text-danger fw-bold" *ngIf="assignment.isWorkDay">Работен</div>
+                            <div class="text-success fw-bold" *ngIf="!assignment.isWorkDay">Почивен</div>
+                            <div class="fst-italic" *ngIf="assignment.isFullDay">Цял ден</div>
+                            <div class="fst-italic" *ngIf="!assignment.isFullDay && assignment.from">
+                                От:
+                                {{assignment.from.split('T')[1].split(':')[0]}}:{{assignment.from.split('T')[1].split(':')[1]}}
+                            </div>
+                            <div class="fst-italic" *ngIf="!assignment.isFullDay && assignment.to">
+                                До:
+                                {{assignment.to.split('T')[1].split(':')[0]}}:{{assignment.to.split('T')[1].split(':')[1]}}
+                            </div>
+                        </div>
+                        <div *ngIf="assignment.scheduleId == selectedAssignment.scheduleId">
+                            <i class="fa-regular fa-circle-check fa-xl text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="buttons">
+                    <button class="button btn-inverted h6" data-bs-toggle="collapse" data-bs-target="#collapseAdd"
+                        type="button" (click)="toggleCollapse('createCollapse')">
+                        <i class="fa-solid fa-square-plus fa-xl"></i>
+                    </button>
+                    <button class="button btn-inverted" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
+                        (click)="toggleCollapse('editCollapse')" *ngIf="selectedDaySchedule.length > 0">
+                        <i class="fa-solid fa-pencil fa-xl"></i>
+                    </button>
+                </div>
+                <div class="collapse" id="collapseAdd" [ngClass]="{ 'show': isCreateCollapseOpen }">
+                    <div class="collapse-body">
+                        <div class="text-center fw-bold fst-italic">
+                            Добавяне на ангажимент
+                        </div>
+                        Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForCreate">
+                        <div>
+                            За цял ден? <input type="checkbox" [(ngModel)]="fullDayForCreate">
+                            <span class="text-muted fst-italic" *ngIf="!fullDayForCreate"> или: </span>
+                        </div>
+                        <div *ngIf="!fullDayForCreate">
+                            <span class="">
+                                За даден часови период
+                            </span>
+                            <div class="time-input">
+                                <input type="time" [(ngModel)]="fromForCreate">
+                                <i class="fa-solid fa-arrow-right-long"></i>
+                                <input type="time" [(ngModel)]="toForCreate">
+                            </div>
+                        </div>
+                        <div class="assignment" *ngFor="let freeEmployee of freeEmployeeList"
+                            (click)="selectFreeEmployee(freeEmployee)">
+                            <div class="fw-bold">
+                                {{freeEmployee.employeeName}}, {{freeEmployee.employeeEmail}}
+                            </div>
+                            <div class="text-muted" *ngIf="freeEmployee.from">
+                                {{freeEmployee.from}} -> {{freeEmployee.to}}
+                            </div>
+                            <div class="text-success"
+                                *ngIf="freeEmployee.employeeEmail == selectedEmployee.employeeEmail">
+                                <i class="fa-regular fa-circle-check fa-xl text-success"></i>
+                            </div>
+                        </div>
+                        <button class="button btn-green" (click)="createAssignment()"
+                            *ngIf="selectedEmployee.employeeEmail != ''">
+                            Отбелязване
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseEdit" [ngClass]="{ 'show': isEditCollapseOpen }">
+                    <div class="fst-italic text-danger" *ngIf="selectedAssignment.scheduleId == ''">
+                        Няма избран ангажимент
+                    </div>
+
+                    <div class="collapse-body" *ngIf="selectedAssignment.scheduleId != ''">
+                        <div class="text-center fw-bold fst-italic">
+                            Редактиране на ангажимент към {{selectedAssignment.restaurantName}}
+                        </div>
+                        Отбелязване като работен ден: <input type="checkbox" [(ngModel)]="workDayForEdit">
+                        <div>
+                            За цял ден? <input type="checkbox" [(ngModel)]="fullDayForEdit">
+                            <span class="text-muted fst-italic" *ngIf="!fullDayForEdit"> или: </span>
+                        </div>
+                        <div *ngIf="!fullDayForEdit">
+                            <span class="">
+                                За даден часови период
+                            </span>
+                            <div class="time-input">
+                                <input type="time" [(ngModel)]="fromForEdit">
+                                <i class="fa-solid fa-arrow-right-long"></i>
+                                <input type="time" [(ngModel)]="toForEdit">
+                            </div>
+
+                        </div>
+                        <div class="buttons">
+                            <button class="button btn-green" (click)="editAssignment()">
+                                Редакция
+                            </button>
+                            <button class="button btn-red" (click)="deleteAssignment()">
+                                Изтриване
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="legend-markers">
@@ -106,20 +225,14 @@
             <span>Днешна дата</span>
         </div>
         <div class="marker-example">
-            <td class="item-hover no-workers">
-                12
-            </td>
-            <span>Работен ден без избрани работници</span>
-        </div>
-        <div class="marker-example">
             <td class="item-hover with-workers">
-                13
+                12
             </td>
             <span>Работен ден с избрани работници</span>
         </div>
         <div class="marker-example">
             <td class="item-hover selected">
-                14
+                13
             </td>
             <span>Избрана дата</span>
         </div>

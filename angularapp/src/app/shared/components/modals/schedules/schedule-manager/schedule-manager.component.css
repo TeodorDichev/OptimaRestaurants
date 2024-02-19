@@ -69,15 +69,6 @@ td {
     cursor: pointer;
 }
 
-.no-workers {
-    background-color: rgba(238, 77, 3, 0.7) !important;
-}
-
-.no-workers:hover {
-    background-color: rgba(255, 0, 0, 0.1) !important;
-    cursor: pointer;
-}
-
 .with-workers {
     background-color: rgba(61, 207, 61, 0.7) !important;
 }

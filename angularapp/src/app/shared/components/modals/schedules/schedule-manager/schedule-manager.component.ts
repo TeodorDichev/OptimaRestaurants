@@ -34,7 +34,7 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   selectedRestaurantIndex: number = 0;
 
-  dateMarkers = ['no-workers', 'with-workers', 'selected'];
+  dateMarkers = [ 'with-workers', 'selected'];
   weekdays = ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'];
   weekdaysFull = ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'];
   monthsFull = ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'];
@@ -168,7 +168,7 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
           this.managerFullSchedule = response;
           this.setDatesMarkers();
         }
-      })
+      });
 
       this.subscriptions.push(sub);
     }
@@ -180,9 +180,21 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           console.log('free employees: ', response);
           this.freeEmployeeList = response;
-        }
-      })
 
+        }
+      });
+      this.freeEmployeeList.push({
+        employeeEmail: 'jiberish@hui.kur',
+        employeeName: 'Azbrat',
+        restaurantName: 'Tedi'
+      });
+      this.freeEmployeeList.push({
+        employeeEmail: 'carter@email.com',
+        employeeName: 'Carter',
+        restaurantName: 'Tedi',
+        from: '12:30',
+        to: '14:30'
+      });
       this.subscriptions.push(sub);
     }
   }
@@ -200,7 +212,7 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   setSelectedMarker() {
     this.clearPreviousSelectedDateMarker();
     const selectedDayId = this.getIdByDate(this.selectedDay);
-    this.addMarkerToDate(selectedDayId, 2);
+    this.addMarkerToDate(selectedDayId, 1);
   }
 
   setDatesMarkers() {
@@ -211,9 +223,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
       if (schedule.peopleAssignedToWork) {
         this.addMarkerToDate(currentId, 0); // add marker for no-workers
       }
-      else {
-        this.addMarkerToDate(currentId, 1); // add marker for with workers
-      }
     }
   }
 
@@ -222,12 +231,13 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     this.resetScheduleEdit();
     this.resetTimeRangeCreation();
     this.resetTimeRangeEdit();
+    this.clearSelectedEmployee();
     if (this.manager) {
       const sub = this.managerService.getManagerDailySchedule(this.manager.restaurants[this.selectedRestaurantIndex].id, this.selectedDay).subscribe({
         next: (response: any) => {
           this.selectedDaySchedule = response;
         }
-      })
+      });
 
       this.subscriptions.push(sub);
     }
@@ -434,9 +444,9 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   clearPreviousSelectedDateMarker() {
     for (let id in this.idMarkerPairs) {
-      let index = this.idMarkerPairs[id].indexOf(this.dateMarkers[2]);
+      let index = this.idMarkerPairs[id].indexOf(this.dateMarkers[1]);
       if (index !== -1) {
-        this.idMarkerPairs[id] = this.idMarkerPairs[id].slice(0, index) + this.idMarkerPairs[id].slice(index + this.dateMarkers[2].length);
+        this.idMarkerPairs[id] = this.idMarkerPairs[id].slice(0, index) + this.idMarkerPairs[id].slice(index + this.dateMarkers[1].length);
       }
     }
   }
@@ -532,6 +542,8 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   }
 
   toggleCollapse(collapse: string) {
+    this.freeEmployeeList = [];
+    this.getFreeEmployees();
     if (collapse === 'createCollapse') {
       this.isCreateCollapseOpen = !this.isCreateCollapseOpen;
       this.isEditCollapseOpen = false;
@@ -543,5 +555,15 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   selectFreeEmployee(employee: FreeEmployee) {
     this.selectedEmployee = employee;
+  }
+
+  clearSelectedEmployee() {
+    this.selectedEmployee = {
+      employeeEmail: '',
+      employeeName: '',
+      restaurantName: '',
+      from: undefined,
+      to: undefined
+    }
   }
 }
