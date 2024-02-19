@@ -49,7 +49,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     employeeEmail: '',
     restaurantId: '',
     day: new Date(),
-    // from: '', to: ''
     fullDay: false,
     isWorkDay: false
   };
@@ -57,7 +56,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     scheduleId: '',
     employeeEmail: '',
     employeeName: '',
-    // from: '', to: ''
     isWorkDay: false,
     isFullDay: false,
     restaurantName: ''
@@ -65,7 +63,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   assignmentEdit: ScheduleAssignment = {
     scheduleId: '',
     restaurantId: '',
-    // from: '', to: ''
     fullDay: false,
     isWorkDay: false,
     employeeEmail: '',
@@ -77,7 +74,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     employeeEmail: '',
     employeeName: '',
     restaurantName: ''
-    // from: '', to: ''
   }
 
   fullDayForCreate: boolean = false;
@@ -318,7 +314,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
       scheduleId: '',
       employeeEmail: '',
       employeeName: '',
-      // from: '', to: ''
       isWorkDay: false,
       isFullDay: false,
       restaurantName: ''
