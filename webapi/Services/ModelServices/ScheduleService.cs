@@ -93,8 +93,8 @@ namespace webapi.Services.ModelServices
 
             foreach (var employee in employees)
             {
-                /* If this employee has a full day work/leisure assignment for this day in any restaurant then it cannot work on this day */
-                if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.FullDay && a.Day == DateOnly.FromDateTime(day))) employees.Remove(employee);
+                /* If this employee has a full day work/leisure assignment for this day in any restaurant then it cannot work on this day -> not adding it */
+                if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.FullDay && a.Day == DateOnly.FromDateTime(day))) continue;
 
                 /* for this day the employee has no assignments */
                 else if (!await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)))

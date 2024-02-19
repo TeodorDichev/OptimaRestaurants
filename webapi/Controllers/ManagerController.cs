@@ -253,14 +253,26 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Manager can add both working and leisure days */
-
-            if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (scheduleDto.IsWorkDay)
             {
-                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
-                await _scheduleService.SaveChangesAsync();
-                return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+                {
+                    await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                    await _scheduleService.SaveChangesAsync();
+                    return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                }
+                else return BadRequest("Вече имате запазен друг ангажимент!");
             }
-            else return BadRequest("Вече имате запазен друг ангажимент!");
+            else
+            {
+                if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+                {
+                    await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                    await _scheduleService.SaveChangesAsync();
+                    return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                }
+                else return BadRequest("Вече имате запазен друг ангажимент!");
+            }
         }
 
         [HttpPut("api/manager/schedule/edit-assignment")]
