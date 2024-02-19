@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
 using webapi.DTOs.Schedule;
-using webapi.Migrations;
 using webapi.Models;
 using webapi.Services.ClassServices;
 using webapi.Services.FileServices;
@@ -54,7 +52,7 @@ namespace webapi.Controllers
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            _employeeService.UpdateEmployee(employee, updateDto);
+            await _employeeService.UpdateEmployee(employee, updateDto);
             await _employeeService.SaveChangesAsync();
 
             return await GenerateNewEmployeeDto(email);
@@ -116,7 +114,6 @@ namespace webapi.Controllers
             }
         }
 
-
         [HttpGet("api/employee/get-restaurant-schedule/{email}/{restaurantId}/{month}")]
         public async Task<ActionResult<List<EmployeeFullScheduleDto>>> GetEmployeeRestaurantSchedule(string email, string restaurantId, int month)
         {
@@ -142,13 +139,13 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/employee/get-day-schedule/{email}/{day}")]
-        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateOnly day)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateTime day)
         {
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(email);
 
-            return _scheduleService.GetEmployeeDailySchedule(employee, day);
+            return _scheduleService.GetEmployeeDailySchedule(employee, day.ToLocalTime());
         }
 
         /// <summary>
@@ -159,10 +156,14 @@ namespace webapi.Controllers
         /// <returns> The schedule for the day </returns>
 
         [HttpPost("api/employee/schedule/add-assignment")]
-        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
+        public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
-            if (scheduleDto.Day.AddDays(-7) < DateOnly.FromDateTime(DateTime.Now)) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
-            
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
+            if (scheduleDto.Day.Subtract(DateTime.Now.Date).Days < 7) return BadRequest("Добавянето на почивни дни трябва да става със седемдневно предизвестие!");
+
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(scheduleDto.EmployeeEmail);
@@ -175,7 +176,7 @@ namespace webapi.Controllers
             /* Employee can only add leisure days */
             scheduleDto.IsWorkDay = false;
 
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
                 await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
@@ -187,10 +188,15 @@ namespace webapi.Controllers
         [HttpPut("api/employee/schedule/edit-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте графика за работен ден! Моля свържете се с мениджъра Ви!");
-            
-            /* Deleting the old assignment temporarily */
+
+            /* Deleting the old assignment temporarily but saving its data first */
+            CreateScheduleDto oldSchedule = await _scheduleService.CreateScheduleDto(scheduleDto.ScheduleId);
             if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
             await _scheduleService.SaveChangesAsync();
 
@@ -203,19 +209,19 @@ namespace webapi.Controllers
             else restaurant = await _restaurantService.GetRestaurantById(scheduleDto.RestaurantId);
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
-            /* Checking if it can fit in the schedule */
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            /* Checking if the changed assignment can fit in the schedule */
+            if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
-                await _scheduleService.EditScheduleAssignment(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
                 return await GetDailySchedule(scheduleDto.EmployeeEmail, scheduleDto.Day);
             }
-            else 
-            { 
+            else
+            {
                 /* Adding the old assignment back because the updated one did not fit */
-                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(oldSchedule);
                 await _scheduleService.SaveChangesAsync();
-                return BadRequest("Вече имате запазен друг ангажимент и не можете да промените графика си!"); 
+                return BadRequest("Вече имате запазен друг ангажимент и не можете да промените графика си!");
             }
         }
 
@@ -230,6 +236,23 @@ namespace webapi.Controllers
                 return Ok(new JsonResult(new { title = "Успешно изтрита задача!", message = "Успешно изтрихте задачата от графика си!" }));
             }
             return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
+        }
+
+        [HttpGet("api/employee/regen-qrcode/{email}")]
+        public async Task<IActionResult> RegenerateQrCode(string email)
+        {
+            Employee employee;
+            if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
+            else employee = await _employeeService.GetEmployeeByEmail(email);
+
+            if (await _employeeService.UpdateQrCode(employee))
+            {
+                return Ok(new JsonResult(new { title = "Успешно обновен QR код!", message = "Вие успешно обновихте QR кода си!" }));
+            }
+            else
+            {
+                return BadRequest("Неуспешно обновяване на QR кода!");
+            }
         }
 
         [HttpGet("api/employee/download-qrcode/{email}")]

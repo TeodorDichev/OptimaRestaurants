@@ -1,15 +1,13 @@
-import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
-import { Injectable } from '@angular/core';
-import { RegisterEmployee } from '../../models/account/register-employee';
-import { environment } from 'src/environments/environment.development';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { RegisterManager } from '../../models/account/register-manager';
-import { Login } from '../../models/account/login';
-import { User } from '../../models/account/user';
-import { ReplaySubject, map, of, take, timer } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ReplaySubject, map, of, take } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 import { ConfirmEmail } from '../../models/account/confirm-email';
-import { ResetPassword } from '../../models/account/reset-password';
+import { Login } from '../../models/account/login';
+import { RegisterEmployee } from '../../models/account/register-employee';
+import { RegisterManager } from '../../models/account/register-manager';
+import { User } from '../../models/account/user';
 
 
 @Injectable({
@@ -51,27 +49,15 @@ export class AccountService {
   }
 
   confirmEmail(model: ConfirmEmail) {
-    return this.http.put<User>(`${environment.appUrl}/api/account/confirm-email`, model).pipe(
-      map((user: User) => {
-        if (user) {
-          this.setUser(user);
-          return user;
-        }
-        return null;
-      })
-    );;
+    return this.http.put(`${environment.appUrl}/api/account/confirm-email`, model);
   }
 
   resendEmailConfirmationLink(email: string) {
     return this.http.post(`${environment.appUrl}/api/account/resend-email-confirmation-link/${email}`, {});
   }
 
-  forgotUsernameOrPassword(email: string) {
-    return this.http.post(`${environment.appUrl}/api/account/forgot-username-or-password/${email}`, {});
-  }
-
-  resetPassword(model: ResetPassword) {
-    return this.http.put(`${environment.appUrl}/api/account/reset-password`, model);
+  resetPassword(email: string) {
+    return this.http.put(`${environment.appUrl}/api/account/reset-password/${email}`, {});
   }
 
   login(model: Login) {

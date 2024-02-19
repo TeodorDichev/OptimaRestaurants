@@ -4,7 +4,6 @@ using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.DTOs.Schedule;
-using webapi.Migrations;
 using webapi.Models;
 using webapi.Services.ClassServices;
 using webapi.Services.ModelServices;
@@ -40,9 +39,9 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/get-manager/{email}")]
-        public async Task<ActionResult<ManagerMainViewDto>> GetManager(string email)
+        public async Task<ActionResult<ManagerMainViewDto>> GetManager(string email, int lastPageIndex)
         {
-            if (await _managerService.CheckManagerExistByEmail(email)) return await GenerateNewManagerDto(email);
+            if (await _managerService.CheckManagerExistByEmail(email)) return await GenerateNewManagerDto(email, lastPageIndex);
             else return BadRequest("Потребителят не съществува!");
         }
 
@@ -53,10 +52,10 @@ namespace webapi.Controllers
             if (!await _managerService.CheckManagerExistByEmail(email)) return BadRequest("Потребителят не съществува");
             else manager = await _managerService.GetManagerByEmail(email);
 
-            _managerService.UpdateManager(manager, managerDto);
+            await _managerService.UpdateManager(manager, managerDto);
             await _managerService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(email);
+            return await GenerateNewManagerDto(email, 1);
         }
 
         [HttpDelete("api/manager/delete-manager/{email}")]
@@ -84,7 +83,7 @@ namespace webapi.Controllers
             await _restaurantService.AddRestaurant(newRestaurant, manager);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(email);
+            return await GenerateNewManagerDto(email, 1);
         }
 
         [HttpPut("api/manager/update-restaurant/{restaurantId}")]
@@ -101,7 +100,7 @@ namespace webapi.Controllers
             _restaurantService.UpdateRestaurant(restaurant, restaurantDto);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(managerEmail);
+            return await GenerateNewManagerDto(managerEmail, 1);
         }
 
         [HttpDelete("api/manager/delete-restaurant/{restaurantId}")]
@@ -118,13 +117,18 @@ namespace webapi.Controllers
             _restaurantService.DeleteRestaurant(restaurant);
             await _restaurantService.SaveChangesAsync();
 
-            return await GenerateNewManagerDto(managerEmail);
+            return await GenerateNewManagerDto(managerEmail, 1);
         }
 
-        [HttpGet("api/manager/browse-employees/looking-for-job")]
-        public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob()
+        [HttpGet("api/manager/browse-employees/looking-for-job/{lastPageIndex}")]
+        public ActionResult<List<BrowseEmployeeDto>> GetEmployeesLookingForJob(int lastPageIndex)
         {
-            return _employeeService.GetEmployeesLookingForJob();
+            return _employeeService.GetEmployeesLookingForJob(lastPageIndex);
+        }
+        [HttpGet("api/manager/browse-employees/looking-for-job-count")]
+        public async Task<ActionResult<int>> GetEmployeesLookingForJobCount()
+        {
+            return await _employeeService.GetEmployeesLookingForJobCount();
         }
 
         [HttpGet("api/manager/get-restaurant-employees/{restaurantId}")]
@@ -189,7 +193,7 @@ namespace webapi.Controllers
             if (_restaurantService.IsRestaurantAtMaxCapacity(restaurant)) return BadRequest("Ресторантът не наема повече работници!");
             if (_restaurantService.HasRestaurantAManager(restaurant)) return BadRequest("Ресторантът няма мениджър!");
 
-            if (await _requestService.IsRequestAlreadySent(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
+            if (await _requestService.IsRequestReceived(employee.Profile, restaurant)) return BadRequest("Вие вече сте изпратили заявка към този потребител!");
             if (_requestService.IsEmployeeAlreadyWorkingInRestaurant(employee, restaurant)) return BadRequest("Потребителят вече работи в този ресторант!");
 
             await _requestService.AddRequest(employee, restaurant, false);
@@ -233,8 +237,12 @@ namespace webapi.Controllers
         }
 
         [HttpPost("api/manager/schedule/add-assignment")]
-        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> AddAssignment([FromBody] ScheduleDto scheduleDto)
+        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
             Employee employee;
             if (!await _employeeService.CheckEmployeeExistByEmail(scheduleDto.EmployeeEmail)) return BadRequest("Потребителят не съществува");
             else employee = await _employeeService.GetEmployeeByEmail(scheduleDto.EmployeeEmail);
@@ -245,23 +253,40 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Manager can add both working and leisure days */
-
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (scheduleDto.IsWorkDay)
             {
-                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
-                await _scheduleService.SaveChangesAsync();
-                return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+                {
+                    await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                    await _scheduleService.SaveChangesAsync();
+                    return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                }
+                else return BadRequest("Вече имате запазен друг ангажимент!");
             }
-            else return BadRequest("Вече имате запазен друг ангажимент!");
+            else
+            {
+                if (await _scheduleService.CanEmployeeTakeVacationOn(employee, restaurant, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+                {
+                    await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                    await _scheduleService.SaveChangesAsync();
+                    return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
+                }
+                else return BadRequest("Вече имате запазен друг ангажимент!");
+            }
         }
 
         [HttpPut("api/manager/schedule/edit-assignment")]
         public async Task<ActionResult<List<ManagerDailyScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
+            scheduleDto.Day = scheduleDto.Day.ToLocalTime();
+            if (scheduleDto.From.HasValue) scheduleDto.From = scheduleDto.From.Value.ToLocalTime();
+            if (scheduleDto.To.HasValue) scheduleDto.To = scheduleDto.To.Value.ToLocalTime();
+
             if (!await _scheduleService.DoesScheduleExistsById(scheduleDto.ScheduleId)) return BadRequest("Тази задача от графика не съществува");
             if (!await _scheduleService.IsAssignmentForWork(scheduleDto.ScheduleId)) return BadRequest("Не може да променяте за почивен ден, защото той е бил добавен с вярно предизвестие!");
 
             /* Deleting the old assignment temporarily */
+            CreateScheduleDto oldSchedule = await _scheduleService.CreateScheduleDto(scheduleDto.ScheduleId);
             if (!await _scheduleService.DeleteAssignment(scheduleDto.ScheduleId)) return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
             await _scheduleService.SaveChangesAsync();
 
@@ -275,17 +300,16 @@ namespace webapi.Controllers
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
             /* Checking if it can fit in the schedule */
-            if (await _scheduleService.IsEmployeeFreeToWork(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
+            if (await _scheduleService.CanEmployeeWorkOn(employee, scheduleDto.Day, scheduleDto.From, scheduleDto.To))
             {
-                await _scheduleService.EditScheduleAssignment(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
                 await _scheduleService.SaveChangesAsync();
-
                 return _scheduleService.GetManagerDailySchedule(restaurant, scheduleDto.Day);
             }
             else
             {
                 /* Adding the old assignment back because the updated one did not fit */
-                await _scheduleService.AddAssignmentToSchedule(scheduleDto);
+                await _scheduleService.AddAssignmentToSchedule(oldSchedule);
                 await _scheduleService.SaveChangesAsync();
                 return BadRequest("Вече съществува запазен друг ангажимент и не можете да промените графика!");
             }
@@ -305,14 +329,14 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/schedule/get-free-employee/{restaurantId}/{day}")]
-        public async Task<ActionResult<List<FreeEmployeeDto>>> GetFreeEmployees(string restaurantId, DateOnly day)
+        public async Task<ActionResult<List<FreeEmployeeDto>>> GetFreeEmployees(string restaurantId, DateTime day)
         {
             Restaurant restaurant;
             if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
-            List<FreeEmployeeDto> freeEmployees = await _scheduleService.GetFreeEmployees(restaurant, day);
+            List<FreeEmployeeDto> freeEmployees = await _scheduleService.GetFreeEmployees(restaurant, day.ToLocalTime());
             if (freeEmployees == null) return BadRequest("Няма свободни работници!");
             return freeEmployees;
         }
@@ -329,17 +353,17 @@ namespace webapi.Controllers
         }
 
         [HttpGet("api/manager/schedule/get-daily-schedule/{restaurantId}/{day}")]
-        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailyWorkingSchedule(string restaurantId, DateOnly day)
+        public async Task<ActionResult<List<ManagerDailyScheduleDto>>> GetDailyWorkingSchedule(string restaurantId, DateTime day)
         {
             Restaurant restaurant;
             if (!await _restaurantService.CheckRestaurantExistById(restaurantId)) return BadRequest("Ресторантът не съществува!");
             else restaurant = await _restaurantService.GetRestaurantById(restaurantId);
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
-            return _scheduleService.GetManagerDailySchedule(restaurant, day);
+            return _scheduleService.GetManagerDailySchedule(restaurant, day.ToLocalTime());
         }
 
-        private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email)
+        private async Task<ManagerMainViewDto> GenerateNewManagerDto(string email, int lastPageIndex)
         {
             Manager manager = await _managerService.GetManagerByEmail(email);
 
@@ -350,7 +374,7 @@ namespace webapi.Controllers
                 LastName = manager.Profile.LastName,
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
                 ProfilePicturePath = manager.Profile.ProfilePicturePath,
-                Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
+                Restaurants = _restaurantService.GetRestaurantsOfManager(manager, lastPageIndex)
             };
 
             return managerMainViewDto;

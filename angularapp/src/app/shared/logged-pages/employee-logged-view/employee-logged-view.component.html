@@ -1,22 +1,35 @@
 <nav-top></nav-top>
 <div class="content flex-direction-row">
     <div class="content-screen content-screen-fill">
-        <div class="text-muted fst-italic h4">
-            Ресторантите, в които работите
+        <div class="header-info">
+            <div class="text-muted fst-italic h4">
+                Ресторантите, в които работите
+            </div>
+            <div tooltip="Вашите оценки">
+                <button class="button btn-inverted h4" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEmployeeInfo" (click)="getEmployeeLastRequests()">
+                    <i class="fa-solid fa-chart-line fa-xl"></i>
+                </button>
+            </div>
         </div>
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">
-                    <div>
-                        <img class="rest-img" src="{{restaurant.iconPath}}">
-                    </div>
-                    <div>
-                        <div class="h2 fw-bold">{{restaurant.name}}</div>
-                        <div class="h6 text-muted">{{restaurant.address}}, гр. {{restaurant.city}}</div>
-                    </div>
-                    <div>
-                        <div class="h5 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address1}}</div>
+                            <div class="h6 text-muted">{{restaurant.address2}}</div>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -26,11 +39,14 @@
             </div>
         </div>
     </div>
-    <div class="content-screen content-screen-fill-row">
-        <div class="text-muted fst-italic h5">
-            Вашите оценки, {{employee?.firstName}}
+
+    <div class="offcanvas offcanvas-end" id="offcanvasEmployeeInfo">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title fst-italic border-bottom">
+                Вашите оценки, {{employee?.firstName}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="screen-right border-top" *ngIf="employee">
+        <div class="offcanvas-body" *ngIf="employee">
             <div class="ratings border-bottom">
                 <div class="fw-bold">
                     Средно / <app-star-rating [rating]="employee.employeeAverageRating"></app-star-rating>
@@ -46,13 +62,53 @@
                 </div>
                 <div>
                     Колегиалност / <app-star-rating [rating]="employee.collegialityAverageRating"></app-star-rating>
-                </div>              
+                </div>
             </div>
-            <div class="fw-bold">
+            <div class="fw-bold" *ngIf="employeeReviewsHistory.length > 0">
                 Последни оценки
             </div>
-            <div class="fst-italic fw-bold">
-                *the posledni ocenki*
+            <div class="reviews-outer">
+                <div class="review text-muted my-2" *ngFor="let review of employeeReviewsHistory">
+                    <div>
+                        <span class="fw-bold"> {{review.restaurantName}}, {{review.restaurantCity}} </span>
+                        <span> (Тип: {{review.reviewType}}) </span>
+                    </div>
+                    <div>
+                        <p> Коментар: {{review.comment}} </p>
+                    </div>
+                    <div>
+                        <hr>
+                        <div class="review-ratings">
+                            Закъснение <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.punctualityRating" *ngIf="review.punctualityRating"></app-star-rating>
+                        </div>
+                        <div class="review-ratings">
+                            Колегиалност <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.collegialityRating"
+                                *ngIf="review.collegialityRating"></app-star-rating>
+                        </div>
+                        <hr>
+                        <div class="review-ratings">
+                            Поведение <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.attitudeRating" *ngIf="review.attitudeRating"></app-star-rating>
+                        </div>
+                        <div class="review-ratings">
+                            Бързина <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.speedRating" *ngIf="review.speedRating"></app-star-rating>
+                        </div>
+                        <hr>
+                        <div class="review-ratings">
+                            Атмосфера <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.atmosphereRating" *ngIf="review.atmosphereRating"></app-star-rating>
+                        </div>
+                        <div class="review-ratings">
+                            Кухня <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                                [rating]="review.cuisineRating" *ngIf="review.cuisineRating"></app-star-rating>
+                        </div>
+                        <hr>
+                        <span class="text-end"> (Дата: {{review.reviewDate}}) </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

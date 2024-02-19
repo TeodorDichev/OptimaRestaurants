@@ -14,8 +14,6 @@ namespace webapi.Services.FileServices
         {
             _configuration = configuration;
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>")]
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
@@ -58,7 +56,10 @@ namespace webapi.Services.FileServices
                         bitmap.UnlockBits(bitmapData);
                     }
 
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty);
+                    string path = Directory.GetCurrentDirectory();
+                    DirectoryInfo pathInfo = Directory.GetParent(path);
+
+                    path = Path.Combine(pathInfo.FullName, _configuration["QrCodes:Path"]);
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                     var ext = ".png";
@@ -79,12 +80,14 @@ namespace webapi.Services.FileServices
 
             return onlinePath;
         }
-
         public bool DeleteQrCode(string qrCodeFileUrl)
         {
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty) + "\\" + qrCodeFileUrl.Split('/').Last();
+                string path = Directory.GetCurrentDirectory();
+                DirectoryInfo pathInfo = Directory.GetParent(path);
+
+                path = Path.Combine(pathInfo.FullName, _configuration["QrCodes:Path"] ?? string.Empty) + qrCodeFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);

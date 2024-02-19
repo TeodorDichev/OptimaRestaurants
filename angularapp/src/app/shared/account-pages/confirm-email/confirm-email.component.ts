@@ -1,26 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService } from '../../pages-routing/account/account.service';
 import { SharedService } from '../../shared.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEmail } from '../../models/account/confirm-email';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-confirm-email',
   templateUrl: './confirm-email.component.html',
   styleUrls: ['./confirm-email.component.css']
 })
-export class ConfirmEmailComponent implements OnInit {
+export class ConfirmEmailComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
   success: boolean = true;
 
   constructor(private accountService: AccountService,
     private sharedService: SharedService,
     private router: Router,
-    private activatedRoute: ActivatedRoute) {
-
-  }
+    private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParamMap.subscribe({
+    const sub = this.activatedRoute.queryParamMap.subscribe({
       next: (params: any) => {
         const confirmEmail: ConfirmEmail = {
           token: params.get('token'),
@@ -37,10 +37,14 @@ export class ConfirmEmailComponent implements OnInit {
         })
       }
     })
+    this.subscriptions.push(sub);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   resendEmailConfirmaitonLink() {
     this.router.navigateByUrl('/account/send-email/resend-email-confirmation-link');
   }
-
 }

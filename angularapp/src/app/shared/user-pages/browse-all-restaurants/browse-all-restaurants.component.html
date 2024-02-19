@@ -1,0 +1,110 @@
+<nav-top></nav-top>
+<div class="content">
+    <div class="content-screen content-screen-fill">
+        <div class="heading-row">
+            <div class="text-muted fst-italic h4 d-flex flex-direction-col">
+                <span>
+                    Всички регистрирани ресторанти
+                </span>
+                <span class="h6 text-success">
+                    {{filterCurrent}}
+                </span>
+                <span class="h6 text-muted">
+                    Брой: {{totalRestaurantCount}}
+                </span>
+            </div>
+            <div class="pages">
+                <button class="button button-page" (click)="previousPage()" tooltip="Предишни 20">
+                    <i class="fa-solid fa-angles-left"></i>
+                </button>
+                <div *ngFor="let page of [].constructor(totalPages); let i = index;">
+                    <button class="button button-page" [ngClass]="{'selected': i + 1 === currentPage}"
+                        (click)="currentPageRest(i + 1)">{{i + 1}}</button>
+                </div>
+                <button class="button button-page" (click)="nextPage()" tooltip="Следващи 20">
+                    <i class="fa-solid fa-angles-right"></i>
+                </button>
+                <div class="text-muted fst-italic">
+                    ({{this.currentPage * 20 - 19}}-{{this.currentPage * 20}})
+                </div>
+            </div>
+            <div class="filters">
+                <div tooltip="Филтър по град">
+                    <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-map-location-dot fa-xl"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <div *ngFor="let city of cities">
+                            <div class="button btn-chocolate" (click)="setPageToFirst(); getRestaurantsByCity(city)">
+                                {{city}}
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+                <div tooltip="Сортиране по категория">
+                    <button class="button btn-inverted dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="fa-solid fa-arrow-down-wide-short fa-xl"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <button class="button btn-chocolate w-100" (click)="setPageToFirst(); getBestRestaurants()">
+                            Ресторант
+                        </button>
+                        <button class="button btn-chocolate w-100"
+                            (click)="setPageToFirst(); getBestCuisineRestaurants()">
+                            Кухня
+                        </button>
+                        <button class="button btn-chocolate w-100"
+                            (click)="setPageToFirst(); getBestAtmosphereRestaurants()">
+                            Атмосфера
+                        </button>
+                        <button class="button btn-chocolate w-100"
+                            (click)="setPageToFirst(); getBestEmployeesRestaurants()">
+                            Работници
+                        </button>
+                    </ul>
+                </div>
+                <div tooltip="Изчистване на филтри">
+                    <button class="button btn-inverted" (click)=" setPageToFirst(); getAllRestaurants()">
+                        <i class="fa-solid fa-filter-circle-xmark"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="rest-list screen-left">
+            <div class="list-items" *ngFor="let restaurant of allRestaurants">
+                <div class="restaurant" (click)="getRestaurantDetails(restaurant.id)">
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address1}}</div>
+                            <div class="h6 text-muted">{{restaurant.address2}}</div>
+                        </div>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
+                        </div>
+                        <div *ngIf="restaurant.topEmployeeEmail">
+                            <div class="fw-bold">Най-добър работник:
+                                <div class="fw-normal">{{restaurant.topEmployeeFullName}}</div>
+                            </div>
+                            <div class="fw-bold">Неговият рейтинг:
+                                <div><app-star-rating [rating]="restaurant.topEmployeeRating"></app-star-rating></div>
+                            </div>
+                        </div>  
+                        <div class="fw-bold text-danger" *ngIf="!restaurant.topEmployeeEmail">
+                            Няма намерени работници
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,11 @@
 export interface NewRestaurant{
-    name: string,
-    address: string,
-    city: string,   
+    name: string, 
     employeeCapacity: number,
     iconFile: File,
-    isWorking: boolean
+    isWorking: boolean,
+    longitude: number,
+    latitude: number,
+    address1: string,
+    address2: string,
+    city: string
 }

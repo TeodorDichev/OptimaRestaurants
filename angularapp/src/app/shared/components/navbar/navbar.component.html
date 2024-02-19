@@ -6,7 +6,7 @@
         aria-controls="navbarItemsCollapse" aria-expanded="false">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse collapse-body" id="navbarItemsCollapse">
+    <div class="collapse navbar-collapse collapse-body text-center" id="navbarItemsCollapse">
         <div class="button btn-inverted" (click)="help()" tooltip="Как работи?">
             <i class="fa-solid fa-question fa-xl"></i>
         </div>
@@ -20,45 +20,45 @@
             *ngIf="this.user?.isManager">
             <i class="fa-solid fa-users-between-lines fa-xl"></i>
         </div>
-        <div class="dropdown" *ngIf="this.user">
-            <button class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
-                tooltip="Профил">
+        <div class="dropdown">
+            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
+                id="dropdownToggle" tooltip="Профил" *ngIf="this.user">
                 <i class="fa fa-user-pen fa-xl"></i>
-            </button>
+            </div>
             <div class="dropdown-menu">
-                <app-employee-info [employeeEmail]="user.email" *ngIf="!this.user.isManager"></app-employee-info>
-                <app-manager-info [managerEmail]="user.email" *ngIf="this.user.isManager"></app-manager-info>
+                <app-employee-info *ngIf="!this.user?.isManager"></app-employee-info>
+                <app-manager-info *ngIf="this.user?.isManager"></app-manager-info>
             </div>
         </div>
-
-        <div class="dropdown" *ngIf="this.user">
-            <button class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" aria-expanded="false"
-                tooltip="Съобщения">
+        <div class="dropdown">
+            <div class="dropdown-toggle button btn-inverted" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                aria-expanded="false" id="dropdownToggle" *ngIf="this.user" tooltip="Съобщения">
                 <i class="fa-solid fa-envelope fa-xl"></i>
                 <i class="fa-solid fa-exclamation fa-xl ms-1" style="color:Tomato;" *ngIf="newNotifications"></i>
-            </button>
+            </div>
             <ul class="dropdown-menu">
-                <app-inbox></app-inbox>
+                <app-inbox (closeDropdownEvent)="closeDropdown()"></app-inbox>
             </ul>
         </div>
-
-        <form [formGroup]="searchForm" class="d-flex" role="search" #dropdown>
-            <div class="form-check form-switch mt-2">
-                <input class="form-check-input chocolatе" type="checkbox" tooltip="Смяна потребител/ресторант"
-                    formControlName="searchForAccounts" [(ngModel)]="searchForAccounts" (click)="changeSearchText()">
-            </div>
-            <li class="dropdown nav-link">
-                <input class="form-control" formControlName="searchString" type="search"
-                    placeholder="Търси {{searchingFor}}" aria-label="Search">
-                <ul class="dropdown-menu show" *ngIf="searchForm.valid">
-                    <app-search-result-account [searchResult]="searchResultAccount"
-                        *ngIf="searchForAccounts"></app-search-result-account>
-                    <app-search-result-restaurant [searchResult]="searchResultRestaurant"
-                        *ngIf="!searchForAccounts"></app-search-result-restaurant>
-                </ul>
-            </li>
-        </form>
-
+        <div>
+            <form [formGroup]="searchForm" class="d-flex" role="search" #dropdown>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input chocolatе" type="checkbox" tooltip="Смяна потребител/ресторант"
+                        formControlName="searchForAccounts" [(ngModel)]="searchForAccounts"
+                        (click)="changeSearchText()">
+                </div>
+                <li class="dropdown nav-link">
+                    <input class="form-control" formControlName="searchString" type="search"
+                        placeholder="Търси {{searchingFor}}" aria-label="Search">
+                    <ul class="dropdown-menu show search" *ngIf="searchForm.valid">
+                        <app-search-result-account [searchResult]="searchResultAccount"
+                            *ngIf="searchForAccounts"></app-search-result-account>
+                        <app-search-result-restaurant [searchResult]="searchResultRestaurant"
+                            *ngIf="!searchForAccounts"></app-search-result-restaurant>
+                    </ul>
+                </li>
+            </form>
+        </div>
         <div class="button btn-inverted" (click)="logout()" tooltip="Излизане от акаунт" *ngIf="this.user">
             <i class="fa fa-sign-out fa-xl"></i>
         </div>

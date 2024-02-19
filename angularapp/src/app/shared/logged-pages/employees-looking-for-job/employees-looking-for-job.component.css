@@ -1,0 +1,93 @@
+::ng-deep app-employees-looking-for-job {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.employee:hover {
+    background-color: rgba(241, 241, 241, 0.8);
+    ;
+    cursor: pointer;
+}
+
+.emp-img {
+    max-width: 150px;
+    aspect-ratio: 1/1;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
+}
+
+.list-items {
+    display: flex;
+    align-self: stretch;
+}
+
+.emp-list {
+    gap: 12px;
+    overflow: scroll;
+}
+
+.employee {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    flex: 1 0 0;
+    gap: 24px;
+    border-radius: 8px;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 20px;
+}
+
+.content-screen {
+    justify-content: flex-start;
+    padding-right: 0px;
+}
+
+.screen-right {
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.content {
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
+.empl-info {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 0;
+    align-self: stretch;
+    align-items: center;
+    padding: 16px;
+    justify-content: space-between;
+}
+
+.pages {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+}
+
+.button-page {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.377);
+    border: 1px solid rgba(128, 128, 128, 0.336);
+}
+
+.button-page:hover {
+    background-color: white;
+    transition: all .2s ease-in-out;
+}
+
+.selected {
+    background-color: white;
+}

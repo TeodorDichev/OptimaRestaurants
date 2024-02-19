@@ -1,0 +1,244 @@
+<div class="modal-body" *ngIf="employee">
+    <div class="fw-bold h1">Вашият график,
+        <span class="fst-italic theme-main">{{employee.firstName}} {{employee.lastName}}</span>
+    </div>
+    <div class="schedule">
+        <div class="table-schedule">
+            <table>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="previousMonth()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            {{monthsFull[currentDate.getMonth()]}} {{currentDate.getFullYear()}}
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="nextMonth()">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                    <tr class="text-center text-muted h6 fst-italic">
+                        <td *ngFor="let day of weekdays">
+                            {{day}}
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let e of [].constructor(firstDayOfMonth)">
+                            -
+                        </td>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7 - firstDayOfMonth); index as i"
+                            (click)="selectDate(getId(i + 1))" [id]="getId(i + 1)"
+                            [ngClass]="idMarkerPairs[getId(i + 1)]">
+                            {{i + 1}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            [id]="getId(getDate(1, i))" (click)="selectDate(getId(getDate(1, i)))"
+                            [ngClass]="idMarkerPairs[getId(getDate(1, i))]">
+                            {{getDate(1, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="selectDate(getId(getDate(2, i)))" [id]="getId(getDate(2, i))"
+                            [ngClass]="idMarkerPairs[getId(getDate(2, i))]">
+                            {{getDate(2, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(7); index as i"
+                            (click)="selectDate(getId(getDate(3, i)))"
+                            [id]="getDate(3, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(3, i))]">
+                            {{getDate(3, i)}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(4)); index as i"
+                            (click)="selectDate(getId(getDate(4, i)))"
+                            [id]="getDate(4, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(4, i))]">
+                            {{getDate(4, i)}}
+                        </td>
+                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(4))">
+                            -
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-hover" *ngFor="let e of [].constructor(getNumberOfDaysInWeek(5)); index as i"
+                            (click)="selectDate(getId(getDate(5, i)))"
+                            [id]="getDate(5, i) + '_' + (this.currentDate.getMonth() + 1)"
+                            [ngClass]="idMarkerPairs[getId(getDate(5, i))]">
+                            {{getDate(5, i)}}
+                        </td>
+                        <td *ngFor="let e of [].constructor(7 - getNumberOfDaysInWeek(5))">
+                            -
+                        </td>
+                    </tr>
+                </tbody>
+                <thead>
+                    <tr class="text-center">
+                        <th class="item-hover" colspan="2" (click)="previousRestaurant()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </th>
+                        <th colspan="3">
+                            <span>{{this.restaurantsNamesList[selectedRestaurantIndex]}}</span>
+                        </th>
+                        <th class="item-hover" colspan="2" (click)="nextRestaurant()">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="date-info">
+            <div class="h5 fw-bold">{{selectedDayAsText}}</div>
+            <div class="text-muted fst-italic">{{selectedDaySchedule.length}} Ангажимент/а</div>
+            <div class="daily-schedule" *ngIf="selectedDaySchedule.length != 0">
+                <div class="assignment" *ngFor="let assignment of selectedDaySchedule"
+                    (click)="selectAssignment(assignment)">
+                    <div class="h6 text-muted">Ангажимент към ресторант:
+                        <span class="fw-bold theme-main h5">{{assignment.restaurantName}}</span>
+                    </div>
+                    <div class="info-check">
+                        <div>
+                            <div class="text-danger fw-bold" *ngIf="assignment.isWorkDay">Работен</div>
+                            <div class="text-success fw-bold" *ngIf="!assignment.isWorkDay">Почивен</div>
+                            <div class="fst-italic" *ngIf="assignment.isFullDay">Цял ден</div>
+                            <div class="fst-italic" *ngIf="!assignment.isFullDay && assignment.from">
+                                От:
+                                {{assignment.from.split('T')[1].split(':')[0]}}:{{assignment.from.split('T')[1].split(':')[1]}}
+                            </div>
+                            <div class="fst-italic" *ngIf="!assignment.isFullDay && assignment.to">
+                                До:
+                                {{assignment.to.split('T')[1].split(':')[0]}}:{{assignment.to.split('T')[1].split(':')[1]}}
+                            </div>
+                        </div>
+                        <div *ngIf="assignment.scheduleId == selectedAssignment.scheduleId">
+                            <i class="fa-regular fa-circle-check fa-xl text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedDaySchedule.length == 0">
+                Нямате задачи за този ден.
+            </div>
+            <div>
+                <div class="buttons">
+                    <button class="button btn-inverted h6" data-bs-toggle="collapse" data-bs-target="#collapseAdd"
+                        type="button" (click)="toggleCollapse('createCollapse')">
+                        <i class="fa-solid fa-square-plus fa-xl"></i>
+                    </button>
+                    <button class="button btn-inverted" data-bs-toggle="collapse" data-bs-target="#collapseEdit"
+                        (click)="toggleCollapse('editCollapse')" *ngIf="selectedDaySchedule.length > 0">
+                        <i class="fa-solid fa-pencil fa-xl"></i>
+                    </button>
+                </div>
+                <div class="collapse" id="collapseAdd" [ngClass]="{ 'show': isCreateCollapseOpen }">
+                    <div class="collapse-body">
+                        <div class="text-center fw-bold fst-italic">
+                            Добавяне на ангажимент
+                        </div>
+                        <div>
+                            За цял ден? <input type="checkbox" [(ngModel)]="fullDayForCreate">
+                            <span class="text-muted fst-italic" *ngIf="!fullDayForCreate"> или: </span>
+                        </div>
+                        <div *ngIf="!fullDayForCreate">
+                            <span class="">
+                                За даден часови период
+                            </span>
+                            <div class="time-input">
+                                <input type="time" [(ngModel)]="fromForCreate">
+                                <i class="fa-solid fa-arrow-right-long"></i>
+                                <input type="time" [(ngModel)]="toForCreate">
+                            </div>
+                        </div>
+                        <button class="button btn-green" (click)="setDayToOffday()">
+                            Отбелязване
+                        </button>
+                    </div>
+                </div>
+                <div class="collapse" id="collapseEdit" [ngClass]="{ 'show': isEditCollapseOpen }">
+                    <div class="fst-italic text-danger" *ngIf="selectedAssignment.scheduleId == ''">
+                        Няма избран ангажимент
+                    </div>
+                    <div class="collapse-body" *ngIf="selectedAssignment.scheduleId != ''">
+                        <div class="text-center fw-bold fst-italic">
+                            Редактиране на ангажимент към {{selectedAssignment.restaurantName}}
+                        </div>
+                        <div>
+                            За цял ден? <input type="checkbox" [(ngModel)]="fullDayForEdit">
+                            <span class="text-muted fst-italic" *ngIf="!fullDayForEdit"> или: </span>
+                        </div>
+                        <div *ngIf="!fullDayForEdit">
+                            <span class="">
+                                За даден часови период
+                            </span>
+                            <div class="time-input">
+                                <input type="time" [(ngModel)]="fromForEdit">
+                                <i class="fa-solid fa-arrow-right-long"></i>
+                                <input type="time" [(ngModel)]="toForEdit">
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <button class="button btn-green" (click)="editAssignment()">
+                                Редакция
+                            </button>
+                            <button class="button btn-red" (click)="deleteAssignment()">
+                                Изтриване
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="errors" *ngIf="this.errorMessages.length > 0">
+                    <div class="text-center">
+                        <button class="button btn-inverted" (click)="this.errorMessages=[]">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="text-danger" *ngFor="let error of this.errorMessages">
+                        {{error.slice(0, 100)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="legend-markers">
+        <div class="marker-example">
+            <td class="item-hover today">
+                11
+            </td>
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>Днешна дата</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover workday">
+                12
+            </td>
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>Работен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover offday">
+                13
+            </td>
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>Почивен ден</span>
+        </div>
+        <div class="marker-example">
+            <td class="item-hover selected">
+                14
+            </td>
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>Избрана дата</span>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end">
+        <button class="button btn-gray" (click)="close()">
+            Затваряне
+        </button>
+    </div>
+</div>

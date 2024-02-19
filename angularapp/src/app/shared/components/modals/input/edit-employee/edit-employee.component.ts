@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Employee } from 'src/app/shared/models/employee/employee';
-import { AccountService } from 'src/app/shared/pages-routing/account/account.service';
 import { EmployeeService } from 'src/app/shared/pages-routing/employee/employee.service';
 import { SharedService } from 'src/app/shared/shared.service';
 
@@ -12,33 +11,43 @@ import { SharedService } from 'src/app/shared/shared.service';
   templateUrl: './edit-employee.component.html',
   styleUrls: ['./edit-employee.component.css']
 })
-export class EditEmployeeComponent {
+export class EditEmployeeComponent implements OnInit, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   editEmployeeForm: FormGroup = new FormGroup({});
   submitted = false;
   errorMessages: string[] = [];
-  email: string | null = this.accountService.getEmail();
   employee: Employee | undefined;
+
+  searchLocationPropmt: string | undefined;
+  resultsLocationSearch: string[] = [];
+  selectedCity: string = '';
 
   constructor(public bsModalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
-    private sharedService: SharedService,
-    private accountService: AccountService) { }
+    private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getEmployee();
     this.initializeForm();
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   initializeForm() {
     this.editEmployeeForm = this.formBuilder.group({
-      newFirstName: ['', []],
-      newLastName: ['', []],
-      newPhoneNumber: ['', []],
+      newFirstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newLastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
+      newPhoneNumber: ['', [Validators.pattern('^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')]],
       profilePictureFile: ['', []],
       newBirthDate: ['', []],
-      newCity: ['', []],
-      isLookingForJob: ['', []]
+      newCity: [''],
+      isLookingForJob: ['', []],
+      oldPassword: ['', []],
+      newPassword: ['', []]
     })
   }
 
@@ -51,12 +60,38 @@ export class EditEmployeeComponent {
     }
   }
 
+  getSearchLocationResults() {
+    fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${this.searchLocationPropmt}&apiKey=0d4bc92697134fac82ff67220bd007e2&limit=3`, { method: 'GET' })
+      .then(response => response.json())
+      .then(result => {
+        this.resultsLocationSearch = [];
+        for (let res of result.features) {
+          this.resultsLocationSearch.push(res.properties.city + ', ' + res.properties.country);
+        }
+      })
+      .catch(error => console.log('error', error));
+  }
+
+  selectCity(cityCountry: string) {
+    this.selectedCity = cityCountry.split(',')[0];
+    this.searchLocationPropmt = this.selectedCity;
+    document.getElementById('collapseToggle')?.click();
+  }
+
   editEmployee() {
     this.submitted = true;
     this.errorMessages = [];
 
-    if (this.editEmployeeForm.valid && this.email) {
-      this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.email).pipe(take(1)).subscribe({
+    if (this.selectedCity && this.selectedCity != this.searchLocationPropmt) {
+      this.editEmployeeForm.get('newCity')?.setErrors({ 'invalid': true });
+    }
+
+    if (this.selectedCity == '') {
+      this.editEmployeeForm.get('newCity')?.setValue('');
+    }
+
+    if (this.editEmployeeForm.valid && this.employee) {
+      const sub = this.employeeService.updateEmployeeAccount(this.editEmployeeForm.value, this.employee.email).subscribe({
         next: (response: any) => {
           this.employeeService.setEmployee(response);
           this.sharedService.showNotification(true, 'Успешно обновен акаунт!', 'Вашият акаунт беше обновен успешно!');
@@ -70,12 +105,13 @@ export class EditEmployeeComponent {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   deleteEmployeeAccount() {
-    if (this.email) {
-      this.employeeService.deleteEmployeeAccount(this.email).pipe(take(1)).subscribe({
+    if (this.employee) {
+      const sub = this.employeeService.deleteEmployeeAccount(this.employee.email).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, response.value.title, response.value.message);
           this.bsModalRef.hide();
@@ -88,15 +124,37 @@ export class EditEmployeeComponent {
           }
         }
       });
+      this.subscriptions.push(sub);
     }
   }
 
   private getEmployee() {
-    this.employeeService.employee$.pipe(take(1)).subscribe({
+    const sub = this.employeeService.employee$.subscribe({
       next: (response: any) => {
         this.employee = response;
       }
     })
+    this.subscriptions.push(sub);
+  }
+
+  isTextOld: boolean = false;
+  typeOld: string = "Password";
+  eyeIconOld: string = "fa-eye-slash";
+
+  hideShowPassOld() {
+    this.isTextOld = !this.isTextOld;
+    this.isTextOld ? this.eyeIconOld = "fa-eye" : this.eyeIconOld = "fa-eye-slash";
+    this.isTextOld ? this.typeOld = "text" : this.typeOld = "password";
+  }
+
+  isTextNew: boolean = false;
+  typeNew: string = "Password";
+  eyeIconNew: string = "fa-eye-slash";
+
+  hideShowPassNew() {
+    this.isTextNew = !this.isTextNew;
+    this.isTextNew ? this.eyeIconNew = "fa-eye" : this.eyeIconNew = "fa-eye-slash";
+    this.isTextNew ? this.typeNew = "text" : this.typeNew = "password";
   }
 }
 

@@ -2,16 +2,19 @@
 using webapi.Data;
 using webapi.DTOs.Request;
 using webapi.Models;
+using webapi.Services.ClassServices;
 
 namespace webapi.Services.ModelServices
 {
     public class RequestService
     {
         private readonly OptimaRestaurantContext _context;
-
-        public RequestService(OptimaRestaurantContext context)
+        private readonly ReviewService _reviewService;
+        public RequestService(OptimaRestaurantContext context,
+            ReviewService reviewService)
         {
             _context = context;
+            _reviewService = reviewService;
         }
         public async Task<Request> AddRequest(Employee employee, Restaurant restaurant, bool isFromEmployee)
         {
@@ -146,6 +149,9 @@ namespace webapi.Services.ModelServices
                 employee.EmployeesRestaurants.Add(er);
                 restaurant.EmployeesRestaurants.Add(er);
                 await _context.EmployeesRestaurants.AddAsync(er);
+
+                if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
+
                 return true;
             }
             else
@@ -159,6 +165,10 @@ namespace webapi.Services.ModelServices
         {
             return await _context.Requests.FirstOrDefaultAsync(r => r.Sender == profile && r.Restaurant == restaurant && r.SentOn.AddDays(7) > DateTime.Now) != null;
         }
+        public async Task<bool> IsRequestReceived(ApplicationUser profile, Restaurant restaurant)
+        {
+            return await _context.Requests.FirstOrDefaultAsync(r => r.Receiver == profile && r.Restaurant == restaurant && r.SentOn.AddDays(7) > DateTime.Now) != null;
+        }
         public bool IsEmployeeAlreadyWorkingInRestaurant(Employee employee, Restaurant restaurant)
         {
             return restaurant.EmployeesRestaurants.FirstOrDefault(er => er.Employee == employee && er.EndedOn == null) != null;
@@ -167,6 +177,5 @@ namespace webapi.Services.ModelServices
         {
             await _context.SaveChangesAsync();
         }
-
     }
 }

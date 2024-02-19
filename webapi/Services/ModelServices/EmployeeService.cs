@@ -39,19 +39,26 @@ namespace webapi.Services.ClassServices
                 City = city.ToUpper().First() + city.Substring(1).ToLower(),
                 BirthDate = birthDate,
                 TotalReviewsCount = 0,
-                QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review/{userProfile.Email}{_jwtService.GenerateQrToken(userProfile.Email)}")
+                QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review?token={_jwtService.GenerateQrToken(userProfile.Email)}&email={userProfile.Email}")
             };
             await _context.Employees.AddAsync(employee);
 
             return employee;
         }
-        public Employee UpdateEmployee(Employee employee, UpdateEmployeeDto updateDto)
+        public async Task<Employee> UpdateEmployee(Employee employee, UpdateEmployeeDto updateDto)
         {
             if (updateDto.NewFirstName != null) employee.Profile.FirstName = updateDto.NewFirstName;
             if (updateDto.NewLastName != null) employee.Profile.LastName = updateDto.NewLastName;
             if (updateDto.NewPhoneNumber != null) employee.Profile.PhoneNumber = updateDto.NewPhoneNumber;
             if (updateDto.NewCity != null) employee.City = updateDto.NewCity;
             if (updateDto.NewBirthDate != null) employee.BirthDate = (DateOnly)updateDto.NewBirthDate;
+            if (updateDto.OldPassword != null && updateDto.NewPassword != null)
+            {
+                if(await _userManager.CheckPasswordAsync(employee.Profile, updateDto.OldPassword))
+                {
+                    await _userManager.ChangePasswordAsync(employee.Profile, updateDto.OldPassword, updateDto.NewPassword);
+                }
+            }
             if (updateDto.ProfilePictureFile != null)
             {
                 if (employee.Profile.ProfilePicturePath == null) employee.Profile.ProfilePicturePath = _pictureService.SaveImage(updateDto.ProfilePictureFile);
@@ -95,11 +102,14 @@ namespace webapi.Services.ClassServices
         {
             return await _context.Employees.AnyAsync(x => x.Profile.Email == email);
         }
-        public List<BrowseEmployeeDto> GetEmployeesLookingForJob()
+        public List<BrowseEmployeeDto> GetEmployeesLookingForJob(int lastPageIndex)
         {
             List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
 
-            foreach (var employee in _context.Employees.Where(e => e.IsLookingForJob).ToList())
+            foreach (var employee in _context.Employees.Where(e => e.IsLookingForJob)
+                        .Skip((lastPageIndex - 1) * 20)
+                        .Take(20)
+                        .ToList())
             {
                 employeesDto.Add(new BrowseEmployeeDto
                 {
@@ -118,10 +128,29 @@ namespace webapi.Services.ClassServices
 
             return employeesDto;
         }
+        public async Task<int> GetEmployeesLookingForJobCount()
+        {
+            return await _context.Employees.Where(e => e.IsLookingForJob).CountAsync();
+        }
         public string GetEmployeeQrCodePath(Employee employee)
         {
             string qrCodeName = employee.QrCodePath.Split("/").Last();
             return Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"] ?? string.Empty, qrCodeName);
+        }
+        public async Task<bool> UpdateQrCode(Employee employee)
+        {
+            try
+            {
+                if (employee.QrCodePath != null) _qrCodesService.DeleteQrCode(employee.QrCodePath);
+                employee.QrCodePath = _qrCodesService.GenerateQrCode($"{_configuration["JWT:ClientUrl"]}review?token={_jwtService.GenerateQrToken(employee.Profile.Email)}&email={employee.Profile.Email}");
+                _context.Update(employee);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
         public async Task SaveChangesAsync()
         {

@@ -1,0 +1,117 @@
+::ng-deep app-browse-all-restaurants {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+
+.rest-img {
+    max-width: 300px;
+    aspect-ratio: 3/2;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px 0px 0px 8px;
+}
+
+.heading-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-self: stretch;
+}
+
+.empl-img {
+    max-width: 150px;
+    aspect-ratio: 1/1;
+    width: 100% !important;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.rest-list {
+    gap: 12px;
+    overflow: scroll;
+}
+
+.list-items {
+    display: flex;
+    align-self: stretch;
+}
+
+.restaurant {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    flex: 1 0 0;
+    border-radius: 8px;
+    align-items: center;
+    border: 1px solid rgba(128, 128, 128, 0.336);
+    padding-right: 20px;
+}
+
+.restaurant:hover {
+    background-color: rgba(241, 241, 241, 0.8);
+    cursor: pointer;
+}
+
+.content-screen {
+    justify-content: flex-start;
+    padding-right: 0px;
+}
+
+.content {
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
+.pages {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-self: stretch;
+    align-items: center;
+}
+
+.button-page {
+    padding: 4px 8px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.377);
+    border: 1px solid rgba(128, 128, 128, 0.336);
+}
+
+.button-page:hover {
+    background-color: white;
+    transition: all .2s ease-in-out;
+}
+
+.selected {
+    background-color: white;
+}
+
+.filters {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-self: stretch;
+    gap: 12px;
+}
+
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 248, 236);
+    gap: 6px;
+    padding: 6px 8px;
+}
+
+.restaurant-info {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 0;
+    align-self: stretch;
+    align-items: center;
+    padding: 16px;
+    justify-content: space-between;
+}

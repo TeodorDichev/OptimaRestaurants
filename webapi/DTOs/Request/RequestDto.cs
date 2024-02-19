@@ -1,6 +1,4 @@
-﻿using webapi.Models;
-
-namespace webapi.DTOs.Request
+﻿namespace webapi.DTOs.Request
 {
     public class RequestDto
     {

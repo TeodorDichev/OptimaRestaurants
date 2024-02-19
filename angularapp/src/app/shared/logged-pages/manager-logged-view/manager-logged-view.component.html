@@ -1,64 +1,82 @@
 <nav-top></nav-top>
 <div class="content flex-direction-row">
     <div class="content-screen content-screen-fill">
-        <div class="text-muted fst-italic h4">
-            Вашите ресторанти, {{manager?.firstName}}
-            <div class="btn btn-inverted" (click)="addNewRestaurant()">
-                <i class="fa-solid fa-plus-circle fa-xl"></i>
+        <div class="header-row">
+            <div class="heading-with-button">
+                <div class="h4 text-muted fst-italic m-0">
+                    Вашите ресторанти, {{manager?.firstName}}
+                </div>
+                <button class="button btn-inverted" (click)="addNewRestaurant()">
+                    <i class="fa-solid fa-plus-circle fa-xl"></i>
+                </button>
+            </div>
+            <div tooltip="Работници в {{currentRestaurant?.name}}">
+                <button class="button btn-inverted h4" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEmployeeInfo">
+                    <i class="fa-solid fa-users-rays fa-xl"></i>
+                </button>
             </div>
         </div>
         <div class="screen-left rest-emp-list">
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
-                <div class="restaurant-employee cursor-pointer" (click)="selectedRestaurant(restaurant)"
+                <div class="restaurant-employee" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
-                    <div>
-                        <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
-                    </div>
-                    <div>
-                        <div class="h2 fw-bold">{{restaurant.name}}</div>
-                        <div class="h6 text-muted">{{restaurant.address}}</div>
-                        <div class="h6 text-muted">{{restaurant.city}}</div>
-                    </div>
-                    <div>
-                        <div class="h5 fw-bold">Средна оценка:
-                            <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <div class="restaurant-info">
+                        <div>
+                            <div class="h2 fw-bold">{{restaurant.name}}</div>
+                            <div class="h6 text-muted">{{restaurant.address1}}</div>
+                            <div class="h6 text-muted">{{restaurant.address2}}</div>
                         </div>
-                        <div class="fw-bold">Работещ:
-                            <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
-                            <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                        <div>
+                            <div class="h5 fw-bold">Средна оценка:
+                                <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
+                            </div>
+                            <div class="fw-bold">Работещ:
+                                <span class="fw-normal fst-italic" *ngIf="restaurant.isWorking">Да</span>
+                                <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
-                        <div class="btn btn-inverted" (click)="infoRestaurant()">
-                            <i class="fa-solid fa-info fa-xl"></i>
-                        </div>
-                        <div class="btn btn-inverted" (click)="editRestaurant()">
-                            <i class="fa-solid fa-pencil fa-xl"></i>
+                        <div class="buttons-info-edit" *ngIf="restaurant == currentRestaurant">
+                            <button class="button btn-inverted" (click)="infoRestaurant()">
+                                <i class="fa-solid fa-info fa-xl"></i>
+                            </button>
+                            <button class="button btn-inverted" (click)="editRestaurant()">
+                                <i class="fa-solid fa-pencil fa-xl"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="content-screen content-screen-fill-row">
-        <div class="text-muted fst-italic h4">
-            Служители в {{currentRestaurant?.name}}
+    <div class="offcanvas offcanvas-end" id="offcanvasEmployeeInfo">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title fw-bold fst-italic border-bottom">
+                Служители в {{currentRestaurant?.name}}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="screen-right rest-emp-list">
+        <div class="offcanvas-body" id="offcanvas">
             <div class="list-items" *ngFor="let employee of this.employees;">
-                <div class="restaurant-employee">
-                    <img class="emp-img" src="{{employee.profilePicturePath}}">
-                    <div>
-                        <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
-                        <div>{{employee.email}}</div>
+                <div class="restaurant-employee" *ngIf="this.currentRestaurant">
+                    <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)"
+                        data-bs-dismiss="offcanvas">
+                        <img class="emp-img" src="{{employee.profilePicturePath}}" (error)="missingIconEmployee(employee)">
+                        <div>
+                            <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
+                            <div>{{employee.email}}</div>
+                        </div>
                     </div>
                     <div class="buttons-info-edit">
-                        <div class="btn btn-inverted" (click)="getEmployeeInfo(employee)">
-                            <i class="fa-solid fa-info fa-xl"></i>
-                        </div>
-                        <div class="btn btn-inverted" (click)="fireEmployee(employee.email, currentRestaurant?.id)">
+                        <button class="button btn-inverted"
+                            (click)="openManagerReviewModal(employee.email, currentRestaurant.id)"
+                            data-bs-dismiss="offcanvas">
+                            <i class="fa-solid fa-star fa-xl"></i>
+                        </button>
+                        <button class="button btn-inverted" (click)="fireEmployee(employee.email, currentRestaurant.id)"
+                            data-bs-dismiss="offcanvas">
                             <i class="fa-solid fa-user-large-slash fa-xl"></i>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>

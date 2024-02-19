@@ -27,7 +27,7 @@ namespace webapi.Services
                 .Build();
 
             var response = await client.SendTransactionalEmailAsync(email);
-            if(response.Messages != null)
+            if (response.Messages != null)
             {
                 if (response.Messages[0].Status == "success")
                 {

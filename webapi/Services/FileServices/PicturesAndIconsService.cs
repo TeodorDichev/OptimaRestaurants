@@ -15,10 +15,12 @@
         public string SaveImage(IFormFile imageFile)
         {
             string onlinePath = "";
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"] ?? string.Empty);
+                string path = Directory.GetCurrentDirectory();
+                DirectoryInfo pathInfo = Directory.GetParent(path);
+
+                path = Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
@@ -40,14 +42,15 @@
             {
                 return onlinePath;
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
         public bool DeleteImage(string imageFileUrl)
         {
-#pragma warning disable CS0168 // Variable is declared but never used
             try
             {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"] ?? string.Empty) + imageFileUrl.Split('/').Last();
+                string path = Directory.GetCurrentDirectory();
+                DirectoryInfo pathInfo = Directory.GetParent(path);
+
+                path = Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + imageFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);
@@ -59,7 +62,6 @@
             {
                 return false;
             }
-#pragma warning restore CS0168 // Variable is declared but never used
         }
     }
 }

@@ -1,0 +1,15 @@
+.fa {
+    color: goldenrod;
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+.fa-ban {
+    color:chocolate;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.fa-ban:hover {
+    color: rgba(210, 105, 30, 0.5);
+}

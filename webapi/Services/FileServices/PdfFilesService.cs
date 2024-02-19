@@ -6,7 +6,6 @@ using iText.Layout.Borders;
 using iText.Layout.Element;
 using iText.Layout.Properties;
 using System.Globalization;
-using webapi.Data;
 using webapi.Models;
 
 namespace webapi.Services.FileServices
@@ -16,12 +15,9 @@ namespace webapi.Services.FileServices
     /// </summary>
     public class PdfFilesService
     {
-        private readonly OptimaRestaurantContext _context;
         private readonly IConfiguration _configuration;
-        public PdfFilesService(OptimaRestaurantContext context,
-            IConfiguration configuration)
+        public PdfFilesService(IConfiguration configuration)
         {
-            _context = context;
             _configuration = configuration;
         }
 
@@ -79,14 +75,19 @@ namespace webapi.Services.FileServices
             }
 
         }
-
         private Table GenerateTableWithPersonalInfo(Employee employee, PdfFont font)
         {
             /* Creating the image */
-            string path = "";
-            if (employee.Profile.ProfilePicturePath != null) path = Path.Combine(_configuration["Pictures:Path"] ?? string.Empty) + "\\" + employee.Profile.ProfilePicturePath.Split('/').Last();
-            else path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
-            Image image = new Image(ImageDataFactory.Create(path));
+            DirectoryInfo pathInfo = Directory.GetParent(Directory.GetCurrentDirectory());
+            Image image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Images:Path"], "logo-bw-with-bg.png")));
+            try
+            {
+                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + employee.Profile.ProfilePicturePath.Split('/').Last()));
+            }
+            catch (Exception)
+            {
+                ;
+            }
 
             float maxWidth = 150f;
             float maxHeight = 150f;
@@ -114,8 +115,8 @@ namespace webapi.Services.FileServices
         private Table GenerateTableWithStatistics(Employee employee, PdfFont font)
         {
             /* Creating the image */
-            string path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
-            Image image = new Image(ImageDataFactory.Create(path));
+            DirectoryInfo pathInfo = Directory.GetParent(Directory.GetCurrentDirectory());
+            Image image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Images:Path"], "logo-bw-with-bg.png")));
 
             float maxWidth = 150f;
             float maxHeight = 150f;
@@ -143,10 +144,16 @@ namespace webapi.Services.FileServices
         {
 
             /* Creating the image */
-            var path = "";
-            if (restaurant.IconPath != null) path = Path.Combine(_configuration["Pictures:Path"] ?? string.Empty) + "\\" + restaurant.IconPath.Split('/').Last();
-            else path = Path.Combine(_configuration["Images:Path"] ?? string.Empty, "logo-bw-with-bg.png");
-            Image image = new Image(ImageDataFactory.Create(path));
+            DirectoryInfo pathInfo = Directory.GetParent(Directory.GetCurrentDirectory());
+            Image image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Images:Path"], "logo-bw-with-bg.png")));
+            try
+            {
+                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + restaurant.IconPath.Split('/').Last()));
+            }
+            catch (Exception)
+            {
+                ;
+            }
 
             float maxWidth = 150f;
             float maxHeight = 150f;
@@ -163,7 +170,7 @@ namespace webapi.Services.FileServices
             nestedTable.AddCell(new Cell().Add(new Paragraph($"Служители: {restaurant.EmployeesAverageRating ?? 0}/5\n").SetFont(font).SetFontSize(12)).SetBorder(Border.NO_BORDER));
             nestedTable.AddCell(new Cell().Add(new Paragraph($"Ястия: {restaurant.CuisineAverageRating ?? 0}/5\n").SetFont(font).SetFontSize(12)).SetBorder(Border.NO_BORDER));
             nestedTable.AddCell(new Cell().Add(new Paragraph($"Обстановката: {restaurant.AtmosphereAverageRating ?? 0}/5\n").SetFont(font).SetFontSize(12)).SetBorder(Border.NO_BORDER));
-            
+
             table.AddCell(new Cell().Add(nestedTable).SetBorder(Border.NO_BORDER));
             table.AddCell(new Cell().Add(image).SetBorder(Border.NO_BORDER));
 

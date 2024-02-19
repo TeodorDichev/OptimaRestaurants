@@ -1,0 +1,20 @@
+<div class="search-body">
+    <div class="h5 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
+        Няма намерени резултати
+    </div>
+    <div class="results">
+        <div *ngFor="let result of searchResult">
+            <div class="search-result border-top border-bottom" (click)="openInfoModal(result)">
+                <div>
+                    <img src="{{result.picturePath}}" (error)="missingIcon(result)">
+                    <span class="fw-bold"> {{result.fullname}} </span>
+                </div>
+                <div *ngIf="this.user">
+                    <span *ngIf="result.email.length > 20"> {{result.email.substring(0, 19)}}... </span>
+                    <span *ngIf="result.email.length <= 20"> {{result.email}} </span>
+                </div>
+                <div class="text-muted fst-italic text-end">{{result.role}}</div>
+            </div>
+        </div>
+    </div>
+</div>

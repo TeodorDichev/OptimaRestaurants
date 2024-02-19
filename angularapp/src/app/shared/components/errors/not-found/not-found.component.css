@@ -1,0 +1,15 @@
+::ng-deep app-not-found {
+    display: flex;
+    align-self: center;
+    flex: 1 0 0;
+}
+
+.outer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-self: center;
+    flex: 1 0 0;
+    align-items: center;
+    justify-content: center;
+}

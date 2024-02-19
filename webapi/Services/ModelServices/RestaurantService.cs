@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
@@ -30,11 +29,24 @@ namespace webapi.Services.ClassServices
         {
             return await _context.Restaurants.CountAsync();
         }
+        public async Task<int> GetCityRestaurantsCount(string cityName)
+        {
+            return await _context.Restaurants.Where(r => r.City == cityName).CountAsync();
+        }
+        public async Task<List<string>> GetCityRestaurantNames()
+        {
+            return await _context.Restaurants.Select(r => r.City).Distinct().ToListAsync();
+        }
         public async Task<List<BrowseRestaurantDto>> GetAllRestaurants(int lastPageIndex)
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
-            foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex-1)*20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants
+                .OrderBy(r => r.Name)
+                .ThenBy(r => r.IsWorking)
+                .Skip((lastPageIndex - 1) * 20)
+                .Take(20)
+                .ToListAsync())
             {
                 var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -42,7 +54,10 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
+                    Address2 = restaurant.Address2,
+                    Longitude = restaurant.Longitude,
+                    Latitude = restaurant.Latitude,
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -61,7 +76,12 @@ namespace webapi.Services.ClassServices
         {
             List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
 
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.City.ToLower() == cityName).Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+            foreach (var restaurant in await _context.Restaurants
+                .Where(r => r.City.ToLower() == cityName)
+                .OrderBy(r => r.Name)
+                .ThenBy(r => r.IsWorking)
+                .Skip((lastPageIndex - 1) * 20)
+                .Take(20).ToListAsync())
             {
                 var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -69,34 +89,10 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
-                    City = restaurant.City,
-                    RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
-                    TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
-                    IsWorking = restaurant?.IsWorking ?? false,
-                    IconPath = restaurant?.IconPath,
-                    TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
-                    TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
-                    TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
-                    TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
-                });
-            }
-
-            return restaurantsDto;
-        }
-        public async Task<List<BrowseRestaurantDto>> GetRatingRestaurants(int lastPageIndex, decimal rating)
-        {
-            List<BrowseRestaurantDto> restaurantsDto = new List<BrowseRestaurantDto>();
-
-            foreach (var restaurant in await _context.Restaurants.Where(r => r.RestaurantAverageRating >= rating).Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
-            {
-                var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
-
-                restaurantsDto.Add(new BrowseRestaurantDto
-                {
-                    Id = restaurant.Id.ToString(),
-                    Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
+                    Address2 = restaurant.Address2,
+                    Longitude = restaurant.Longitude,
+                    Latitude = restaurant.Latitude,
                     City = restaurant.City,
                     RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                     TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -118,7 +114,13 @@ namespace webapi.Services.ClassServices
             switch (ratingType)
             {
                 case "CuisineAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.CuisineAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants
+                        .OrderByDescending(r => r.CuisineAverageRating)
+                        .ThenBy(r => r.Name)
+                        .ThenBy(r => r.IsWorking)
+                        .Skip((lastPageIndex - 1) * 20)
+                        .Take(20)
+                        .ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -126,7 +128,10 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
+                            Address2 = restaurant.Address2,
+                            Longitude = restaurant.Longitude,
+                            Latitude = restaurant.Latitude,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -141,7 +146,13 @@ namespace webapi.Services.ClassServices
                     break;
 
                 case "AtmosphereAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.AtmosphereAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants
+                        .OrderByDescending(r => r.AtmosphereAverageRating)
+                        .ThenBy(r => r.Name)
+                        .ThenBy(r => r.IsWorking)
+                        .Skip((lastPageIndex - 1) * 20)
+                        .Take(20)
+                        .ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -149,7 +160,10 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
+                            Address2 = restaurant.Address2,
+                            Longitude = restaurant.Longitude,
+                            Latitude = restaurant.Latitude,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -164,7 +178,13 @@ namespace webapi.Services.ClassServices
                     break;
 
                 case "EmployeesAverageRating":
-                    foreach (var restaurant in await _context.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20).OrderByDescending(r => r.EmployeesAverageRating).ThenByDescending(r => r.Name).ThenBy(r => r.IsWorking).ToListAsync())
+                    foreach (var restaurant in await _context.Restaurants
+                        .OrderByDescending(r => r.EmployeesAverageRating)
+                        .ThenBy(r => r.Name)
+                        .ThenBy(r => r.IsWorking)
+                        .Skip((lastPageIndex - 1) * 20)
+                        .Take(20)
+                        .ToListAsync())
                     {
                         var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
 
@@ -172,7 +192,42 @@ namespace webapi.Services.ClassServices
                         {
                             Id = restaurant.Id.ToString(),
                             Name = restaurant.Name,
-                            Address = restaurant.Address,
+                            Address1 = restaurant.Address1,
+                            Address2 = restaurant.Address2,
+                            Longitude = restaurant.Longitude,
+                            Latitude = restaurant.Latitude,
+                            City = restaurant.City,
+                            RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
+                            TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
+                            IsWorking = restaurant?.IsWorking ?? false,
+                            IconPath = restaurant?.IconPath,
+                            TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
+                            TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
+                            TopEmployeeEmail = topEmployee?.Profile.Email ?? string.Empty,
+                            TopEmployeePicturePath = topEmployee?.Profile.ProfilePicturePath
+                        });
+                    }
+                    break;
+
+                case "RestaurantAverageRating":
+                    foreach (var restaurant in await _context.Restaurants
+                        .OrderByDescending(r => r.RestaurantAverageRating)
+                        .ThenBy(r => r.Name)
+                        .ThenBy(r => r.IsWorking)
+                        .Skip((lastPageIndex - 1) * 20)
+                        .Take(20)
+                        .ToListAsync())
+                    {
+                        var topEmployee = GetTopEmployeeOfRestaurant(restaurant);
+
+                        restaurantsDto.Add(new BrowseRestaurantDto
+                        {
+                            Id = restaurant.Id.ToString(),
+                            Name = restaurant.Name,
+                            Address1 = restaurant.Address1,
+                            Address2 = restaurant.Address2,
+                            Longitude = restaurant.Longitude,
+                            Latitude = restaurant.Latitude,
                             City = restaurant.City,
                             RestaurantAverageRating = restaurant?.RestaurantAverageRating ?? 0,
                             TotalReviewsCount = restaurant?.TotalReviewsCount ?? 0,
@@ -200,12 +255,15 @@ namespace webapi.Services.ClassServices
 
             var restaurantDto = new RestaurantDetailsDto
             {
-                Address = restaurant.Address,
                 AtmosphereAverageRating = restaurant.AtmosphereAverageRating ?? 0,
                 RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
                 CuisineAverageRating = restaurant.CuisineAverageRating ?? 0,
                 EmployeesAverageRating = restaurant.EmployeesAverageRating ?? 0,
                 TotalReviewsCount = restaurant.TotalReviewsCount,
+                Longitude = restaurant.Longitude,
+                Latitude = restaurant.Latitude,
+                Address1 = restaurant.Address1,
+                Address2 = restaurant.Address2,
                 City = restaurant.City,
                 EmployeeCapacity = restaurant.EmployeeCapacity ?? 0,
                 IconPath = restaurant.IconPath,
@@ -213,7 +271,7 @@ namespace webapi.Services.ClassServices
                 Name = restaurant.Name,
                 Id = restaurant.Id.ToString(),
                 ManagerFullName = manager?.Profile.FirstName + " " + manager?.Profile.LastName,
-                ManagerPhoneNumber = manager?.Profile.Email ?? string.Empty,
+                ManagerPhoneNumber = manager?.Profile.PhoneNumber ?? string.Empty,
                 ManagerEmail = manager?.Profile.Email ?? string.Empty,
                 TopEmployeeFullName = topEmployee?.Profile.FirstName + " " + topEmployee?.Profile.LastName,
                 TopEmployeeRating = topEmployee?.EmployeeAverageRating ?? 0,
@@ -248,7 +306,10 @@ namespace webapi.Services.ClassServices
             Restaurant restaurant = new Restaurant
             {
                 Name = model.Name,
-                Address = model.Address,
+                Longitude = model.Longitude,
+                Latitude = model.Latitude,
+                Address1 = model.Address1,
+                Address2 = model.Address2,
                 City = model.City,
                 IsWorking = true,
                 EmployeeCapacity = model.EmployeeCapacity,
@@ -264,7 +325,10 @@ namespace webapi.Services.ClassServices
         public Restaurant UpdateRestaurant(Restaurant restaurant, UpdateRestaurantDto updateDto)
         {
             if (updateDto.IsWorking.HasValue) restaurant.IsWorking = updateDto.IsWorking.Value;
-            if (updateDto.Address != null) restaurant.Address = updateDto.Address;
+            if (updateDto.Longitude != null) restaurant.Longitude = (decimal)updateDto.Longitude;
+            if (updateDto.Latitude != null) restaurant.Latitude = (decimal)updateDto.Latitude;
+            if (updateDto.Address1 != null) restaurant.Address1 = updateDto.Address1;
+            if (updateDto.Address2 != null) restaurant.Address2 = updateDto.Address2;
             if (updateDto.City != null) restaurant.City = updateDto.City;
             if (updateDto.Name != null) restaurant.Name = updateDto.Name;
             if (updateDto.EmployeeCapacity.HasValue) restaurant.EmployeeCapacity = (int)updateDto.EmployeeCapacity;
@@ -309,7 +373,10 @@ namespace webapi.Services.ClassServices
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
+                    Address2 = restaurant.Address2,
+                    Longitude = restaurant.Longitude,
+                    Latitude = restaurant.Latitude,
                     City = restaurant.City,
                     TotalReviewsCount = restaurant.TotalReviewsCount,
                     IsWorking = restaurant.IsWorking,
@@ -327,17 +394,20 @@ namespace webapi.Services.ClassServices
 
             return restaurants;
         }
-        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager)
+        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager, int lastPageIndex)
         {
             List<AccountRestaurantDto> restaurantsDto = new List<AccountRestaurantDto>();
 
-            foreach (var restaurant in manager.Restaurants)
+            foreach (var restaurant in manager.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20))
             {
                 restaurantsDto.Add(new AccountRestaurantDto
                 {
                     Id = restaurant.Id.ToString(),
                     Name = restaurant.Name,
-                    Address = restaurant.Address,
+                    Address1 = restaurant.Address1,
+                    Address2 = restaurant.Address2,
+                    Longitude = restaurant.Longitude,
+                    Latitude = restaurant.Latitude,
                     City = restaurant.City,
                     TotalReviewsCount = restaurant.TotalReviewsCount,
                     IsWorking = restaurant.IsWorking,
@@ -357,7 +427,11 @@ namespace webapi.Services.ClassServices
         }
         public Employee? GetTopEmployeeOfRestaurant(Restaurant restaurant)
         {
-            return restaurant.EmployeesRestaurants.Where(er => er.EndedOn == null).Select(e => e.Employee).OrderBy(e => e.EmployeeAverageRating).FirstOrDefault();
+            return restaurant.EmployeesRestaurants
+                .Where(er => er.EndedOn == null)
+                .Select(e => e.Employee)
+                .OrderByDescending(e => e.EmployeeAverageRating)
+                .FirstOrDefault();
         }
         public List<Employee> GetEmployeesOfRestaurant(Restaurant restaurant)
         {
@@ -366,7 +440,7 @@ namespace webapi.Services.ClassServices
         public bool IsRestaurantAtMaxCapacity(Restaurant restaurant)
         {
             return restaurant.EmployeeCapacity <= _context.EmployeesRestaurants
-                .Where(er => er.Restaurant == restaurant).Count();
+                .Where(er => er.Restaurant == restaurant && er.EndedOn == null).Count();
         }
         public bool HasRestaurantAManager(Restaurant restaurant)
         {

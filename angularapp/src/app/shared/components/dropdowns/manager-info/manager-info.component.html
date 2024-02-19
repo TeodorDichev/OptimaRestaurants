@@ -1,0 +1,33 @@
+<div class="dropdown-body" *ngIf="manager">
+  <div class="h3 border-bottom">Вашият профил</div>
+  <div class="border-bottom">
+    <div>
+      <div class="fw-bold h5">
+        <span>
+          <img src="{{manager.profilePicturePath}}"  (error)="missingIcon(manager)">
+        </span>
+        Здравейте, <span class="fst-italic"> {{manager.firstName}} {{manager.lastName}}</span>
+      </div>
+    </div>
+    <div class="manager-info">
+      <div>
+        <span class="fw-bold">Имейл:
+          <span class="fw-normal fst-italic">{{manager.email}}</span>
+        </span>
+      </div>
+      <div>
+        <span class="fw-bold">Телефон:
+          <span class="fw-normal fst-italic">{{manager.phoneNumber}}</span>
+        </span>
+      </div>
+      <div class="fst-italic" *ngIf="!manager.profilePicturePath">
+        Все още нямате профилна снимка.
+      </div>
+    </div>
+  </div>
+  <div class="buttons">
+    <button type="button" class="button btn-chocolate" (click)="editManagerProfile()">Редактиране на
+      данните</button>
+    <button type="button" class="button btn-gray">Затваряне</button>
+  </div>
+</div>

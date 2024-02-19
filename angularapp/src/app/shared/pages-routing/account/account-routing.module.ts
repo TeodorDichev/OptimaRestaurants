@@ -5,17 +5,15 @@ import { RegisterManagerComponent } from '../../account-pages/register-manager/r
 import { RegisterEmployeeComponent } from '../../account-pages/register-employee/register-employee.component';
 import { ConfirmEmailComponent } from '../../account-pages/confirm-email/confirm-email.component';
 import { SendEmailComponent } from '../../account-pages/send-email/send-email.component';
-import { ResetPasswordComponent } from '../../account-pages/reset-password/reset-password.component';
 
 
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
-  {path: 'register-manager', component: RegisterManagerComponent},
-  {path: 'register-employee', component: RegisterEmployeeComponent},
-  {path: 'confirm-email', component: ConfirmEmailComponent},
-  {path: 'send-email/:mode', component: SendEmailComponent},
-  {path: 'reset-password', component: ResetPasswordComponent}
+  { path: 'login', component: LoginComponent },
+  { path: 'register-manager', component: RegisterManagerComponent },
+  { path: 'register-employee', component: RegisterEmployeeComponent },
+  { path: 'confirm-email', component: ConfirmEmailComponent },
+  { path: 'send-email/:mode', component: SendEmailComponent }
 ];
 
 @NgModule({

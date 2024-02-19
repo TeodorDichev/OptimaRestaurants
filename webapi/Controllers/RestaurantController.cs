@@ -38,22 +38,28 @@ namespace webapi.Controllers
             return await _restaurantService.GetAllRestaurants(lastRestaurantIndex);
         }
 
-        [HttpGet("api/restaurants/get-local-restaurants/{cityName}/{lastRestaurantIndex}")]
+        [HttpGet("api/restaurants/get-city-names")]
+        public async Task<ActionResult<List<string>>> GetCityNames()
+        {
+            return await _restaurantService.GetCityRestaurantNames();
+        }
+
+        [HttpGet("api/restaurants/get-city-count/{cityName}")]
+        public async Task<ActionResult<int>> GetAllRestaurantsInACity(string cityName)
+        {
+            return await _restaurantService.GetCityRestaurantsCount(cityName);
+        }
+
+        [HttpGet("api/restaurants/get-city-restaurants/{cityName}/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName, int lastRestaurantIndex)
         {
             return await _restaurantService.GetCityRestaurants(lastRestaurantIndex, cityName);
         }
 
-        [HttpGet("api/restaurants/get-rating-restaurants/{rating}/{lastRestaurantIndex}")]
-        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsAboveRating(decimal rating, int lastRestaurantIndex)
-        {
-            return await _restaurantService.GetRatingRestaurants(lastRestaurantIndex, rating); ;
-        }
-
         [HttpGet("api/restaurants/get-cuisine-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
         {
-            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating"); ;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating");
         }
 
         [HttpGet("api/restaurants/get-atmosphere-restaurants/{lastRestaurantIndex}")]
@@ -65,7 +71,13 @@ namespace webapi.Controllers
         [HttpGet("api/restaurants/get-employees-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
         {
-            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating"); ;
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating");
+        }
+
+        [HttpGet("api/restaurants/get-best-restaurants/{lastRestaurantIndex}")]
+        public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestRestaurants(int lastRestaurantIndex)
+        {
+            return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "RestaurantAverageRating");
         }
 
         [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]
@@ -78,7 +90,7 @@ namespace webapi.Controllers
             return _restaurantService.GetRestaurantDetails(restaurant);
         }
 
-        [HttpGet("api/restaurants/search/{str}")]
+        [HttpGet("api/restaurants/search/{input}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> SearchRestaurant(string input)
         {
             List<Restaurant> foundRestaurants = await _restaurantService.GetRestaurantsWithMatchingNames(input);
@@ -90,7 +102,10 @@ namespace webapi.Controllers
                     Id = res.Id.ToString(),
                     Name = res.Name,
                     IconPath = res.IconPath,
-                    Address = res.Address,
+                    Address1 = res.Address1,
+                    Address2 = res.Address2,
+                    Longitude = res.Longitude,
+                    Latitude = res.Latitude,
                     IsWorking = res.IsWorking,
                     City = res.City,
                     TotalReviewsCount = res.TotalReviewsCount,

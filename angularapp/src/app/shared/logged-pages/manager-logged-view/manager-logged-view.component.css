@@ -1,5 +1,4 @@
 ::ng-deep app-manager-logged-view {
-    background-color: rgb(255, 231, 185);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -56,11 +55,8 @@
     align-items: flex-start;
 }
 
-.cursor-pointer {
-    cursor: pointer;
-}
-
 .restaurant-employee:hover {
+    cursor: pointer;
     background-color: rgba(241, 241, 241, 0.8);
 }
 
@@ -82,4 +78,55 @@
 .screen-right {
     justify-content: flex-start;
     align-items: flex-start;
+}
+
+.button {
+    padding: 8px 12px;
+}
+
+.header-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+.heading-with-button {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
+}
+
+.offcanvas {
+    background-color: rgba(252, 226, 179, 0.938);
+}
+
+.restaurant-info {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 0;
+    align-self: stretch;
+    align-items: center;
+    padding: 16px;
+    justify-content: space-between;
+}
+
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: auto;
+}
+
+.employee-info-clickable {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
 }

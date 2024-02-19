@@ -14,14 +14,36 @@ export class RestaurantsService {
     return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants-count`);
   }
 
-  /*
-  add filter buttons in every restaurant-list instance ->
-   by city, by rating avg, by rating user chooses (dropdown from 3 elements quis, empl, atmos)
-   there is a method for all of the elements
-   */
-
   getAllRestaurants(lastPageIndex: number) {
     return this.http.get(`${environment.appUrl}/api/restaurants/get-all-restaurants/${lastPageIndex}`);
+  }
+
+  getCitiesNames() {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-names`);
+  }
+
+  getRestaurantsCountInACity(cityName: string) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-count/${cityName}`);
+  }
+
+  getAllRestaurantsInACity(lastPageIndex: number, cityName: string) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-city-restaurants/${cityName}/${lastPageIndex}`);
+  }
+
+  getBestCuisineRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-cuisine-restaurants/${lastPageIndex}`);
+  }
+
+  getBestAtmosphereRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-atmosphere-restaurants/${lastPageIndex}`);
+  }
+
+  getBestEmployeesRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-employees-restaurants/${lastPageIndex}`);
+  }
+
+  getBestRestaurants(lastPageIndex: number) {
+    return this.http.get(`${environment.appUrl}/api/restaurants/get-best-restaurants/${lastPageIndex}`);
   }
 
   getRestaurantDetails(restaurantId: string) {

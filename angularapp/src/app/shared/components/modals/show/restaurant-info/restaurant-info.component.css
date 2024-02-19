@@ -1,14 +1,90 @@
 .rest-img {
-    aspect-ratio: 4/3;
-    max-width: 600px;
+    width: 100%;
     border-radius: 1%;
+    object-fit: cover;
     box-shadow: 4px 2px 3px black;
-    background-color: rgb(102, 102, 102);
 }
 
 .empl-img {
     aspect-ratio: 1/1;
     width: 120px;
+    object-fit: cover;
     border-radius: 8px;
     box-shadow: 2px 1px 2px black;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    background-color: rgb(238, 222, 191);
+    border-radius: 8px;
+}
+
+.rest-info {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.map {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    flex: 1 0 0;
+}
+
+@media only screen and (max-width: 991px) {
+    .img-map {
+        flex-direction: column !important;
+    }
+}
+
+.img-map {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.ratings {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.main-info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.top-employee-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.item-hover {
+    padding: 6px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.item-hover:hover {
+    background-color: rgba(255, 247, 230, 0.856);
+    cursor: pointer;
+}
+
+.button-close {
+    display: flex;
+    justify-content: flex-end;
 }

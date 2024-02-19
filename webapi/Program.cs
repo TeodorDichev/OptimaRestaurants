@@ -1,16 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using webapi.Data;
 using webapi.Models;
 using webapi.Services;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using webapi.Services.FileServices;
 using webapi.Services.ClassServices;
+using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
-using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<OptimaRestaurantContext>(options => 
+builder.Services.AddDbContext<OptimaRestaurantContext>(options =>
 {
-    options.UseSqlServer("Server=mssql2012.asphostbg.net, 14330;Database=optimare_staurant;Uid=optimare_1;Password=0ptim@Res;TrustServerCertificate=Yes",
-        x => x.UseDateOnlyTimeOnly());
+    options.UseSqlServer(builder.Configuration.GetConnectionString("OptimaRestaurantContextConnection"));
 });
 
 builder.Services.AddScoped<JWTService>();
@@ -43,10 +41,10 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
     /* password configuration */
     options.Password.RequiredLength = 6;
-    options.Password.RequireDigit = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
 
     /* email configuration */
     options.SignIn.RequireConfirmedEmail = true;
@@ -91,14 +89,16 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
         return new BadRequestObjectResult(toReturn);
     };
 });
-ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 var app = builder.Build();
-app.UseStaticFiles();
+
 /* HTTP request pipeline configuration and CORS policies */
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+    opt
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin();
 });
 
 if (app.Environment.IsDevelopment())
@@ -107,11 +107,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+/* Seeding roles to the database */
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
+        await contextSeedServices.InitializeContextAsync();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+        logger.LogError(ex.Message, "Failed to initialize and seed database ");
+    }
+}
 
 app.Run();

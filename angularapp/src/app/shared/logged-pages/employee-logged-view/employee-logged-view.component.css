@@ -1,5 +1,4 @@
 ::ng-deep app-employee-logged-view {
-    background-color: rgb(255, 240, 213);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -39,9 +38,7 @@
     flex-direction: row;
     align-self: stretch;
     flex: 1 0 0;
-    gap: 30px;
     border-radius: 8px;
-    justify-content: space-between;
     align-items: center;
     border: 1px solid rgba(128, 128, 128, 0.336);
     padding-right: 20px;
@@ -69,9 +66,54 @@
     overflow: auto;
 }
 
-/* @media only screen and (max-width: 1050px) {
-    .content {
-        flex-direction: column;
-        overflow: auto;
-    }
-}  */
+.offcanvas-body {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.header-info {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+.offcanvas {
+    background-color: rgba(252, 226, 179, 0.938);
+}
+
+.restaurant-info {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 0;
+    align-self: stretch;
+    align-items: center;
+    padding: 16px;
+    justify-content: space-between;
+}
+
+.review {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 12px;
+    border-radius: 14px;
+    gap: 12px;
+}
+
+.review-ratings {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    align-items: center;
+}
+
+.reviews-outer {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1 0 0;
+    overflow: auto;
+}

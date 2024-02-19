@@ -1,19 +1,50 @@
-.custom-date-input{
+.custom-date-input {
     border: transparent;
+    background-color: transparent;
 }
-input[type='text']{
+
+.input-field {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+input[type='text'] {
     border: none;
     outline: none;
     box-shadow: none;
 }
-input[type=checkbox]{
-    background-color: white !important;
 
+input[type=checkbox] {
+    background-color: white !important;
 }
-input[type=checkbox]:checked{
+
+input[type=checkbox]:checked {
     background-color: chocolate !important;
     border-color: chocolate;
 }
-.form-check-input:focus{
-    border-color: white;
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+    background-color: rgb(238, 222, 191);
+    border-radius: 8px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex: 1 0 0;
+    justify-content: flex-end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-input {
+    accent-color: chocolate;
 }

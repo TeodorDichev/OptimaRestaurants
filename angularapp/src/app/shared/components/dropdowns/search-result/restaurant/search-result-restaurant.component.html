@@ -1,0 +1,22 @@
+<div class="search-body">
+    <div class="h5 fw-bold text-danger" *ngIf="!searchResult || searchResult.length == 0">
+        Няма намерени резултати
+    </div>
+    <div class="results">
+        <div *ngFor="let result of searchResult">
+            <div class="search-result border-top border-bottom" (click)="openInfoModal(result)">
+                <div>
+                    <span class="fw-bold"> {{result.name}} </span>
+                </div>
+                <div>
+                    <span> {{result.city}} </span>
+                </div>
+                <div class="text-muted fst-italic text-end">
+                    Работи: 
+                    <span *ngIf="result.isWorking">Да</span>
+                    <span *ngIf="!result.isWorking">Не</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

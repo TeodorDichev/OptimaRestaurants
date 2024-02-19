@@ -39,3 +39,12 @@ input[type=checkbox]:checked {
     background-color: chocolate !important;
     border-color: chocolate;
 }
+
+.search {
+    background-color: #fff9eeec;
+}
+
+.dropdown-menu {
+    padding: 0px;
+    background-color: transparent;
+}

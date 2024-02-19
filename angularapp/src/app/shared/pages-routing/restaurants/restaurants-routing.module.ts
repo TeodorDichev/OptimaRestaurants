@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BrowseAllRestaurantsComponent } from '../../restaurants/browse-all-restaurants/browse-all-restaurants.component';
+import { BrowseAllRestaurantsComponent } from '../../user-pages/browse-all-restaurants/browse-all-restaurants.component';
 
 const routes: Routes = [
   {path: '', component: BrowseAllRestaurantsComponent}

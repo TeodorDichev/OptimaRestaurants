@@ -2,5 +2,7 @@ export interface UpdateManager {
     newFirstName: string,
     newLastName: string,
     newPhoneNumber: string,
-    profilePictureFile: File
+    profilePictureFile: File,
+    oldPassword: string,
+    newPassword: string
 }

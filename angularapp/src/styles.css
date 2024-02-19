@@ -12,7 +12,9 @@ app-root {
     padding: 0px;
     margin: 0px;
     border: 0;
+    background-color: #fadea9;
 }
+
 
 .content {
     display: flex;
@@ -112,9 +114,22 @@ app-root {
     font-family: Pacifico;
 }
 
-.scrollable-vert {
-    overflow-y: auto;
-    overflow-x: hidden;
+.btn-gray {
+    background-color: rgb(92, 92, 92);
+    color: white;
+    border: transparent;
+}
+
+.btn-green {
+    background-color: rgb(85, 148, 59);
+    color: white;
+    border: transparent;
+}
+
+.btn-red {
+    background-color: rgb(201, 57, 57);
+    color: white;
+    border: transparent;
 }
 
 .theme-main {
@@ -146,7 +161,7 @@ app-root {
 .input-field {
     border-radius: 5px;
     padding: 5px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     cursor: pointer;
     border: 1px solid #ddd;
@@ -170,52 +185,56 @@ input[type='password'] {
 
 
 .slide-in-blurred-left {
-	-webkit-animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
-	        animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+    -webkit-animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+    animation: slide-in-blurred-left 1.2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
 }
+
 /*#region Keyframes*/
 @-webkit-keyframes slide-in-blurred-left {
     0% {
-      -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
-              transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
-      -webkit-transform-origin: 100% 50%;
-              transform-origin: 100% 50%;
-      -webkit-filter: blur(40px);
-              filter: blur(40px);
-      opacity: 0;
+        -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+        transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+        -webkit-filter: blur(40px);
+        filter: blur(40px);
+        opacity: 0;
     }
-    100% {
-      -webkit-transform: translateX(0) scaleY(1) scaleX(1);
-              transform: translateX(0) scaleY(1) scaleX(1);
-      -webkit-transform-origin: 50% 50%;
-              transform-origin: 50% 50%;
-      -webkit-filter: blur(0);
-              filter: blur(0);
-      opacity: 1;
-    }
-  }
-  @keyframes slide-in-blurred-left {
-    0% {
-      -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
-              transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
-      -webkit-transform-origin: 100% 50%;
-              transform-origin: 100% 50%;
-      -webkit-filter: blur(40px);
-              filter: blur(40px);
-      opacity: 0;
-    }
-    100% {
-      -webkit-transform: translateX(0) scaleY(1) scaleX(1);
-              transform: translateX(0) scaleY(1) scaleX(1);
-      -webkit-transform-origin: 50% 50%;
-              transform-origin: 50% 50%;
-      -webkit-filter: blur(0);
-              filter: blur(0);
-      opacity: 1;
-    }
-  }
 
-  /*#endregion Keyframes*/
+    100% {
+        -webkit-transform: translateX(0) scaleY(1) scaleX(1);
+        transform: translateX(0) scaleY(1) scaleX(1);
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-blurred-left {
+    0% {
+        -webkit-transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+        transform: translateX(-1000px) scaleX(2.5) scaleY(0.2);
+        -webkit-transform-origin: 100% 50%;
+        transform-origin: 100% 50%;
+        -webkit-filter: blur(40px);
+        filter: blur(40px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateX(0) scaleY(1) scaleX(1);
+        transform: translateX(0) scaleY(1) scaleX(1);
+        -webkit-transform-origin: 50% 50%;
+        transform-origin: 50% 50%;
+        -webkit-filter: blur(0);
+        filter: blur(0);
+        opacity: 1;
+    }
+}
+
+/*#endregion Keyframes*/
 
 /*#endregion Animations*/
 
@@ -223,8 +242,7 @@ input[type='password'] {
 html,
 body,
 div {
-    /*Firefox remove scrollbar*/
-    scrollbar-width: none;
+    scrollbar-width: auto;
 }
 
 ::-webkit-scrollbar {

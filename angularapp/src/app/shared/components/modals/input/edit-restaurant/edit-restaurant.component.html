@@ -1,0 +1,68 @@
+<div class="modal-body">
+  <div class="h2 fw-bold theme-main">Редактиране на ресторант</div>
+  <div class="text-center">
+    <form [formGroup]="editRestaurantForm" (ngSubmit)="editRestaurant()" autocomplete="off">
+      <div class="form-group">
+        <div class="input-field">
+          <span class="fa fa-cutlery theme-main p-2"></span>
+          <input formControlName="name" type="text" placeholder="Ново име на ресторанта ({{restaurant?.name}})">
+        </div>
+        <div class="input-field">
+          <span class="fa fa-map-pin p-2"></span>
+          <input type="text" placeholder="Търсете локация/адрес" formControlName="fullLocationString"
+            [(ngModel)]="searchLocationPropmt">
+          <div (click)="getSearchLocationResults()" data-bs-toggle="collapse" data-bs-target="#collapseResults"
+            id="collapseToggle">
+            <i class="fa-solid fa-magnifying-glass-location p-2"></i>
+          </div>
+        </div>
+        <div class="collapse" id="collapseResults">
+          <div class="collapse-body">
+            <div class="city" *ngFor="let result of resultsLocationSearch" (click)="selectCity(result)">
+              {{result}}
+            </div>
+          </div>
+        </div>
+        <div class="input-field">
+          <span class="fa fa-user theme-main p-2"></span>
+          <input formControlName="employeeCapacity" type="text"
+            placeholder="Нов максимален капацитет на работници ({{restaurant?.employeeCapacity}})">
+        </div>
+        <div class="input-field">
+          <span class="fa fa-picture-o theme-main p-2"></span>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <div class="input-field" *ngIf="restaurant">
+          <span class="fa fa-user p-2"></span>
+          <span class="text-muted">Ресторанта работи: </span>
+          <input class="checkbox-input m-2" type="checkbox" formControlName="isWorking"
+            [(ngModel)]="restaurant.isWorking">
+        </div>
+        <div *ngIf="submitted">
+          <div class="text-danger"
+            *ngIf="editRestaurantForm.get('name')?.hasError('minlength') || editRestaurantForm.get('name')?.hasError('maxlength')">
+            Името трябва да е между 2 и 50 символа!
+          </div>
+          <div class="text-danger" *ngIf="editRestaurantForm.get('employeeCapacity')?.hasError('pattern')">
+            Невалиден капацитет на работници!
+          </div>
+        </div>
+      </div>
+      <div class="form-floating" *ngIf="errorMessages.length > 0">
+        <app-validation-messages [errorMessages]="errorMessages"></app-validation-messages>
+      </div>
+    </form>
+  </div>
+  <div class="text-center">
+    <div class="text-danger p-2">
+      Внимание! След тази операция ресторантът не може да бъде върнат!
+    </div>
+    <button type="button" class="button btn-red" (click)="deleteRestaurant()">
+      Изтриване на ресторант
+    </button>
+  </div>
+  <div class="buttons">
+    <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Отказ</button>
+    <button type="button" class="button btn-chocolate" (click)="editRestaurant()">Запази</button>
+  </div>
+</div>

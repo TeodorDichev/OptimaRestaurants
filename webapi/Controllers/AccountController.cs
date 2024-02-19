@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using System.Text;
 using webapi.DTOs.Account;
 using webapi.Models;
@@ -92,7 +91,7 @@ namespace webapi.Controllers
         public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
         {
             ApplicationUser user;
-            if (! await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
+            if (!await _accountService.CheckUserExistByEmail(model.UserName)) return Unauthorized("Грешен имейл или парола!");
             else user = await _accountService.GetUserByEmailOrUserName(model.UserName);
 
             if (user.EmailConfirmed == false) return Unauthorized("Моля потвърдете имейл адреса си.");
@@ -116,7 +115,7 @@ namespace webapi.Controllers
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             ApplicationUser user;
-            if (! await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            if (!await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
             else user = await _accountService.GetUserByEmailOrUserName(model.Email);
 
             if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
@@ -140,76 +139,30 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/account/reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        [HttpPut("api/account/reset-password/{email}")]
+        public async Task<IActionResult> ResetPassword(string? email)
         {
+            if (string.IsNullOrEmpty(email)) return BadRequest("Моля, първо, въведете вашия имейл адрес.");
+
             ApplicationUser user;
-            if (!await _accountService.CheckUserExistByEmail(model.Email)) return Unauthorized("Този имейл не е регистриран в системата.");
-            else user = await _accountService.GetUserByEmailOrUserName(model.Email);
+            if (!await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Този имейл не е регистриран в системата.");
+            else user = await _accountService.GetUserByEmailOrUserName(email);
 
             if (user.EmailConfirmed == false) return BadRequest("Имейлът ви не е потвърден, моля потвърдете го!");
 
             try
             {
-                var decodedTokenBytes = WebEncoders.Base64UrlDecode(model.Token);
-                var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
+                string tempPassword = GeneratePassword();
 
-                var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.Password);
-                if (result.Succeeded)
-                {
-                    return Ok(new JsonResult(new { title = "Нулирането на паролата е успешно!", message = "Вашата парола е сменена успешно!" }));
-                }
+                await _userManager.RemovePasswordAsync(user);
+                await _userManager.AddPasswordAsync(user, tempPassword);
+                await SendResetPassword(user, tempPassword);
 
-                return BadRequest("Невалиден токен. Моля, опитайте отново");
+                return Ok(new JsonResult(new { title = "Нулирането на паролата е успешно!", message = "Изпратихме ви имейл с нова парола, с която да влезете във вашия профил." }));
             }
             catch (Exception)
             {
-                return BadRequest("Невалиден токен. Моля, опитайте отново");
-            }
-        }
-
-        [HttpPost("api/account/resend-email-confirmation-link/{email}")]
-        public async Task<IActionResult> ResendEmailConfirmationLink(string email)
-        {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Невалиден имейл адрес!");
-            var user = await _accountService.GetUserByEmailOrUserName(email);
-            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
-            if (user.EmailConfirmed == true) return BadRequest("Този имейл вече е потвърден!");
-
-            try
-            {
-                if (await SendConfirmEmailAddress(user))
-                {
-                    return Ok(new JsonResult(new { title = "Линкът за потвърждаване е изпратен!", message = "Моля, потвърдете имейл адреса си." }));
-                }
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
-            }
-        }
-
-        [HttpPost("api/account/forgot-username-or-password/{email}")]
-        public async Task<IActionResult> ForgotUsernameOrPassword(string email)
-        {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Невалиден имейл адрес!");
-            var user = await _accountService.GetUserByEmailOrUserName(email);
-            if (user == null) return Unauthorized("Този имейл не е регистриран в системата.");
-            if (user.EmailConfirmed == false) return BadRequest("Моля потвърдете имейл адреса си.");
-
-            try
-            {
-                if (await SendForgotUsernameOrPassword(user))
-                {
-                    return Ok(new JsonResult(new { title = "Имейлът за подновяване на паролата е изпратен!", message = "Моля, проверете имейл адреса си." }));
-                }
-
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
+                return BadRequest("Неуспешно сменена парола. Моля, опитайте отново!");
             }
         }
 
@@ -231,20 +184,16 @@ namespace webapi.Controllers
             return accounts;
         }
 
-        private async Task<bool> SendForgotUsernameOrPassword(ApplicationUser user)
+        private async Task<bool> SendResetPassword(ApplicationUser user, string tempPassword)
         {
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ResetPasswordPath"]}?token={token}&email={user.Email}";
-
             var body = $"<p>Здравейте: {user.FirstName} {user.LastName}</p>" +
                 $"<p>Имейл: {user.UserName}.</p>" +
-                "<p>Може да подновите паролата си тук.</p>" +
-                $"<p><a href=\"{url}\">Подновяване</a></p>" +
+                "<p>Това е новата парола, с която може да влезете в профила си.</p>" +
+                $"<p>{tempPassword}</p>" +
                 "<p>Благодарим ви,</p>" +
                 $"<br>{_configuration["Email:ApplicationName"]}";
 
-            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Forgot username or password");
+            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Reset password");
 
             return await _emailService.SendEmailAsync(emailSend);
         }
@@ -277,6 +226,42 @@ namespace webapi.Controllers
                 JWT = _jwtService.CreateJWT(user),
                 IsManager = isManager
             };
+        }
+
+        private const string SpecialChars = "!@#$%^&*()-_=+";
+        private const string Numbers = "0123456789";
+        private const string CapitalLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        private const string LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
+
+        private readonly Random _random = new Random();
+
+        private string GeneratePassword()
+        {
+            string password = "";
+            password += SpecialChars[_random.Next(SpecialChars.Length)];
+            password += Numbers[_random.Next(Numbers.Length)];
+            password += CapitalLetters[_random.Next(CapitalLetters.Length)];
+            for (int i = 0; i < 5; i++)
+            {
+                password += LowercaseLetters[_random.Next(LowercaseLetters.Length)];
+            }
+            password = ShuffleString(password);
+            return password;
+        }
+
+        private string ShuffleString(string str)
+        {
+            char[] array = str.ToCharArray();
+            int n = array.Length;
+            while (n > 1)
+            {
+                n--;
+                int k = _random.Next(n + 1);
+                char value = array[k];
+                array[k] = array[n];
+                array[n] = value;
+            }
+            return new string(array);
         }
     }
 }

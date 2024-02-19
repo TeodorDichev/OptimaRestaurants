@@ -6,6 +6,8 @@ import { Employee } from 'src/app/shared/models/employee/employee';
 import { environment } from 'src/environments/environment.development';
 import { UpdateEmployee } from 'src/app/shared/models/employee/update-employee';
 import { RequestResponse } from '../../models/requests/requestResponse';
+import { CreateScheduleAssignment } from '../../models/employee/create-schedule-assignent';
+import { ScheduleAssignment } from '../../models/employee/schedule-assignment';
 
 @Injectable({
   providedIn: 'root'
@@ -24,12 +26,11 @@ export class EmployeeService {
   deleteEmployeeAccount(email: string) {
     this.logout();
     return this.http.delete(`${environment.appUrl}/api/employee/delete-employee/${email}`);
-
   }
 
   updateEmployeeAccount(model: UpdateEmployee, email: string) {
 
-    const formData: FormData = new FormData(); // for possible file sending, otherwise I send a link to the image (only way i found)
+    const formData: FormData = new FormData(); 
 
     formData.append('newFirstName', model.newFirstName);
     formData.append('newLastName', model.newLastName);
@@ -38,6 +39,8 @@ export class EmployeeService {
     formData.append('newBirthDate', model.newBirthDate.toString());
     formData.append('newCity', model.newCity);
     formData.append('isLookingForJob', model.isLookingForJob.toString());
+    formData.append('oldPassword', model.oldPassword);
+    formData.append('newPassword', model.newPassword);
 
     return this.http.put(`${environment.appUrl}/api/employee/update-employee/${email}`, formData);
   }
@@ -54,8 +57,36 @@ export class EmployeeService {
     return this.http.get(`${environment.appUrl}/api/employee/download-qrcode/${email}`, { responseType: 'blob' });
   }
 
+  regenerateQRCode(email: string) {
+    return this.http.get(`${environment.appUrl}/api/employee/regen-qrcode/${email}`);
+  }
+
   getPDFFile(email: string): Observable<Blob> {
     return this.http.get(`${environment.appUrl}/api/employee/download-cv/${email}`, { responseType: 'blob' });
+  }
+
+  getEmployeeRestaurantSchedule(email: string, restaurantId: string, month: number) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-restaurant-schedule/${email}/${restaurantId}/${month}`);
+  }
+
+  getEmployeeFullSchedule(email: string, month: number) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-full-schedule/${email}/${month}`);
+  }
+
+  getDailySchedule(email: string, day: Date) {
+    return this.http.get(`${environment.appUrl}/api/employee/get-day-schedule/${email}/${day.toDateString()}`);
+  }
+
+  addAssignment(createScheduleAssignment: CreateScheduleAssignment) {
+    return this.http.post(`${environment.appUrl}/api/employee/schedule/add-assignment`, createScheduleAssignment);
+  }
+
+  editAssignment(scheduleAssignment: ScheduleAssignment) {
+    return this.http.put(`${environment.appUrl}/api/employee/schedule/edit-assignment`, scheduleAssignment);
+  }
+
+  deleteAssignment(scheduleId: string) {
+    return this.http.delete(`${environment.appUrl}/api/employee/schedule/delete-assignment/${scheduleId}`);
   }
 
   logout() {

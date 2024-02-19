@@ -1,0 +1,18 @@
+<div class="modal-body">
+    <div class="fw-bold h3">
+        Вашият QR Код
+    </div>
+    <div class="text-danger fst-italic" *ngIf="!employee?.qrCodePath">
+        {{message}}
+    </div>
+    <img src="{{employee?.qrCodePath}}" alt="Грешка при визуализиране" *ngIf="employee?.qrCodePath">
+    <div class="fst-italic fw-bold download-qr theme-main h5" (click)="downloadQRCode()">
+        Свалете вашия код
+    </div>
+    <div class="fst-italic fw-bold download-qr theme-main h5" (click)="regenerateQRCode()">
+        Регенериране на код
+    </div>
+    <div class="text-end border-top">
+        <button type="button" class="button btn-gray" (click)="bsModalRef.hide()">Затваряне</button>
+    </div>
+</div>
