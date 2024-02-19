@@ -97,7 +97,7 @@ namespace webapi.Services.ModelServices
                 if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.FullDay && a.Day == DateOnly.FromDateTime(day))) employees.Remove(employee);
 
                 /* for this day the employee has no assignments */
-                if (!await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)))
+                else if (!await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)))
                 {
                     freeEmployees.Add(new FreeEmployeeDto
                     {
@@ -107,16 +107,19 @@ namespace webapi.Services.ModelServices
                         /* From and To are null => no assignments */
                     });
                 }
-
-                /* For this day the employee has some assignments */
-                freeEmployees.Add(new FreeEmployeeDto
+                else
                 {
-                    EmployeeEmail = employee.Profile.Email ?? string.Empty,
-                    EmployeeName = employee.Profile.FirstName + " " + employee.Profile.LastName,
-                    RestaurantName = restaurant.Name,
-                    From = _context.Schedules.Where(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)).OrderBy(a => a.From).Select(a => a.From).First(),
-                    To = _context.Schedules.Where(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)).OrderByDescending(a => a.To).Select(a => a.To).First(),
-                });
+                    /* For this day the employee has some assignments */
+
+                    freeEmployees.Add(new FreeEmployeeDto
+                    {
+                        EmployeeEmail = employee.Profile.Email ?? string.Empty,
+                        EmployeeName = employee.Profile.FirstName + " " + employee.Profile.LastName,
+                        RestaurantName = restaurant.Name,
+                        From = _context.Schedules.Where(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)).OrderBy(a => a.From).Select(a => a.From).First(),
+                        To = _context.Schedules.Where(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)).OrderByDescending(a => a.To).Select(a => a.To).First(),
+                    });
+                }
             };
 
             return freeEmployees;
@@ -248,7 +251,7 @@ namespace webapi.Services.ModelServices
                 if (from == null || to == null) return false;
 
                 /* The new assignment is for earlier compared to the existing assignments (16-20, 20-22 + 8-14) */
-                if (orderedSchedule.First().From >= TimeOnly.FromDateTime(from.Value)) return true;
+                if (orderedSchedule.First().From > TimeOnly.FromDateTime(from.Value)) return true;
 
                 /* The new assignment is between existing assignments (8-14 + 16-20 + 20-22) */
                 for (int i = 0; i < orderedSchedule.Count - 1; i++)
