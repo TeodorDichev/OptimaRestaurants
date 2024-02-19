@@ -49,15 +49,7 @@ export class AccountService {
   }
 
   confirmEmail(model: ConfirmEmail) {
-    return this.http.put<User>(`${environment.appUrl}/api/account/confirm-email`, model).pipe(
-      map((user: User) => {
-        if (user) {
-          this.setUser(user);
-          return user;
-        }
-        return null;
-      })
-    );;
+    return this.http.put(`${environment.appUrl}/api/account/confirm-email`, model);
   }
 
   resendEmailConfirmationLink(email: string) {

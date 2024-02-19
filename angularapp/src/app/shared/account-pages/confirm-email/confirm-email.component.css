@@ -1,0 +1,13 @@
+::ng-deep app-confirm-email {
+    display: flex;
+    align-self: stretch;
+    flex: 1 0 0;
+}
+
+.container {
+    display: flex;
+    align-self: stretch;
+    flex: 1 0 0;
+    align-items: center;
+    justify-content: center;
+}
