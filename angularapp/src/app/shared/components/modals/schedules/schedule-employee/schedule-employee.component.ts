@@ -48,14 +48,12 @@ export class ScheduleEmployeeComponent implements OnInit, OnDestroy {
     employeeEmail: '',
     restaurantId: '',
     day: new Date(),
-    // from: '', to: ''
     fullDay: false,
     isWorkDay: false
   };
   selectedAssignment: EmployeeDailySchedule = {
     scheduleId: '',
     restaurantId: '',
-    // from: '', to: ''
     isWorkDay: false,
     isFullDay: false,
     restaurantName: ''
@@ -63,7 +61,6 @@ export class ScheduleEmployeeComponent implements OnInit, OnDestroy {
   assignmentEdit: ScheduleAssignment = {
     scheduleId: '',
     restaurantId: '',
-    // from: '', to: ''
     fullDay: false,
     isWorkDay: false,
     employeeEmail: '',
