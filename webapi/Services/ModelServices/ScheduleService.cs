@@ -93,8 +93,10 @@ namespace webapi.Services.ModelServices
 
             foreach (var employee in employees)
             {
-                /* If this employee has a full day work/leisure assignment for this day in any restaurant then it cannot work on this day -> not adding it */
-                if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.FullDay && a.Day == DateOnly.FromDateTime(day))) continue;
+                /* If this employee has a full day leisure assignment for this day in this restaurant then it cannot work on this day -> not adding it */
+                /* If this employee has a full day working assignment for this day in any restaurant then it cannot work on this day -> not adding it */
+                if (await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Restaurant == restaurant && !a.IsWorkDay && a.FullDay && a.Day == DateOnly.FromDateTime(day))
+                    || await _context.Schedules.AnyAsync(a => a.Employee == employee && a.IsWorkDay && a.FullDay && a.Day == DateOnly.FromDateTime(day))) continue;
 
                 /* for this day the employee has no assignments */
                 else if (!await _context.Schedules.AnyAsync(a => a.Employee == employee && a.Day == DateOnly.FromDateTime(day)))
@@ -238,10 +240,10 @@ namespace webapi.Services.ModelServices
                 if (orderedSchedule.First().FullDay) return false;
 
                 /* The new assignment is for later compared to the existing assignment (8-14 + 16-20) */
-                if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.First().To) return true;
+                if (TimeOnly.FromDateTime(from.Value) > orderedSchedule.First().To) return true;
 
                 /* The new assignment is for earlier compared to the existing assignment (16-20 + 8-14) */
-                if (orderedSchedule.First().From >= TimeOnly.FromDateTime(from.Value)) return true;
+                if (orderedSchedule.First().From > TimeOnly.FromDateTime(from.Value)) return true;
             }
 
             /* The employee has a multiple assignments for the day */
@@ -255,11 +257,11 @@ namespace webapi.Services.ModelServices
 
                 /* The new assignment is between existing assignments (8-14 + 16-20 + 20-22) */
                 for (int i = 0; i < orderedSchedule.Count - 1; i++)
-                    if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule[i].To && TimeOnly.FromDateTime(to.Value) <= orderedSchedule[i + 1].From)
+                    if (TimeOnly.FromDateTime(from.Value) > orderedSchedule[i].To && TimeOnly.FromDateTime(to.Value) < orderedSchedule[i + 1].From)
                         return true;
 
                 /* The new assignment is for later compared to the existing assignments (8-12, 12-14 + 16-20) */
-                if (TimeOnly.FromDateTime(from.Value) >= orderedSchedule.Last().To) return true;
+                if (TimeOnly.FromDateTime(from.Value) > orderedSchedule.Last().To) return true;
             }
 
             return false;
