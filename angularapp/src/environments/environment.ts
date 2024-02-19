@@ -1,5 +1,5 @@
 export const environment = {
     production: true,
-    appUrl: 'http://optima-restoranti.online',
+    appUrl: '',
     userKey: 'identityAppUser'
 };

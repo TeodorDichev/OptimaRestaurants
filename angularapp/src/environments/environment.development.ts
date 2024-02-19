@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    appUrl: 'http://optima-restoranti.online',
+    appUrl: 'https://opt.csd-bg.com',
     userKey: 'identityAppUser'
 };
