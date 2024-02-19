@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
           }
         },
         error: _ => {
-          console.log(_);
+          // console.log(_);
           this.accountService.logout();
         }
       })

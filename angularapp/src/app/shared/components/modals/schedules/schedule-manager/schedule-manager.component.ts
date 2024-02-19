@@ -163,7 +163,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     if (this.manager) {
       const sub = this.managerService.getManagerFullSchedule(this.manager.restaurants[this.selectedRestaurantIndex].id, this.selectedDay.getMonth() + 1).subscribe({
         next: (response: any) => {
-          console.log('full schedule: ', response);
           this.clearOnlyNoneAndWithWorkersMarkers();
           this.managerFullSchedule = response;
           this.setDatesMarkers();
@@ -178,22 +177,8 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
     if (this.manager) {
       const sub = this.managerService.getFreeEmployees(this.manager.restaurants[this.selectedRestaurantIndex].id, this.selectedDay).subscribe({
         next: (response: any) => {
-          console.log('free employees: ', response);
           this.freeEmployeeList = response;
-
         }
-      });
-      this.freeEmployeeList.push({
-        employeeEmail: 'jiberish@hui.kur',
-        employeeName: 'Azbrat',
-        restaurantName: 'Tedi'
-      });
-      this.freeEmployeeList.push({
-        employeeEmail: 'carter@email.com',
-        employeeName: 'Carter',
-        restaurantName: 'Tedi',
-        from: '12:30',
-        to: '14:30'
       });
       this.subscriptions.push(sub);
     }
@@ -278,7 +263,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
   private addAssignment() {
     const sub = this.managerService.addAssignment(this.createScheduleAssignment).subscribe({
       next: (response: any) => {
-        console.log('daily schedule after adding: ', response);
         this.selectedDaySchedule = response;
         this.getRestaurantSchedule();
         this.sharedService
@@ -508,7 +492,6 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
       const sub = this.managerService.editAssignment(this.assignmentEdit).subscribe({
         next: (response: any) => {
           this.sharedService.showNotification(true, 'Успешно!', 'Вие успешно редактирахте този ангажимент.');
-          console.log('daily schedule after editing: ', response);
           this.selectedDaySchedule = response;
           this.resetTimeRangeEdit();
           this.resetScheduleEdit();

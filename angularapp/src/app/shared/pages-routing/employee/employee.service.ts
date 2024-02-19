@@ -31,7 +31,6 @@ export class EmployeeService {
   updateEmployeeAccount(model: UpdateEmployee, email: string) {
 
     const formData: FormData = new FormData(); 
-    console.log(model);
 
     formData.append('newFirstName', model.newFirstName);
     formData.append('newLastName', model.newLastName);

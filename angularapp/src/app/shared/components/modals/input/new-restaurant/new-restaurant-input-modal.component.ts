@@ -105,7 +105,6 @@ export class NewRestaurantInputModalComponent implements OnInit, OnDestroy {
         this.resultsLocationSearch = [];
         for (let res of result.features) {
           const currentResult = res.properties;
-          console.log(currentResult);
           this.resultsLocationSearch.push(currentResult.lon + '|'
             + currentResult.lat + '|'
             + currentResult.address_line1 + '|'
