@@ -8,7 +8,7 @@ using webapi.Data;
 
 #nullable disable
 
-namespace webapi.Migrations
+namespace webapi.Data.Migrations
 {
     [DbContext(typeof(OptimaRestaurantContext))]
     partial class OptimaRestaurantContextModelSnapshot : ModelSnapshot
