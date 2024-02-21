@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
@@ -40,6 +41,7 @@ namespace webapi.Controllers
             _scheduleService = scheduleService;
         }
 
+        [EnableCors("AllowAllOrigin")]
         [HttpGet("get-manager/{email}")]
         public async Task<ActionResult<ManagerMainViewDto>> GetManager(string email)
         {
