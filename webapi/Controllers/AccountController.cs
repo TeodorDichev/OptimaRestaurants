@@ -14,7 +14,9 @@ namespace webapi.Controllers
     /// Registration, accounts' password and email, searching accounts
     /// </summary>
 
-    public class AccountController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
         private readonly JWTService _jwtService;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -41,7 +43,7 @@ namespace webapi.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpPost("api/account/register-manager")]
+        [HttpPost("register-manager")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterManager([FromBody] RegisterManagerDto model)
         {
             ApplicationUser userToAdd;
@@ -64,7 +66,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("api/account/register-employee")]
+        [HttpPost("register-employee")]
         public async Task<ActionResult<ApplicationUserDto>> RegisterEmployee([FromBody] RegisterEmployeeDto model)
         {
             ApplicationUser userToAdd;
@@ -87,7 +89,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("api/account/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<ApplicationUserDto>> Login([FromBody] LoginDto model)
         {
             ApplicationUser user;
@@ -101,7 +103,7 @@ namespace webapi.Controllers
             return await CreateApplicationUserDto(user);
         }
 
-        [HttpGet("/api/account/refresh-user-token/{email}")]
+        [HttpGet("refresh-user-token/{email}")]
         public async Task<ActionResult<ApplicationUserDto>> RefreshUserToken(string email)
         {
             ApplicationUser user;
@@ -111,7 +113,7 @@ namespace webapi.Controllers
             return await CreateApplicationUserDto(user);
         }
 
-        [HttpPut("api/account/confirm-email")]
+        [HttpPut("confirm-email")]
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailDto model)
         {
             ApplicationUser user;
@@ -139,7 +141,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPut("api/account/reset-password/{email}")]
+        [HttpPut("reset-password/{email}")]
         public async Task<IActionResult> ResetPassword(string? email)
         {
             if (string.IsNullOrEmpty(email)) return BadRequest("Моля, първо, въведете вашия имейл адрес.");
@@ -166,7 +168,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/account/search/{input}")]
+        [HttpGet("search/{input}")]
         public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string input)
         {
             List<ApplicationUser> foundUsers = await _accountService.GetUsersWithMatchingData(input);

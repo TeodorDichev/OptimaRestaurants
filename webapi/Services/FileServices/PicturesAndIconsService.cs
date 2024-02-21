@@ -18,9 +18,8 @@
             try
             {
                 string path = Directory.GetCurrentDirectory();
-                DirectoryInfo pathInfo = Directory.GetParent(path);
 
-                path = Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]);
+                path = Path.Combine(path, _configuration["Pictures:Path"]);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
@@ -31,7 +30,7 @@
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                onlinePath = "../../../../assets/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();

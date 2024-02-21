@@ -394,11 +394,11 @@ namespace webapi.Services.ClassServices
 
             return restaurants;
         }
-        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager, int lastPageIndex)
+        public List<AccountRestaurantDto> GetRestaurantsOfManager(Manager manager)
         {
             List<AccountRestaurantDto> restaurantsDto = new List<AccountRestaurantDto>();
 
-            foreach (var restaurant in manager.Restaurants.Skip((lastPageIndex - 1) * 20).Take(20))
+            foreach (var restaurant in manager.Restaurants)
             {
                 restaurantsDto.Add(new AccountRestaurantDto
                 {
