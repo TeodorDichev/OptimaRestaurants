@@ -49,13 +49,13 @@ namespace webapi.Controllers
             ApplicationUser userToAdd;
             if (await _accountService.CheckUserExistByEmail(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес!");
             else userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
-            await _managerService.AddManager(userToAdd);
-            await _accountService.SaveChangesAsync();
 
             try
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
+                    await _managerService.AddManager(userToAdd);
+                    await _accountService.SaveChangesAsync();
                     return await CreateApplicationUserDto(userToAdd);
                 }
                 else return BadRequest("Акаунтът Ви е създаден, но не успяхме да изпратим имейл. Ако не можете да си влезете в профила, моля свържете се с администратор.");
@@ -72,13 +72,13 @@ namespace webapi.Controllers
             ApplicationUser userToAdd;
             if (await _accountService.CheckUserExistByEmail(model.Email)) return BadRequest($"Вече съществува акаунт с този имейл адрес!");
             else userToAdd = await _accountService.AddApplicationUser(model.FirstName, model.LastName, model.Email, model.Password);
-            await _employeeService.AddEmployee(userToAdd, model.City, model.BirthDate);
-            await _accountService.SaveChangesAsync();
 
             try
             {
                 if (await SendConfirmEmailAddress(userToAdd))
                 {
+                    await _employeeService.AddEmployee(userToAdd, model.City, model.BirthDate);
+                    await _accountService.SaveChangesAsync();
                     return await CreateApplicationUserDto(userToAdd);
                 }
                 else return BadRequest("Акаунтът Ви е създаден, но не успяхме да изпратим имейл. Ако не можете да си влезете в профила, моля свържете се с администратор.");
