@@ -41,15 +41,15 @@ namespace webapi.Controllers
             _scheduleService = scheduleService;
         }
 
-        [HttpGet("api/employee/get-employee/{email}")]
-        [HttpGet("api/manager/browse-employees/details/{email}")]
+        [HttpGet("get-employee/{email}")]
+        [HttpGet("browse-employees/details/{email}")]
         public async Task<ActionResult<EmployeeMainViewDto>> GetEmployee(string email)
         {
             if (await _employeeService.CheckEmployeeExistByEmail(email)) return await GenerateNewEmployeeDto(email);
             else return BadRequest("Потребителят не съществува!");
         }
 
-        [HttpPut("api/employee/update-employee/{email}")]
+        [HttpPut("update-employee/{email}")]
         public async Task<ActionResult<EmployeeMainViewDto>> UpdateEmployeeAccount([FromForm] UpdateEmployeeDto updateDto, string email)
         {
             Employee employee;
@@ -62,7 +62,7 @@ namespace webapi.Controllers
             return await GenerateNewEmployeeDto(email);
         }
 
-        [HttpDelete("api/employee/delete-employee/{email}")]
+        [HttpDelete("delete-employee/{email}")]
         public async Task<IActionResult> DeleteEmployeeAccount(string email)
         {
             Employee employee;
@@ -77,7 +77,7 @@ namespace webapi.Controllers
             else return BadRequest("Неуспешно изтриване!");
         }
 
-        [HttpGet("api/employee/get-all-requests/{email}")]
+        [HttpGet("get-all-requests/{email}")]
         public async Task<ActionResult<List<RequestDto>>> GetRequests(string email)
         {
             if (!await _employeeService.CheckEmployeeExistByEmail(email)) return BadRequest("Потребителят не съществува");
@@ -85,7 +85,7 @@ namespace webapi.Controllers
             return _requestService.GetEmployeeRequests(email);
         }
 
-        [HttpPost("api/employee/respond-to-request")]
+        [HttpPost("respond-to-request")]
         public async Task<IActionResult> RespondToRequest([FromBody] ResponceToRequestDto requestDto)
         {
             Request request;
@@ -118,7 +118,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/employee/get-restaurant-schedule/{email}/{restaurantId}/{month}")]
+        [HttpGet("get-restaurant-schedule/{email}/{restaurantId}/{month}")]
         public async Task<ActionResult<List<EmployeeFullScheduleDto>>> GetEmployeeRestaurantSchedule(string email, string restaurantId, int month)
         {
             Employee employee;
@@ -132,7 +132,7 @@ namespace webapi.Controllers
             return await _scheduleService.GetAssignedDaysOfEmployeeInRestaurant(employee, restaurant, month);
         }
 
-        [HttpGet("api/employee/get-full-schedule/{email}/{month}")]
+        [HttpGet("get-full-schedule/{email}/{month}")]
         public async Task<ActionResult<List<EmployeeFullScheduleDto>>> GetEmployeeFullSchedule(string email, int month)
         {
             Employee employee;
@@ -142,7 +142,7 @@ namespace webapi.Controllers
             return await _scheduleService.GetAssignedDaysOfEmployee(employee, month);
         }
 
-        [HttpGet("api/employee/get-day-schedule/{email}/{day}")]
+        [HttpGet("get-day-schedule/{email}/{day}")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> GetDailySchedule(string email, DateTime day)
         {
             Employee employee;
@@ -159,7 +159,7 @@ namespace webapi.Controllers
         /// <param name="scheduleDto"> Adding an assignment to their schedule </param>
         /// <returns> The schedule for the day </returns>
 
-        [HttpPost("api/employee/schedule/add-assignment")]
+        [HttpPost("schedule/add-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> AddAssignment([FromBody] CreateScheduleDto scheduleDto)
         {
             scheduleDto.Day = scheduleDto.Day.ToLocalTime();
@@ -189,7 +189,7 @@ namespace webapi.Controllers
             else return BadRequest("Вече имате запазен друг ангажимент!");
         }
 
-        [HttpPut("api/employee/schedule/edit-assignment")]
+        [HttpPut("schedule/edit-assignment")]
         public async Task<ActionResult<List<EmployeeDailyScheduleDto>>> EditAssignment([FromBody] ScheduleDto scheduleDto)
         {
             scheduleDto.Day = scheduleDto.Day.ToLocalTime();
@@ -231,7 +231,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpDelete("api/employee/schedule/delete-assignment/{scheduleId}")]
+        [HttpDelete("schedule/delete-assignment/{scheduleId}")]
         public async Task<IActionResult> DeleteAssignment(string scheduleId)
         {
             if (!await _scheduleService.DoesScheduleExistsById(scheduleId)) return BadRequest("Тази задача от графика не съществува");
@@ -244,7 +244,7 @@ namespace webapi.Controllers
             return BadRequest("Неуспешно изтрита задача! Моля опитайте отново!");
         }
 
-        [HttpGet("api/employee/regen-qrcode/{email}")]
+        [HttpGet("regen-qrcode/{email}")]
         public async Task<IActionResult> RegenerateQrCode(string email)
         {
             Employee employee;
@@ -261,7 +261,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/employee/download-qrcode/{email}")]
+        [HttpGet("download-qrcode/{email}")]
         public async Task<IActionResult> DownloadQrCode(string email)
         {
             Employee employee;
@@ -279,7 +279,7 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpGet("api/employee/download-cv/{email}")]
+        [HttpGet("download-cv/{email}")]
         public async Task<IActionResult> DownloadCV(string email)
         {
             Employee employee;
