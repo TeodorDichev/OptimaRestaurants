@@ -13,7 +13,11 @@ namespace webapi.Controllers
     /// Searching restaurants and allows
     /// Logged users (as employees) to send working requests
     /// </summary>
-    public class RestaurantController : Controller
+
+    [ApiController]
+    [Route("api/[controller]")]
+
+    public class RestaurantController : ControllerBase
     {
         private readonly RestaurantService _restaurantService;
         private readonly EmployeeService _employeeService;
@@ -27,60 +31,60 @@ namespace webapi.Controllers
             _employeeService = employeeService;
         }
 
-        [HttpGet("/api/restaurants/get-all-restaurants-count")]
+        [HttpGet("get-all-restaurants-count")]
         public async Task<ActionResult<int>> GetAllRestaurantsCount()
         {
             return await _restaurantService.GetAllRestaurantsCount();
         }
-        [HttpGet("/api/restaurants/get-all-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("get-all-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetAllRestaurants(lastRestaurantIndex);
         }
 
-        [HttpGet("api/restaurants/get-city-names")]
+        [HttpGet("get-city-names")]
         public async Task<ActionResult<List<string>>> GetCityNames()
         {
             return await _restaurantService.GetCityRestaurantNames();
         }
 
-        [HttpGet("api/restaurants/get-city-count/{cityName}")]
+        [HttpGet("get-city-count/{cityName}")]
         public async Task<ActionResult<int>> GetAllRestaurantsInACity(string cityName)
         {
             return await _restaurantService.GetCityRestaurantsCount(cityName);
         }
 
-        [HttpGet("api/restaurants/get-city-restaurants/{cityName}/{lastRestaurantIndex}")]
+        [HttpGet("get-city-restaurants/{cityName}/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetAllRestaurantsInACity(string cityName, int lastRestaurantIndex)
         {
             return await _restaurantService.GetCityRestaurants(lastRestaurantIndex, cityName);
         }
 
-        [HttpGet("api/restaurants/get-cuisine-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("get-cuisine-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestCuisineRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "CuisineAverageRating");
         }
 
-        [HttpGet("api/restaurants/get-atmosphere-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("get-atmosphere-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestAtmosphereRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "AtmosphereAverageRating");
         }
 
-        [HttpGet("api/restaurants/get-employees-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("get-employees-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestEmployeesRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "EmployeesAverageRating");
         }
 
-        [HttpGet("api/restaurants/get-best-restaurants/{lastRestaurantIndex}")]
+        [HttpGet("get-best-restaurants/{lastRestaurantIndex}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> GetBestRestaurants(int lastRestaurantIndex)
         {
             return await _restaurantService.GetRestaurantsByCertainRating(lastRestaurantIndex, "RestaurantAverageRating");
         }
 
-        [HttpGet("api/restaurants/restaurant-details/{restaurantId}")]
+        [HttpGet("restaurant-details/{restaurantId}")]
         public async Task<ActionResult<RestaurantDetailsDto>> GetRestaurantDetails(string restaurantId)
         {
             Restaurant restaurant;
@@ -90,7 +94,7 @@ namespace webapi.Controllers
             return _restaurantService.GetRestaurantDetails(restaurant);
         }
 
-        [HttpGet("api/restaurants/search/{input}")]
+        [HttpGet("search/{input}")]
         public async Task<ActionResult<List<BrowseRestaurantDto>>> SearchRestaurant(string input)
         {
             List<Restaurant> foundRestaurants = await _restaurantService.GetRestaurantsWithMatchingNames(input);
@@ -119,7 +123,7 @@ namespace webapi.Controllers
         /// This method allows employees to send requests to work in a restaurant
         /// Authentication guard in angularapp only lets employees to use this method
         /// </summary>
-        [HttpPost("api/restaurants/send-working-request")]
+        [HttpPost("send-working-request")]
         public async Task<IActionResult> SendWorkingRequest([FromBody] NewEmployeeRequestDto requestDto)
         {
             Employee employee;

@@ -12,7 +12,11 @@ namespace webapi.Controllers
     /// Submitting customer and manager reviews,
     /// Retrieving employee review history
     /// </summary>
-    public class ReviewController : Controller
+
+    [ApiController]
+    [Route("api/[controller]")]
+
+    public class ReviewController : ControllerBase
     {
         private readonly JWTService _jwtService;
         private readonly ReviewService _reviewService;
@@ -31,7 +35,7 @@ namespace webapi.Controllers
         }
 
 
-        [HttpGet("api/review-employee/{email}/{token}")]
+        [HttpGet("review-employee/{email}/{token}")]
         public async Task<ActionResult<ReviewDto>> GetCustomerReviewForm(string email, string token)
         {
             Employee employee;
@@ -72,7 +76,7 @@ namespace webapi.Controllers
             };
             return reviewDto;
         }
-        [HttpPost("api/review-employee")]
+        [HttpPost("review-employee")]
         public async Task<IActionResult> SubmitCustomerReview([FromBody] CustomerReviewDto model)
         {
             Restaurant restaurant;
@@ -100,7 +104,7 @@ namespace webapi.Controllers
                 return BadRequest("Неуспешно обновени данни!");
             }
         }
-        [HttpPost("api/manager/review-employee")]
+        [HttpPost("manager/review-employee")]
         public async Task<IActionResult> SubmitManagerReview([FromBody] ManagerReviewDto model)
         {
             Restaurant restaurant;
@@ -136,7 +140,7 @@ namespace webapi.Controllers
         /// history of employee should be accessible from multiple 
         /// location including all types of users
         /// </summary>
-        [HttpGet("api/get-reviews-history/{email}")]
+        [HttpGet("get-reviews-history/{email}")]
         public async Task<ActionResult<List<OldReviewDto>>> GetEmployeeReviewsHistory(string email)
         {
             Employee employee;

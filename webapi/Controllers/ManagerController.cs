@@ -19,7 +19,7 @@ namespace webapi.Controllers
     /// 
     [ApiController]
     [Route("api/[controller]")]
-    public class ManagerController : Controller
+    public class ManagerController : ControllerBase
     {
         private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;

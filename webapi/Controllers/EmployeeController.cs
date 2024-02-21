@@ -14,7 +14,11 @@ namespace webapi.Controllers
     /// CRUD operations for their profiles,
     /// Their schedules, requests, qr codes, cvs
     /// </summary>
-    public class EmployeeController : Controller
+
+    [ApiController]
+    [Route("api/[controller]")]
+
+    public class EmployeeController : ControllerBase
     {
         private readonly PdfFilesService _pdfFilesService;
         private readonly EmployeeService _employeeService;
