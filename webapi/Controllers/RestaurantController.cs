@@ -17,12 +17,12 @@ namespace webapi.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class RestaurantController : ControllerBase
+    public class RestaurantsController : ControllerBase
     {
         private readonly RestaurantService _restaurantService;
         private readonly EmployeeService _employeeService;
         private readonly RequestService _requestService;
-        public RestaurantController(RestaurantService restaurantService,
+        public RestaurantsController(RestaurantService restaurantService,
             EmployeeService employeeService,
             RequestService requestService)
         {

@@ -16,14 +16,14 @@ namespace webapi.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class ReviewController : ControllerBase
+    public class ReviewsController : ControllerBase
     {
         private readonly JWTService _jwtService;
         private readonly ReviewService _reviewService;
         private readonly EmployeeService _employeeService;
         private readonly RestaurantService _restaurantService;
 
-        public ReviewController(JWTService jwtService,
+        public ReviewsController(JWTService jwtService,
             ReviewService reviewService,
             EmployeeService employeeService,
             RestaurantService restaurantService)

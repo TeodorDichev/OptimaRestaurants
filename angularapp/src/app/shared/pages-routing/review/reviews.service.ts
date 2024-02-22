@@ -12,18 +12,18 @@ export class ReviewsService {
   constructor(private http: HttpClient) { }
 
   getCustomerReviewForm(email: string, token: string) {
-    return this.http.get(`${environment.appUrl}/api/review-employee/${email}/${token}`);
+    return this.http.get(`${environment.appUrl}/api/reviews/review-employee/${email}/${token}`);
   }
 
   submitCustomerReview(customerReview: CustomerReview) {
-    return this.http.post(`${environment.appUrl}/api/review-employee`, customerReview);
+    return this.http.post(`${environment.appUrl}/api/reviews/review-employee`, customerReview);
   }
 
   submitManagerReview(managerReview: ManagerReview) {
-    return this.http.post(`${environment.appUrl}/api/manager/review-employee`, managerReview);
+    return this.http.post(`${environment.appUrl}/api/reviews/manager/review-employee`, managerReview);
   }
 
   getEmployeeReviewsHistory(email:string) {
-    return this.http.get(`${environment.appUrl}/api/get-reviews-history/${email}`);
+    return this.http.get(`${environment.appUrl}/api/reviews/get-reviews-history/${email}`);
   }
 }
