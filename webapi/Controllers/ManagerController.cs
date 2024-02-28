@@ -7,6 +7,7 @@ using webapi.DTOs.Restaurant;
 using webapi.DTOs.Schedule;
 using webapi.Models;
 using webapi.Services.ClassServices;
+using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
 
 namespace webapi.Controllers
@@ -27,18 +28,20 @@ namespace webapi.Controllers
         private readonly RestaurantService _restaurantService;
         private readonly RequestService _requestService;
         private readonly ScheduleService _scheduleService;
-
+        private readonly PicturesAndIconsService _pictureService;
         public ManagerController(EmployeeService employeeService,
                 ManagerService managerService,
                 RequestService requestService,
                 RestaurantService restaurantService,
-                ScheduleService scheduleService)
+                ScheduleService scheduleService,
+                PicturesAndIconsService pictureService)
         {
             _managerService = managerService;
             _restaurantService = restaurantService;
             _requestService = requestService;
             _employeeService = employeeService;
             _scheduleService = scheduleService;
+            _pictureService = pictureService;
         }
 
         [HttpGet("get-manager/{email}")]
@@ -150,7 +153,7 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email ?? string.Empty,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePicturePath = emp.Profile.ProfilePicturePath,
+                    ProfilePicture = _pictureService.GetImageFile(emp.Profile.ProfilePicturePath),
                     EmployeeAverageRating = emp?.EmployeeAverageRating ?? 0
                 });
             }
@@ -378,7 +381,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
-                ProfilePicturePath = manager.Profile.ProfilePicturePath,
+                ProfilePicture = _pictureService.GetImageFile(manager.Profile.ProfilePicturePath),
                 Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
             };
 

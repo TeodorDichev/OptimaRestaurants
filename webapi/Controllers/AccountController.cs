@@ -6,6 +6,7 @@ using webapi.DTOs.Account;
 using webapi.Models;
 using webapi.Services;
 using webapi.Services.ClassServices;
+using webapi.Services.FileServices;
 
 namespace webapi.Controllers
 {
@@ -25,6 +26,7 @@ namespace webapi.Controllers
         private readonly AccountService _accountService;
         private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;
+        private readonly PicturesAndIconsService _pictureService;
 
         public AccountController(JWTService jwtService,
         UserManager<ApplicationUser> userManager,
@@ -32,7 +34,8 @@ namespace webapi.Controllers
         IConfiguration configuration,
         AccountService accountService,
         ManagerService managerService,
-        EmployeeService employeeService)
+        EmployeeService employeeService,
+        PicturesAndIconsService pictureService)
         {
             _jwtService = jwtService;
             _userManager = userManager;
@@ -41,6 +44,7 @@ namespace webapi.Controllers
             _accountService = accountService;
             _managerService = managerService;
             _employeeService = employeeService;
+            _pictureService = pictureService;
         }
 
         [HttpPost("register-manager")]
@@ -202,10 +206,10 @@ namespace webapi.Controllers
             foreach (var user in foundUsers)
                 accounts.Add(new SearchedAccountDto()
                 {
-                    Fullname = user.FirstName + " " + user.LastName,
+                    FullName = user.FirstName + " " + user.LastName,
                     Email = user.Email,
                     Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
-                    PicturePath = user.ProfilePicturePath
+                    Picture = _pictureService.GetImageFile(user.ProfilePicturePath)
                 });
 
             return accounts;

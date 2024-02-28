@@ -12,45 +12,52 @@
             _configuration = configuration;
         }
 
+        public IFormFile GetImageFile(string path)
+        {
+            using (var stream = System.IO.File.OpenRead(path))
+            {
+                try
+                {
+                    FormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+                    return file;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            };
+        }
+
         public string SaveImage(IFormFile imageFile)
         {
-            string onlinePath = "";
             try
             {
-                //string path = Directory.GetCurrentDirectory();
-
-                //path = Path.Combine(path, _configuration["Pictures:Path"]);
-                string path = "wwwroot/uploads/pictures";
+                string path = _configuration["Pictures:Path"];
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
                 var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
-                if (!allowedExtensions.Contains(ext)) return onlinePath;
+                if (!allowedExtensions.Contains(ext)) return path;
 
-                string uniqueString = Guid.NewGuid().ToString();
-                var newFileName = uniqueString + ext;
+                var newFileName = Guid.NewGuid().ToString() + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                onlinePath = "/Publish/wwwroot/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
 
-                return onlinePath;
+                return path;
             }
             catch (Exception ex)
             {
-                return onlinePath;
+                return "";
             }
         }
-        public bool DeleteImage(string imageFileUrl)
+
+        public bool DeleteImage(string path)
         {
             try
             {
-                string path = Directory.GetCurrentDirectory();
-                DirectoryInfo pathInfo = Directory.GetParent(path);
-
-                path = Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + imageFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);
