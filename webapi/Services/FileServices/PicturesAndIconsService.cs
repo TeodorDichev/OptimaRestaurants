@@ -18,15 +18,16 @@ namespace webapi.Services.FileServices
         {
             if (!path.IsNullOrEmpty())
             {
-                var stream = System.IO.File.OpenRead(path);
-                try
+                using (var stream = File.OpenRead(path))
                 {
-                    FormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+                    var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                    {
+                        Headers = new HeaderDictionary(),
+                        ContentDisposition = "inline",
+                        ContentType = "image/jpeg"
+                    };
+
                     return file;
-                }
-                catch (Exception)
-                {
-                    return null;
                 }
             }
             return null;
