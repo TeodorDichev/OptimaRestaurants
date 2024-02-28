@@ -17,9 +17,10 @@
             string onlinePath = "";
             try
             {
-                string path = Directory.GetCurrentDirectory();
+                //string path = Directory.GetCurrentDirectory();
 
-                path = Path.Combine(path, _configuration["Pictures:Path"]);
+                //path = Path.Combine(path, _configuration["Pictures:Path"]);
+                string path = "wwwroot/uploads/pictures";
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
@@ -30,7 +31,7 @@
                 var newFileName = uniqueString + ext;
 
                 var fileWithPath = Path.Combine(path, newFileName);
-                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "/Publish/wwwroot/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
