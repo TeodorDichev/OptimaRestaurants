@@ -1,4 +1,6 @@
-﻿namespace webapi.Services.FileServices
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace webapi.Services.FileServices
 {
     /// <summary>
     /// The service takes care of all pictures related to restaurant and users
@@ -14,8 +16,9 @@
 
         public IFormFile GetImageFile(string path)
         {
-            using (var stream = System.IO.File.OpenRead(path))
+            if (!path.IsNullOrEmpty())
             {
+                var stream = System.IO.File.OpenRead(path);
                 try
                 {
                     FormFile file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
@@ -25,7 +28,8 @@
                 {
                     return null;
                 }
-            };
+            }
+            return null;
         }
 
         public string SaveImage(IFormFile imageFile)
@@ -46,7 +50,7 @@
                 imageFile.CopyTo(stream);
                 stream.Close();
 
-                return path;
+                return fileWithPath;
             }
             catch (Exception ex)
             {

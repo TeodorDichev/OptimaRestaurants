@@ -22,7 +22,7 @@
         <div class="screen-right emp-list">
             <div class="list-items" *ngFor="let employee of this.employeesLookingForJob;">
                 <div class="employee" (click)="getEmployeeInfo(employee.email)">
-                    <img class="emp-img" src="{{employee.profilePicturePath}}" (error)="missingIcon(employee)">
+                    <img class="emp-img"  [src]="employee.profilePicture" (error)="missingIcon(employee)">
                     <div class="empl-info">
                         <div>
                             <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>

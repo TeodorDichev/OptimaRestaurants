@@ -99,7 +99,7 @@ export class ManagerService {
     formData.append('iconFile', model.iconFile);
     formData.append('longitude', model.longitude.toString());
     formData.append('latitude', model.latitude.toString());
-    
+
     return this.http.put(`${environment.appUrl}/api/manager/update-restaurant/${restaurantId}`, formData);
   }
 

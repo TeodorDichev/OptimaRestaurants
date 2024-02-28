@@ -64,15 +64,7 @@ export class EditRestaurantModalComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
 
-    const sub = this.editRestaurantForm.get('fullLocationString')?.valueChanges.subscribe(loc => {
-      if (loc === '') {
-        this.editRestaurantForm.get('fullLocationString')?.setErrors({ 'required': true });
-      } else {
-        this.editRestaurantForm.get('fullLocationString')?.setErrors(null);
-      }
-    });
-
-    if (this.selectedLocation != this.searchLocationPropmt) {
+    if (this.selectedLocation && this.selectedLocation != this.searchLocationPropmt) {
       this.editRestaurantForm.get('fullLocationString')?.setErrors({ 'required': true });
     }
 
@@ -140,6 +132,13 @@ export class EditRestaurantModalComponent implements OnInit {
       this.editRestaurantForm.get('address1')?.setValue(loc[2]);
       this.editRestaurantForm.get('address2')?.setValue(loc[3]);
       this.editRestaurantForm.get('city')?.setValue(loc[4]);
+    }
+    else {
+      this.editRestaurantForm.get('longitude')?.setValue('');
+      this.editRestaurantForm.get('latitude')?.setValue('');
+      this.editRestaurantForm.get('address1')?.setValue('');
+      this.editRestaurantForm.get('address2')?.setValue('');
+      this.editRestaurantForm.get('city')?.setValue('');
     }
   }
 }

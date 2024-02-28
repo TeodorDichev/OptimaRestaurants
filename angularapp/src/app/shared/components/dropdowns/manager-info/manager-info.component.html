@@ -4,7 +4,7 @@
     <div>
       <div class="fw-bold h5">
         <span>
-          <img src="{{manager.profilePicturePath}}"  (error)="missingIcon(manager)">
+          <img [src]="manager.profilePicture"  (error)="missingIcon(manager)">
         </span>
         Здравейте, <span class="fst-italic"> {{manager.firstName}} {{manager.lastName}}</span>
       </div>
@@ -20,7 +20,7 @@
           <span class="fw-normal fst-italic">{{manager.phoneNumber}}</span>
         </span>
       </div>
-      <div class="fst-italic" *ngIf="!manager.profilePicturePath">
+      <div class="fst-italic" *ngIf="!manager.profilePicture">
         Все още нямате профилна снимка.
       </div>
     </div>
