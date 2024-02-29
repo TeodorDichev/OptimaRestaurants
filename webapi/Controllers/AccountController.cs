@@ -172,31 +172,6 @@ namespace webapi.Controllers
             }
         }
 
-        [HttpPost("resend-email-confirmation-link/{email}")]
-        public async Task<IActionResult> ResendConfirmEmail(string email)
-        {
-            if (string.IsNullOrEmpty(email)) return BadRequest("Моля, първо, въведете вашия имейл адрес.");
-
-            ApplicationUser user;
-            if (!await _accountService.CheckUserExistByEmail(email)) return Unauthorized("Този имейл не е регистриран в системата.");
-            else user = await _accountService.GetUserByEmailOrUserName(email);
-
-            if (user.EmailConfirmed == true) return BadRequest("Имейлът ви вече е потвърден!");
-
-            try
-            {
-                if (await SendConfirmEmailAddress(user))
-                {
-                    return Ok(new JsonResult(new { title = "Успешно изпратен имейл!", message = "Моля проверете вашата поща, за да потвърдите имейла си!" }));
-                }
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
-            }
-            catch (Exception)
-            {
-                return BadRequest("Неуспешно изпращане на имейл. Моля свържете се с администратор.");
-            }
-        }
-
         [HttpGet("search/{input}")]
         public async Task<ActionResult<List<SearchedAccountDto>>> SearchAccount(string input)
         {

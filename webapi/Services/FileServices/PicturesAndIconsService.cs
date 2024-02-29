@@ -1,6 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-
-namespace webapi.Services.FileServices
+﻿namespace webapi.Services.FileServices
 {
     /// <summary>
     /// The service takes care of all pictures related to restaurant and users
@@ -14,51 +12,37 @@ namespace webapi.Services.FileServices
             _configuration = configuration;
         }
 
-        public IFormFile GetImageFile(string path)
-        {
-            if (!path.IsNullOrEmpty())
-            {
-                using (var stream = File.OpenRead(path))
-                {
-                    var file = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-                    {
-                        Headers = new HeaderDictionary(),
-                        ContentDisposition = "inline",
-                        ContentType = "image/jpeg"
-                    };
-
-                    return file;
-                }
-            }
-            return null;
-        }
-
         public string SaveImage(IFormFile imageFile)
         {
             try
             {
-                string path = _configuration["Pictures:Path"];
+                string path = Directory.GetCurrentDirectory();
+
+                path = Path.Combine(path, _configuration["Pictures:Path"]);
+                string path = "wwwroot/uploads/pictures";
+                string path = "wwwroot/uploads/pictures";
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
-                var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
+                if (!allowedExtensions.Contains(ext)) return onlinePath;
                 if (!allowedExtensions.Contains(ext)) return path;
-
+                string uniqueString = Guid.NewGuid().ToString();
+                var newFileName = uniqueString + ext;
                 var newFileName = Guid.NewGuid().ToString() + ext;
-
-                var fileWithPath = Path.Combine(path, newFileName);
+                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "/Publish/wwwroot/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
-
+                return onlinePath;
                 return fileWithPath;
             }
             catch (Exception ex)
-            {
+                return onlinePath;
                 return "";
             }
-        }
-
+        public bool DeleteImage(string imageFileUrl)
         public bool DeleteImage(string path)
         {
             try
