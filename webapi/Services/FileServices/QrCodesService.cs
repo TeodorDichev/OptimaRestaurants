@@ -1,6 +1,4 @@
-﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using ZXing.QrCode;
+﻿using ZXing.QrCode;
 
 namespace webapi.Services.FileServices
 {
@@ -38,20 +36,35 @@ namespace webapi.Services.FileServices
             };
             var pixelData = qrCodeWriter.Write(url);
 
-            using (var image = new Image<Rgba32>(pixelData.Width, pixelData.Height))
-            {
-                for (int y = 0; y < pixelData.Height; y++)
-                {
-                    for (int x = 0; x < pixelData.Width; x++)
-                    {
-                        image[x, y] = new Rgba32(pixelData.Pixels[y * pixelData.Width + x]);
-                    }
-                }
+            /* creating a bitmap from the raw pixel data; if only black and white colors are used it makes
+             * no difference that the pixel data ist BGRA oriented and the bitmap is initialized with RGB */
 
-                path = _configuration["QrCodes:Path"] + Guid.NewGuid();
-                using (var outputStream = File.OpenWrite(path))
+            using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
+            {
+                using (var ms = new MemoryStream())
                 {
-                    image.SaveAsPng(outputStream);
+                    var bitmapData = bitmap.LockBits(
+                        new System.Drawing.Rectangle(0, 0, pixelData.Width, pixelData.Height), 
+                        System.Drawing.Imaging.ImageLockMode.WriteOnly, 
+                        System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                    try
+                    {
+                        System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
+                    }
+                    finally
+                    {
+                        bitmap.UnlockBits(bitmapData);
+                    }
+
+                    path = _configuration["QrCodes:Path"];
+                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                    var newFileName = Guid.NewGuid().ToString() + ".png";
+
+                    var fileWithPath = Path.Combine(path, newFileName);
+                    bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
+                    bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    byteArray = ms.ToArray();
                 }
             }
 
