@@ -1,5 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-
+﻿
 namespace webapi.Services.FileServices
 {
     /// <summary>
@@ -18,33 +17,23 @@ namespace webapi.Services.FileServices
         {
             try
             {
-                string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-
-                path = Path.Combine(path, _configuration["Pictures:Path"]);
-                string path = "wwwroot/uploads/pictures";
-                string path = "wwwroot/uploads/pictures";
+                string path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"]);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
-                if (!allowedExtensions.Contains(ext)) return onlinePath;
-                if (!allowedExtensions.Contains(ext)) return path;
-                string uniqueString = Guid.NewGuid().ToString();
-                var newFileName = uniqueString + ext;
                 var newFileName = Guid.NewGuid().ToString() + ext;
-                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
-                onlinePath = "/Publish/wwwroot/uploads/pictures" + $"/{newFileName}";
-                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
-                var stream = new FileStream(fileWithPath, FileMode.Create);
+
+                var stream = new FileStream(path, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
-                return onlinePath;
-                return fileWithPath;
+
+                return path;
             }
             catch (Exception ex)
-                return onlinePath;
+            {
                 return "";
             }
-        public bool DeleteImage(string imageFileUrl)
+        }
         public bool DeleteImage(string path)
         {
             try

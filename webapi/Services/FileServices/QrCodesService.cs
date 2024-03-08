@@ -17,7 +17,7 @@ namespace webapi.Services.FileServices
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
-            string path;
+            string path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"]);
 
             /* Configuring QR code dimensions */
             var width = 250;
@@ -55,10 +55,6 @@ namespace webapi.Services.FileServices
                     {
                         bitmap.UnlockBits(bitmapData);
                     }   
-
-                    string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-
-                    path = Path.Combine(path, _configuration["QrCodes:Path"]);
 
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
