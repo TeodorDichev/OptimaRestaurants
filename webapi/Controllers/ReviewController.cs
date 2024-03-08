@@ -23,19 +23,16 @@ namespace webapi.Controllers
         private readonly ReviewService _reviewService;
         private readonly EmployeeService _employeeService;
         private readonly RestaurantService _restaurantService;
-        private readonly PicturesAndIconsService _pictureService;
 
         public ReviewsController(JWTService jwtService,
             ReviewService reviewService,
             EmployeeService employeeService,
-            RestaurantService restaurantService,
-            PicturesAndIconsService pictureService)
+            RestaurantService restaurantService)
         {
             _jwtService = jwtService;
             _reviewService = reviewService;
             _employeeService = employeeService;
             _restaurantService = restaurantService;
-            _pictureService = pictureService;
         }
 
 
@@ -67,7 +64,7 @@ namespace webapi.Controllers
                     IsWorking = restaurant.IsWorking,
                     TotalReviewsCount = restaurant.TotalReviewsCount,
                     RestaurantAverageRating = restaurant.RestaurantAverageRating ?? 0,
-                    Icon = _pictureService.GetImageFile(restaurant.IconPath)
+                    IconPath = restaurant.IconPath
                 });
             }
 

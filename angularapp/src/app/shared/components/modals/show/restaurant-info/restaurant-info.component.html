@@ -7,7 +7,7 @@
   <div class="main-info">
     <div class="img-map">
       <div class="screen-left">
-        <img class="rest-img" [src]="restaurant.icon" (error)="missingIcon(restaurant)">
+        <img class="rest-img" src="restaurant.iconPath" (error)="missingIcon(restaurant)">
         <div class="h5 text-muted fst-italic">
           <span class="fw-bold">{{restaurant.address1}},</span> {{restaurant.address2}}
         </div>

@@ -109,7 +109,7 @@ namespace webapi.Controllers
                 {
                     Id = res.Id.ToString(),
                     Name = res.Name,
-                    Icon = _pictureService.GetImageFile(res.IconPath),
+                    IconPath = res.IconPath,
                     Address1 = res.Address1,
                     Address2 = res.Address2,
                     Longitude = res.Longitude,

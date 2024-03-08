@@ -17,7 +17,6 @@ namespace webapi.Services.FileServices
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
-            string path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["QrCodes:Path"]);
 
             /* Configuring QR code dimensions */
             var width = 250;
@@ -38,7 +37,7 @@ namespace webapi.Services.FileServices
 
             /* creating a bitmap from the raw pixel data; if only black and white colors are used it makes
              * no difference that the pixel data ist BGRA oriented and the bitmap is initialized with RGB */
-
+            var newFileName = Guid.NewGuid().ToString() + ".png";
             using (var bitmap = new System.Drawing.Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
             {
                 using (var ms = new MemoryStream())
@@ -54,20 +53,18 @@ namespace webapi.Services.FileServices
                     finally
                     {
                         bitmap.UnlockBits(bitmapData);
-                    }   
+                    }
 
-                    if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                    string localPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, _configuration["QrCodes:LocalPath"]);
+                    if (!Directory.Exists(localPath)) Directory.CreateDirectory(localPath);
 
-                    var newFileName = Guid.NewGuid().ToString() + ".png";
-
-                    var fileWithPath = Path.Combine(path, newFileName);
-                    bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
+                    bitmap.Save(localPath + newFileName, System.Drawing.Imaging.ImageFormat.Png);
                     bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     byteArray = ms.ToArray();
                 }
             }
 
-            return path;
+            return _configuration["QrCodes:OnlinePath"] + newFileName;
         }
         public bool DeleteQrCode(string path)
         {

@@ -17,30 +17,37 @@ namespace webapi.Services.FileServices
         {
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), _configuration["Pictures:Path"]);
+                string path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, _configuration["Pictures:LocalPath"]);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
+                string[] allowedExtensions = { ".jpg", ".png", ".jpeg" };
                 var ext = Path.GetExtension(imageFile.FileName);
+                if (!allowedExtensions.Contains(ext)) throw new ArgumentException("Incorrect extension!");
+
                 var newFileName = Guid.NewGuid().ToString() + ext;
+                path = Path.Combine(path, newFileName);
 
                 var stream = new FileStream(path, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
 
-                return path;
+                return _configuration["Pictures:OnlinePath"] + newFileName;
             }
             catch (Exception ex)
             {
-                return "";
+                throw ex;
             }
         }
         public bool DeleteImage(string path)
         {
+            string localPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, _configuration["Pictures:LocalPath"]);
+            localPath = Path.Combine(localPath, path.Split('/').Last());
+
             try
             {
-                if (File.Exists(path))
+                if (File.Exists(localPath))
                 {
-                    File.Delete(path);
+                    File.Delete(localPath);
                     return true;
                 }
                 return false;

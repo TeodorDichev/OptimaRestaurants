@@ -42,6 +42,6 @@ export class ManagerInfoComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(manager: Manager) { 
-    //manager.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+    manager.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 }

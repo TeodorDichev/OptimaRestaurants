@@ -4,7 +4,7 @@ export interface Employee{
     email: string,
     firstName: string,
     lastName: string,
-    profilePicture: File,
+    profilePicturePath: string,
     phoneNumber: string,
     birthDate: Date,
     city: string,

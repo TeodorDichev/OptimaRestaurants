@@ -4,7 +4,7 @@ export interface Manager{
     email: string,
     firstName: string,
     lastName: string,
-    profilePicture: File,
+    profilePicturePath: string,
     phoneNumber: string, 
     restaurants: Restaurant[]
 }

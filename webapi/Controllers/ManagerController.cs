@@ -153,7 +153,7 @@ namespace webapi.Controllers
                     Email = emp.Profile.Email ?? string.Empty,
                     FirstName = emp.Profile.FirstName,
                     LastName = emp.Profile.LastName,
-                    ProfilePicture = _pictureService.GetImageFile(emp.Profile.ProfilePicturePath),
+                    ProfilePicturePath = emp.Profile.ProfilePicturePath,
                     EmployeeAverageRating = emp?.EmployeeAverageRating ?? 0
                 });
             }
@@ -381,7 +381,7 @@ namespace webapi.Controllers
                 FirstName = manager.Profile.FirstName,
                 LastName = manager.Profile.LastName,
                 PhoneNumber = manager.Profile.PhoneNumber ?? " ",
-                ProfilePicture = _pictureService.GetImageFile(manager.Profile.ProfilePicturePath),
+                ProfilePicturePath = manager.Profile.ProfilePicturePath,
                 Restaurants = _restaurantService.GetRestaurantsOfManager(manager)
             };
 

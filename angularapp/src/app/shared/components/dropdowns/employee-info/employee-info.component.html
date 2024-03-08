@@ -4,7 +4,7 @@
     <div>
       <div class="fw-bold h5">
         <span>
-          <img [src]="employee.profilePicture" (error)="missingIcon(employee)">
+          <img src="employee.profilePicturePath" (error)="missingIcon(employee)">
         </span>
         Здравейте, <span class="fst-italic"> {{employee.firstName}} {{employee.lastName}}</span>
       </div>
@@ -35,7 +35,7 @@
           Вие <span *ngIf="!employee.isLookingForJob">не</span> си търсите работа.
         </span>
       </div>
-      <div class="fst-italic" *ngIf="!employee.profilePicture">
+      <div class="fst-italic" *ngIf="!employee.profilePicturePath">
         Все още нямате профилна снимка.
       </div>
     </div>

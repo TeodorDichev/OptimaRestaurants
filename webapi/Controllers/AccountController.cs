@@ -26,7 +26,6 @@ namespace webapi.Controllers
         private readonly AccountService _accountService;
         private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;
-        private readonly PicturesAndIconsService _pictureService;
 
         public AccountController(JWTService jwtService,
         UserManager<ApplicationUser> userManager,
@@ -34,8 +33,7 @@ namespace webapi.Controllers
         IConfiguration configuration,
         AccountService accountService,
         ManagerService managerService,
-        EmployeeService employeeService,
-        PicturesAndIconsService pictureService)
+        EmployeeService employeeService)
         {
             _jwtService = jwtService;
             _userManager = userManager;
@@ -44,7 +42,6 @@ namespace webapi.Controllers
             _accountService = accountService;
             _managerService = managerService;
             _employeeService = employeeService;
-            _pictureService = pictureService;
         }
 
         [HttpPost("register-manager")]
@@ -184,7 +181,7 @@ namespace webapi.Controllers
                     FullName = user.FirstName + " " + user.LastName,
                     Email = user.Email,
                     Role = string.Join(" ", await _userManager.GetRolesAsync(user)),
-                    Picture = _pictureService.GetImageFile(user.ProfilePicturePath)
+                    PicturePath = user.ProfilePicturePath
                 });
 
             return accounts;

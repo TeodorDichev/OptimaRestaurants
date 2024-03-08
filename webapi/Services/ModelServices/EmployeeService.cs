@@ -117,7 +117,7 @@ namespace webapi.Services.ClassServices
                     FirstName = employee.Profile.FirstName ?? string.Empty,
                     LastName = employee.Profile.LastName ?? string.Empty,
                     PhoneNumber = employee.Profile.PhoneNumber ?? string.Empty,
-                    ProfilePicture = _pictureService.GetImageFile(employee.Profile.ProfilePicturePath),
+                    ProfilePicturePath = employee.Profile.ProfilePicturePath,
                     EmployeeAverageRating = employee.EmployeeAverageRating ?? 0,
                     IsLookingForJob = employee.IsLookingForJob,
                     City = employee.City,
