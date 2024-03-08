@@ -16,42 +16,39 @@ namespace webapi.Services.FileServices
 
         public string SaveImage(IFormFile imageFile)
         {
-            string onlinePath = "";
             try
             {
                 string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
                 path = Path.Combine(path, _configuration["Pictures:Path"]);
+                string path = "wwwroot/uploads/pictures";
+                string path = "wwwroot/uploads/pictures";
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 var ext = Path.GetExtension(imageFile.FileName);
-                var allowedExtensions = new string[] { ".jpg", ".png", ".jpeg" };
                 if (!allowedExtensions.Contains(ext)) return onlinePath;
-
+                if (!allowedExtensions.Contains(ext)) return path;
                 string uniqueString = Guid.NewGuid().ToString();
                 var newFileName = uniqueString + ext;
-
-                var fileWithPath = Path.Combine(path, newFileName);
+                var newFileName = Guid.NewGuid().ToString() + ext;
+                onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
+                onlinePath = "/Publish/wwwroot/uploads/pictures" + $"/{newFileName}";
                 onlinePath = "../../assets/uploads/pictures" + $"/{newFileName}";
                 var stream = new FileStream(fileWithPath, FileMode.Create);
                 imageFile.CopyTo(stream);
                 stream.Close();
-
                 return onlinePath;
+                return fileWithPath;
             }
             catch (Exception ex)
-            {
                 return onlinePath;
+                return "";
             }
-        }
         public bool DeleteImage(string imageFileUrl)
+        public bool DeleteImage(string path)
         {
             try
             {
-                string path = Directory.GetCurrentDirectory();
-                DirectoryInfo pathInfo = Directory.GetParent(path);
-
-                path = Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + imageFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);

@@ -18,7 +18,7 @@ namespace webapi.DTOs.Restaurant
         public required decimal AtmosphereAverageRating { get; set; }
         public required decimal EmployeesAverageRating { get; set; }
         public required decimal RestaurantAverageRating { get; set; }
-        public string? IconPath { get; set; }
+        public IFormFile? Icon { get; set; }
         public string? ManagerFullName { get; set; }
         public string? ManagerEmail { get; set; }
         public string? ManagerPhoneNumber { get; set; }

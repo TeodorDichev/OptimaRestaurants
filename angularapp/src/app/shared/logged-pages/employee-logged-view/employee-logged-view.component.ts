@@ -41,7 +41,7 @@ export class EmployeeLoggedViewComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
+    //restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
   }
 
   private getUser() {

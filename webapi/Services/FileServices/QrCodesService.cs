@@ -17,7 +17,7 @@ namespace webapi.Services.FileServices
         public string GenerateQrCode(string url)
         {
             byte[] byteArray;
-            string onlinePath;
+            string path;
 
             /* Configuring QR code dimensions */
             var width = 250;
@@ -62,32 +62,21 @@ namespace webapi.Services.FileServices
 
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
-                    var ext = ".png";
-
-                    string uniqueString = Guid.NewGuid().ToString();
-                    var newFileName = uniqueString + ext;
+                    var newFileName = Guid.NewGuid().ToString() + ".png";
 
                     var fileWithPath = Path.Combine(path, newFileName);
-                    onlinePath = "../../../../assets/uploads/qrcodes" + $"/{newFileName}";
-
                     bitmap.Save(fileWithPath, System.Drawing.Imaging.ImageFormat.Png);
-
-                    /* save to stream as PNG */
                     bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     byteArray = ms.ToArray();
                 }
             }
 
-            return onlinePath;
+            return path;
         }
-        public bool DeleteQrCode(string qrCodeFileUrl)
+        public bool DeleteQrCode(string path)
         {
             try
             {
-                string path = Directory.GetCurrentDirectory();
-                DirectoryInfo pathInfo = Directory.GetParent(path);
-
-                path = Path.Combine(pathInfo.FullName, _configuration["QrCodes:Path"] ?? string.Empty) + qrCodeFileUrl.Split('/').Last();
                 if (File.Exists(path))
                 {
                     File.Delete(path);

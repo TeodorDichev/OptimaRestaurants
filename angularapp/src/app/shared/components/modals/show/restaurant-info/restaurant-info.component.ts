@@ -115,10 +115,10 @@ export class RestaurantInfoComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
+    //restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
   }
 
   missingIconEmployee(restaurant: Restaurant) {
-    restaurant.topEmployeePicturePath = 'assets/images/logo-bw-with-bg.png';
+    //restaurant.topEmployeePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 }

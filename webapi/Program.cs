@@ -26,7 +26,7 @@ builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<QrCodesService>();
 builder.Services.AddScoped<PdfFilesService>();
-builder.Services.AddScoped<ContextSeedService>();
+//builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
 
 builder.Services.AddScoped<ReviewService>();
@@ -120,7 +120,7 @@ app.MapControllers();
 //    try
 //    {
 //        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
-//        tawait contextSeedServices.InitializeContextAsync();
+//        await contextSeedServices.InitializeContextAsync();
 //    }
 //    catch (Exception ex)
 //    {

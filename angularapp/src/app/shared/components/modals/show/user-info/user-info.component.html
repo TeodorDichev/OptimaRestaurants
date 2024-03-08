@@ -4,7 +4,7 @@
   </div>
   <div class="main-info">
     <div class="img-info">
-      <img class="empl-img" src="{{employee.profilePicturePath}}" (error)="missingIconEmployee(employee)">
+      <img class="empl-img" [src]="employee.profilePicture" (error)="missingIconEmployee(employee)">
       <div *ngIf="this.currentUser" class="user-info h4">
         <div>Имейл: <span class="fst-italic theme-main">{{employee.email}}</span></div>
         <div>Град: <span class="fst-italic theme-main">{{employee.city}}</span></div>
@@ -108,7 +108,7 @@
   </div>
   <div class="main-info">
     <div class="img-info">
-      <img class="empl-img" src="{{manager.profilePicturePath}}" (error)="missingIconManager(manager)">
+      <img class="empl-img" [src]="manager.profilePicture" (error)="missingIconManager(manager)">
       <div *ngIf="this.currentUser" class="user-info h4">
         <div>Имейл: <span class="fst-italic theme-main">{{manager.email}}</span></div>
         <div>Телефон: <span class="fst-italic theme-main">{{manager.phoneNumber}}</span></div>

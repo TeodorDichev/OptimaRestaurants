@@ -3,7 +3,7 @@ export interface SearchResultRestaurant {
     name: string,
     address: string,
     city: string,
-    iconPath: string,
+    icon: File,
     isWorking: boolean,
     restaurantAverageRating: number,
     totalReviewsCount: number

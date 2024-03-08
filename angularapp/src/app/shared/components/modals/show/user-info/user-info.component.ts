@@ -126,10 +126,10 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   }
 
   missingIconEmployee(employee: Employee) {
-    employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+    //employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 
   missingIconManager(manager: Manager) {
-    manager.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+    //manager.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 }

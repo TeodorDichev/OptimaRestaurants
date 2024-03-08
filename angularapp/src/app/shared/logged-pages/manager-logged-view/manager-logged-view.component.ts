@@ -83,11 +83,11 @@ export class ManagerLoggedViewComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(restaurant: Restaurant) {
-    restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
+    //restaurant.iconPath = 'assets/images/logo-bw-with-bg.png';
   }
 
   missingIconEmployee(employee: Employee) {
-    employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+    //employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 
   private getUser() {

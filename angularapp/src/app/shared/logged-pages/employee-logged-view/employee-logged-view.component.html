@@ -15,7 +15,7 @@
         <div class="screen-left rest-list">
             <div class="list-items" *ngFor="let restaurant of this.employee?.restaurants;">
                 <div class="restaurant" (click)="openRestaurantInfo(restaurant)">
-                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
+                    <img class="rest-img" [src]="restaurant.icon" (error)="missingIcon(restaurant)">
                     <div class="restaurant-info">
                         <div>
                             <div class="h2 fw-bold">{{restaurant.name}}</div>
