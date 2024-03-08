@@ -1,4 +1,6 @@
-﻿namespace webapi.Services.FileServices
+﻿using System.Drawing.Drawing2D;
+
+namespace webapi.Services.FileServices
 {
     /// <summary>
     /// The service takes care of all pictures related to restaurant and users
@@ -17,7 +19,7 @@
             string onlinePath = "";
             try
             {
-                string path = Directory.GetCurrentDirectory();
+                string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
                 path = Path.Combine(path, _configuration["Pictures:Path"]);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);

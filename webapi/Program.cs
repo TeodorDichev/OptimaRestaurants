@@ -26,6 +26,7 @@ builder.Services.AddScoped<JWTService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<QrCodesService>();
 builder.Services.AddScoped<PdfFilesService>();
+builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<PicturesAndIconsService>();
 
 builder.Services.AddScoped<ReviewService>();
@@ -114,18 +115,18 @@ app.UseAuthorization();
 app.MapControllers();
 
 /* Seeding roles to the database */
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
-        await contextSeedServices.InitializeContextAsync();
-    }
-    catch (Exception ex)
-    {
-        var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
-        logger.LogError(ex.Message, "Failed to initialize and seed database ");
-    }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    try
+//    {
+//        var contextSeedServices = scope.ServiceProvider.GetService<ContextSeedService>();
+//        tawait contextSeedServices.InitializeContextAsync();
+//    }
+//    catch (Exception ex)
+//    {
+//        var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
+//        logger.LogError(ex.Message, "Failed to initialize and seed database ");
+//    }
+//}
 
 app.Run();

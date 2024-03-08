@@ -92,11 +92,12 @@ namespace webapi.Controllers
 
             try
             {
-                if (model.AttitudeRating.HasValue) _reviewService.UpdateAttitude(employee, model.AttitudeRating.Value);
-                if (model.SpeedRating.HasValue) _reviewService.UpdateSpeed(employee, model.SpeedRating.Value);
-                if (model.AtmosphereRating.HasValue) _reviewService.UpdateAtmosphere(restaurant, model.AtmosphereRating.Value);
-                if (model.CuisineRating.HasValue) _reviewService.UpdateCuisine(restaurant, model.CuisineRating.Value);
+                if (model.AttitudeRating.HasValue && model.AttitudeRating != 0) _reviewService.UpdateAttitude(employee, model.AttitudeRating.Value);
+                if (model.SpeedRating.HasValue && model.SpeedRating != 0) _reviewService.UpdateSpeed(employee, model.SpeedRating.Value);
+                if (model.AtmosphereRating.HasValue && model.AtmosphereRating != 0) _reviewService.UpdateAtmosphere(restaurant, model.AtmosphereRating.Value);
+                if (model.CuisineRating.HasValue && model.CuisineRating != 0) _reviewService.UpdateCuisine(restaurant, model.CuisineRating.Value);
                 if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
+                await _reviewService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));
             }
             catch (Exception)
@@ -123,8 +124,8 @@ namespace webapi.Controllers
 
             try
             {
-                if (model.CollegialityRating.HasValue) _reviewService.UpdateCollegiality(employee, model.CollegialityRating.Value);
-                if (model.PunctualityRating.HasValue) _reviewService.UpdatePunctuality(employee, model.PunctualityRating.Value);
+                if (model.CollegialityRating.HasValue && model.CollegialityRating != 0) _reviewService.UpdateCollegiality(employee, model.CollegialityRating.Value);
+                if (model.PunctualityRating.HasValue && model.PunctualityRating != 0) _reviewService.UpdatePunctuality(employee, model.PunctualityRating.Value);
                 if (employee.EmployeeAverageRating.HasValue) _reviewService.UpdateRestaurantEmployeesAverage(restaurant, employee.EmployeeAverageRating.Value);
                 await _reviewService.SaveChangesAsync();
                 return Ok(new JsonResult(new { title = "Успешно запаметено ревю!", message = "Благодарим Ви за отделеното време! Вашето ревю беше запаметено успешно!" }));

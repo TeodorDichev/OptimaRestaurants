@@ -157,7 +157,7 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   getRestaurantSchedule() {
     if (this.manager) {
-      const sub = this.managerService.getManagerFullSchedule(this.manager.restaurants[this.selectedRestaurantIndex].id, this.selectedDay.getMonth() + 1).subscribe({
+      const sub = this.managerService.getManagerFullSchedule(this.manager.restaurants[this.selectedRestaurantIndex].id, this.currentDate.getMonth() + 1).subscribe({
         next: (response: any) => {
           this.clearOnlyNoneAndWithWorkersMarkers();
           this.managerFullSchedule = response;
@@ -365,14 +365,14 @@ export class ScheduleManagerComponent implements OnInit, OnDestroy {
 
   previousMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
-    this.setUp();
     this.clearDatesClasses();
+    this.setUp();
   }
 
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
-    this.setUp();
     this.clearDatesClasses();
+    this.setUp();
   }
 
   getDate(weekNumber: number, weekdayNumber: number) {

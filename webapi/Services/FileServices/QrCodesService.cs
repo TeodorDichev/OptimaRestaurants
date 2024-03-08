@@ -54,12 +54,12 @@ namespace webapi.Services.FileServices
                     finally
                     {
                         bitmap.UnlockBits(bitmapData);
-                    }
+                    }   
 
-                    string path = Directory.GetCurrentDirectory();
-                    DirectoryInfo pathInfo = Directory.GetParent(path);
+                    string path = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
 
-                    path = Path.Combine(pathInfo.FullName, _configuration["QrCodes:Path"]);
+                    path = Path.Combine(path, _configuration["QrCodes:Path"]);
+
                     if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                     var ext = ".png";

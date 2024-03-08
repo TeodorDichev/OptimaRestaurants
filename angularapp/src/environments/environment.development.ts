@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    appUrl: 'https://opt.csd-bg.com',
+    appUrl: 'http://localhost:5143',
     userKey: 'identityAppUser'
 };
