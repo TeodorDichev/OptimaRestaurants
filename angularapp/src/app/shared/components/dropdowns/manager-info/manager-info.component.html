@@ -4,7 +4,7 @@
     <div>
       <div class="fw-bold h5">
         <span>
-          <img src="manager.profilePicturePath"  (error)="missingIcon(manager)">
+          <img src="{{manager.profilePicturePath}}" (error)="missingIcon(manager)">
         </span>
         Здравейте, <span class="fst-italic"> {{manager.firstName}} {{manager.lastName}}</span>
       </div>

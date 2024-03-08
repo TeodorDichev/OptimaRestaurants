@@ -31,8 +31,6 @@ export class LoggedAuthorizationGuard {
 
 
   private incorrect(page: string) {
-    // this.sharedService.showNotification(false, 'Not authorized', 'You are either not logged in, or do not have access to this page.');
     this.router.navigateByUrl('/' + page);
   }
-
 }   

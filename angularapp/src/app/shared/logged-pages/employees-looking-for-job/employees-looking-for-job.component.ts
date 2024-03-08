@@ -49,7 +49,7 @@ export class EmployeesLookingForJobComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(employee: Employee) {
-    //employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
+    employee.profilePicturePath = 'assets/images/logo-bw-with-bg.png';
   }
 
   getEmployeeCount() {

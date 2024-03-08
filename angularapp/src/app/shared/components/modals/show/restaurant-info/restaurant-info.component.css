@@ -1,5 +1,6 @@
 .rest-img {
     width: 100%;
+    max-width: 450px;
     border-radius: 1%;
     object-fit: cover;
     box-shadow: 4px 2px 3px black;
@@ -36,15 +37,15 @@
     flex: 1 0 0;
 }
 
-@media only screen and (max-width: 991px) {
+@media only screen and (min-width: 1200px) {
     .img-map {
-        flex-direction: column !important;
+        flex-direction: row !important;
     }
 }
 
 .img-map {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 12px;
 }
 

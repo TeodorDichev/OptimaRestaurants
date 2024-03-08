@@ -40,6 +40,6 @@ export class SearchResultAccountComponent implements OnInit, OnDestroy {
   }
 
   missingIcon(result: SearchResultAccount) {
-    //result.picturePath = 'assets/images/logo-bw-with-bg.png';
+    result.picturePath = 'assets/images/logo-bw-with-bg.png';
   }
 }

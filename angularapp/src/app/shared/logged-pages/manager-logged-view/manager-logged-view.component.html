@@ -21,7 +21,7 @@
             <div class="list-items" *ngFor="let restaurant of this.manager?.restaurants;">
                 <div class="restaurant-employee" (click)="selectedRestaurant(restaurant)"
                     [ngClass]="{'selected': restaurant === currentRestaurant}">
-                    <img class="rest-img" [src]="restaurant.iconPath" (error)="missingIcon(restaurant)">
+                    <img class="rest-img" src="{{restaurant.iconPath}}" (error)="missingIcon(restaurant)">
                     <div class="restaurant-info">
                         <div>
                             <div class="h2 fw-bold">{{restaurant.name}}</div>
@@ -61,7 +61,7 @@
                 <div class="restaurant-employee" *ngIf="this.currentRestaurant">
                     <div class="employee-info-clickable" (click)="getEmployeeInfo(employee)"
                         data-bs-dismiss="offcanvas">
-                        <img class="emp-img" src="employee.profilePicturePath" (error)="missingIconEmployee(employee)">
+                        <img class="emp-img" src="{{employee.profilePicturePath}}" (error)="missingIconEmployee(employee)">
                         <div>
                             <div class="h4 fw-bold">{{employee.firstName}} {{employee.lastName}}</div>
                             <div>{{employee.email}}</div>
