@@ -77,14 +77,14 @@ namespace webapi.Services
                 var decodedToken = Encoding.UTF8.GetString(decodedTokenBytes);
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+                var key = Encoding.UTF8.GetBytes(_configuration["JWT:Key"]);
 
                 tokenHandler.ValidateToken(decodedToken, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
+                    ValidIssuer = _configuration["JWT:Issuer"],
                     ValidateAudience = false,
                 }, out var validatedToken);
 
