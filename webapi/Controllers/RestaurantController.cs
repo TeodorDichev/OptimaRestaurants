@@ -3,7 +3,6 @@ using webapi.DTOs.Request;
 using webapi.DTOs.Restaurant;
 using webapi.Models;
 using webapi.Services.ClassServices;
-using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
 
 namespace webapi.Controllers
@@ -23,16 +22,13 @@ namespace webapi.Controllers
         private readonly RestaurantService _restaurantService;
         private readonly EmployeeService _employeeService;
         private readonly RequestService _requestService;
-        private readonly PicturesAndIconsService _pictureService;
         public RestaurantsController(RestaurantService restaurantService,
             EmployeeService employeeService,
-            RequestService requestService,
-            PicturesAndIconsService pictureService)
+            RequestService requestService)
         {
             _restaurantService = restaurantService;
             _requestService = requestService;
             _employeeService = employeeService;
-            _pictureService = pictureService;
         }
 
         [HttpGet("get-all-restaurants-count")]

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Request;
 using webapi.DTOs.Schedule;
@@ -22,7 +21,6 @@ namespace webapi.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly PdfFilesService _pdfFilesService;
-        private readonly PicturesAndIconsService _pictureService;
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
         private readonly RequestService _requestService;
@@ -33,8 +31,7 @@ namespace webapi.Controllers
             RequestService requestService,
             ManagerService managerService,
             RestaurantService restaurantService,
-            ScheduleService scheduleService,
-            PicturesAndIconsService pictureService)
+            ScheduleService scheduleService)
         {
             _pdfFilesService = pdfFilesService;
             _employeeService = employeeService;
@@ -42,7 +39,6 @@ namespace webapi.Controllers
             _requestService = requestService;
             _managerService = managerService;
             _scheduleService = scheduleService;
-            _pictureService = pictureService;
         }
 
         [HttpGet("get-employee/{email}")]

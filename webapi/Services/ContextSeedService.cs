@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using webapi.Data;
 using webapi.Models;
 using webapi.Services.ClassServices;
@@ -34,11 +33,6 @@ namespace webapi.Services
 
         public async Task InitializeContextAsync()
         {
-            if (_context.Database.GetPendingMigrationsAsync().GetAwaiter().GetResult().Count() > 0)
-            {
-                await _context.Database.MigrateAsync();
-            }
-
             if (!_roleManager.Roles.Any())
             {
                 await _roleManager.CreateAsync(new IdentityRole { Name = Role.Manager.ToString() });

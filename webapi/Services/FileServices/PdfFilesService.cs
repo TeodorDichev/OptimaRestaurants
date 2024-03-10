@@ -82,7 +82,7 @@ namespace webapi.Services.FileServices
             Image image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Images:Path"], "logo-bw-with-bg.png")));
             try
             {
-                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + employee.Profile.ProfilePicturePath.Split('/').Last()));
+                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:LocalPath"]) + employee.Profile.ProfilePicturePath.Split('/').Last()));
             }
             catch (Exception)
             {
@@ -148,7 +148,7 @@ namespace webapi.Services.FileServices
             Image image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Images:Path"], "logo-bw-with-bg.png")));
             try
             {
-                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:Path"]) + restaurant.IconPath.Split('/').Last()));
+                image = new Image(ImageDataFactory.Create(Path.Combine(pathInfo.FullName, _configuration["Pictures:LocalPath"]) + restaurant.IconPath.Split('/').Last()));
             }
             catch (Exception)
             {

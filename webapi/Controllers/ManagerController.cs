@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using webapi.DTOs.Employee;
 using webapi.DTOs.Manager;
 using webapi.DTOs.Request;
@@ -7,7 +6,6 @@ using webapi.DTOs.Restaurant;
 using webapi.DTOs.Schedule;
 using webapi.Models;
 using webapi.Services.ClassServices;
-using webapi.Services.FileServices;
 using webapi.Services.ModelServices;
 
 namespace webapi.Controllers
@@ -28,20 +26,17 @@ namespace webapi.Controllers
         private readonly RestaurantService _restaurantService;
         private readonly RequestService _requestService;
         private readonly ScheduleService _scheduleService;
-        private readonly PicturesAndIconsService _pictureService;
         public ManagerController(EmployeeService employeeService,
                 ManagerService managerService,
                 RequestService requestService,
                 RestaurantService restaurantService,
-                ScheduleService scheduleService,
-                PicturesAndIconsService pictureService)
+                ScheduleService scheduleService)
         {
             _managerService = managerService;
             _restaurantService = restaurantService;
             _requestService = requestService;
             _employeeService = employeeService;
             _scheduleService = scheduleService;
-            _pictureService = pictureService;
         }
 
         [HttpGet("get-manager/{email}")]

@@ -68,6 +68,9 @@ namespace webapi.Services.FileServices
         }
         public bool DeleteQrCode(string path)
         {
+            string localPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, _configuration["Pictures:LocalPath"]);
+            localPath = Path.Combine(localPath, path.Split('/').Last());
+
             try
             {
                 if (File.Exists(path))

@@ -6,7 +6,6 @@ using webapi.DTOs.Account;
 using webapi.Models;
 using webapi.Services;
 using webapi.Services.ClassServices;
-using webapi.Services.FileServices;
 
 namespace webapi.Controllers
 {
