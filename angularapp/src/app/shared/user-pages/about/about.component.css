@@ -1,5 +1,4 @@
 ::ng-deep app-about {
-    background-image: url('../../../../assets/images/about-page.jpg') !important;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
