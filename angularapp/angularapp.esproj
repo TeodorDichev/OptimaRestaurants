@@ -11,7 +11,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\assets\uploads\" />
-    <Folder Include="src\assets\uploads\pictures\" />
-    <Folder Include="src\assets\uploads\qrcodes\" />
   </ItemGroup>
 </Project>

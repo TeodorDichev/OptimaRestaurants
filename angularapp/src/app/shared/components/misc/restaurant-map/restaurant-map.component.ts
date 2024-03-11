@@ -16,7 +16,7 @@ export class RestaurantMapComponent implements OnInit {
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.url = `https://www.google.com/maps/embed/v1/place?key=AIzaSyDeehPso1ckCJYdYSHJ12b3buopi8tEJAM&&q=${this.latitude},${this.longitude}`;
+    this.url = ``;
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
   }
 }
