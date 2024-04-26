@@ -97,7 +97,7 @@ export class ReviewsComponent implements OnInit, OnDestroy {
     if (this.customerReview.comment.length > 300) {
       this.sharedService.showNotification(false, 'Твърде дълго съобщение!', 'Вашето съобщение трябва да се състои от максимум 300 символа.');
     }
-    else if (this.customerReview.atmosphereRating == 0
+    else if (this.customerReview.speedRating == 0
       && this.customerReview.attitudeRating == 0
       && this.customerReview.atmosphereRating == 0
       && this.customerReview.cuisineRating == 0

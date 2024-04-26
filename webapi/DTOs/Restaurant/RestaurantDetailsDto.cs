@@ -12,6 +12,7 @@ namespace webapi.DTOs.Restaurant
         public required string Address2 { get; set; }
         public required string City { get; set; }
         public required int EmployeeCapacity { get; set; }
+        public required int EmployeeCurrentCount { get; set; }
         public required bool IsWorking { get; set; }
         public required int TotalReviewsCount { get; set; }
         public required decimal CuisineAverageRating { get; set; }

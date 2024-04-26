@@ -21,7 +21,6 @@ namespace webapi.Controllers
         private readonly JWTService _jwtService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly EmailService _emailService;
-        private readonly IConfiguration _configuration;
         private readonly AccountService _accountService;
         private readonly ManagerService _managerService;
         private readonly EmployeeService _employeeService;
@@ -29,7 +28,6 @@ namespace webapi.Controllers
         public AccountController(JWTService jwtService,
         UserManager<ApplicationUser> userManager,
         EmailService emailService,
-        IConfiguration configuration,
         AccountService accountService,
         ManagerService managerService,
         EmployeeService employeeService)
@@ -37,7 +35,6 @@ namespace webapi.Controllers
             _jwtService = jwtService;
             _userManager = userManager;
             _emailService = emailService;
-            _configuration = configuration;
             _accountService = accountService;
             _managerService = managerService;
             _employeeService = employeeService;
@@ -52,7 +49,7 @@ namespace webapi.Controllers
 
             try
             {
-                if (await SendConfirmEmailAddress(userToAdd))
+                if (await _emailService.SendConfirmEmailAsync(userToAdd))
                 {
                     await _managerService.AddManager(userToAdd);
                     await _accountService.SaveChangesAsync();
@@ -75,7 +72,7 @@ namespace webapi.Controllers
 
             try
             {
-                if (await SendConfirmEmailAddress(userToAdd))
+                if (await _emailService.SendConfirmEmailAsync(userToAdd))
                 {
                     await _employeeService.AddEmployee(userToAdd, model.City, model.BirthDate);
                     await _accountService.SaveChangesAsync();
@@ -158,7 +155,7 @@ namespace webapi.Controllers
 
                 await _userManager.RemovePasswordAsync(user);
                 await _userManager.AddPasswordAsync(user, tempPassword);
-                await SendResetPassword(user, tempPassword);
+                await _emailService.SendResetPasswordAsync(user, tempPassword);
 
                 return Ok(new JsonResult(new { title = "Нулирането на паролата е успешно!", message = "Изпратихме ви имейл с нова парола, с която да влезете във вашия профил." }));
             }
@@ -184,37 +181,6 @@ namespace webapi.Controllers
                 });
 
             return accounts;
-        }
-
-        private async Task<bool> SendResetPassword(ApplicationUser user, string tempPassword)
-        {
-            var body = $"<p>Здравейте: {user.FirstName} {user.LastName}</p>" +
-                $"<p>Имейл: {user.UserName}.</p>" +
-                "<p>Това е новата парола, с която може да влезете в профила си.</p>" +
-                $"<p>{tempPassword}</p>" +
-                "<p>Благодарим ви,</p>" +
-                $"<br>{_configuration["Email:ApplicationName"]}";
-
-            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Reset password");
-
-            return await _emailService.SendEmailAsync(emailSend);
-        }
-
-        private async Task<bool> SendConfirmEmailAddress(ApplicationUser user)
-        {
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-            var url = $"{_configuration["JWT:ClientUrl"]}{_configuration["Email:ConfirmEmailPath"]}?token={token}&email={user.Email}";
-
-            var body = $"<p>Здравейте: {user.FirstName} {user.LastName}</p>" +
-                "<p>Моля, потвърдетe имейл адреса си тук:</p>" +
-                $"<p><a href=\"{url}\">Потвърждаване</a></p>" +
-                "<p>Благодарим ви,</p>" +
-                $"<br>{_configuration["Email:ApplicationName"]}";
-
-            var emailSend = new EmailSendDto(user.Email ?? string.Empty, body, "Confirm your email");
-
-            return await _emailService.SendEmailAsync(emailSend);
         }
 
         private async Task<ApplicationUserDto> CreateApplicationUserDto(ApplicationUser user)

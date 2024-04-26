@@ -1,5 +1,5 @@
 export interface SearchResultAccount {
-    fullname: string,
+    fullName: string,
     email: string,
     role: string,
     picturePath: string

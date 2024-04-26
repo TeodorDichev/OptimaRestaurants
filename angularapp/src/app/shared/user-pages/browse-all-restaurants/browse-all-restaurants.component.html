@@ -82,7 +82,7 @@
                             <div class="h6 text-muted">{{restaurant.address1}}</div>
                             <div class="h6 text-muted">{{restaurant.address2}}</div>
                         </div>
-                        <div>
+                        <div class="more-info">
                             <div class="h5 fw-bold">Средна оценка:
                                 <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
                             </div>
@@ -91,7 +91,7 @@
                                 <span class="fw-normal fst-italic" *ngIf="!restaurant.isWorking">Не</span>
                             </div>
                         </div>
-                        <div *ngIf="restaurant.topEmployeeEmail">
+                        <div class="more-info" *ngIf="restaurant.topEmployeeEmail">
                             <div class="fw-bold">Най-добър работник:
                                 <div class="fw-normal">{{restaurant.topEmployeeFullName}}</div>
                             </div>

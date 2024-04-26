@@ -1,5 +1,11 @@
-.fa {
+.gold {
     color: goldenrod;
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+.gray {
+    color: rgba(192, 192, 192, 0.5);
     cursor: pointer;
     margin-right: 4px;
 }

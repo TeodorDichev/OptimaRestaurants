@@ -21,14 +21,6 @@
     align-self: stretch;
 }
 
-.empl-img {
-    max-width: 150px;
-    aspect-ratio: 1/1;
-    width: 100% !important;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
 .rest-list {
     gap: 12px;
     overflow: scroll;
@@ -114,4 +106,19 @@
     align-items: center;
     padding: 16px;
     justify-content: space-between;
+}
+
+@media only screen and (max-width: 840px) {
+    .rest-img {
+        width: 50% !important;
+    }
+    .content-screen {
+        padding: 0px;
+    }
+    .more-info {
+        display: none;
+    }
+    .heading-row {
+        flex-direction: column !important;
+    }
 }

@@ -253,6 +253,8 @@ namespace webapi.Controllers
             else restaurant = await _restaurantService.GetRestaurantById(scheduleDto.RestaurantId);
             if (!restaurant.IsWorking) return BadRequest("Ресторантът не работи!");
 
+            if (scheduleDto.Day.Subtract(DateTime.Now.Date).Days < 7) return BadRequest("Добавянето на ангажименти трябва да става със седемдневно предизвестие!");
+
             /* Manager can add both working and leisure days */
             if (scheduleDto.IsWorkDay)
             {

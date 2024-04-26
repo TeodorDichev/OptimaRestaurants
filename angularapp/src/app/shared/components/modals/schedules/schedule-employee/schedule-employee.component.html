@@ -1,4 +1,4 @@
-<div class="modal-body" *ngIf="employee">
+<div class="modal-body" *ngIf="employee && employee.restaurants.length > 0; else missingRestaurants">
     <div class="fw-bold h1">Вашият график,
         <span class="fst-italic theme-main">{{employee.firstName}} {{employee.lastName}}</span>
     </div>
@@ -242,3 +242,18 @@
         </button>
     </div>
 </div>
+<ng-template #missingRestaurants>
+    <div class="modal-body">
+        <div class="schedule flex-direction-col">
+            <i class="mb-5 fa-regular fa-lightbulb fa-4x theme-main"></i>
+            <div class="h1 text-center">
+                За да имате график, който да видите в детайл или редактирате, моля, започнете работа в поне един ресторант.
+            </div>
+        </div>       
+        <div class="d-flex justify-content-end">
+            <button class="button btn-gray" (click)="close()">
+                Затваряне
+            </button>
+        </div>
+    </div>
+</ng-template>

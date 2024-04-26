@@ -54,7 +54,6 @@ namespace webapi.Services.FileServices
                     {
                         bitmap.UnlockBits(bitmapData);
                     }
-
                     string localPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, _configuration["QrCodes:LocalPath"]);
                     if (!Directory.Exists(localPath)) Directory.CreateDirectory(localPath);
 

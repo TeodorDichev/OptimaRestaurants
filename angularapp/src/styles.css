@@ -12,7 +12,7 @@ app-root {
     padding: 0px;
     margin: 0px;
     border: 0;
-    background-color: #fadea9;
+    background-color: #fae4b9;
 }
 
 
@@ -66,24 +66,24 @@ app-root {
 }
 
 .flex-direction-row {
-    flex-direction: row;
+    flex-direction: row !important;
 }
 
 .flex-direction-col {
-    flex-direction: column;
+    flex-direction: column !important;
 }
 
 .content-screen-fill-row {
-    align-self: stretch;
+    align-self: stretch !important;
 }
 
 .content-screen-fill-col {
-    flex: 1 0 0;
+    flex: 1 0 0 !important;
 }
 
 .content-screen-fill {
-    flex: 1 0 0;
-    align-self: stretch;
+    flex: 1 0 0 !important;
+    align-self: stretch !important;
 }
 
 /*#endregion content-screens*/
@@ -107,11 +107,11 @@ app-root {
 }
 
 .roboto {
-    font-family: Roboto Slab;
+    font-family: Roboto Slab !important;
 }
 
 .pacifico {
-    font-family: Pacifico;
+    font-family: Pacifico !important;
 }
 
 .btn-gray {

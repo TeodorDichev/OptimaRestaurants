@@ -102,7 +102,7 @@
 }
 
 .offcanvas {
-    background-color: rgba(252, 226, 179, 0.938);
+    background-color: rgba(250, 243, 222, 0.938);
 }
 
 .restaurant-info {
@@ -129,4 +129,16 @@
     align-self: stretch;
     flex: 1 0 0;
     align-items: center;
+}
+
+@media only screen and (max-width: 840px) {
+    .rest-img {
+        width: 50% !important;
+    }
+    .content-screen {
+        padding: 0px;
+    }
+    .more-info {
+        display: none;
+    }
 }

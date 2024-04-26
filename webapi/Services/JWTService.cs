@@ -89,7 +89,7 @@ namespace webapi.Services
                 }, out var validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                return jwtToken?.Claims?.Any(c => c.Value.Equals(email)) ?? false;
+                return jwtToken?.Claims?.Any(c => c.Value == email) ?? false;
             }
             catch (Exception)
             {

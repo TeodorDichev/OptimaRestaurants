@@ -11,13 +11,13 @@ export class StarRatingComponent {
   get stars(): string[] {
     const fullStars = Math.floor(this.rating);
     const hasHalfStar = this.rating - fullStars >= 0.5;
-    const starArray = Array(5).fill('fa-star-o');
+    const starArray = Array(5).fill('fa-regular fa-star');
 
     for (let i = 0; i < fullStars; i++) {
-      starArray[i] = 'fa-star';
+      starArray[i] = 'fa-solid fa-star';
     }
     if (hasHalfStar) {
-      starArray[fullStars] = 'fa-star-half-o';
+      starArray[fullStars] = 'fa-regular fa-star-half-stroke';
     }
     
     return starArray;

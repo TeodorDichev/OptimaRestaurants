@@ -22,7 +22,7 @@
                             <div class="h6 text-muted">{{restaurant.address1}}</div>
                             <div class="h6 text-muted">{{restaurant.address2}}</div>
                         </div>
-                        <div>
+                        <div class="rating-working">
                             <div class="h5 fw-bold">Средна оценка:
                                 <app-star-rating [rating]="restaurant.restaurantAverageRating"></app-star-rating>
                             </div>
@@ -71,7 +71,7 @@
                 <div class="review text-muted my-2" *ngFor="let review of employeeReviewsHistory">
                     <div>
                         <span class="fw-bold"> {{review.restaurantName}}, {{review.restaurantCity}} </span>
-                        <span> (Тип: {{review.reviewType}}) </span>
+                        <span> (Тип: Оценка от {{review.reviewType == 'ManagerReview' ? 'мениджър' : 'клиент'}}) </span>
                     </div>
                     <div>
                         <p> Коментар: {{review.comment}} </p>
@@ -79,35 +79,41 @@
                     <div>
                         <hr>
                         <div class="review-ratings">
+                          <span *ngIf="review.punctualityRating">
                             Закъснение <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.punctualityRating" *ngIf="review.punctualityRating"></app-star-rating>
-                        </div>
-                        <div class="review-ratings">
+                              [rating]="review.punctualityRating"></app-star-rating>
+                          </span>
+                          <div class="vr"></div>
+                          <span *ngIf="review.collegialityRating">
                             Колегиалност <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.collegialityRating"
-                                *ngIf="review.collegialityRating"></app-star-rating>
-                        </div>
-                        <hr>
-                        <div class="review-ratings">
-                            Поведение <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.attitudeRating" *ngIf="review.attitudeRating"></app-star-rating>
-                        </div>
-                        <div class="review-ratings">
-                            Бързина <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.speedRating" *ngIf="review.speedRating"></app-star-rating>
-                        </div>
-                        <hr>
-                        <div class="review-ratings">
+                              [rating]="review.collegialityRating"></app-star-rating>
+                          </span>
+                          <div class="vr"></div>
+                          <span *ngIf="review.atmosphereRating">
                             Атмосфера <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.atmosphereRating" *ngIf="review.atmosphereRating"></app-star-rating>
+                              [rating]="review.atmosphereRating"></app-star-rating>
+                          </span>
                         </div>
+                        <hr>
                         <div class="review-ratings">
+                          <span *ngIf="review.attitudeRating">
+                            Поведение <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                              [rating]="review.attitudeRating"></app-star-rating>
+                          </span>
+                          <div class="vr"></div>
+                          <span *ngIf="review.speedRating">
+                            Бързина <i class="fa-solid fa-arrow-right"></i> <app-star-rating
+                              [rating]="review.speedRating"></app-star-rating>
+                          </span>
+                          <div class="vr"></div>
+                          <span *ngIf="review.cuisineRating">
                             Кухня <i class="fa-solid fa-arrow-right"></i> <app-star-rating
-                                [rating]="review.cuisineRating" *ngIf="review.cuisineRating"></app-star-rating>
+                              [rating]="review.cuisineRating"></app-star-rating>
+                          </span>
                         </div>
                         <hr>
                         <span class="text-end"> (Дата: {{review.reviewDate}}) </span>
-                    </div>
+                      </div>
                 </div>
             </div>
         </div>

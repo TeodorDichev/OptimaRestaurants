@@ -1,4 +1,4 @@
-<div class="modal-body" *ngIf="manager">
+<div class="modal-body" *ngIf="manager && manager.restaurants.length > 0; else missingRestaurants">
     <div class="fw-bold h1">Вашият график,
         <span class="fst-italic theme-main">{{manager.firstName}} {{manager.lastName}}</span>
     </div>
@@ -253,3 +253,13 @@
         </button>
     </div>
 </div>
+<ng-template #missingRestaurants>
+    <div class="modal-body">
+        <div class="d-flex content-screen-fill">No restaurants.</div>       
+        <div class="d-flex justify-content-end">
+            <button class="button btn-gray" (click)="close()">
+                Затваряне
+            </button>
+        </div>
+    </div>
+</ng-template>

@@ -63,6 +63,7 @@
 .content {
     padding-bottom: 0px;
     padding-left: 0px;
+    padding-right: 0px;
     overflow: auto;
 }
 
@@ -80,7 +81,7 @@
 }
 
 .offcanvas {
-    background-color: rgba(252, 226, 179, 0.938);
+    background-color: rgba(250, 243, 222, 0.938);
 }
 
 .restaurant-info {
@@ -116,4 +117,16 @@
     align-self: stretch;
     flex: 1 0 0;
     overflow: auto;
+}
+
+@media only screen and (max-width: 840px) {
+    .rest-img {
+        width: 50% !important;
+    }
+    .content-screen {
+        padding: 0px;
+    }
+    .rating-working {
+        display: none;
+    }
 }

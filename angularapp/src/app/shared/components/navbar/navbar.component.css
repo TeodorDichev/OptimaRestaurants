@@ -48,3 +48,18 @@ input[type=checkbox]:checked {
     padding: 0px;
     background-color: transparent;
 }
+
+.button-info {
+    display: none;
+    margin-left: 12px;
+    font-family: 'Roboto Slab';
+    text-shadow: none;
+    font-size: 18px;
+    color: rgb(88, 88, 88);
+}
+
+@media only screen and (max-width: 991px) {
+    .button-info {
+      display: inline !important; 
+    }
+  }

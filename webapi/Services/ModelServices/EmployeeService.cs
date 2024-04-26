@@ -107,6 +107,7 @@ namespace webapi.Services.ClassServices
             List<BrowseEmployeeDto> employeesDto = new List<BrowseEmployeeDto>();
 
             foreach (var employee in _context.Employees.Where(e => e.IsLookingForJob)
+                        .OrderByDescending(e => e.EmployeeAverageRating)
                         .Skip((lastPageIndex - 1) * 20)
                         .Take(20)
                         .ToList())

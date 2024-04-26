@@ -1,70 +1,87 @@
 <nav-top></nav-top>
 <div class="content">
-    <div class="content-screen content-screen-fill">
-        <div class="cards-list">
-            <div class="about-card">
-                <img class="img-left" src="../../../../assets/images/manager-signup-img.png">
-                <div class="text-section text-center">
-                    <span>
-                        <span class="fw-bold">Оптима ресторатни</span> е онлайн приложение, целящо да улесни работата на
-                        <br>
-                        сервитьори и ресторантьори, като им предостави сигурна онлайн среда за <br>
-                        <span class="fw-bold">наблюдаване, оптимизиране и дигитализиране</span> на работния процес, чрез
-                        <span class="fst-italic">даване и <br>
-                            получаване на оценки, организиране на графици, генериране на резюмета (CV) и <br>
-                            други.</span>
-                    </span>
-                </div>
-            </div>
-            <div class="tri-card text-center">
-                <div class="about-card2">
-                    <span class="h3 fw-bold theme-main">Сервитьори/работници</span>
-                    <span class="text-section">
-                        <span>
-                            Пред сервитьорите регистрирани в системата ще се отворят множество възможности.
-                            На всеки от тях ще бъде предоставен <span class="fw-bold">QR код, чрез който те ще могат да
-                                бъдат оценявани
-                                от клиентите им.</span> Ще могат да свалят автоматично генерирани резюмета, съдържащи
-                            личната
-                            им информация, предишния им работен опит и настоящето им работно място. Приложението ще
-                            им <span class="fst-italic">асистира в организирането им на графици</span> и дори позволява
-                            работа на няколко различни
-                            места едновременно. Чрез него, те ще имат и възможност да кандидатстват за работа.
-                        </span>
-                    </span>
-                </div>
-                <div class="about-card2 background-chocolate">
-                    <span class="h3 fw-bold">Клиенти</span>
-                    <span class="text-section">
-                        <span>
-                            За обикновенния потребител ОптимаРесторанти предлага <span class="fst-italic">надежна и
-                                сигурна
-                                система</span> за откриване на <span class="fw-bold">най-добрите ресторанти в
-                                района</span>, както и средство
-                            за изразяване на мнение спрямо ресторант и обслужващ персонал.
-                        </span>
-                    </span>
-                </div>
-                <div class="about-card2">
-                    <span class="h3 fw-bold theme-main">Управители</span>
-                    <span class="text-section">
-                        <span>Управителите на ресторантите са нашият <span class="fw-bold">най-ценен потребител</span> и
-                            съответно тези,
-                            които получават най-много от използването на ОптимаРесторанти. Те могат да
-                            <span class="fst-italic">регистрират своите ресторанти, да наемат работници в тях, да
-                                организират
-                                графиците им и да следят качеството на работата на служителите си изцяло
-                                онлайн</span> , давайки им възможност за оптимизация и дигитализация на работния
-                            процес.</span>
-                    </span>
-                </div>
-            </div>
+    <div class="content-screen content-screen-fill-row border-start slide-in-blurred-left">
+        <div class="h1 overlay-text box-info">
+            <span class="fw-bold theme-main">
+                Оптима - решението
+            </span>
+            <span class="h2">
+                за улеснен мениджмънт на <span class="fst-italic">всеки ресторант.</span>
+            </span>
         </div>
     </div>
-    <div class="content-screen content-screen-fill-row">
-        <div>
-            Имате други въпроси?
-            Свържете се с нас: <span class="fw-bold">optimarestorants&#64;gmail.com</span>
+    <div class="information-menu slide-in-blurred-left">
+        <div class="h1 text-center fw-bold">
+            {{aboutInfos[selectedIndex].heading}}
         </div>
+        <div class="info-about-text">
+            <div class="fs-3" *ngIf="selectedIndex != 4; else personalInfo">
+                {{aboutInfos[selectedIndex].text}}
+            </div>
+            <ng-template #personalInfo>
+                <div class="info-about-text text-center">
+                    <div class="info-card">
+                        <div>
+                            <img src="../../../../assets/images/TD.jpg" alt="TeodorDichev" class="info-img"/>
+                        </div>                      
+                        <div class="fw-bold">
+                            Теодор Дичев              
+                        </div>
+                        <div class="fst-italic">
+                            teodichev&#64;gmail.com
+                        </div>
+                        <div class="">
+                            Product Manager & Back-end developer
+                        </div>
+                        <div>
+                            <a href="https://github.com/TeodorDichev" target="_blank">
+                                <i class="fa-brands fa-github fa-2x cursor-pointer m-1 theme-main"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/teodordichev/" target="_blank">
+                                <i class="fa-brands fa-linkedin fa-2x cursor-pointer m-1 theme-main"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div>
+                            <img src="../../../../assets/images/AK.jpg" alt="TeodorDichev" class="info-img"/>
+                        </div>                      
+                        <div class="fw-bold">
+                            Теодор Дичев              
+                        </div>
+                        <div class="fst-italic">
+                            nasikordov&#64;gmail.com
+                        </div>
+                        <div class="">
+                            Designer & Front-end developer
+                        </div>
+                        <div>
+                            <a href="https://github.com/kordiP" target="_blank">
+                                <i class="fa-brands fa-github fa-2x cursor-pointer m-1 theme-main"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/atanas-kordov-4a0709273/" target="_blank">
+                                <i class="fa-brands fa-linkedin fa-2x cursor-pointer m-1 theme-main"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="switch-buttons h5">
+            <button class="button btn-chocolate m-1" *ngFor="let e of [].constructor(5); index as i"
+                (click)="switchAboutInfo(i)">
+                {{aboutInfos[i].heading}}
+                <i class="fa-solid fa-chevron-up"></i>
+            </button>
+        </div>
+    </div>
+    <div class="ribbon-bottom slide-in-blurred-left h5">
+        <span>
+            За връзка с администратор:
+            <span class="fw-bold">
+                optimarestorants&#64;gmail.com
+            </span>
+        </span>
     </div>
 </div>

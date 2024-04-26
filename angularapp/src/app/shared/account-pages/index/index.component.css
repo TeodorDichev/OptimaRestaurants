@@ -1,5 +1,6 @@
 ::ng-deep app-index {
     background-image: url('../../../../assets/images/index-page-img.png') !important;
+    background-color: #9e7854;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

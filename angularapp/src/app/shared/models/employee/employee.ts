@@ -16,5 +16,6 @@ export interface Employee{
     employeeAverageRating: number,
     isLookingForJob: boolean,
     restaurants: Restaurant[],
-    qrCodePath: string
+    qrCodePath: string,
+    totalReviewsCount: number
 }

@@ -10,6 +10,7 @@
         public required decimal Latitude { get; set; }
         public required string City { get; set; }
         public required int EmployeeCapacity { get; set; }
+        public required int EmployeeCurrentCount { get; set; }
         public required bool IsWorking { get; set; }
         public string? IconPath { get; set; }
         public required int TotalReviewsCount { get; set; }

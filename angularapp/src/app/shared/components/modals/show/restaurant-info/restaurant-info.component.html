@@ -13,12 +13,16 @@
         </div>
       </div>
       <div class="map">
-        <app-restaurant-map [longitude]="restaurant.longitude.toString()" [latitude]="restaurant.latitude.toString()"></app-restaurant-map>
+        <app-restaurant-map [longitude]="restaurant.address1.toString()"
+          [latitude]="restaurant.address2.toString()"></app-restaurant-map>
       </div>
     </div>
     <div class="ratings">
       <div class="rest-info justify-content-between h4">
-        <div *ngIf="user"> <span class="fw-bold"> Общ капацитет: </span> {{restaurant.employeeCapacity}}</div>
+        <div *ngIf="user"> <span class="fw-bold"> Капацитет: </span>
+          {{restaurant.employeeCurrentCount == null ? '0' :
+          restaurant.employeeCurrentCount}}/{{restaurant.employeeCapacity}}
+        </div>
         <div> <span class="fw-bold"> Работещ: </span>
           <span class="text-success" *ngIf="restaurant.isWorking">Да</span>
           <span class="text-danger" *ngIf="!restaurant.isWorking">Не</span>

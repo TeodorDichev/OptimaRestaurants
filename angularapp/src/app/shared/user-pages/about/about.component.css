@@ -4,82 +4,99 @@
     align-items: flex-start;
     flex: 1 0 0;
     align-self: stretch;
+    background-image: url('../../../../assets/images/about-page.jpg') !important;
+    background-color: rgb(54, 63, 73);
 }
 
-.about-card {
-    background-color: rgba(255, 255, 255, 0.7);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-self: stretch;
-    gap: 10px;
-    border-radius: 8px;
-    scale: 1;
-}
-
-.img-left {
-    max-width: 400px;
-    aspect-ratio: 3/2;
-    width: 100% !important;
-    object-fit: cover;
-    border-radius: 8px 0px 0px 8px;
-}
-
-.img-right {
-    max-width: 400px;
-    aspect-ratio: 3/2;
-    width: 100% !important;
-    object-fit: cover;
-    border-radius: 0px 8px 8px 0px;
-}
-
-.content-screen-fill-row {
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.75);
-    color: black;
+.overlay-text {
+    text-shadow: 2px 2px black;
+    color: white;
 }
 
 .content {
-    padding: 48px 0px 12px 0px;
-    gap: 0px;
+    overflow-y: auto;
+    padding-bottom: 10px !important;
 }
 
-.cards-list {
+.content-screen-row {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.content-screen {
+    background: linear-gradient(90deg, rgb(61, 76, 92) 0%, rgba(9,9,121,0) 60%);
+}
+
+.box-info {
     display: flex;
     flex-direction: column;
-    align-self: stretch;
-    flex: 1 0 0;
-    gap: 12px;
-    overflow: scroll;
 }
 
-.text-section {
+.information-menu {
     display: flex;
-    align-self: stretch;
+    flex-direction: column;
     flex: 1 0 0;
-    justify-content: center;
-    align-items: center;
+    align-self: stretch;
+    margin-top: 32px;
+    border-radius: 3% 2% / 1% 60%;
+    padding: 15px 8px; 
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.switch-buttons {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    justify-content: space-around;
+}
+
+.info-about-text {
+    display: flex;
+    flex-direction: row;
+    align-self: stretch;
+    text-align: justify;
+    flex: 1 0 0;
+    padding: 16px;
+    gap: 24px;
     font-size: 24px;
 }
 
-.tri-card {
+.ribbon-bottom {
     display: flex;
     align-self: stretch;
-    flex: 1 0 0;
-    justify-content: space-evenly;
-    gap: 20px;
+    padding: 8px;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.55);
+    border-radius: 1% 1% / 41% 60%;
 }
 
-.about-card2 {
+.info-card {
     display: flex;
     flex-direction: column;
     align-self: stretch;
-    background-color: rgba(255, 255, 255, 0.75);
-    border-radius: 8px;
-    padding: 16px;
+    flex: 1 0 0;
+    border: 1px solid rgba(128, 128, 128, 0.6);
+    justify-content: space-evenly;
+    padding: 4px;
+    border-radius: 6% 2% / 3% 60%;
 }
 
-.background-chocolate {
-    background-color: rgba(210, 105, 30, 0.75) !important;
-    color: white;
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.info-img {
+    height: 165px;
+    width: 165px;
+    border-radius: 13% 2% / 11% 60%;
+}
+
+@media only screen and (max-width: 1150px) {
+    .switch-buttons {
+        flex-direction: column !important;
+    }
+    .info-about-text {
+        flex-direction: column !important;
+    }
 }
